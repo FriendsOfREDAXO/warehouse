@@ -1,6 +1,6 @@
 package: warehouse
 version: '1.1.beta'
-author: Wolfgang Bund
+author: Friends Of REDAXO
 
 page:
     title: Warehouse

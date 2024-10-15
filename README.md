@@ -80,4 +80,4 @@ im Warenkorb kann die Anzahl per Input-Felder geändert werden.
 In der obigen Konfiguration kann die Bestelltabelle nicht aufgerufen werden. Hierfür muss zusätzlich die ycom installiert werden und in der ycom Usertabelle das Feld company angelegt werden.
 Die Bilder in der Demo sind absichtlich verkleinert.
 
-Use at your own risk. Issues gerne auf Github https://github.com/dtpop/warehouse packen.
+Use at your own risk. Issues gerne auf Github https://github.com/FriendsOfREDAXO/warehouse packen.
