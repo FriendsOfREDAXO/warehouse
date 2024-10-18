@@ -14,9 +14,6 @@ $js = <<<EOT
     #direct_debit_box {
         display: none;
     }
-    #giropay_box {
-        display: none;
-    }
 </style>
 <script type="text/javascript">
     $(function() {
@@ -24,18 +21,11 @@ $js = <<<EOT
             if ($(this).val() == 'direct_debit' && $(this).prop('checked')) {                
                 $('#direct_debit_box').show();            
             }
-            if ($(this).val() == 'giropay' && $(this).prop('checked')) {                
-                $('#giropay_box').show();            
-            }
         });
         $('#payment_box').on('change','input',function() {
             $('#direct_debit_box').hide();
-            $('#giropay_box').hide();
             if ($(this).val() == 'direct_debit') {
                 $('#direct_debit_box').show();                
-            }
-            if ($(this).val() == 'giropay') {
-                $('#giropay_box').show();                
             }
 //            console.log($(this).val());
         }); 
@@ -165,22 +155,7 @@ if (count($current_payment_types) > 1) {
         $yf->setValidateField('customfunction',['bic','warehouse_helper::validate_sub_values',['payment_type','direct_debit'],'Bitte füllen Sie alle markierten Felder aus.']);
     }
 
-    if (in_array('giropay',$current_payment_types)) {
-        $yf->setValueField('html',['','<div id="giropay_box" class="uk-child-width-1-1 uk-child-width-1-2@s uk-grid" uk-grid="margin: uk-margin-small">']);
-            $yf->setValueField('html',['','<div>']);
-            $yf->setValueField('text',['giropay_bic','BIC*',$userdata['giropay_bic'],'no_db']);
-            $yf->setValueField('html',['','</div>']);
-        $yf->setValueField('html',['','</div>']);
-    }
 } else {
-    if (in_array('giropay',$current_payment_types)) {
-        $yf->setValueField('html',['','<div class="uk-child-width-1-1 uk-child-width-1-2@s uk-grid" uk-grid="margin: uk-margin-small">']);
-            $yf->setValueField('html',['','<div>']);
-            $yf->setValueField('text',['giropay_bic','BIC*',$userdata['giropay_bic'],'no_db']);
-            $yf->setValueField('html',['','</div>']);
-        $yf->setValueField('html',['','</div>']);
-        $yf->setValidateField('customfunction',['giropay_bic','warehouse_helper::validate_sub_values',['payment_type','giropay'],'Bitte füllen Sie alle markierten Felder aus.']);
-    }    
 }
 
 $yf->setValueField('html',['','</div>']);

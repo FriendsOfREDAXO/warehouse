@@ -60,9 +60,7 @@ if (rex::isBackend()) {
         $yf->setActionField('redirect', [rex_config::get('warehouse', 'thankyou_page')]);
     } elseif ($warehouse_userdata['payment_type'] == 'paypal') {
         $yf->setActionField('redirect', [rex_config::get('warehouse', 'paypal_page_start')]);
-    } elseif ($warehouse_userdata['payment_type'] == 'giropay') {
-        $yf->setActionField('redirect', [rex_config::get('warehouse', 'giropay_page_start')]);
-    }
+    } 
 
 }
 
