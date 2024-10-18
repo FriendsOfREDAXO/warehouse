@@ -842,7 +842,7 @@ PayPalHttp\HttpResponse {#170 ▼
         $yf->setValueField('hidden', ['info_news_ok', $warehouse_userdata['info_news_ok']]);
 
         foreach (explode(',', Warehouse::get_config('order_email')) as $email) {
-            $yf->setActionField('tpl2email', [Warehouse::get_config('email_template_seller'), '', $email]);
+            $yf->setActionField('tpl2email', [Warehouse::get_config('email_template_seller'), $email]);
         }
         $yf->setActionField('tpl2email', [Warehouse::get_config('email_template_customer'), 'email']);
         $yf->setActionField('callback', ['warehouse::clear_cart']);

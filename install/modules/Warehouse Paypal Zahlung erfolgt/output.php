@@ -57,7 +57,7 @@ if (rex::isBackend()) {
     $yf->setValueField('hidden', ['payment_type', $warehouse_userdata['payment_type']]);
     
     foreach (explode(',', rex_config::get('warehouse', 'order_email')) as $email) {
-        $yf->setActionField('tpl2email', [rex_config::get('warehouse', 'email_template_seller'), '', $email]);
+        $yf->setActionField('tpl2email', [rex_config::get('warehouse', 'email_template_seller'), $email]);
     }
     $yf->setActionField('tpl2email', [rex_config::get('warehouse', 'email_template_customer'), 'email']);
     $yf->setActionField('callback', ['warehouse::clear_cart']);
