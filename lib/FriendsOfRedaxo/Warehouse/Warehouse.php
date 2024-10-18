@@ -4,7 +4,18 @@ namespace FriendsOfRedaxo\Warehouse;
 
 use rex_plugin;
 use rex_ycom_auth;
-
+use rex_config;
+use rex_sql;
+use rex;
+use rex_response;
+use rex_addon;
+use rex_clang;
+use rex_logger;
+use rex_yform;
+use rex_yrewrite;
+use rex_yform_manager_table;
+use rex_fragment;
+use rex_yform_email_template;
 
 class Warehouse
 {
@@ -70,7 +81,7 @@ class Warehouse
         $added = 0;
         $art_id = trim(rex_request('art_id'), '_');
         if (rex_request('art_type', 'string') == 'warehouse_single') {
-            $art = warehouse_single_article::get_article();
+            $art = SingleArticle::get_article();
             $art_uid = $art['art_id'];
         } else {
             $article = Article::get_article($art_id);
@@ -157,10 +168,8 @@ class Warehouse
 
     /**
      * Löscht showcart=1 aus der Url
-     * @param type $url
-     * @return type
      */
-    public static function clean_url($url)
+    public static function clean_url($url = "") : string
     {
         $prev_url = str_replace('?showcart=1&', '?', $url);
         $prev_url = str_replace('?showcart=1', '', $prev_url);
@@ -282,7 +291,7 @@ class Warehouse
         if (!rex_config::get("warehouse", "global_discount")) {
             return 0;
         }
-        $total = self::get_sub_total();
+        $total = (int) self::get_sub_total();
         $discount_value = round(($total * rex_config::get("warehouse", "global_discount") / 100), 2);
         return $discount_value;
     }
@@ -332,7 +341,7 @@ class Warehouse
      */
     public static function get_shipping_cost()
     {
-        return warehouse_shipping::get_cost();
+        return Shipping::get_cost();
     }
 
     public static function get_cart()
@@ -366,7 +375,7 @@ class Warehouse
 
     public static function get_tax()
     {
-        $sub_total = self::get_sub_total();
+        $sub_total = (int) self::get_sub_total();
         $tax = rex_config::get('warehouse', 'tax_value');
         $tax_value = round(($sub_total / (100 + $tax) * $tax), 2);
         return $tax_value;
@@ -775,7 +784,7 @@ PayPalHttp\HttpResponse {#170 ▼
 
     public static function get_category_tree($depth = 2)
     {
-        $otree = new \Helper();
+        $otree = new Helper();
         $otree->set_query('SELECT id, name_' . rex_clang::getCurrentId() . ' name, image, parent_id FROM ' . rex::getTable('warehouse_categories') . ' WHERE status = 1 AND parent_id = |parent_id| ORDER BY prio');
         $otree->set_maxlev($depth);
         $tree = $otree->sql_full_tree();
