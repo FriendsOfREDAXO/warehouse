@@ -9,13 +9,10 @@ rex_yform::addTemplatePath($this->getPath('ytemplates'));
 
 
 if (rex::isBackend()) {
-    rex_view::addJsFile($this->getAssetsUrl('scripts/warehouse_be_script.js'));
+    rex_view::addJsFile($this->getAssetsUrl('scripts/be_script.js'));
 }
 
 if (rex::isFrontend()) {
-
-    $curDir = __DIR__;
-    require_once $curDir . '/functions/helper.php';
 
     rex_login::startSession();
 
@@ -54,11 +51,10 @@ if (rex::isFrontend()) {
         if ($manager) {
             $profile = $manager->getProfile();
             $seo = $manager->getSeo();
-            //            dump($seo);
-            //            dump($profile);
+
             $data_id = (int) $manager->getDatasetId();
             if ($profile->getTableName() == rex::getTable('warehouse_articles')) {
-                // Artikel
+
                 if ($var_id = rex_get('var_id', 'int')) {
                     $article = FriendsOfRedaxo\Warehouse\Article::get_articles(0, [$data_id, $var_id], true);
                 } else {
@@ -68,7 +64,7 @@ if (rex::isFrontend()) {
                 $warehouse_prop['seo_title'] = $article->get_name();
                 $warehouse_prop['path'] = FriendsOfRedaxo\Warehouse\Warehouse::get_path($article->category_id);
             } elseif ($profile->getTableName() == rex::getTable('warehouse_categories')) {
-                // Kategorie
+
                 $warehouse_prop['sitemode'] = 'category';
                 $warehouse_prop['seo_title'] = $seo['title'];
                 $warehouse_prop['path'] = FriendsOfRedaxo\Warehouse\Warehouse::get_path($data_id);
