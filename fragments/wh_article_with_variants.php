@@ -27,7 +27,7 @@ if (!isset ($this->category)) {
                             </a>
                         </div>
                         <div class="longtext uk-margin-top">
-                            <?= warehouse_helper::uk_format_text($item->description_1) ?>
+                            <?= \FriendsOfRedaxo\Warehouse\Helper::uk_format_text($item->description_1) ?>
                             <?php $specifications = rex_var::toArray($item->specifications_1); ?>
                             <?php if ($specifications) : ?>
                                 <dl class="uk-description-list">

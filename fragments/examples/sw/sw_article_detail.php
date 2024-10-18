@@ -69,7 +69,7 @@ $warehouse_prop = rex::getProperty('warehouse_prop');
                                                 <?php if (0 && $attr['attr']['type'] == 'SELECT') :  // SELECT erstmal nicht berücksichtigen ?>
                                                     <?php foreach ($attr['data'] as $_attr) : ?>
                                                         <?php $art_attributes = $_attr->getData() ?>
-                                                        <?php $all_attributes = warehouse_articles::attr_to_array($attr['attr']['values']); ?>
+                                                        <?php $all_attributes = FriendsOfRedaxo\Warehouse\Article::attr_to_array($attr['attr']['values']); ?>
                                                         <ul class="tm-variations wh-variants">
                                                             <?php foreach (explode(',',$art_attributes['value']) as $k=>$attr_val) : ?>
                                                                 <li class="label label-info<?= $k ? '' : ' uk-active' ?>">

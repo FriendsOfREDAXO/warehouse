@@ -11,14 +11,14 @@ if (rex::isBackend()) {
         if ($profile->getTableName() == rex::getTable('warehouse_articles')) {
             // Detailanzeige
             if ($var_id = rex_get('var_id','int')) {
-                $article = warehouse_articles::get_articles(0,[$data_id,$var_id],true);
+                $article = FriendsOfRedaxo\Warehouse\Article::get_articles(0,[$data_id,$var_id],true);
             } else {
-                $article = warehouse_articles::get_articles(0,[$data_id],false,true);
+                $article = FriendsOfRedaxo\Warehouse\Article::get_articles(0,[$data_id],false,true);
             }
             
 //            dump($article[0]->getData());
             
-            $attributes = warehouse_articles::get_attributes_for_article($article[0]);
+            $attributes = FriendsOfRedaxo\Warehouse\Article::get_attributes_for_article($article[0]);
             $fragment = new rex_fragment();
             $fragment->setVar('article',$article[0]);
             $fragment->setVar('articles',$article);
@@ -28,7 +28,7 @@ if (rex::isBackend()) {
             $fragment = new rex_fragment();
             
             // Listenanzeige Unterkategorie
-            $categories = warehouse_categories::get_children($data_id);
+            $categories = \FriendsOfRedaxo\Warehouse\Category::get_children($data_id);
             if ($categories) {
                 $fragment->setVar('tree',$categories);
                 $fragment->setVar('path',$warehouse_prop['path']);
@@ -36,8 +36,8 @@ if (rex::isBackend()) {
             }
             
             // Nur Artikel - keine Varianten
-            $articles = warehouse_articles::get_articles($data_id,[]);
-            $category = warehouse_categories::get($data_id)->getData();
+            $articles = FriendsOfRedaxo\Warehouse\Article::get_articles($data_id,[]);
+            $category = \FriendsOfRedaxo\Warehouse\Category::get($data_id)->getData();
             if (isset($articles[0])) {
                 $fragment->setVar('items',$articles);
                 $fragment->setVar('category',$category);

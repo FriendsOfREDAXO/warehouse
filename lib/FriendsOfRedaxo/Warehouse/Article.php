@@ -1,6 +1,10 @@
 <?php
+namespace FriendsOfRedaxo\Warehouse;
 
-class warehouse_articles extends \rex_yform_manager_dataset {
+use rex_clang;
+use rex_config;
+
+class Article extends \rex_yform_manager_dataset {
 
     public static function get_query() {
         $qry = self::query();
@@ -162,7 +166,7 @@ class warehouse_articles extends \rex_yform_manager_dataset {
 
     public function get_variants() {
         $clang = rex_clang::getCurrentId();
-        $query = rex_yform_manager_table::get(rex::getTable('warehouse_article_variants'))->query();
+        $query = \rex_yform_manager_table::get(\rex::getTable('warehouse_article_variants'))->query();
         $query->select('name_'.$clang,'`name`');
         $query->selectRaw('CONCAT("'.$this->id.'__",id)','art_id');
         $query->where('parent_id',$this->id)->orderBy('prio');

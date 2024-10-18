@@ -1,12 +1,10 @@
 <?php
 
-if (rex::isDebugMode()) {
-    ini_set('error_reporting', E_ALL); // or error_reporting(E_ALL);
-    ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');
-}
+namespace FriendsOfRedaxo\Warehouse;
 
-class warehouse_wallee {
+use rex_config;
+
+class Wallee {
 
     static $space_id;
     static $user_id;

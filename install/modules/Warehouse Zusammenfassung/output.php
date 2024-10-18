@@ -6,8 +6,8 @@ if (rex::isBackend()) {
     echo '<h2>Bestellung Zusammenfassung</h2>';
     return;
 } else {
-    $warehouse_userdata = warehouse::get_user_data();
-    $cart = warehouse::get_cart();
+    $warehouse_userdata = FriendsOfRedaxo\Warehouse\Warehouse::get_user_data();
+    $cart = FriendsOfRedaxo\Warehouse\Warehouse::get_cart();
     dump($cart);
     $fragment = new rex_fragment();
     $fragment->setVar('cart', $cart);

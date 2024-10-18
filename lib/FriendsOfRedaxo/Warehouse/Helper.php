@@ -1,6 +1,13 @@
 <?php
 
-class warehouse_helper {
+namespace FriendsOfRedaxo\Warehouse;
+
+use rex_sql;
+use rex_backup;
+use rex_path;
+use rex_logger;
+
+class Helper {
     
     private $query;
     private $tree = [];
@@ -12,12 +19,9 @@ class warehouse_helper {
         $level++;
 
         $sql = rex_sql::factory();
-//        $sql->setDebug(1);
         $sql->setQuery(str_replace('|parent_id|', $parent_id, $this->query));
 
         $res = $sql->getArray();
-        
-//        dump($res); exit;
 
         if ($res != NULL) {
 
@@ -27,7 +31,6 @@ class warehouse_helper {
                 $lev = $t;
                 $lev['name'] = $v;
                 $lev['name_raw'] = $t['name'];
-//                $lev = array('id' => $k, 'name' => $v, 'name_raw' => $t['name']);
                 if ($this->maxlev > 0 && $level < $this->maxlev && $next_lev = $this->sql_full_tree($k, $level, $depth)) {
                     $lev['level'] = $next_lev;                    
                 }

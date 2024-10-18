@@ -1,6 +1,11 @@
 <?php
 
-class warehouse_categories extends \rex_yform_manager_dataset {
+namespace FriendsOfRedaxo\Warehouse;
+
+use rex_clang;
+
+
+class Category extends \rex_yform_manager_dataset {
 
     public static function get_query() {
         $clang = rex_clang::getCurrentId();

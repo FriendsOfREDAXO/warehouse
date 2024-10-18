@@ -1,5 +1,5 @@
 package: warehouse
-version: '1.1.beta'
+version: '2.0.0-dev'
 author: Friends Of REDAXO
 
 page:
@@ -13,9 +13,7 @@ page:
         info: { title: 'Info', itemclass: pull-right }
 
 requires:
-    redaxo: '^5.11'
+    redaxo: '^5.17'
     packages:
         structure: '^2.0'
-        yform/manager: '>3'
-
-        
+        yform/manager: '^4.1'

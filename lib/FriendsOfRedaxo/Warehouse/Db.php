@@ -1,6 +1,10 @@
 <?php
 
-class warehouse_db {
+namespace FriendsOfRedaxo\Warehouse;
+
+use rex_yform_value_select_sql_tree;
+
+class Db {
     
     public static function get_categories_tree () {
         $tree_select = new rex_yform_value_select_sql_tree();

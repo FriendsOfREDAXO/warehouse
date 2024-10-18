@@ -106,7 +106,7 @@ $warehouse_prop = rex::getProperty('warehouse_prop');
                                                 <?php if ($attr['attr']['type'] == 'SELECT') :  // SELECT erstmal nicht berücksichtigen ?>
                                                     <?php foreach ($attr['data'] as $_attr) : ?>
                                                         <?php $art_attributes = $_attr->getData() ?>
-                                                        <?php $all_attributes = warehouse_articles::attr_to_array($attr['attr']['values']); ?>
+                                                        <?php $all_attributes = FriendsOfRedaxo\Warehouse\Article::attr_to_array($attr['attr']['values']); ?>
                                                         <?php // dump($_attr['attr']['values']); ?>
                                                         <?php // dump($all_attributes); ?>
                                                         <?php // dump($art_attributes); ?>
