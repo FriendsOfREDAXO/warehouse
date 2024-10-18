@@ -6,7 +6,7 @@ use rex_ycom_auth;
 
 class Order extends \rex_yform_manager_dataset {
 
-    public static function get_orders_for_user() {
+    public static function getOrdersForUser() {
         $ycom_user = rex_ycom_auth::getUser();
         $data = self::query()
                 ->alias('orders')
@@ -17,7 +17,7 @@ class Order extends \rex_yform_manager_dataset {
         
     }
     
-    public static function get_order_for_user($order_id) {
+    public static function GetOrderForUser($order_id) {
         $ycom_user = rex_ycom_auth::getUser();
         $data = self::query()
                 ->alias('orders')

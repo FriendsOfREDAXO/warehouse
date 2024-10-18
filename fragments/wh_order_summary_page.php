@@ -33,7 +33,7 @@ $user_data = $this->warehouse_userdata;
     </tr>
     <tr>
         <td>{{ Total }}</td>
-        <td class="uk-text-right"><?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::get_cart_total(), 2) ?></td>
+        <td class="uk-text-right"><?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::GetCartTotal(), 2) ?></td>
     </tr>
 </table>
 

@@ -111,7 +111,7 @@ $rex_article_id = rex_article::getCurrentId();
                                                 <td colspan="3"><span class="fontbold fontred">{{ Total }}</span></td>
 
                                                 <td colspan="2">
-	                                                <span class="fontbold fontred"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_cart_total(), 2) ?>
+	                                                <span class="fontbold fontred"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::GetCartTotal(), 2) ?>
                                                  <?= rex_config::get('warehouse', 'currency_symbol') ?>
 												 	</span>
 												</td>

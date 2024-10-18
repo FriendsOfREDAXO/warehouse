@@ -273,9 +273,9 @@ class Warehouse
 
     /**
      * Total (Warenkorb mit Shipping)
-     * @return type
+     * @return float
      */
-    public static function get_cart_total()
+    public static function GetCartTotal() :float
     {
         $sum = (float) self::get_sub_total();
         $sum += (float) self::get_shipping_cost();
@@ -414,7 +414,7 @@ class Warehouse
         }
 
         $shipping = self::get_shipping_cost();
-        $total = self::get_cart_total();
+        $total = self::GetCartTotal();
         $user_data = rex_session('user_data', 'array');
         $user_data['payment_confirm'] = md5(microtime(true) . rand(0, 1000) . 'mySpecialsecret');
         rex_set_session('user_data', $user_data);
@@ -474,7 +474,7 @@ class Warehouse
     {
         $cart = self::get_cart();
         $shipping = (float) self::get_shipping_cost();
-        $total = (float) self::get_cart_total();
+        $total = (float) self::GetCartTotal();
 
         $out = '';
         $out .= mb_str_pad('Art. Nr.', 20, ' ', STR_PAD_RIGHT);
@@ -541,7 +541,7 @@ class Warehouse
     {
         $cart = self::get_cart();
         $shipping = (float) self::get_shipping_cost();
-        $total = (float) self::get_cart_total();
+        $total = (float) self::GetCartTotal();
         $out = '';
 
         $out .= '<style>

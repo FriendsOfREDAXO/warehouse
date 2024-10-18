@@ -1,16 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of tg_helper
- *
- * @author wolfgang
- */
 class tg_helper {
     public static function get_attributes_for_articles ($articles,$attr_id) {
         $lines = [];

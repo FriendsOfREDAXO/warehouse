@@ -57,7 +57,7 @@
             </div>
             <div class="uk-grid-small uk-flex-middle uk-grid" uk-grid="">
                 <div class="uk-width-expand uk-text-muted">{{ Total }}</div>
-                <div class="uk-text-lead uk-text-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_cart_total(),2) ?></div>
+                <div class="uk-text-lead uk-text-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::GetCartTotal(),2) ?></div>
             </div>           
             
             
