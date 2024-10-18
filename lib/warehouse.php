@@ -6,11 +6,10 @@ class warehouse
     static $fields = [
         'salutation','firstname', 'lastname', 'birthdate', 'company', 'department', 'address', 'zip', 'city', 'country', 'email', 'phone',
         'to_salutation','to_firstname', 'to_lastname', 'to_company', 'to_department', 'to_address', 'to_zip', 'to_city', 'to_country',
-        'separate_delivery_address', 'payment_type', 'note', 'iban', 'bic', 'direct_debit_name', 'giropay_bic', 'info_news_ok'
+        'separate_delivery_address', 'payment_type', 'note', 'iban', 'bic', 'direct_debit_name', 'info_news_ok'
     ];
 
     static $age_checked_values = [
-        'giropay_4020',
         'postident',
         'known',
         'other'
@@ -709,42 +708,6 @@ PayPalHttp\HttpResponse {#170 ▼
         // $payment->id = paypalId
     }
 
-    /**
-     * Funktion wird aus wh_giropay->check_response aufgerufen, wenn die Zahlung abgeschlossen ist.
-     * Kann nur einmal ausgeführt werden (wenn paypal_confirm noch leer ist).
-     * 
-     */
-    public static function giropay_approved($payment_id, $age_check = 0)
-    {
-        $sql = rex_sql::factory()->setTable(rex::getTable('wh_orders'))
-            ->setWhere('payment_id = :payment_id AND payment_confirm = :empty AND payment_type = :payment_type', ['payment_id' => $payment_id, 'empty' => '', 'payment_type' => 'giropay']);
-        $sql->select();
-        // Bestellung kann nicht doppelt bestätigt werden.
-        // giropay schickt weiter notify-Anfragen
-        if ($sql->getRows() == 1) {
-            $sql->setTable(rex::getTable('wh_orders'))
-                ->setWhere('payment_id = :payment_id AND payment_confirm = :empty AND payment_type = :payment_type', ['payment_id' => $payment_id, 'empty' => '', 'payment_type' => 'giropay']);
-            $sql->setValue('payment_confirm', date('Y-m-d H:i:s'));
-            $sql->setValue('agecheck', !$age_check ?: 'giropay_' . $age_check);
-            $sql->update();
-        } else {
-            if (rex::isDebugMode()) {
-                rex_logger::factory()->log('error', 'Payment Id: ' . $payment_id, [], __FILE__, __LINE__);
-            }
-            // redirect trotzdem durchführen. Möglicherweise war Api Call schneller, sodass Browserredirect ok ist
-            rex_response::sendRedirect(rex_getUrl(rex_config::get('warehouse', 'thankyou_page'), '', json_decode(rex_config::get('warehouse', 'paypal_getparams'), true), '&'));
-            exit;
-        }
-
-        // ycom_user Datensatz updaten
-        if (rex_plugin::get('ycom', 'auth')->isAvailable() && rex_ycom_auth::getUser()) {
-            $user = rex_yform_manager_dataset::get(rex_ycom_auth::getUser()->getValue('id'), rex::getTable('ycom_user'));
-            $user->agecheck = 'giropay_' . $age_check;
-            $user->save();
-        }
-        self::set_cart_from_payment_id($payment_id);
-    }
-
     public static function get_items_count_in_basket()
     {
         return count(rex_session('wh_cart', 'array'));
@@ -834,24 +797,9 @@ PayPalHttp\HttpResponse {#170 ▼
         $current_payment_types = [
             '{{ payment_type_prepayment }}' => 'prepayment',
             '{{ payment_type_direct_debit }}' => 'direct_debit',
-            '{{ payment_type_paypal }}' => 'paypal',
-            '{{ payment_type_giropay_agecheck }}' => 'giropay'
+            '{{ payment_type_paypal }}' => 'paypal'
         ];
 
-        // Wenn ein User mit verifiziertem Alter eingeloggt ist, alle Typen zeigen
-        if (rex_plugin::get('ycom', 'auth')->isAvailable() && rex_ycom_auth::getUser()) {
-            $user = rex_yform_manager_dataset::get(rex_ycom_auth::getUser()->getValue('id'), rex::getTable('ycom_user'));
-            if (in_array($user->agecheck, self::$age_checked_values)) {
-                return $current_payment_types;
-            }
-        }
-
-
-        if (rex_config::get('warehouse', 'agecheck')) {
-            $current_payment_types = [
-                '{{ payment_type_giropay_agecheck }}' => 'giropay'
-            ];
-        }
         return $current_payment_types;
     }
 

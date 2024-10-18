@@ -252,41 +252,6 @@ $field = $form->addLinkmapField('paypal_page_error');
 $field->setLabel('Paypal Fehler');
 $field->setNotice('<code>rex_config::get("warehouse","paypal_page_error")</code>');
 
-
-// ==== Giropay
-
-$form->addFieldset('Giropay Einstellungen');
-
-$field = $form->addTextField('giropay_merchand_id');
-$field->setLabel('Giropay Merchand Id');
-
-$field = $form->addTextField('giropay_project_id');
-$field->setLabel('Giropay Projekt Id');
-
-$field = $form->addTextField('giropay_project_pw');
-$field->setLabel('Giropay Projekt Passwort');
-
-$field = $form->addLinkmapField('giropay_page_start');
-$field->setLabel('Giropay Startseite');
-$field->setNotice('<code>rex_config::get("warehouse","giropay_page_start")</code>');
-
-$field = $form->addLinkmapField('giropay_page_notify');
-$field->setLabel('Giropay Notify Seite');
-$field->setNotice('<code>rex_config::get("warehouse","giropay_page_notify")</code> - Seite, die der Girocheckout Server aufruft. Wird nicht im Browser aufgerufen!');
-
-$field = $form->addLinkmapField('giropay_page_redirect');
-$field->setLabel('Giropay Redirect Seite');
-$field->setNotice('<code>rex_config::get("warehouse","giropay_page_redirect")</code> - Seite, auf die nach Abschluss der Zahlung weitergeleitet wird.');
-
-$field = $form->addLinkmapField('giropay_page_error');
-$field->setLabel('Giropay Fehler');
-$field->setNotice('<code>rex_config::get("warehouse","giropay_page_error")</code>');
-
-$field = $form->addLinkmapField('giropay_page_success');
-$field->setLabel('Giropay Zahlung erfolgreich');
-$field->setNotice('<code>rex_config::get("warehouse","giropay_page_success")</code>');
-
-
 // ==== Wallee
 
 $form->addFieldset('Wallee Einstellungen');
@@ -348,15 +313,6 @@ $field->setLabel('Fracht Parameter');
 $field->setNotice('Paramter für die Frachtberechnung. Als JSON in der Form <code>[[">",4,10.5],[">",2,7.9],[">",0,5.9]]</code> angeben. Jede Bedingung besteht aus drei Elementen. Als Kondition sind die Angaben <code>&gt;</code>, '
         . '<code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code> oder <code>=</code> möglich. Der zweite Wert steht für die Anzahl, der dritte für den Frachtpreis. Die erste Bedingung die erfüllt ist, wird für die Frachtberechnung verwendet. Wenn keine Bedingung erfüllt ist, wird der Standardfrachtpreis berechnet.');
 
-// ==== Frachtrechnung
-
-$form->addFieldset('Alterscheck');
-
-$field = $form->addCheckboxField('agecheck');
-$field->setLabel('Alterscheck aktivieren');
-$field->addOption('Alterscheck aktivieren', "1");
-$field->setNotice('Wenn der Alterscheck aktiviert ist, kann eine Erstbestellung nur per giropay Alterscheck ausgeführt werden. Wenn der Besucher über die Community eingeloggt ist, wird der Alterscheck in der Community gespeichert. Wenn der Alterscheck in der Community gespeichert ist und der Benutzer eingeloggt ist, kann er auch mit anderen Zahlungsweisen bezahlen.');
-
 $content = $form->get();
 
 $fragment = new rex_fragment();
@@ -365,4 +321,3 @@ $fragment->setVar('body', $content, false);
 $content = $fragment->parse('core/page/section.php');
 
 echo $content;
-
