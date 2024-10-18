@@ -7,7 +7,7 @@
 // dump($this->articles[0]);
 
 $main_article = $this->articles[0]->getData();
-$wh_prop = rex::getProperty('wh_prop');
+$warehouse_prop = rex::getProperty('warehouse_prop');
 
 
 ?>
@@ -26,7 +26,7 @@ $wh_prop = rex::getProperty('wh_prop');
                                     <?php foreach (explode(',', $this->article->get_gallery()) as $img) : ?>
                                         <li>
                                             <a href="/images/full/<?= $img ?>">
-                                                <figure class="tm-media-box-wrap"><img src="/images/products/<?= $img ?>" alt="<?= $this->article->get_name() ?>" class="wh_prod_image"></figure>
+                                                <figure class="tm-media-box-wrap"><img src="/images/products/<?= $img ?>" alt="<?= $this->article->get_name() ?>" class="warehouse_prod_image"></figure>
                                             </a>
                                         </li>
                                     <?php endforeach ?>
@@ -61,7 +61,7 @@ $wh_prop = rex::getProperty('wh_prop');
                     <?php else : ?>                                    
                         <div class="uk-width-1-1">
                             <div class="uk-card-body uk-padding-remove">
-                                <img src="/images/products/<?= $main_article['image'] ?>" class="wh_prod_image">
+                                <img src="/images/products/<?= $main_article['image'] ?>" class="warehouse_prod_image">
                             </div>
                         </div>
                     <?php endif ?>
@@ -106,7 +106,7 @@ $wh_prop = rex::getProperty('wh_prop');
                                                 <?php if ($attr['attr']['type'] == 'SELECT') :  // SELECT erstmal nicht berücksichtigen ?>
                                                     <?php foreach ($attr['data'] as $_attr) : ?>
                                                         <?php $art_attributes = $_attr->getData() ?>
-                                                        <?php $all_attributes = wh_articles::attr_to_array($attr['attr']['values']); ?>
+                                                        <?php $all_attributes = warehouse_articles::attr_to_array($attr['attr']['values']); ?>
                                                         <?php // dump($_attr['attr']['values']); ?>
                                                         <?php // dump($all_attributes); ?>
                                                         <?php // dump($art_attributes); ?>
@@ -155,18 +155,18 @@ $wh_prop = rex::getProperty('wh_prop');
                             </table>                               
 
 
-                            <div id="wh_art_price" class="tm-product-price" data-price="<?= $this->article->get_price() ?>"><?= $this->article->get_price(true) ?></div>
+                            <div id="warehouse_art_price" class="tm-product-price" data-price="<?= $this->article->get_price() ?>"><?= $this->article->get_price(true) ?></div>
                         </div>
                         <div>
-                            <form action="/" method="post" id="wh_form_detail">
+                            <form action="/" method="post" id="warehouse_form_detail">
                                 <input type="hidden" name="art_id" value="<?= $this->article->get_art_id() ?>">
                                 <input type="hidden" name=action value="add_to_cart">
                                 <p class="uk-text-small uk-margin-remove-top">inkl. MwSt. zzgl. <a href="#shipping_modal" uk-toggle>Versandkosten</a></p>
-                                <label for="wh_count_<?= $this->article->get_art_id() ?>" class="switch_count uk-button uk-button-primary uk-padding-remove uk-margin-bottom" data-value="-1">
+                                <label for="warehouse_count_<?= $this->article->get_art_id() ?>" class="switch_count uk-button uk-button-primary uk-padding-remove uk-margin-bottom" data-value="-1">
                                     <span uk-icon="icon: minus;"></span>
                                 </label>
-                                <input name="order_count" type="text" class="uk-input uk-inline order_count uk-margin-bottom" id="wh_count_<?= $this->article->get_art_id() ?>" value="1">
-                                <label for="wh_count_<?= $this->article->get_art_id() ?>" class="uk-button uk-button-primary uk-padding-remove switch_count uk-margin-bottom" data-value="+1">
+                                <input name="order_count" type="text" class="uk-input uk-inline order_count uk-margin-bottom" id="warehouse_count_<?= $this->article->get_art_id() ?>" value="1">
+                                <label for="warehouse_count_<?= $this->article->get_art_id() ?>" class="uk-button uk-button-primary uk-padding-remove switch_count uk-margin-bottom" data-value="+1">
                                     <span uk-icon="icon: plus;"></span>
                                 </label>
                                 <button type="submit" name="submit" value="1" class="uk-button order_button uk-margin-bottom">{{ Bestellen }}</button>
@@ -178,4 +178,3 @@ $wh_prop = rex::getProperty('wh_prop');
         </div>
     </div>
 </div>
-

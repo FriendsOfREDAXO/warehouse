@@ -1,6 +1,6 @@
 <?php
 
-class wh_helper {
+class warehouse_helper {
     
     private $query;
     private $tree = [];
@@ -52,11 +52,11 @@ class wh_helper {
 
     /**
      * Beispiel:
-     *  $yf->setValidateField('customfunction',['ki_ort','wh_helper::validate_sub_values','anderer_kontoinhaber','Bitte füllen Sie alle markierten Felder aus.']);
+     *  $yf->setValidateField('customfunction',['ki_ort','warehouse_helper::validate_sub_values','anderer_kontoinhaber','Bitte füllen Sie alle markierten Felder aus.']);
      *  das Feld ki_ort soll nur geprüft werden, wenn im Feld "anderer_kontoinhaber" was drin steht
      * 
      * Beispiel 2:
-     *  $yf->setValidateField('customfunction',['iban','wh_helper::validate_sub_values',['zahlungsweise_lastschrift','SEPA-Lastschrift'],'Bitte füllen Sie alle markierten Felder aus.']);
+     *  $yf->setValidateField('customfunction',['iban','warehouse_helper::validate_sub_values',['zahlungsweise_lastschrift','SEPA-Lastschrift'],'Bitte füllen Sie alle markierten Felder aus.']);
      *  Das Feld iban soll nur auf empty geprüft werden, wenn das Feld zahlungsweise_lastschfit = SEPA-Lastschrift enthält
      * 
      * @param type $label

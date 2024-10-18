@@ -6,7 +6,7 @@ if (rex::isDebugMode()) {
     ini_set('display_startup_errors', '1');
 }
 
-class wh_wallee {
+class warehouse_wallee {
 
     static $space_id;
     static $user_id;

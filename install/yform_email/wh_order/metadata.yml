@@ -1,4 +1,4 @@
-name: wh_order
+name: warehouse_order
 mail_from: webserver@ferien-am-tressower-see.de
 mail_from_name: 'Webserver Ferien am Tressower See'
 mail_reply_to: 'REX_YFORM_DATA[field="email"]'

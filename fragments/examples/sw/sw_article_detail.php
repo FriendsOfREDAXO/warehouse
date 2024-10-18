@@ -15,7 +15,7 @@
 <?php
 
 $main_article = $this->articles[0]->getData();
-$wh_prop = rex::getProperty('wh_prop');
+$warehouse_prop = rex::getProperty('warehouse_prop');
 ?>
 
 <section class="artdetails pt30 pb50 bg_grey">
@@ -69,7 +69,7 @@ $wh_prop = rex::getProperty('wh_prop');
                                                 <?php if (0 && $attr['attr']['type'] == 'SELECT') :  // SELECT erstmal nicht berücksichtigen ?>
                                                     <?php foreach ($attr['data'] as $_attr) : ?>
                                                         <?php $art_attributes = $_attr->getData() ?>
-                                                        <?php $all_attributes = wh_articles::attr_to_array($attr['attr']['values']); ?>
+                                                        <?php $all_attributes = warehouse_articles::attr_to_array($attr['attr']['values']); ?>
                                                         <ul class="tm-variations wh-variants">
                                                             <?php foreach (explode(',',$art_attributes['value']) as $k=>$attr_val) : ?>
                                                                 <li class="label label-info<?= $k ? '' : ' uk-active' ?>">
@@ -101,21 +101,21 @@ $wh_prop = rex::getProperty('wh_prop');
 
 
                         <div class="price-box">
-                            <div class="priceleft"><div id="wh_art_price" class="tm-product-price" data-price="<?= $this->article->get_price() ?>"><?= $this->article->get_price(true) ?></div></div>
+                            <div class="priceleft"><div id="warehouse_art_price" class="tm-product-price" data-price="<?= $this->article->get_price() ?>"><?= $this->article->get_price(true) ?></div></div>
                             <div class="priceright"><span class="fa fa-info"></span> inkl. MwSt. zzgl. <a class="fontred" href="">Versandkosten</a></div>
                         </div>
                         <div class="p10 bg_grey">
-                            <form action="/index.php" method="post" id="wh_form_detail">
+                            <form action="/index.php" method="post" id="warehouse_form_detail">
                                 <input type="hidden" name="art_id" value="<?= $this->article->get_art_id() ?>">
                                 <input type="hidden" name=action value="add_to_cart">
                                 <div class="cart-plus-minus">
-                                    <label for="wh_count_<?= $this->article->get_art_id() ?>" class="switch_count" data-value="-1">
+                                    <label for="warehouse_count_<?= $this->article->get_art_id() ?>" class="switch_count" data-value="-1">
                                         <div class="inc qtybutton">
                                             <span><i class="fa fa-minus"></i></span>
                                         </div>
                                     </label>
-                                    <input name="order_count" type="text" class="qty" id="wh_count_<?= $this->article->get_art_id() ?>" value="1">
-                                    <label for="wh_count_<?= $this->article->get_art_id() ?>" class="switch_count" data-value="+1">
+                                    <input name="order_count" type="text" class="qty" id="warehouse_count_<?= $this->article->get_art_id() ?>" value="1">
+                                    <label for="warehouse_count_<?= $this->article->get_art_id() ?>" class="switch_count" data-value="+1">
                                         <div class="inc qtybutton">
                                             <span><i class="fa fa-plus"></i></span>
                                         </div>

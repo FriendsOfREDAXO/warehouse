@@ -1,6 +1,6 @@
 <?php
 
-class wh_orders extends \rex_yform_manager_dataset {
+class warehouse_orders extends \rex_yform_manager_dataset {
 
     public static function get_orders_for_user() {
         $ycom_user = rex_ycom_auth::getUser();

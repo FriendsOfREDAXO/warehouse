@@ -17,11 +17,11 @@ $(function () {
         $(this).next('.wh-klappauf').toggleClass('open');
     });
 
-    wh_edittable();
+    warehouse_edittable();
 
-    function wh_edittable() {
+    function warehouse_edittable() {
         let n = 0;
-        $('.edittable.wh_relayprice').each(function() {
+        $('.edittable.warehouse_relayprice').each(function() {
             n++;
             let $elem = $(this);
             let the_id = $elem[0].id;
@@ -52,11 +52,9 @@ $(function () {
     }
 
     $(document).on('rex:ready', function() {
-        wh_edittable();
+        warehouse_edittable();
         $('.edittable + table tbody').sortable();
     });
     
     
 });
-
-

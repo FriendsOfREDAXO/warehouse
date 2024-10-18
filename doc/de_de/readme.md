@@ -53,7 +53,7 @@ Das Warehouse hat eine Konfigurationsseite. Die einzelnen Felder sind selbsterkl
 
 Der PHP Mailer muss noch konfiguriert werden. Bitte führt den Test aus, damit auch sicher gestellt ist, dass die Mails auch wirklich ankommen.
 
-Url muss konfiguriert werden. Im ersten Schritt ist wichtig, dass die Warehouse Produktseite mit dem Parameter `category_id` aus der Warehouse Tabelle `rex_wh_categories` verknüpft wird.
+Url muss konfiguriert werden. Im ersten Schritt ist wichtig, dass die Warehouse Produktseite mit dem Parameter `category_id` aus der Warehouse Tabelle `rex_warehouse_categories` verknüpft wird.
 
 ## Templates
 
@@ -79,11 +79,11 @@ Die für den Artikel verfügbaren Attribute werden nicht als einzelne Datensätz
 
 Widget ist die richtige Einstellung, wenn Attribute einen Preisauf- bzw. -abschlag enthalten können. Die Attribute können dann individuell beim jeweiligen Artikel konfiguriert werden.
 
-*Hinweis* Bei der Verwendung des Widgets werden jeweils _alle_ Attribute eines Artikels neu in die Tabelle rex_wh_attribute_values geschrieben. Die alten Werte werden jeweils gelöscht. Damit ist es möglich, dass sich die Ids der Datensätze in der Tabelle rex_wh_attribute_values ändern. Die Ids sollten also nicht für eigene Zwecke verwendet werden.
+*Hinweis* Bei der Verwendung des Widgets werden jeweils _alle_ Attribute eines Artikels neu in die Tabelle rex_warehouse_attribute_values geschrieben. Die alten Werte werden jeweils gelöscht. Damit ist es möglich, dass sich die Ids der Datensätze in der Tabelle rex_warehouse_attribute_values ändern. Die Ids sollten also nicht für eigene Zwecke verwendet werden.
 
 ## Menü erweitern
 
-Manchmal ist es wünschenswert, dass das Hauptmenü der Website auch die Kategorien des Shops anzeigt. Da im Warehouse nur eine REDAXO-Seite für die gesamte Ausgabe der Shopkategorien und Artikel verwendet wird, muss die Hauptnavigation entsprechend erweitert werden. Hierfür stehen verschiedene Komponenten bereit, die entweder komplett oder in Einzelteilen verwendet werden können. Zunächst bringt der Shop eine eigene Navigationsklasse `wh_nav` mit. Diese kann weitestgehend durch Parameter den eigenen Bedürfnissen angepasst werden. Man kann auch die gesamte Klasse nehmen, ins eigene Projekt AddOn packen, die Klasse umbenennen und nach eigenen Bedürfnissen anpassen.
+Manchmal ist es wünschenswert, dass das Hauptmenü der Website auch die Kategorien des Shops anzeigt. Da im Warehouse nur eine REDAXO-Seite für die gesamte Ausgabe der Shopkategorien und Artikel verwendet wird, muss die Hauptnavigation entsprechend erweitert werden. Hierfür stehen verschiedene Komponenten bereit, die entweder komplett oder in Einzelteilen verwendet werden können. Zunächst bringt der Shop eine eigene Navigationsklasse `warehouse_nav` mit. Diese kann weitestgehend durch Parameter den eigenen Bedürfnissen angepasst werden. Man kann auch die gesamte Klasse nehmen, ins eigene Projekt AddOn packen, die Klasse umbenennen und nach eigenen Bedürfnissen anpassen.
 
 Eine Menudefinition kann dann z.B. so aussehen:
 
@@ -92,26 +92,26 @@ function shopmenu ($cat) {
     $menutype = explode('|',trim($cat->getValue('cat_menu_type'),'|'));
     if (in_array(2,$menutype)) {
         $fragment = new rex_fragment();
-        return $fragment->parse('wh_shop_menu.php');
+        return $fragment->parse('warehouse_shop_menu.php');
     } else {
         return '';
     }
 }
 
-$mainnav = new wh_nav();
+$mainnav = new warehouse_nav();
 $mainnav->ulClasses = ['uk-navbar-nav','uk-nav uk-navbar-dropdown-nav',''];
 $mainnav->dataAttribute = ['uk-navbar="offset: 0"',''];
 $mainnav->fullTree = 1;
 $mainnav->func_li_end = 'shopmenu';
 ```
 
-Zusätzlich wird jetzt noch eine Kategorie Metainfo mit dem Namen `menu_type` als Multiselect und eigenen Definitionen angelegt. Wenn der Wert der Metainfo einer Kategorie (im Beispielcode) 2 hat, so wird die Funktion `shopmenu` ausgeführt und die Rückgabe der Funktion in den Menücode eingefügt. Im Beispiel wird hier das Fragment wh_shop_menu.php verwendet.
+Zusätzlich wird jetzt noch eine Kategorie Metainfo mit dem Namen `menu_type` als Multiselect und eigenen Definitionen angelegt. Wenn der Wert der Metainfo einer Kategorie (im Beispielcode) 2 hat, so wird die Funktion `shopmenu` ausgeführt und die Rückgabe der Funktion in den Menücode eingefügt. Im Beispiel wird hier das Fragment warehouse_shop_menu.php verwendet.
 
 ## Syteminfos zur Laufzeit
 
 Das Warehouse stellt verschiedene Werte zum aktuellen Status zur Verfügung, die in Modulen oder Templates genutzt werden können.
 
-### Property wh_prop
+### Property warehouse_prop
 
 Bei der Property handelt es sich um Werte, die bei der Initialisierung der Seite gesetzt werden. Dies sind:
 
@@ -120,7 +120,7 @@ Bei der Property handelt es sich um Werte, die bei der Initialisierung der Seite
 - path - Der Pfad innerhalb der Shop Kategorien
 - tree - Der gesamte Kategoriebaum des Shops
 
-### wh_cart
+### warehouse_cart
 
 Siehe Funktionen
 
@@ -169,7 +169,7 @@ Textfelder sind generell mit dem Feldnamensuffix `_1` angelegt. Damit lässt sic
 
 ### Strukturierte Daten (structured data)
 
-Das Beispielfragment wh_scheme_article_with_variants gibt strukturierte Daten aus.
+Das Beispielfragment warehouse_scheme_article_with_variants gibt strukturierte Daten aus.
 
 ## Templates
 

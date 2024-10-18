@@ -6,7 +6,7 @@ if (rex::isBackend()) {
     echo '<h2>Giropay Start</h2>';
     return;
 } else {
-    $giropay = new wh_giropay();
+    $giropay = new warehouse_giropay();
     $giropay->init_giropay();
 }
 

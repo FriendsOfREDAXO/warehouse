@@ -1,6 +1,6 @@
 <?php
 
-class wh_articles extends \rex_yform_manager_dataset {
+class warehouse_articles extends \rex_yform_manager_dataset {
 
     public static function get_query() {
         $qry = self::query();
@@ -101,7 +101,7 @@ class wh_articles extends \rex_yform_manager_dataset {
         if ($articles_only) {
             $data = self::get_query()
                 ->alias('art')
-                ->leftJoin('rex_wh_categories', 'cat', 'art.category_id', 'cat.id')
+                ->leftJoin('rex_warehouse_categories', 'cat', 'art.category_id', 'cat.id')
                 ->select('art.name_' . $clang, 'art_name')
                 ->select('cat.name_' . $clang, 'cat_name')
                 ->select('cat.id', 'cat_id')
@@ -113,8 +113,8 @@ class wh_articles extends \rex_yform_manager_dataset {
         } else {
             $data = self::get_query()
                 ->alias('art')
-                ->leftJoin('rex_wh_article_variants', 'var', 'art.id', 'var.parent_id')
-                ->leftJoin('rex_wh_categories', 'cat', 'art.category_id', 'cat.id')
+                ->leftJoin('rex_warehouse_article_variants', 'var', 'art.id', 'var.parent_id')
+                ->leftJoin('rex_warehouse_categories', 'cat', 'art.category_id', 'cat.id')
                 ->select('art.name_' . $clang, 'art_name')
                 ->select('art.description_' . $clang, 'art_description')
                 ->select('art.longtext_' . $clang, 'art_longtext')
@@ -162,7 +162,7 @@ class wh_articles extends \rex_yform_manager_dataset {
 
     public function get_variants() {
         $clang = rex_clang::getCurrentId();
-        $query = rex_yform_manager_table::get(rex::getTable('wh_article_variants'))->query();
+        $query = rex_yform_manager_table::get(rex::getTable('warehouse_article_variants'))->query();
         $query->select('name_'.$clang,'`name`');
         $query->selectRaw('CONCAT("'.$this->id.'__",id)','art_id');
         $query->where('parent_id',$this->id)->orderBy('prio');

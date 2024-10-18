@@ -12,7 +12,7 @@
     "sku": "<?= $item->whid ?>",
     "offers": {
         "@type": "Offer",
-        "url": "<?= trim(rex::getServer(),'/').rex_getUrl('','',['wh_art_id'=>$item->get_art_id()]) ?>",
+        "url": "<?= trim(rex::getServer(),'/').rex_getUrl('','',['warehouse_art_id'=>$item->get_art_id()]) ?>",
         "priceCurrency": "<?= rex_config::get('warehouse','currency') ?>",
         "price": "<?= $item->get_price() ?>",
         "priceValidUntil": "<?= date('Y-m-d',strtotime('+1 year')) ?>",

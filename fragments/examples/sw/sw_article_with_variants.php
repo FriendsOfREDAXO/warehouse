@@ -68,11 +68,11 @@
             <?php foreach ($this->items as $item) : ?>
                 <div class="col-lg-4 col-md-4 col-sm-6 mb30">
                     <div class="ab bg_white pt20 b_grey ">
-                        <h3 class=""><a class="fontred" href="<?= rex_getUrl('', '', ['wh_art_id' => $item->id]) ?>"><?= $item->name_1 ?></a></h3>
-                        <a href="<?= rex_getUrl('', '', ['wh_art_id' => $item->id]) ?>"  class="">
+                        <h3 class=""><a class="fontred" href="<?= rex_getUrl('', '', ['warehouse_art_id' => $item->id]) ?>"><?= $item->name_1 ?></a></h3>
+                        <a href="<?= rex_getUrl('', '', ['warehouse_art_id' => $item->id]) ?>"  class="">
                             <img src="/media/<?= $item->image ?>" alt="<?= $item->name_1 ?>" class="img-responsive mt20">
                         </a>
-                        <?= wh_helper::uk_format_text($item->description_1) ?>
+                        <?= warehouse_helper::uk_format_text($item->description_1) ?>
                         <div class="row price mt20">
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 pricecol">
                                 <p><?= $item->get_price(true) ?></p>
@@ -83,7 +83,7 @@
                         </div>
                         <div class="row pricebut">
                             <div class="col-lg-12">
-                                <a class="btn btn-lg btn-sw btn-block checkout-btn mt20" href="<?= rex_getUrl('', '', ['wh_art_id' => $item->id]) ?>"><i class="fa fa-arrow-right"></i> Zum Artikel</a>
+                                <a class="btn btn-lg btn-sw btn-block checkout-btn mt20" href="<?= rex_getUrl('', '', ['warehouse_art_id' => $item->id]) ?>"><i class="fa fa-arrow-right"></i> Zum Artikel</a>
                             </div>
                         </div>                                                  
                     </div>
@@ -92,4 +92,3 @@
         </div>
     </div>
 </section>
-

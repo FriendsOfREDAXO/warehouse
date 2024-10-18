@@ -7,11 +7,11 @@
  */
 
 /**
- * Description of wh_shipping
+ * Description of warehouse_shipping
  *
  * @author wolfgang
  */
-class wh_shipping {
+class warehouse_shipping {
     
     public static function get_cost() {
 
@@ -46,14 +46,14 @@ class wh_shipping {
             // Nach Gewicht (Alle weight zusammengezählt)
             $weight = 0;
             foreach ($cart as $uid=>$item) {
-                $wh_article = wh_articles::get_article($uid);
-//                dump($wh_article);
+                $warehouse_article = warehouse_articles::get_article($uid);
+//                dump($warehouse_article);
                 $art_weight = 0;
-                if ($wh_article && isset($wh_article->weight) && $wh_article->weight) {
-                    $art_weight = $wh_article->weight * $item['count'];
+                if ($warehouse_article && isset($warehouse_article->weight) && $warehouse_article->weight) {
+                    $art_weight = $warehouse_article->weight * $item['count'];
                 }
-                if ($wh_article && isset($wh_article->var_weight) && (float) $wh_article->var_weight) {
-                    $art_weight = $wh_article->var_weight * $item['count'];
+                if ($warehouse_article && isset($warehouse_article->var_weight) && (float) $warehouse_article->var_weight) {
+                    $art_weight = $warehouse_article->var_weight * $item['count'];
                 }
                 $weight += $art_weight;
             }

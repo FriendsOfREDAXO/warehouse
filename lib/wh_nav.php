@@ -1,6 +1,6 @@
 <?php
 
-class wh_nav {
+class warehouse_nav {
 
     var $ulClasses = [' nav_block'];
     var $liClasses = [];
