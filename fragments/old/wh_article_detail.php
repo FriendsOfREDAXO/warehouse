@@ -111,10 +111,10 @@ https://chekromul.github.io/uikit-ecommerce-template
                                             <div class="uk-padding-small uk-background-primary-lighten uk-border-rounded">
                                                 <div class="uk-grid-small uk-child-width-1-1" uk-grid>
                                                     <div>
-                                                        <div id="wh_art_price" class="tm-product-price" data-price="<?= $this->article->get_price() ?>"><?= $this->article->get_price(true) ?></div>
+                                                        <div id="warehouse_art_price" class="tm-product-price" data-price="<?= $this->article->get_price() ?>"><?= $this->article->get_price(true) ?></div>
                                                     </div>
                                                     <div>
-                                                        <form action="/index.php" method="post" id="wh_form_detail">
+                                                        <form action="/index.php" method="post" id="warehouse_form_detail">
                                                             <input type="hidden" name="art_id" value="<?= $this->article->get_art_id() ?>">
                                                             <input type="hidden" name="action" value="add_to_cart">
 

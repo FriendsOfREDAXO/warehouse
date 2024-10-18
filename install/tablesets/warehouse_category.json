@@ -1,8 +1,8 @@
 {
-    "rex_wh_categories": {
+    "rex_warehouse_categories": {
         "table": {
             "status": 1,
-            "table_name": "rex_wh_categories",
+            "table_name": "rex_warehouse_categories",
             "name": "Shop - Kategorien",
             "description": "Kategorien",
             "list_amount": 50,
@@ -23,7 +23,7 @@
         },
         "fields": [
             {
-                "table_name": "rex_wh_categories",
+                "table_name": "rex_warehouse_categories",
                 "prio": 1,
                 "type_id": "value",
                 "type_name": "choice",
@@ -48,7 +48,7 @@
                 "choice_label": ""
             },
             {
-                "table_name": "rex_wh_categories",
+                "table_name": "rex_warehouse_categories",
                 "prio": 2,
                 "type_id": "value",
                 "type_name": "text",
@@ -66,7 +66,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_categories",
+                "table_name": "rex_warehouse_categories",
                 "prio": 3,
                 "type_id": "value",
                 "type_name": "choice",
@@ -78,7 +78,7 @@
                 "not_required": "",
                 "multiple": "0",
                 "expanded": "",
-                "choices": "select id value, name_1 label FROM rex_wh_categories",
+                "choices": "select id value, name_1 label FROM rex_warehouse_categories",
                 "choice_attributes": "",
                 "attributes": "",
                 "default": "0",
@@ -91,7 +91,7 @@
                 "choice_label": ""
             },
             {
-                "table_name": "rex_wh_categories",
+                "table_name": "rex_warehouse_categories",
                 "prio": 4,
                 "type_id": "value",
                 "type_name": "text",
@@ -109,7 +109,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_categories",
+                "table_name": "rex_warehouse_categories",
                 "prio": 5,
                 "type_id": "value",
                 "type_name": "be_link",
@@ -123,7 +123,7 @@
                 "notice": ""
             },
             {
-                "table_name": "rex_wh_categories",
+                "table_name": "rex_warehouse_categories",
                 "prio": 6,
                 "type_id": "value",
                 "type_name": "prio",
@@ -140,7 +140,7 @@
                 "scope": ""
             },
             {
-                "table_name": "rex_wh_categories",
+                "table_name": "rex_warehouse_categories",
                 "prio": 7,
                 "type_id": "value",
                 "type_name": "be_media",
@@ -157,7 +157,7 @@
                 "category": ""
             },
             {
-                "table_name": "rex_wh_categories",
+                "table_name": "rex_warehouse_categories",
                 "prio": 8,
                 "type_id": "value",
                 "type_name": "be_media",
@@ -174,7 +174,7 @@
                 "category": ""
             },
             {
-                "table_name": "rex_wh_categories",
+                "table_name": "rex_warehouse_categories",
                 "prio": 9,
                 "type_id": "value",
                 "type_name": "textarea",
@@ -190,7 +190,7 @@
                 "notice": ""
             },
             {
-                "table_name": "rex_wh_categories",
+                "table_name": "rex_warehouse_categories",
                 "prio": 10,
                 "type_id": "value",
                 "type_name": "datestamp",

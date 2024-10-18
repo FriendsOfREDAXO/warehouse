@@ -19,15 +19,15 @@ if (!isset ($this->category)) {
                 <?php foreach ($this->items as $item) : ?>
                     <div class="uk-margin-large-top">
                         <div class="uk-card-title">
-                            <h3 class="mh_title"><a href="<?= rex_getUrl('', '', ['wh_art_id' => $item->id]) ?>"><?= $item->name_1 ?></a></h3>
+                            <h3 class="mh_title"><a href="<?= rex_getUrl('', '', ['warehouse_art_id' => $item->id]) ?>"><?= $item->name_1 ?></a></h3>
                         </div>
                         <div>
                             <a href="/images/lightbox/<?= $item->image ?>" data-caption="<?= $item->name_1 ?>" class="lightboxlink">
-                                <img src="/images/product/<?= $item->image ?>" alt="<?= $item->name_1 ?>" class="wh_prod_image">
+                                <img src="/images/product/<?= $item->image ?>" alt="<?= $item->name_1 ?>" class="warehouse_prod_image">
                             </a>
                         </div>
                         <div class="longtext uk-margin-top">
-                            <?= wh_helper::uk_format_text($item->description_1) ?>
+                            <?= warehouse_helper::uk_format_text($item->description_1) ?>
                             <?php $specifications = rex_var::toArray($item->specifications_1); ?>
                             <?php if ($specifications) : ?>
                                 <dl class="uk-description-list">
@@ -43,7 +43,7 @@ if (!isset ($this->category)) {
                         <form action="/" method="post">
                             <input type="hidden" name="art_id" value="<?= $item->get_art_id() ?>">
                             <input type="hidden" name=action value="add_to_cart">
-                            <label for="wh_count_<?= $item->get_art_id() ?>" class="switch_count uk-button uk-button-primary uk-padding-remove" data-value="-1"><span uk-icon="icon: minus;"></span></label><input name="order_count" type="text" class="uk-input uk-inline order_count" id="wh_count_<?= $item->get_art_id() ?>" value="1"><label for="wh_count_<?= $item->get_art_id() ?>" class="uk-button uk-button-primary uk-padding-remove switch_count" data-value="+1"><span uk-icon="icon: plus;"></span></label>
+                            <label for="warehouse_count_<?= $item->get_art_id() ?>" class="switch_count uk-button uk-button-primary uk-padding-remove" data-value="-1"><span uk-icon="icon: minus;"></span></label><input name="order_count" type="text" class="uk-input uk-inline order_count" id="warehouse_count_<?= $item->get_art_id() ?>" value="1"><label for="warehouse_count_<?= $item->get_art_id() ?>" class="uk-button uk-button-primary uk-padding-remove switch_count" data-value="+1"><span uk-icon="icon: plus;"></span></label>
                             <button type="submit" name="submit" value="1" class="uk-button order_button">{{ Bestellen }}</button>
                         </form>
                     </div>

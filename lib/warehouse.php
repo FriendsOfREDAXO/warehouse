@@ -64,12 +64,12 @@ class warehouse
     {
         $added = 0;
         $art_id = trim(rex_request('art_id'), '_');
-        if (rex_request('art_type', 'string') == 'wh_single') {
-            $art = wh_single_article::get_article();
+        if (rex_request('art_type', 'string') == 'warehouse_single') {
+            $art = warehouse_single_article::get_article();
             $art_uid = $art['art_id'];
         } else {
-            $article = wh_articles::get_article($art_id);
-            $attr_ids = rex_request('wh_attr', 'array', []);
+            $article = warehouse_articles::get_article($art_id);
+            $attr_ids = rex_request('warehouse_attr', 'array', []);
             $art_uid = trim($art_id . '$$' . implode('$$', $attr_ids), '$');
 
             $art = [];
@@ -111,10 +111,10 @@ class warehouse
             $added = 1;
         }
 
-        rex_set_session('wh_cart', $cart);
+        rex_set_session('warehouse_cart', $cart);
         //        dump($cart); exit;
         self::cart_recalc();
-        if (rex_request('art_type', 'string') == 'wh_single' || (rex_config::get('warehouse', 'cart_mode') == 'page' && rex_request('article_id', 'int'))) {
+        if (rex_request('art_type', 'string') == 'warehouse_single' || (rex_config::get('warehouse', 'cart_mode') == 'page' && rex_request('article_id', 'int'))) {
             rex_redirect(rex_request('article_id'), '', ['showcart' => 1]);
         } else {
             self::redirect_from_cart($added, 1);
@@ -127,10 +127,10 @@ class warehouse
         $cart = self::get_cart();
         foreach ($cart as $k => $art) {
             // Artikel nochmal aus der db einlesen, um zu prüfen, ob er nicht zwischenzeitlich verkauft wurde
-            $wh_art = wh_articles::get_article($k);
+            $warehouse_art = warehouse_articles::get_article($k);
             if (isset($art['stock_item'])) {
-                if ($art['stock_item'] && ($art['count'] > $wh_art->stock)) {
-                    $cart[$k]['count'] = $wh_art->stock;
+                if ($art['stock_item'] && ($art['count'] > $warehouse_art->stock)) {
+                    $cart[$k]['count'] = $warehouse_art->stock;
                 }
             }
 
@@ -146,7 +146,7 @@ class warehouse
             $cart[$k]['taxpercent'] = $taxpercent;
             $cart[$k]['total'] = $cart[$k]['price'] * $cart[$k]['count'];
         }
-        rex_set_session('wh_cart', $cart);
+        rex_set_session('warehouse_cart', $cart);
     }
 
 
@@ -232,7 +232,7 @@ class warehouse
                     $cart[$art_uid]['count'] = 0;
                 }
             }
-            rex_set_session('wh_cart', $cart);
+            rex_set_session('warehouse_cart', $cart);
         }
         self::cart_recalc();
         if (rex_request('showcart', 'int')) {
@@ -253,7 +253,7 @@ class warehouse
                 $cart[$art_uid]['count'] = $qty;
             }
         }
-        rex_set_session('wh_cart', $cart);
+        rex_set_session('warehouse_cart', $cart);
         self::cart_recalc();
     }
 
@@ -318,7 +318,7 @@ class warehouse
 
     public static function cart_positions_count()
     {
-        return count(rex_session('wh_cart', 'array'));
+        return count(rex_session('warehouse_cart', 'array'));
     }
 
     /**
@@ -327,12 +327,12 @@ class warehouse
      */
     public static function get_shipping_cost()
     {
-        return wh_shipping::get_cost();
+        return warehouse_shipping::get_cost();
     }
 
     public static function get_cart()
     {
-        return rex_session('wh_cart', 'array');
+        return rex_session('warehouse_cart', 'array');
     }
 
     public static function get_user_data()
@@ -347,14 +347,14 @@ class warehouse
     public static function set_cart_from_payment_id($payment_id)
     {
         $data = rex_sql::factory()
-            ->setTable(rex::getTable('wh_orders'))
+            ->setTable(rex::getTable('warehouse_orders'))
             ->setWhere('payment_id = :payment_id', ['payment_id' => $payment_id])
             //                ->setWhere('paypal_confirm = :empty', ['empty' => ''])
             ->select('order_json')
             ->getArray();
         if ($data) {
             $cart_data = json_decode($data[0]['order_json'], true);
-            rex_set_session('wh_cart', $cart_data['cart']);
+            rex_set_session('warehouse_cart', $cart_data['cart']);
             rex_set_session('user_data', $cart_data['user_data']);
         }
     }
@@ -374,7 +374,7 @@ class warehouse
 
     public static function clear_cart()
     {
-        rex_unset_session('wh_cart');
+        rex_unset_session('warehouse_cart');
     }
 
     // für Aufruf aus yform Action
@@ -391,7 +391,7 @@ class warehouse
     {
         $cart = self::get_cart();
         //        $cart['payment_confirm'] = md5(microtime(true).rand(0,999).'myspecialSecret');
-        //        rex_set_session('wh_cart',$cart);
+        //        rex_set_session('warehouse_cart',$cart);
 
         foreach ($cart as $k => $v) {
             unset($v['attributes']);
@@ -412,7 +412,7 @@ class warehouse
 
         $sql = rex_sql::factory();
 
-        $sql->setTable(rex::getTable('wh_orders'));
+        $sql->setTable(rex::getTable('warehouse_orders'));
         $fields = $sql->select()->getFieldnames();        
 
         $sql->setDebug();
@@ -450,7 +450,7 @@ class warehouse
             }
         }
 
-        $sql->setTable(rex::getTable('wh_orders'));
+        $sql->setTable(rex::getTable('warehouse_orders'));
         $sql->setValues($values);
         $sql->insert();
         return $sql->getLastId();
@@ -649,13 +649,13 @@ class warehouse
     }
 
     /**
-     * Funktion wird aus wh_paypal->execute_payment aufgerufen, wenn die Zahlung abgeschlossen ist.
+     * Funktion wird aus warehouse_paypal->execute_payment aufgerufen, wenn die Zahlung abgeschlossen ist.
      * Kann nur einmal ausgeführt werden (wenn payment_confirm noch leer ist).
      * 
      */
     public static function paypal_approved($payment)
     {
-        $sql = rex_sql::factory()->setTable(rex::getTable('wh_orders'))
+        $sql = rex_sql::factory()->setTable(rex::getTable('warehouse_orders'))
             ->setWhere('payment_id = :payment_id', ['payment_id' => $payment->id])
             ->setWhere('payment_confirm = :empty', ['empty' => '']);
         $sql->setValue('payment_confirm', date('Y-m-d H:i:s'));
@@ -700,7 +700,7 @@ PayPalHttp\HttpResponse {#170 ▼
 */
 
 
-        $sql = rex_sql::factory()->setTable(rex::getTable('wh_orders'))
+        $sql = rex_sql::factory()->setTable(rex::getTable('warehouse_orders'))
             ->setWhere('payment_id = :payment_id AND payment_confirm = ""', ['payment_id' => $response->result->id]);
         $sql->setValue('paypal_confirm_token', json_encode($response));
         $sql->setValue('payment_confirm', date('Y-m-d H:i:s'));
@@ -710,19 +710,19 @@ PayPalHttp\HttpResponse {#170 ▼
     }
 
     /**
-     * Funktion wird aus wh_giropay->check_response aufgerufen, wenn die Zahlung abgeschlossen ist.
+     * Funktion wird aus warehouse_giropay->check_response aufgerufen, wenn die Zahlung abgeschlossen ist.
      * Kann nur einmal ausgeführt werden (wenn paypal_confirm noch leer ist).
      * 
      */
     public static function giropay_approved($payment_id, $age_check = 0)
     {
-        $sql = rex_sql::factory()->setTable(rex::getTable('wh_orders'))
+        $sql = rex_sql::factory()->setTable(rex::getTable('warehouse_orders'))
             ->setWhere('payment_id = :payment_id AND payment_confirm = :empty AND payment_type = :payment_type', ['payment_id' => $payment_id, 'empty' => '', 'payment_type' => 'giropay']);
         $sql->select();
         // Bestellung kann nicht doppelt bestätigt werden.
         // giropay schickt weiter notify-Anfragen
         if ($sql->getRows() == 1) {
-            $sql->setTable(rex::getTable('wh_orders'))
+            $sql->setTable(rex::getTable('warehouse_orders'))
                 ->setWhere('payment_id = :payment_id AND payment_confirm = :empty AND payment_type = :payment_type', ['payment_id' => $payment_id, 'empty' => '', 'payment_type' => 'giropay']);
             $sql->setValue('payment_confirm', date('Y-m-d H:i:s'));
             $sql->setValue('agecheck', !$age_check ?: 'giropay_' . $age_check);
@@ -747,7 +747,7 @@ PayPalHttp\HttpResponse {#170 ▼
 
     public static function get_items_count_in_basket()
     {
-        return count(rex_session('wh_cart', 'array'));
+        return count(rex_session('warehouse_cart', 'array'));
     }
 
     /**
@@ -757,7 +757,7 @@ PayPalHttp\HttpResponse {#170 ▼
     public static function save_cart_in_session($params)
     {
         $value_pool = $params->params['value_pool']['email'];
-        rex_set_session('wh_data', $value_pool);
+        rex_set_session('warehouse_data', $value_pool);
     }
 
     /**
@@ -787,14 +787,14 @@ PayPalHttp\HttpResponse {#170 ▼
                 unset($mycart[$k]);
             }
         }
-        rex_set_session('wh_cart', $mycart);
+        rex_set_session('warehouse_cart', $mycart);
     }
 
     public static function get_path($cat_id)
     {
 
         $path = [];
-        $qry = 'SELECT name_' . rex_clang::getCurrentId() . ' `name`, `id`, parent_id FROM ' . rex::getTable('wh_categories') . ' WHERE `id` = :id';
+        $qry = 'SELECT name_' . rex_clang::getCurrentId() . ' `name`, `id`, parent_id FROM ' . rex::getTable('warehouse_categories') . ' WHERE `id` = :id';
         $sql = rex_sql::factory();
         while ($cat_id > 0) {
             $current = $sql->getArray($qry, ['id' => $cat_id]);
@@ -806,8 +806,8 @@ PayPalHttp\HttpResponse {#170 ▼
 
     public static function get_category_tree($depth = 2)
     {
-        $otree = new wh_helper();
-        $otree->set_query('SELECT id, name_' . rex_clang::getCurrentId() . ' name, image, parent_id FROM ' . rex::getTable('wh_categories') . ' WHERE status = 1 AND parent_id = |parent_id| ORDER BY prio');
+        $otree = new warehouse_helper();
+        $otree->set_query('SELECT id, name_' . rex_clang::getCurrentId() . ' name, image, parent_id FROM ' . rex::getTable('warehouse_categories') . ' WHERE status = 1 AND parent_id = |parent_id| ORDER BY prio');
         $otree->set_maxlev($depth);
         $tree = $otree->sql_full_tree();
         return $tree;
@@ -859,7 +859,7 @@ PayPalHttp\HttpResponse {#170 ▼
     public static function update_order($id, $values, $where = [])
     {
         $sql = rex_sql::factory();
-        $sql->setTable(rex::getTable('wh_orders'));
+        $sql->setTable(rex::getTable('warehouse_orders'));
         $sql->setValues($values);
         $sql->setWhere('id = :id', ['id' => $id]);
         $sql->update();
@@ -869,23 +869,23 @@ PayPalHttp\HttpResponse {#170 ▼
     public static function send_notification_email($send_redirect = true, $order_id = '')
     {
         $cart = self::get_cart();
-        $wh_userdata = self::get_user_data();
+        $warehouse_userdata = self::get_user_data();
 
         $yf = new rex_yform();
         $fragment = new rex_fragment();
         $fragment->setVar('cart', $cart);
-        $fragment->setVar('wh_userdata', $wh_userdata);
+        $fragment->setVar('warehouse_userdata', $warehouse_userdata);
 
         $yf->setObjectparams('csrf_protection', false);
         $yf->setValueField('hidden', ['order_id', $order_id]);
-        $yf->setValueField('hidden', ['email', $wh_userdata['email']]);
-        $yf->setValueField('hidden', ['firstname', $wh_userdata['firstname']]);
-        $yf->setValueField('hidden', ['lastname', $wh_userdata['lastname']]);
-        $yf->setValueField('hidden', ['iban', $wh_userdata['iban']]);
-        $yf->setValueField('hidden', ['bic', $wh_userdata['bic']]);
-        $yf->setValueField('hidden', ['direct_debit_name', $wh_userdata['direct_debit_name']]);
-        $yf->setValueField('hidden', ['payment_type', $wh_userdata['payment_type']]);
-        $yf->setValueField('hidden', ['info_news_ok', $wh_userdata['info_news_ok']]);
+        $yf->setValueField('hidden', ['email', $warehouse_userdata['email']]);
+        $yf->setValueField('hidden', ['firstname', $warehouse_userdata['firstname']]);
+        $yf->setValueField('hidden', ['lastname', $warehouse_userdata['lastname']]);
+        $yf->setValueField('hidden', ['iban', $warehouse_userdata['iban']]);
+        $yf->setValueField('hidden', ['bic', $warehouse_userdata['bic']]);
+        $yf->setValueField('hidden', ['direct_debit_name', $warehouse_userdata['direct_debit_name']]);
+        $yf->setValueField('hidden', ['payment_type', $warehouse_userdata['payment_type']]);
+        $yf->setValueField('hidden', ['info_news_ok', $warehouse_userdata['info_news_ok']]);
 
         foreach (explode(',', warehouse::get_config('order_email')) as $email) {
             $yf->setActionField('tpl2email', [warehouse::get_config('email_template_seller'), '', $email]);
@@ -906,7 +906,7 @@ PayPalHttp\HttpResponse {#170 ▼
 
     public static function restore_session_from_payment_id($payment_id)
     {
-        $sql = rex_sql::factory()->setTable(rex::getTable('wh_orders'));
+        $sql = rex_sql::factory()->setTable(rex::getTable('warehouse_orders'));
         $sql->setWhere('payment_id = :payment_id', ['payment_id' => $payment_id]);
         $sql->select('session_id');
         $result = $sql->getArray();
@@ -924,18 +924,18 @@ PayPalHttp\HttpResponse {#170 ▼
 
     public static function send_mails()
     {
-        $wh_userdata = warehouse::get_user_data();
+        $warehouse_userdata = warehouse::get_user_data();
 
         $yf = new rex_yform();
 
         $yf->setObjectparams('csrf_protection', false);
 
-        $yf->setValueField('hidden', ['email', $wh_userdata['email']]);
-        $yf->setValueField('hidden', ['company', $wh_userdata['company']]);
-        $yf->setValueField('hidden', ['salutation', $wh_userdata['salutation']]);
-        $yf->setValueField('hidden', ['firstname', $wh_userdata['firstname']]);
-        $yf->setValueField('hidden', ['lastname', $wh_userdata['lastname']]);
-        $yf->setValueField('hidden', ['payment_type', $wh_userdata['payment_type']]);
+        $yf->setValueField('hidden', ['email', $warehouse_userdata['email']]);
+        $yf->setValueField('hidden', ['company', $warehouse_userdata['company']]);
+        $yf->setValueField('hidden', ['salutation', $warehouse_userdata['salutation']]);
+        $yf->setValueField('hidden', ['firstname', $warehouse_userdata['firstname']]);
+        $yf->setValueField('hidden', ['lastname', $warehouse_userdata['lastname']]);
+        $yf->setValueField('hidden', ['payment_type', $warehouse_userdata['payment_type']]);
 
         foreach (explode(',', warehouse::get_config('order_email')) as $email) {
             $yf->setValueField('html', ['', $email]);
@@ -960,9 +960,9 @@ PayPalHttp\HttpResponse {#170 ▼
         $cart = self::get_cart();
         foreach ($cart as $k=>$art) {
             if ($art['stock_item'] ?? false) {
-                $wh_art = wh_articles::get_article($k);
-                $wh_art->stock = $wh_art->stock - $art['count'];
-                $wh_art->save();
+                $warehouse_art = warehouse_articles::get_article($k);
+                $warehouse_art->stock = $warehouse_art->stock - $art['count'];
+                $warehouse_art->save();
             }
         }
 
@@ -1005,7 +1005,7 @@ PayPalHttp\HttpResponse {#170 ▼
             if ($Object->getName() == 'variants_id') {
 
                 $be_relation_values = $Object->getValue();
-                $table = rex_yform_manager_table::get(rex::getTable('wh_article_variants'));
+                $table = rex_yform_manager_table::get(rex::getTable('warehouse_article_variants'));
 
                 // ----- Find PrioFieldname if exists
                 $prioFieldName = '';

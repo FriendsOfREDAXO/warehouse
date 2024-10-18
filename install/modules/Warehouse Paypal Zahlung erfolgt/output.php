@@ -5,7 +5,7 @@ if (rex::isBackend()) {
     echo '<h2>PayPal Abschluss der Zahlung, Bestätigungsmail und Bestellmail verschicken.</h2>';
     return;
 } else {
-    $response = wh_paypal::execute_payment();
+    $response = warehouse_paypal::execute_payment();
 //    dump($response); exit;
     /*
     PayPalHttp\HttpResponse {#170 ▼
@@ -43,18 +43,18 @@ if (rex::isBackend()) {
     warehouse::paypal_approved_v2($response);
 
     $cart = warehouse::get_cart();
-    $wh_userdata = warehouse::get_user_data();
+    $warehouse_userdata = warehouse::get_user_data();
     
     $yf = new rex_yform();
     $fragment = new rex_fragment();
     $fragment->setVar('cart', $cart);
-    $fragment->setVar('wh_userdata', $wh_userdata);
+    $fragment->setVar('warehouse_userdata', $warehouse_userdata);
     
     $yf->setObjectparams('csrf_protection',false);
-    $yf->setValueField('hidden', ['email', $wh_userdata['email']]);
-    $yf->setValueField('hidden', ['firstname', $wh_userdata['firstname']]);
-    $yf->setValueField('hidden', ['lastname', $wh_userdata['lastname']]);
-    $yf->setValueField('hidden', ['payment_type', $wh_userdata['payment_type']]);
+    $yf->setValueField('hidden', ['email', $warehouse_userdata['email']]);
+    $yf->setValueField('hidden', ['firstname', $warehouse_userdata['firstname']]);
+    $yf->setValueField('hidden', ['lastname', $warehouse_userdata['lastname']]);
+    $yf->setValueField('hidden', ['payment_type', $warehouse_userdata['payment_type']]);
     
     foreach (explode(',', rex_config::get('warehouse', 'order_email')) as $email) {
         $yf->setActionField('tpl2email', [rex_config::get('warehouse', 'email_template_seller'), '', $email]);

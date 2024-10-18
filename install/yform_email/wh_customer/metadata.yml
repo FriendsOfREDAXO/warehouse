@@ -1,4 +1,4 @@
-name: wh_customer
+name: warehouse_customer
 mail_from: webserver@ferien-am-tressower-see.de
 mail_from_name: 'Warehouse Tressow'
 mail_reply_to: ''

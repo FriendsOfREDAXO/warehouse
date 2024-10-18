@@ -5,11 +5,11 @@
  *
  * 
  * 
- * <td class="rex-table-action"><a href="index.php?page=yform/manager/data_edit&amp;table_name=rex_wh_article_variants&amp;rex_yform_manager_popup=0&amp;data_id=1&amp;func=edit&amp;start=&amp;sort=&amp;sorttype=&amp;list=519d1177"><i class="rex-icon rex-icon-edit"></i> editieren</a></td>
+ * <td class="rex-table-action"><a href="index.php?page=yform/manager/data_edit&amp;table_name=rex_warehouse_article_variants&amp;rex_yform_manager_popup=0&amp;data_id=1&amp;func=edit&amp;start=&amp;sort=&amp;sorttype=&amp;list=519d1177"><i class="rex-icon rex-icon-edit"></i> editieren</a></td>
  * 
  * <a href="index.php?page=mediapool/media" class="rex-popup" onclick="openMediaPool(); return false;"><i class="rex-icon rex-icon-media"></i> Medienpool</a>
  * 
- * <a href="javascript:void(0);" class="btn btn-popup" onclick="yform_manager_openDatalist(1, 'name_0', 'index.php?page=yform/manager/data_edit&amp;table_name=rex_wh_attributes','1');return false;" title="Datensatz auswählen"><i class="rex-icon rex-icon-add"></i></a>
+ * <a href="javascript:void(0);" class="btn btn-popup" onclick="yform_manager_openDatalist(1, 'name_0', 'index.php?page=yform/manager/data_edit&amp;table_name=rex_warehouse_attributes','1');return false;" title="Datensatz auswählen"><i class="rex-icon rex-icon-add"></i></a>
  * 
  * 
  */

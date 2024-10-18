@@ -1,5 +1,5 @@
 <?php
-$user_data = $this->wh_userdata;
+$user_data = $this->warehouse_userdata;
 ?>
 
 <h2>{{ Bestellübersicht }}</h2>
@@ -28,7 +28,7 @@ $user_data = $this->wh_userdata;
         </tr>
     <?php endforeach ?>
     <tr>
-        <td>{{ Shipping }} <?= $this->wh_userdata['country'] ?></td>
+        <td>{{ Shipping }} <?= $this->warehouse_userdata['country'] ?></td>
         <td class="uk-text-right"><?= number_format((float) warehouse::get_shipping_cost(), 2) ?></td>
     </tr>
     <tr>
@@ -59,4 +59,3 @@ $user_data = $this->wh_userdata;
 <?php endif ?>
 
 <p>{{ Payment Type }}: {{ payment_<?= $user_data['payment_type'] ?> }}</p>
-

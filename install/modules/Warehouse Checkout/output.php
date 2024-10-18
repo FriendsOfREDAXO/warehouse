@@ -68,7 +68,7 @@ $yf->setObjectparams('form_action',rex_getUrl($article_id));
 $yf->setObjectparams('form_wrap_class', 'yform wh-form');
 $yf->setObjectparams('debug',0);
 $yf->setObjectparams('form_ytemplate','uikit,bootstrap,classic');
-$yf->setObjectparams('form_class', 'uk-form rex-yform wh_checkout');
+$yf->setObjectparams('form_class', 'uk-form rex-yform warehouse_checkout');
 $yf->setObjectparams('form_anchor', 'rex-yform');
 
 $yf->setValueField('html',['','<section>
@@ -161,8 +161,8 @@ if (count($current_payment_types) > 1) {
             $yf->setValueField('text',['direct_debit_name','Ggf. abweichender Kontoinhaber',$userdata['direct_debit_name'],'[no_db]']);
             $yf->setValueField('html',['','</div>']);
         $yf->setValueField('html',['','</div>']);
-        $yf->setValidateField('customfunction',['iban','wh_helper::validate_sub_values',['payment_type','direct_debit'],'Bitte füllen Sie alle markierten Felder aus.']);
-        $yf->setValidateField('customfunction',['bic','wh_helper::validate_sub_values',['payment_type','direct_debit'],'Bitte füllen Sie alle markierten Felder aus.']);
+        $yf->setValidateField('customfunction',['iban','warehouse_helper::validate_sub_values',['payment_type','direct_debit'],'Bitte füllen Sie alle markierten Felder aus.']);
+        $yf->setValidateField('customfunction',['bic','warehouse_helper::validate_sub_values',['payment_type','direct_debit'],'Bitte füllen Sie alle markierten Felder aus.']);
     }
 
     if (in_array('giropay',$current_payment_types)) {
@@ -179,7 +179,7 @@ if (count($current_payment_types) > 1) {
             $yf->setValueField('text',['giropay_bic','BIC*',$userdata['giropay_bic'],'no_db']);
             $yf->setValueField('html',['','</div>']);
         $yf->setValueField('html',['','</div>']);
-        $yf->setValidateField('customfunction',['giropay_bic','wh_helper::validate_sub_values',['payment_type','giropay'],'Bitte füllen Sie alle markierten Felder aus.']);
+        $yf->setValidateField('customfunction',['giropay_bic','warehouse_helper::validate_sub_values',['payment_type','giropay'],'Bitte füllen Sie alle markierten Felder aus.']);
     }    
 }
 
@@ -203,6 +203,6 @@ $form = $yf->getForm();
 
 $fragment = new rex_fragment();
 $fragment->setVar('form',$form);
-echo $fragment->parse('wh_checkout_page.php');
+echo $fragment->parse('warehouse_checkout_page.php');
 
 ?>

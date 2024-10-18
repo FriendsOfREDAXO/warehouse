@@ -1,8 +1,8 @@
-<?php $wh_prop = rex::getProperty('wh_prop') ?>
+<?php $warehouse_prop = rex::getProperty('warehouse_prop') ?>
 <?= html_entity_decode($this->wrapper[0]); ?>
 
     <ul class="lev2 <?= $this->ul_class ?>">
-        <?php foreach ($wh_prop['tree'] as $main_item) : // Katalog Navi ?>
+        <?php foreach ($warehouse_prop['tree'] as $main_item) : // Katalog Navi ?>
             <li>
                 <a class="uk-link-reset" href="<?= rex_getUrl('', '', ['category_id' => $main_item['id']]) ?>">
                     <?php /* img class="uk-display-block uk-margin-auto uk-margin-bottom" src="/images/cat_thumb/<?= $main_item['image'] ?>" alt="<?= $main_item['name_raw'] ?>" width="80" height="80" */ ?>

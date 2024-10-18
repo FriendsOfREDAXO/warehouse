@@ -19,7 +19,7 @@
                                 <div class="uk-width-1-4">
                                     <div class="tm-ratio tm-ratio-4-3">
                                         <?php if ($item['image']) : ?> 
-                                            <a class="tm-media-box" href="<?= rex_getUrl('', '', ['wh_art_id' => $base_id]) ?>">
+                                            <a class="tm-media-box" href="<?= rex_getUrl('', '', ['warehouse_art_id' => $base_id]) ?>">
                                                 <figure class="tm-media-box-wrap"><img src="/images/cartthumb/<?= $item['image'] ?>" alt="<?= $item['name'] ?>"></figure>
                                             </a>
                                         <?php endif ?>
@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="uk-width-expand">
                                     <div class="uk-text-meta uk-text-xsmall"><?= $item['cat_name'] ?></div>
-                                    <a class="uk-link-heading uk-text-small" href="<?= rex_getUrl('', '', ['wh_art_id' => $base_id]) ?>"><?= trim($item['name'],'- ') ?>
+                                    <a class="uk-link-heading uk-text-small" href="<?= rex_getUrl('', '', ['warehouse_art_id' => $base_id]) ?>"><?= trim($item['name'],'- ') ?>
                                     <?php $attr_text = []; ?>
                                     <?php foreach ($item['attributes'] as $attr) : ?>
                                         <?php $attr_text[] = $attr['value'] ?>

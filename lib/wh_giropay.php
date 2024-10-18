@@ -1,6 +1,6 @@
 <?php
 
-class wh_giropay {
+class warehouse_giropay {
 
     public function init_giropay() {
 
