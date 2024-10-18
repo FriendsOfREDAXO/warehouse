@@ -1,23 +1,10 @@
 <?php
 
-// Tabellen
-
-$tables = [
-    'warehouse',
-];
-
-foreach ($tables as $table) {
-    $content = rex_file::get(rex_path::addon('warehouse', 'install/tablesets/'.$table.'.json'));
-    $content = str_replace('"precision":""','"precision":"10"',$content);
-    rex_yform_manager_table_api::importTablesets($content);
+$addon = rex_addon::get('warehouse');
+if (rex_addon::get('yform')->isAvailable()) {
+  rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_category.json'));
+  rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_article.json'));
+  rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_article_variant.json'));
+  rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_order.json'));
+  rex_yform_manager_table::deleteCache();
 }
-
-/*
-rex_sql_table::get(rex::getTable('wh_attributes'))
-  ->ensureColumn(new rex_sql_column('pricemode', 'varchar(191)', false, ''))
-  ->alter();
-*/
-
-rex_delete_cache();
-rex_yform_manager_table::deleteCache();
-  
