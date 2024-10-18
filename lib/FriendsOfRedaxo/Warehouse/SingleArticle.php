@@ -1,5 +1,11 @@
 <?php
-class warehouse_single_article extends \rex_yform_manager_dataset {
+
+namespace FriendsOfRedaxo\Warehouse;
+
+use rex_sql;
+use rex;
+
+class SingleArticle extends \rex_yform_manager_dataset {
 
     static $article = false;
 

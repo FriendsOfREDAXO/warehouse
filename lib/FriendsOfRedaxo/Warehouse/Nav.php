@@ -1,6 +1,11 @@
 <?php
 
-class warehouse_nav {
+namespace FriendsOfRedaxo\Warehouse;
+
+use rex_category;
+use rex_article;
+
+class Nav {
 
     var $ulClasses = [' nav_block'];
     var $liClasses = [];

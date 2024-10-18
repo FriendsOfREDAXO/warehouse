@@ -69,7 +69,7 @@ $rex_article_id = rex_article::getCurrentId();
 
                                                 <td colspan="3"><span class="fontbold">Summe netto</span></td>
 
-                                                <td colspan="2"><span class="fontbold"><?= number_format(warehouse::get_sub_total_netto(), 2) ?>
+                                                <td colspan="2"><span class="fontbold"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_sub_total_netto(), 2) ?>
                                                 <?= rex_config::get('warehouse', 'currency_symbol') ?></span>
                                                 </td>
                                             </tr>
@@ -80,7 +80,7 @@ $rex_article_id = rex_article::getCurrentId();
                                                 <td colspan="3" class="lighter"><i>MwSt 19%</i>
                                                 </td>
 
-                                                <td colspan="2" class="lighter"><i><?= number_format(warehouse::get_tax_total(), 2) ?></i>
+                                                <td colspan="2" class="lighter"><i><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_tax_total(), 2) ?></i>
                                                 <?= rex_config::get('warehouse', 'currency_symbol') ?>
                                                 </td>
                                             </tr>
@@ -90,7 +90,7 @@ $rex_article_id = rex_article::getCurrentId();
 
                                                 <td colspan="3"><span class="fontbold">Zwischensumme</span></td>
 
-                                                <td colspan="2"><span class="fontbold"><?= number_format(warehouse::get_sub_total(), 2) ?>
+                                                <td colspan="2"><span class="fontbold"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_sub_total(), 2) ?>
                                                 <?= rex_config::get('warehouse', 'currency_symbol') ?></span>
                                                 </td>
                                             </tr>
@@ -100,7 +100,7 @@ $rex_article_id = rex_article::getCurrentId();
 
                                                 <td colspan="3" class="lighter"><i>{{ Versandkosten }}</i></td>
 
-                                                <td colspan="2" class="lighter"><i><?= number_format(warehouse::get_shipping_cost(), 2) ?>
+                                                <td colspan="2" class="lighter"><i><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_shipping_cost(), 2) ?>
                                                 <?= rex_config::get('warehouse', 'currency_symbol') ?></i>
                                                 </td>
                                             </tr>
@@ -111,7 +111,7 @@ $rex_article_id = rex_article::getCurrentId();
                                                 <td colspan="3"><span class="fontbold fontred">{{ Total }}</span></td>
 
                                                 <td colspan="2">
-	                                                <span class="fontbold fontred"><?= number_format(warehouse::get_cart_total(), 2) ?>
+	                                                <span class="fontbold fontred"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_cart_total(), 2) ?>
                                                  <?= rex_config::get('warehouse', 'currency_symbol') ?>
 												 	</span>
 												</td>
@@ -122,7 +122,7 @@ $rex_article_id = rex_article::getCurrentId();
 
                                 <div class="cart_navigation">
                                     <?php if (rex_session('current_page')) : ?> 
-                                    <a href="<?= warehouse::clean_url(rex_session('current_page')) ?>" class="continue-btn"><i class="fa fa-arrow-left"></i> Zurück</a>
+                                    <a href="<?= FriendsOfRedaxo\Warehouse\Warehouse::clean_url(rex_session('current_page')) ?>" class="continue-btn"><i class="fa fa-arrow-left"></i> Zurück</a>
                                     <?php endif ?> 
                                     <a href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>" class="checkout-btn"><i class="fa fa-arrow-right"></i> Weiter zur Kasse </a>
                                 </div>

@@ -72,7 +72,7 @@
                         <a href="<?= rex_getUrl('', '', ['warehouse_art_id' => $item->id]) ?>"  class="">
                             <img src="/media/<?= $item->image ?>" alt="<?= $item->name_1 ?>" class="img-responsive mt20">
                         </a>
-                        <?= warehouse_helper::uk_format_text($item->description_1) ?>
+                        <?= \FriendsOfRedaxo\Warehouse\Helper::uk_format_text($item->description_1) ?>
                         <div class="row price mt20">
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 pricecol">
                                 <p><?= $item->get_price(true) ?></p>

@@ -1,21 +1,14 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+namespace FriendsOfRedaxo\Warehouse;
 
-/**
- * Description of warehouse_shipping
- *
- * @author wolfgang
- */
-class warehouse_shipping {
+use rex_config;
+
+class Shipping {
     
     public static function get_cost() {
 
-        $cart = warehouse::get_cart();
+        $cart = Warehouse::get_cart();
 
 
 
@@ -46,7 +39,7 @@ class warehouse_shipping {
             // Nach Gewicht (Alle weight zusammengezählt)
             $weight = 0;
             foreach ($cart as $uid=>$item) {
-                $warehouse_article = warehouse_articles::get_article($uid);
+                $warehouse_article = Article::get_article($uid);
 //                dump($warehouse_article);
                 $art_weight = 0;
                 if ($warehouse_article && isset($warehouse_article->weight) && $warehouse_article->weight) {
@@ -63,7 +56,7 @@ class warehouse_shipping {
             }            
 
         } elseif (rex_config::get('warehouse','shipping_mode') == 'order_total') {
-            $sum_brutto = warehouse::get_sub_total();
+            $sum_brutto = Warehouse::get_sub_total();
             $shipping = self::check_val($sum_brutto);
             if ($shipping !== false) {
                 return $shipping;

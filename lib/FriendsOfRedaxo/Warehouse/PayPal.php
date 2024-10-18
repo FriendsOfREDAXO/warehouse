@@ -1,5 +1,11 @@
 <?php
 
+namespace FriendsOfRedaxo\Warehouse;
+
+use rex;
+use rex_config;
+use rex_response;
+
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\HttpException;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
@@ -14,7 +20,7 @@ if (rex::isDebugMode()) {
 }
 
 
-class warehouse_paypal
+class PayPal
 {
     /**
      * Returns PayPal HTTP client instance with environment which has access
@@ -32,8 +38,8 @@ class warehouse_paypal
      */
     public static function environment()
     {
-        $clientId = getenv("CLIENT_ID") ?: warehouse::get_paypal_client_id();
-        $clientSecret = getenv("CLIENT_SECRET") ?: warehouse::get_paypal_secret();
+        $clientId = getenv("CLIENT_ID") ?: Warehouse::get_paypal_client_id();
+        $clientSecret = getenv("CLIENT_SECRET") ?: Warehouse::get_paypal_secret();
 
         if (rex_config::get('warehouse', 'sandboxmode')) {
             return new SandboxEnvironment($clientId, $clientSecret);
@@ -49,8 +55,8 @@ class warehouse_paypal
         $params = json_decode(rex_config::get('warehouse', 'paypal_getparams'), true);
         $return_url = trim(rex::getServer(), '/') . rex_getUrl(rex_config::get('warehouse', 'paypal_page_success'), '', $params ?? [], '&');
         $cancel_url = trim(rex::getServer(), '/') . rex_getUrl(rex_config::get('warehouse', 'paypal_page_error'));
-        $cart = warehouse::get_cart();
-        $user_data = warehouse::get_user_data();
+        $cart = Warehouse::get_cart();
+        $user_data = Warehouse::get_user_data();
 
         $user_data['to_firstname'] = $user_data['to_firstname'] ?: $user_data['firstname'] ?? '';
         $user_data['to_lastname'] = $user_data['to_lastname'] ?: $user_data['lastname'] ?? '';
@@ -89,16 +95,16 @@ class warehouse_paypal
                 'amount' =>
                 [
                     'currency_code' => rex_config::get('warehouse', 'currency'),
-                    'value' => number_format(warehouse::get_cart_total(), 2),
+                    'value' => number_format(Warehouse::get_cart_total(), 2),
                     'breakdown' =>
                     [
                         'item_total' => [
                             'currency_code' => rex_config::get('warehouse', 'currency'),
-                            'value' => number_format(warehouse::get_sub_total_netto(), 2),
+                            'value' => number_format(Warehouse::get_sub_total_netto(), 2),
                         ],
                         'shipping' => [
                             'currency_code' => rex_config::get('warehouse', 'currency'),
-                            'value' => number_format((float) warehouse::get_shipping_cost(), 2),
+                            'value' => number_format((float) Warehouse::get_shipping_cost(), 2),
                         ],
                         /*
                         'handling' =>
@@ -109,11 +115,11 @@ class warehouse_paypal
                         */
                         'tax_total' => [
                             'currency_code' => rex_config::get('warehouse', 'currency'),
-                            'value' => number_format(warehouse::get_tax_total(), 2),
+                            'value' => number_format(Warehouse::get_tax_total(), 2),
                         ],
                         'shipping_discount' => [
                             'currency_code' => rex_config::get('warehouse', 'currency'),
-                            'value' => number_format(warehouse::get_discount_value(), 2),
+                            'value' => number_format(Warehouse::get_discount_value(), 2),
                         ],
                     ],
                 ],
@@ -153,7 +159,7 @@ class warehouse_paypal
         try {
 //            dump($request); exit;
             $response = $client->execute($request);
-            warehouse::save_order_to_db($response->result->id);
+            Warehouse::save_order_to_db($response->result->id);
             rex_set_session('pp_order_id', $response->result->id);
             foreach ($response->result->links as $link) {
                 if ($link->rel == 'approve') {
@@ -167,8 +173,8 @@ class warehouse_paypal
     static function execute_payment()
     {
         $env = rex_config::get('warehouse', 'sandboxmode') ? 'sandbox' : 'live';
-        $client_id = warehouse::get_paypal_client_id();
-        $paypal_secret = warehouse::get_paypal_secret();
+        $client_id = Warehouse::get_paypal_client_id();
+        $paypal_secret = Warehouse::get_paypal_secret();
         $client = self::client();
         // $response->result->id gives the orderId of the order created above
         $order_id = rex_session('pp_order_id');

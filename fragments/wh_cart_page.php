@@ -88,17 +88,17 @@
                     <div class="uk-card-body">
                         <div class="uk-grid-small uk-grid" uk-grid="">
                             <div class="uk-width-expand uk-text-muted">{{ Subtotal }}</div>
-                            <div><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(warehouse::get_sub_total(),2) ?></div>
+                            <div><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_sub_total(),2) ?></div>
                         </div>
                         <div class="uk-grid-small uk-grid" uk-grid="">
                             <div class="uk-width-expand uk-text-muted">{{ Shipping }}</div>
-                            <div class="uk-text"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format((float) warehouse::get_shipping_cost(),2) ?></div>
+                            <div class="uk-text"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::get_shipping_cost(),2) ?></div>
                         </div>
                     </div>
                     <div class="uk-card-body">
                         <div class="uk-grid-small uk-flex-middle uk-grid" uk-grid="">
                             <div class="uk-width-expand uk-text-muted">{{ Total }}</div>
-                            <div class="uk-text-lead uk-text-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(warehouse::get_cart_total(),2) ?></div>
+                            <div class="uk-text-lead uk-text-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_cart_total(),2) ?></div>
                         </div>
                         <a class="uk-button uk-button-primary uk-margin-small uk-width-1-1" href="<?= rex_getUrl(rex_config::get('warehouse','address_page')) ?>">checkout</a>
                     </div>
@@ -107,14 +107,14 @@
             </div>
             <div class="uk-width-1-1">
                 <?php if (rex_session('current_page')) : ?>
-                    <a href="<?= warehouse::clean_url(rex_session('current_page')) ?>" class="uk-button uk-button-primary">Zurück</a>&nbsp;&nbsp;
+                    <a href="<?= FriendsOfRedaxo\Warehouse\Warehouse::clean_url(rex_session('current_page')) ?>" class="uk-button uk-button-primary">Zurück</a>&nbsp;&nbsp;
                 <?php endif ?>
                 <a href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>" class="uk-button uk-button-primary">Weiter</a>
             </div>
         <?php else : ?>
             <div class="uk-width-1-1">
                 <?php if (rex_session('current_page')) : ?>
-                    <a href="<?= warehouse::clean_url(rex_session('current_page')) ?>" class="uk-button uk-button-primary">Zurück</a>&nbsp;&nbsp;
+                    <a href="<?= FriendsOfRedaxo\Warehouse\Warehouse::clean_url(rex_session('current_page')) ?>" class="uk-button uk-button-primary">Zurück</a>&nbsp;&nbsp;
                 <?php endif ?>
             </div>
         <?php endif ?>

@@ -1,6 +1,12 @@
 <?php
 
-class warehouse
+namespace FriendsOfRedaxo\Warehouse;
+
+use rex_plugin;
+use rex_ycom_auth;
+
+
+class Warehouse
 {
 
     static $fields = [
@@ -67,7 +73,7 @@ class warehouse
             $art = warehouse_single_article::get_article();
             $art_uid = $art['art_id'];
         } else {
-            $article = warehouse_articles::get_article($art_id);
+            $article = Article::get_article($art_id);
             $attr_ids = rex_request('warehouse_attr', 'array', []);
             $art_uid = trim($art_id . '$$' . implode('$$', $attr_ids), '$');
 
@@ -126,7 +132,7 @@ class warehouse
         $cart = self::get_cart();
         foreach ($cart as $k => $art) {
             // Artikel nochmal aus der db einlesen, um zu prüfen, ob er nicht zwischenzeitlich verkauft wurde
-            $warehouse_art = warehouse_articles::get_article($k);
+            $warehouse_art = Article::get_article($k);
             if (isset($art['stock_item'])) {
                 if ($art['stock_item'] && ($art['count'] > $warehouse_art->stock)) {
                     $cart[$k]['count'] = $warehouse_art->stock;
@@ -181,7 +187,7 @@ class warehouse
             $prev_url = self::clean_url(rex_session('current_page'));
             $deli = strpos($prev_url, '?') ? '&' : '?';
             if (rex_config::get('warehouse', 'cart_mode') == 'cart') {
-                rex_redirect(warehouse::get_config('cart_page'));
+                rex_redirect(Warehouse::get_config('cart_page'));
             } else {
                 rex_response::sendRedirect($prev_url . $deli . 'showcart=1');
             }
@@ -190,7 +196,7 @@ class warehouse
         if ($added && $old_page_id > 0) {
             // wenn in den Settings auf Cart eingestellt ist, auf Cart weiterleiten
             if (rex_config::get('warehouse', 'cart_mode') == 'cart') {
-                rex_redirect(warehouse::get_config('cart_page'));
+                rex_redirect(Warehouse::get_config('cart_page'));
             } else {
                 if (rex_request('old_url')) {
                     $oldpage = rex_request('old_url');
@@ -210,7 +216,7 @@ class warehouse
             $oldpage = rtrim(rex::getServer(), '/') . rex_getUrl(rex_request('current_article'), '', ['error' => 1]);
             rex_response::sendRedirect($oldpage);
         } else {
-            rex_redirect(warehouse::get_config('cart_page'));
+            rex_redirect(Warehouse::get_config('cart_page'));
         }
     }
 
@@ -237,7 +243,7 @@ class warehouse
         if (rex_request('showcart', 'int')) {
             self::redirect_from_cart();
         } else {
-            rex_redirect(warehouse::get_config('cart_page'));
+            rex_redirect(Warehouse::get_config('cart_page'));
         }
     }
 
@@ -496,14 +502,14 @@ class warehouse
         $out .= str_repeat('-', 92);
         $out .= PHP_EOL;
         $out .= mb_str_pad('Summe', 55, ' ', STR_PAD_RIGHT);
-        $out .= mb_str_pad(number_format(warehouse::get_sub_total_netto(), 2), 37, ' ', STR_PAD_LEFT);
+        $out .= mb_str_pad(number_format(Warehouse::get_sub_total_netto(), 2), 37, ' ', STR_PAD_LEFT);
         $out .= PHP_EOL;
         $out .= mb_str_pad('Mehrwertsteuer', 55, ' ', STR_PAD_RIGHT);
-        $out .= mb_str_pad(number_format(warehouse::get_tax_total(), 2), 37, ' ', STR_PAD_LEFT);
+        $out .= mb_str_pad(number_format(Warehouse::get_tax_total(), 2), 37, ' ', STR_PAD_LEFT);
         $out .= PHP_EOL;
-        if (warehouse::get_discount_value()) {
+        if (Warehouse::get_discount_value()) {
             $out .= mb_str_pad(rex_config::get("warehouse", "global_discount_text"), 55, ' ', STR_PAD_RIGHT);
-            $out .= mb_str_pad(number_format(warehouse::get_discount_value(), 2), 37, ' ', STR_PAD_LEFT);
+            $out .= mb_str_pad(number_format(Warehouse::get_discount_value(), 2), 37, ' ', STR_PAD_LEFT);
             $out .= PHP_EOL;
         }
         $out .= mb_str_pad('Versand', 55, ' ', STR_PAD_RIGHT);
@@ -573,14 +579,14 @@ class warehouse
             $out .= number_format($pos['price_netto'] * $pos['count'], 2) . '</td></tr>';
         }
         $out .= '<tr class="topline"><td></td><td>Summe</td><td></td><td></td><td style="text-align:right">';
-        $out .= number_format(warehouse::get_sub_total_netto(), 2) . '</td></tr>';
+        $out .= number_format(Warehouse::get_sub_total_netto(), 2) . '</td></tr>';
         $out .= '<tr><td></td><td>Mehrwertsteuer</td><td></td><td></td><td style="text-align:right">';
-        $out .= number_format(warehouse::get_tax_total(), 2) . '</td></tr>';
+        $out .= number_format(Warehouse::get_tax_total(), 2) . '</td></tr>';
 
-        if (warehouse::get_discount_value()) {
+        if (Warehouse::get_discount_value()) {
             $out .= '<tr><td></td><td>' . rex_config::get("warehouse", "global_discount_text") . '</td><td></td><td style="text-align:right">';
 
-            $out .= number_format(warehouse::get_discount_value(), 2) . '</td></tr>';
+            $out .= number_format(Warehouse::get_discount_value(), 2) . '</td></tr>';
         }
         $out .= '<tr><td></td><td>Versand</td><td></td><td></td><td style="text-align:right">';
         $out .= number_format($shipping, 2) . '</td></tr>';
@@ -769,7 +775,7 @@ PayPalHttp\HttpResponse {#170 ▼
 
     public static function get_category_tree($depth = 2)
     {
-        $otree = new warehouse_helper();
+        $otree = new \Helper();
         $otree->set_query('SELECT id, name_' . rex_clang::getCurrentId() . ' name, image, parent_id FROM ' . rex::getTable('warehouse_categories') . ' WHERE status = 1 AND parent_id = |parent_id| ORDER BY prio');
         $otree->set_maxlev($depth);
         $tree = $otree->sql_full_tree();
@@ -835,10 +841,10 @@ PayPalHttp\HttpResponse {#170 ▼
         $yf->setValueField('hidden', ['payment_type', $warehouse_userdata['payment_type']]);
         $yf->setValueField('hidden', ['info_news_ok', $warehouse_userdata['info_news_ok']]);
 
-        foreach (explode(',', warehouse::get_config('order_email')) as $email) {
-            $yf->setActionField('tpl2email', [warehouse::get_config('email_template_seller'), '', $email]);
+        foreach (explode(',', Warehouse::get_config('order_email')) as $email) {
+            $yf->setActionField('tpl2email', [Warehouse::get_config('email_template_seller'), '', $email]);
         }
-        $yf->setActionField('tpl2email', [warehouse::get_config('email_template_customer'), 'email']);
+        $yf->setActionField('tpl2email', [Warehouse::get_config('email_template_customer'), 'email']);
         $yf->setActionField('callback', ['warehouse::clear_cart']);
 
         $yf->getForm();
@@ -848,7 +854,7 @@ PayPalHttp\HttpResponse {#170 ▼
             rex_logger::factory()->log('notice', 'Warehouse Order Email sent', [], __FILE__, __LINE__);
         }
         if ($send_redirect) {
-            rex_response::sendRedirect(rex_getUrl(warehouse::get_config('thankyou_page'), '', json_decode(rex_config::get('warehouse', 'paypal_getparams'), true), '&'));
+            rex_response::sendRedirect(rex_getUrl(Warehouse::get_config('thankyou_page'), '', json_decode(rex_config::get('warehouse', 'paypal_getparams'), true), '&'));
         }
     }
 
@@ -872,7 +878,7 @@ PayPalHttp\HttpResponse {#170 ▼
 
     public static function send_mails()
     {
-        $warehouse_userdata = warehouse::get_user_data();
+        $warehouse_userdata = Warehouse::get_user_data();
 
         $yf = new rex_yform();
 
@@ -885,12 +891,12 @@ PayPalHttp\HttpResponse {#170 ▼
         $yf->setValueField('hidden', ['lastname', $warehouse_userdata['lastname']]);
         $yf->setValueField('hidden', ['payment_type', $warehouse_userdata['payment_type']]);
 
-        foreach (explode(',', warehouse::get_config('order_email')) as $email) {
+        foreach (explode(',', Warehouse::get_config('order_email')) as $email) {
             $yf->setValueField('html', ['', $email]);
-            $yf->setActionField('tpl2email', [warehouse::get_config('email_template_seller'), trim($email)]);
+            $yf->setActionField('tpl2email', [Warehouse::get_config('email_template_seller'), trim($email)]);
         }
 
-        $etpl = warehouse::get_config('email_template_customer');
+        $etpl = Warehouse::get_config('email_template_customer');
         if (rex_yform_email_template::getTemplate($etpl . '_' . rex_clang::getCurrent()->getCode())) {
             $etpl = $etpl . '_' . rex_clang::getCurrent()->getCode();
         }
@@ -908,7 +914,7 @@ PayPalHttp\HttpResponse {#170 ▼
         $cart = self::get_cart();
         foreach ($cart as $k=>$art) {
             if ($art['stock_item'] ?? false) {
-                $warehouse_art = warehouse_articles::get_article($k);
+                $warehouse_art = Article::get_article($k);
                 $warehouse_art->stock = $warehouse_art->stock - $art['count'];
                 $warehouse_art->save();
             }
