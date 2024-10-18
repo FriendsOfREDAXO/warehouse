@@ -34,3 +34,37 @@ default_config:
     currency: "EUR"
     currency_symbol: "€"
     country_codes: "DE,AT,CH"
+    cart_mode: "cart"
+    check_weight: 0
+    tax_value: 19
+    tax_value_1: 7
+    tax_value_2: 0
+    tax_value_3: 0
+    tax_value_4: 0
+
+    email_template_customer: 
+    email_template_seller:
+    order_email:
+
+    # Rabatt
+    global_discount_text: ''
+    global_discount: 0
+
+    # Paypal Einstellungen
+    paypal_client_id:
+    paypal_secret:
+    sandboxmode: 0
+    paypal_sandbox_client_id:
+    paypal_sandbox_secret:
+    paypal_getparams:
+    paypal_page_start:
+    paypal_page_success:
+    paypal_page_error: 
+
+    # To-Do: Wallee
+    
+    # Frachtkosten
+    shipping: 
+    shipping_mode: 0
+    shipping_parameters:
+    
