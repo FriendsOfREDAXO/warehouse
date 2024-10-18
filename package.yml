@@ -1,6 +1,7 @@
 package: warehouse
 version: '2.0.0-dev'
 author: Friends Of REDAXO
+supportpage: https://github.com/friendsofredaxo/warehouse
 
 page:
     title: Warehouse
@@ -14,6 +15,22 @@ page:
 
 requires:
     redaxo: '^5.17'
+    php:
+        version: '>=8.3,<9'
     packages:
         structure: '^2.0'
-        yform/manager: '^4.1'
+        yform: '^4.1'
+
+default_config:
+    store_name: 
+    store_country_code: "DE"
+    cart_page:
+    address_page:
+    order_page:
+    thankyou_page:
+    payment_error: 
+    shippinginfo_page: 
+    my_orders_page:
+    currency: "EUR"
+    currency_symbol: "€"
+    country_codes: "DE,AT,CH"
