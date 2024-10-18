@@ -95,7 +95,7 @@ class PayPal
                 'amount' =>
                 [
                     'currency_code' => rex_config::get('warehouse', 'currency'),
-                    'value' => number_format(Warehouse::get_cart_total(), 2),
+                    'value' => number_format(Warehouse::GetCartTotal(), 2),
                     'breakdown' =>
                     [
                         'item_total' => [

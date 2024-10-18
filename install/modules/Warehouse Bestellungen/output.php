@@ -3,7 +3,7 @@
 
 if ($order_id = rex_get('order_id','int')) {
     // Detail
-    $order = \FriendsOfRedaxo\Warehouse\Order::get_order_for_user($order_id);
+    $order = \FriendsOfRedaxo\Warehouse\Order::GetOrderForUser($order_id);
     if ($order) {
         $fragment = new rex_fragment();
         $fragment->setVar('order',$order);
@@ -14,7 +14,7 @@ if ($order_id = rex_get('order_id','int')) {
     }
 } else {
     // Listendarstellung
-    $orders = \FriendsOfRedaxo\Warehouse\Order::get_orders_for_user();
+    $orders = \FriendsOfRedaxo\Warehouse\Order::getOrdersForUser();
     $fragment = new rex_fragment();
     $fragment->setVar('orders',$orders);
     echo $fragment->parse('warehouse_orders_page.php');    
