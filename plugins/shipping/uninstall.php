@@ -8,8 +8,8 @@ rex_sql_table::get(rex::getTable('media'))
 */
 
 $tables = [
-    'wh_countries',
-    'wh_shipping'
+    'warehouse_countries',
+    'warehouse_shipping'
 ];
 
 

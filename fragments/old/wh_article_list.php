@@ -16,7 +16,7 @@ https://chekromul.github.io/uikit-ecommerce-template
                             <div>
                                 <div class="uk-grid-collapse uk-child-width-1-3 tm-products-grid js-products-grid" uk-grid>
                                     <?php foreach ($this->articles as $item) : ?>
-                                        <?php $link = isset($item->var_id) ? rex_getUrl('', '', ['wh_art_id' => $item->id, 'var_id' => $item->var_id]) : rex_getUrl('', '', ['wh_art_id' => $item->id]); ?>
+                                        <?php $link = isset($item->var_id) ? rex_getUrl('', '', ['warehouse_art_id' => $item->id, 'var_id' => $item->var_id]) : rex_getUrl('', '', ['warehouse_art_id' => $item->id]); ?>
                                         <article class="tm-product-card">
                                             <div class="tm-product-card-media">
                                                 <div class="tm-ratio tm-ratio-4-3">

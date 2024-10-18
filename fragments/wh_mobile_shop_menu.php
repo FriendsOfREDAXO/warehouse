@@ -1,6 +1,6 @@
-<?php $wh_prop = rex::getProperty('wh_prop') ?>
+<?php $warehouse_prop = rex::getProperty('warehouse_prop') ?>
 <ul class="uk-nav-sub uk-list-divider">
-    <?php foreach ($wh_prop['tree'] as $main_item) : // Katalog Navi ?>
+    <?php foreach ($warehouse_prop['tree'] as $main_item) : // Katalog Navi ?>
         <li>
             <a class="uk-link-reset" href="<?= rex_getUrl('', '', ['category_id' => $main_item['id']]) ?>">
                 <?= $main_item['name_raw'] ?>

@@ -34,14 +34,14 @@
                                     <div class="uk-grid-small uk-grid" uk-grid="">
                                         <div class="uk-width-1-1 uk-width-1-3@s">
                                             <?php if ($item['image']) : ?>
-                                                <a class="tm-media-box" href="<?= rex_getUrl('','',['wh_art_id'=>$base_id]) ?>">
+                                                <a class="tm-media-box" href="<?= rex_getUrl('','',['warehouse_art_id'=>$base_id]) ?>">
                                                     <figure class="tm-media-box-wrap"><img src="/images/products/<?= $item['image'] ?>" alt="<?= $item['name'] ?>"></figure>
                                                 </a>
                                             <?php endif ?>
                                         </div>
                                         <div class="uk-width-expand">
                                             <div class="uk-text-meta"><?= $item['cat_name'] ?></div>
-                                            <a class="uk-link-heading" href="<?= rex_getUrl('','',['wh_art_id'=>$base_id]) ?>"><?= html_entity_decode($item['name']) ?>
+                                            <a class="uk-link-heading" href="<?= rex_getUrl('','',['warehouse_art_id'=>$base_id]) ?>"><?= html_entity_decode($item['name']) ?>
                                             <?php $attr_text = []; ?>
                                             <?php foreach ($item['attributes'] as $attr) : ?>
                                                 <?php $attr_text[] = $attr['value'] ?>

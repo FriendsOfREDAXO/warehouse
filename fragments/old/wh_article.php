@@ -10,9 +10,8 @@
             <label for="input_price_<?= $item->get_art_id() ?>">Preis eintragen</label>
             <input name="price" id="input_price_<?= $item->get_art_id() ?>" type="text"><br>
         <?php endif ?>
-        <label for="wh_count_<?= $item->get_art_id() ?>" class="switch_count" data-value="-1">-</label><input name="order_count" type="text" class="order_count" id="wh_count_<?= $item->get_art_id() ?>"><label for="wh_count_<?= $item->get_art_id() ?>" class="switch_count" data-value="+1">+</label>
+        <label for="warehouse_count_<?= $item->get_art_id() ?>" class="switch_count" data-value="-1">-</label><input name="order_count" type="text" class="order_count" id="warehouse_count_<?= $item->get_art_id() ?>"><label for="warehouse_count_<?= $item->get_art_id() ?>" class="switch_count" data-value="+1">+</label>
         <button type="submit" name="submit" value="1" class="order_button">Bestellen</button>
         </form>
     </div>
 <?php endforeach ?>
-

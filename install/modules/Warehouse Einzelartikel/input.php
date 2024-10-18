@@ -19,5 +19,5 @@
             <p class="help-block">Preis mit Punkt als Dezimalzeichen und ohne Währungssymbol in der Form <code>3.65</code> eintragen.</p>
         </div>
     </div>    
-    <input type="hidden" name="REX_INPUT_VALUE[20]" value="wh_single">
+    <input type="hidden" name="REX_INPUT_VALUE[20]" value="warehouse_single">
 </fieldset>

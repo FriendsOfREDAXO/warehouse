@@ -1,5 +1,5 @@
 <?php
-$user_data = $this->wh_userdata;
+$user_data = $this->warehouse_userdata;
 ?>
 <div class="row">
     <div class="col-lg-12">
@@ -27,7 +27,7 @@ $user_data = $this->wh_userdata;
                             </tr>
                         <?php endforeach ?>
                         <tr class="tr_shipping">
-                            <td class="col1">{{ Versandkosten }} <?= $this->wh_userdata['country'] ?></td>
+                            <td class="col1">{{ Versandkosten }} <?= $this->warehouse_userdata['country'] ?></td>
                             <td class="col2 text-right"><?= number_format(warehouse::get_shipping_cost(), 2) ?></td>
                         </tr>
                         <tr class="tr_total">

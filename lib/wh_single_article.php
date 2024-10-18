@@ -1,5 +1,5 @@
 <?php
-class wh_single_article extends \rex_yform_manager_dataset {
+class warehouse_single_article extends \rex_yform_manager_dataset {
 
     static $article = false;
 
@@ -29,7 +29,7 @@ class wh_single_article extends \rex_yform_manager_dataset {
 
     public static function set_article() {
         $sql = rex_sql::factory()->setTable(rex::getTable('article_slice'));
-        $sql->setWhere('value1 = :value1 AND value20 = "wh_single" AND status = 1',['value1'=>rex_request('art_id')]);
+        $sql->setWhere('value1 = :value1 AND value20 = "warehouse_single" AND status = 1',['value1'=>rex_request('art_id')]);
         $res = $sql->select()->getArray();
         if (count($res)) {
             self::$article = $res[0];

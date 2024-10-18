@@ -1,9 +1,9 @@
-<?php $wh_prop = rex::getProperty('wh_prop') ?>
+<?php $warehouse_prop = rex::getProperty('warehouse_prop') ?>
 <div
     class="uk-navbar-dropdown uk-margin-remove uk-padding-remove-vertical uk-drop" uk-drop="pos: bottom-justify;delay-show: 125;delay-hide: 50;duration: 75;boundary: .tm-navbar-container;boundary-align: true;pos: bottom-justify;flip: x">
     <div class="uk-container">
         <ul class="uk-navbar-dropdown-grid uk-child-width-1-5 uk-grid uk-grid-stack" uk-grid="">                                            
-            <?php foreach ($wh_prop['tree'] as $main_item) : // Katalog Navi ?>
+            <?php foreach ($warehouse_prop['tree'] as $main_item) : // Katalog Navi ?>
                 <li>
                     <div class="uk-margin-top uk-margin-bottom">
                         <a class="uk-link-reset" href="<?= rex_getUrl('', '', ['category_id' => $main_item['id']]) ?>">

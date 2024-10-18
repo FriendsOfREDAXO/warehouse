@@ -14,7 +14,7 @@ if (rex::isDebugMode()) {
 }
 
 
-class wh_paypal
+class warehouse_paypal
 {
     /**
      * Returns PayPal HTTP client instance with environment which has access

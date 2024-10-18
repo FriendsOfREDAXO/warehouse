@@ -1,8 +1,8 @@
 <?php
 
 $tablesets = [
-    'wh_countries.json',
-    'wh_shipping.json'
+    'warehouse_countries.json',
+    'warehouse_shipping.json'
 ];
 
 rex_yform_manager_table::deleteCache();
