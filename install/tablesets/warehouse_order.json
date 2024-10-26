@@ -1,8 +1,8 @@
 {
-    "rex_wh_orders": {
+    "rex_warehouse_order": {
         "table": {
             "status": 1,
-            "table_name": "rex_wh_orders",
+            "table_name": "rex_warehouse_order",
             "name": "Shop - Bestellungen",
             "description": "",
             "list_amount": 50,
@@ -23,7 +23,7 @@
         },
         "fields": [
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 1,
                 "type_id": "value",
                 "type_name": "text",
@@ -41,7 +41,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 2,
                 "type_id": "value",
                 "type_name": "text",
@@ -59,7 +59,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 3,
                 "type_id": "value",
                 "type_name": "text",
@@ -77,7 +77,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 5,
                 "type_id": "value",
                 "type_name": "text",
@@ -95,7 +95,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 6,
                 "type_id": "value",
                 "type_name": "text",
@@ -113,7 +113,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 7,
                 "type_id": "value",
                 "type_name": "text",
@@ -131,7 +131,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 8,
                 "type_id": "value",
                 "type_name": "text",
@@ -149,7 +149,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 9,
                 "type_id": "value",
                 "type_name": "choice",
@@ -174,7 +174,7 @@
                 "choice_label": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 10,
                 "type_id": "value",
                 "type_name": "text",
@@ -192,7 +192,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 11,
                 "type_id": "value",
                 "type_name": "datestamp",
@@ -208,7 +208,7 @@
                 "modify_default": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 12,
                 "type_id": "value",
                 "type_name": "text",
@@ -226,7 +226,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 13,
                 "type_id": "value",
                 "type_name": "text",
@@ -244,7 +244,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 14,
                 "type_id": "value",
                 "type_name": "text",
@@ -262,7 +262,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 15,
                 "type_id": "value",
                 "type_name": "text",
@@ -280,7 +280,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 16,
                 "type_id": "value",
                 "type_name": "textarea",
@@ -296,7 +296,7 @@
                 "notice": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 17,
                 "type_id": "value",
                 "type_name": "textarea",
@@ -312,7 +312,7 @@
                 "notice": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 18,
                 "type_id": "value",
                 "type_name": "number",
@@ -332,7 +332,7 @@
                 "scale": "2"
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 19,
                 "type_id": "value",
                 "type_name": "be_manager_relation",
@@ -354,7 +354,7 @@
                 "filter": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 20,
                 "type_id": "value",
                 "type_name": "text",
@@ -372,7 +372,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 22,
                 "type_id": "value",
                 "type_name": "text",
@@ -390,7 +390,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 23,
                 "type_id": "value",
                 "type_name": "choice",
@@ -415,7 +415,7 @@
                 "choice_label": ""
             },
             {
-                "table_name": "rex_wh_orders",
+                "table_name": "rex_warehouse_order",
                 "prio": 24,
                 "type_id": "value",
                 "type_name": "checkbox",
