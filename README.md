@@ -78,7 +78,8 @@ MIT Lizenz, siehe [LICENSE.md](https://github.com/FriendsOfREDAXO/warehouse/blob
 **Friends Of REDAXO**
 [https://github.com/FriendsOfREDAXO](https://github.com/FriendsOfREDAXO)
 
-**Projekt-Leads**
+### Projekt-Leads
+
 [Alexander Walther](https://github.com/alxndr-w), [Thomas Rotzek](https://github.com/rotzek)
 
 ### Credits
