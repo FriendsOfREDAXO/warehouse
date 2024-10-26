@@ -1,8 +1,8 @@
 {
-    "rex_wh_article_variants": {
+    "rex_warehouse_article_variant": {
         "table": {
             "status": 1,
-            "table_name": "rex_wh_article_variants",
+            "table_name": "rex_warehouse_article_variant",
             "name": "Artikelvarianten",
             "description": "",
             "list_amount": 50,
@@ -23,7 +23,7 @@
         },
         "fields": [
             {
-                "table_name": "rex_wh_article_variants",
+                "table_name": "rex_warehouse_article_variant",
                 "prio": 1,
                 "type_id": "value",
                 "type_name": "text",
@@ -41,7 +41,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_article_variants",
+                "table_name": "rex_warehouse_article_variant",
                 "prio": 2,
                 "type_id": "value",
                 "type_name": "text",
@@ -59,7 +59,7 @@
                 "prepend": ""
             },
             {
-                "table_name": "rex_wh_article_variants",
+                "table_name": "rex_warehouse_article_variant",
                 "prio": 3,
                 "type_id": "value",
                 "type_name": "number",
@@ -79,7 +79,7 @@
                 "scale": "2"
             },
             {
-                "table_name": "rex_wh_article_variants",
+                "table_name": "rex_warehouse_article_variant",
                 "prio": 4,
                 "type_id": "value",
                 "type_name": "textarea",
@@ -89,13 +89,13 @@
                 "name": "relay_price",
                 "label": "Staffelpreis",
                 "not_required": "",
-                "attributes": "{\"class\":\"edittable wh_relayprice\"}",
+                "attributes": "{\"class\":\"edittable warehouse_relayprice\"}",
                 "default": "",
                 "no_db": "0",
                 "notice": ""
             },
             {
-                "table_name": "rex_wh_article_variants",
+                "table_name": "rex_warehouse_article_variant",
                 "prio": 5,
                 "type_id": "value",
                 "type_name": "number",
@@ -115,7 +115,7 @@
                 "scale": "2"
             },
             {
-                "table_name": "rex_wh_article_variants",
+                "table_name": "rex_warehouse_article_variant",
                 "prio": 6,
                 "type_id": "value",
                 "type_name": "html",
@@ -128,7 +128,7 @@
                 "html": "<div style=\"display:none\">"
             },
             {
-                "table_name": "rex_wh_article_variants",
+                "table_name": "rex_warehouse_article_variant",
                 "prio": 7,
                 "type_id": "value",
                 "type_name": "checkbox",
@@ -145,7 +145,7 @@
                 "output_values": "\u25a2,\u25a3"
             },
             {
-                "table_name": "rex_wh_article_variants",
+                "table_name": "rex_warehouse_article_variant",
                 "prio": 8,
                 "type_id": "value",
                 "type_name": "prio",
@@ -162,7 +162,7 @@
                 "scope": "parent_id"
             },
             {
-                "table_name": "rex_wh_article_variants",
+                "table_name": "rex_warehouse_article_variant",
                 "prio": 9,
                 "type_id": "value",
                 "type_name": "be_manager_relation",
@@ -174,7 +174,7 @@
                 "not_required": "",
                 "attributes": "",
                 "notice": "",
-                "table": "rex_wh_articles",
+                "table": "rex_warehouse_article",
                 "empty_option": "1",
                 "size": "",
                 "field": "name_1",
@@ -184,7 +184,7 @@
                 "filter": ""
             },
             {
-                "table_name": "rex_wh_article_variants",
+                "table_name": "rex_warehouse_article_variant",
                 "prio": 10,
                 "type_id": "value",
                 "type_name": "html",
