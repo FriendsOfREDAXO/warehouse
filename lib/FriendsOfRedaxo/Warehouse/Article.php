@@ -6,13 +6,13 @@ use rex_config;
 
 class Article extends \rex_yform_manager_dataset {
 
-    public static function get_query() {
+    public static function get_query() {    
         $qry = self::query();
         $qry->whereRaw('(stock_item = 0 OR (stock_item = 1 AND stock > 0))');
         return $qry;
     }
 
-    public function get_val($key) {
+    public function get_val(string $key) :mixed {
         if (isset($this->{$key})) {
             return $this->{$key};
         } else {
@@ -20,7 +20,7 @@ class Article extends \rex_yform_manager_dataset {
         }
     }
 
-    public function get_art_id() {
+    public function get_art_id() :int {
         if (isset($this->var_id)) {
             return $this->id . '__' . $this->var_id;
         } else {
@@ -28,7 +28,7 @@ class Article extends \rex_yform_manager_dataset {
         }
     }
 
-    public function get_name() {
+    public function get_name() :string {
         if (isset($this->var_id)) {
             return $this->art_name . ($this->var_name ?  ' - ' . $this->var_name : '');
         } else {
@@ -36,7 +36,7 @@ class Article extends \rex_yform_manager_dataset {
         }
     }
 
-    public function get_image() {
+    public function get_image() :string {
         if (isset($this->var_id) && $this->var_image) {
             return $this->var_image;
         } else {
@@ -81,7 +81,7 @@ class Article extends \rex_yform_manager_dataset {
      * @param type $article_id
      * @return type
      */
-    public static function get_article($article_id = '') {
+    public static function get_article(int $article_id = '') :self{
         if (strpos($article_id, '__')) {
             $art_id = explode('__', $article_id);
         } else {
