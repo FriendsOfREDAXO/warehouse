@@ -3,6 +3,7 @@
 namespace FriendsOfRedaxo\Warehouse;
 
 use rex_clang;
+use rex_yform_value_select_sql_tree;
 
 
 class Category extends \rex_yform_manager_dataset {
