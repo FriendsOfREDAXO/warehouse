@@ -7,9 +7,10 @@ use rex_config;
 
 class Article extends \rex_yform_manager_dataset {
 
-    public static function get_query() {
+    public static function get_query($alias = '') {
         $qry = self::query();
-        $qry->whereRaw('(stock_item = 0 OR (stock_item = 1 AND stock > 0))');
+        $alias = (!empty($alias)) ? $alias.'.' : '';
+        $qry->whereRaw('('.$alias.'stock_item = 0 OR ('.$alias.'stock_item = 1 AND '.$alias.'stock > 0))');
         return $qry;
     }
 
@@ -104,7 +105,7 @@ class Article extends \rex_yform_manager_dataset {
     public static function get_articles($cat_id = 0, $article_id = [], $find_one = false, $with_attributes = false, $articles_only = false) {
         $clang = rex_clang::getCurrentId();
         if ($articles_only) {
-            $data = self::get_query()
+            $data = self::get_query('art')
                 ->alias('art')
                 ->leftJoin('rex_warehouse_categories', 'cat', 'art.category_id', 'cat.id')
                 ->select('art.name_' . $clang, 'art_name')
@@ -116,7 +117,7 @@ class Article extends \rex_yform_manager_dataset {
                 ->where('art.status',1)
             ;
         } else {
-            $data = self::get_query()
+            $data = self::get_query('art')
                 ->alias('art')
                 ->leftJoin('rex_warehouse_article_variants', 'var', 'art.id', 'var.parent_id')
                 ->leftJoin('rex_warehouse_categories', 'cat', 'art.category_id', 'cat.id')
