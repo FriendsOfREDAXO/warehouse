@@ -140,12 +140,12 @@ $warehouse_prop = rex::getProperty('warehouse_prop');
 
                     <div class="uk-grid-small uk-child-width-1-1" uk-grid>
                         <div>
-                            <?= $main_article['longtext_1'] ?>
+                            <?= $main_article['longtext_' . rex_clang::getCurrentId()] ?>
 
                             <?php $specifications = json_decode($this->article->{'specifications_' . rex_clang::getCurrentId()}) ?>
                             <table class="uk-table uk-table-divider uk-table-justify uk-table-responsive">
                                 <tbody>
-                                    <?php foreach ($specifications as $speci) : ?>
+                                    <?php if (is_array($specifications)) foreach ($specifications as $speci) : ?>
                                         <tr>
                                             <th class="uk-width-medium"><?= $speci[0] ?></th>
                                             <td class="uk-table-expand"><?= $speci[1] ?></td>
