@@ -22,7 +22,7 @@ if (rex::isBackend()) {
                 'rex_warehouse_articles',
                 'rex_warehouse_categories',
                 'rex_warehouse_orders',
-                'rex_warehouse_article_variant',
+                'rex_warehouse_article_variants',
                 'rex_warehouse_attributes',
                 'rex_warehouse_attributegroups'
             ];
