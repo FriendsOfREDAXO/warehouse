@@ -8,11 +8,11 @@ if (rex::isBackend()) {
 } else {
     $warehouse_userdata = FriendsOfRedaxo\Warehouse\Warehouse::get_user_data();
     $cart = FriendsOfRedaxo\Warehouse\Warehouse::get_cart();
-    dump($cart);
+//    dump($cart);
     $fragment = new rex_fragment();
     $fragment->setVar('cart', $cart);
     $fragment->setVar('warehouse_userdata', $warehouse_userdata);
-    $warehouse_cart_text = $fragment->parse('warehouse_order_summary_page.php');
+    $warehouse_cart_text = $fragment->parse('warehouse/order_summary_page.php');
 
     $yf = new rex_yform();
     $yf->setObjectparams('form_action', rex_getUrl());
@@ -51,19 +51,17 @@ if (rex::isBackend()) {
 
 
     if (in_array($warehouse_userdata['payment_type'],['invoice','prepayment','direct_debit'])) {
-        $yf->setActionField('callback', ['warehouse::save_order']);
+        $yf->setActionField('callback', ['FriendsOfRedaxo\Warehouse\Warehouse::save_order']);
         foreach (explode(',', rex_config::get('warehouse', 'order_email')) as $email) {
             $yf->setActionField('tpl2email', [rex_config::get('warehouse', 'email_template_seller'), $email]);
         }
         $yf->setActionField('tpl2email', [rex_config::get('warehouse', 'email_template_customer'), 'email']);
-        $yf->setActionField('callback', ['warehouse::clear_cart']);
+        $yf->setActionField('callback', ['FriendsOfRedaxo\Warehouse\Warehouse::clear_cart']);
         $yf->setActionField('redirect', [rex_config::get('warehouse', 'thankyou_page')]);
     } elseif ($warehouse_userdata['payment_type'] == 'paypal') {
         $yf->setActionField('redirect', [rex_config::get('warehouse', 'paypal_page_start')]);
-    } 
+    }
 
 }
 
-?>
-
-<?= $yf->getForm() ?>
+echo $yf->getForm();

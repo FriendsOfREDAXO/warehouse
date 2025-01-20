@@ -151,8 +151,8 @@ if (count($current_payment_types) > 1) {
             $yf->setValueField('text',['direct_debit_name','Ggf. abweichender Kontoinhaber',$userdata['direct_debit_name'],'[no_db]']);
             $yf->setValueField('html',['','</div>']);
         $yf->setValueField('html',['','</div>']);
-        $yf->setValidateField('customfunction',['iban','warehouse_helper::validate_sub_values',['payment_type','direct_debit'],'Bitte füllen Sie alle markierten Felder aus.']);
-        $yf->setValidateField('customfunction',['bic','warehouse_helper::validate_sub_values',['payment_type','direct_debit'],'Bitte füllen Sie alle markierten Felder aus.']);
+        $yf->setValidateField('customfunction',['iban','FriendsOfRedaxo\Warehouse\Helper::validate_sub_values',['payment_type','direct_debit'],'Bitte füllen Sie alle markierten Felder aus.']);
+        $yf->setValidateField('customfunction',['bic','FriendsOfRedaxo\Warehouse\Helper::validate_sub_values',['payment_type','direct_debit'],'Bitte füllen Sie alle markierten Felder aus.']);
     }
 
 } else {
@@ -171,13 +171,12 @@ $yf->setValidateField('empty',['firstname','Bitte füllen Sie alle markierten Fe
 $yf->setValidateField('empty',['email','Bitte füllen Sie alle markierten Felder aus']);
 $yf->setValidateField('email',['email','Bitte geben Sie eine gültige E-Mail Adresse ein']);
 
-$yf->setActionField('callback', ['warehouse::save_userdata_in_session']);
+$yf->setActionField('callback', ['FriendsOfRedaxo\Warehouse\Warehouse::save_userdata_in_session']);
 $yf->setActionField('redirect',[rex_config::get('warehouse','order_page')]);
 
 $form = $yf->getForm();
 
 $fragment = new rex_fragment();
 $fragment->setVar('form',$form);
-echo $fragment->parse('warehouse_checkout_page.php');
+echo $fragment->parse('warehouse/checkout_page.php');
 
-?>

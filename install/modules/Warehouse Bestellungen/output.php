@@ -19,5 +19,3 @@ if ($order_id = rex_get('order_id','int')) {
     $fragment->setVar('orders',$orders);
     echo $fragment->parse('warehouse_orders_page.php');    
 }
-
-?>
