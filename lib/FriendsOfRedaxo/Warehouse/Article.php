@@ -1,6 +1,7 @@
 <?php
 namespace FriendsOfRedaxo\Warehouse;
 
+use rex;
 use rex_clang;
 use rex_config;
 
@@ -172,8 +173,51 @@ class Article extends \rex_yform_manager_dataset {
         $query->where('parent_id',$this->id)->orderBy('prio');
         return $query->find();        
     }
-  
-    
-    
+
+
+    public static function get_attributes_for_article($article) {
+
+        $clang = rex_clang::getCurrentId();
+
+        $atg = self::query(rex::getTable('warehouse_attributegroups'))
+            ->where('id', $article->attributegroup_id)
+            ->findOne()
+        ;
+
+        if (!$atg) {
+            return [];
+        }
+
+        $at = self::query(rex::getTable('warehouse_attributes'))
+            ->alias('at')
+            ->whereRaw('FIND_IN_SET (id, "'.$atg->attributes.'")')
+            ->find()
+        ;
+
+        $outdata = [];
+
+        foreach ($at as $k=>$attr) {
+            $data = self::query(rex::getTable('warehouse_attribute_values'))
+                ->alias('av')
+                ->leftJoin('rex_warehouse_attributes', 'at', 'av.attribute_id', 'at.id')
+                ->select('at.name_' . $clang, 'at_name')
+                ->select('at.unit', 'at_unit')
+                ->select('at.type', 'at_type')
+                ->select('at.orderable', 'at_orderable')
+                ->select('at.whattrid', 'at_whattrid')
+                ->where('av.attribute_id', $attr->id)
+                ->where('av.article_id', $article->id)
+                ->orderBy('at.prio')
+                ->orderBy('av.prio')
+                ->find();
+            $outdata[] = [
+                'attr'=>$attr->getData(),
+                'data'=>$data
+            ];
+        }
+
+        return $outdata;
+    }
+
 
 }
