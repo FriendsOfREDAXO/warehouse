@@ -5,16 +5,16 @@
  *
  * @author jan.kristinus[at]redaxo[dot]org Jan Kristinus
  * @author <a href="http://www.yakamara.de">www.yakamara.de</a>
- * 
+ *
  * nach yform/values kopieren - kann direkt verwendet werden um Datensätze zu verbinden
- * 
+ *
  *  ===================================================================================
  *  ======================== ! ! ! ! WICHTIGER HINWEIS ! ! ! ! ========================
  *  ===================================================================================
  *  Dieses Widget funktioniert nur im Zusammenhang mit einem weiteren Feld, welches die
  *  Auswahl zur Verfügung stellt!
- * 
- * 
+ *
+ *
  */
 
 class rex_yform_value_widget_attributes extends rex_yform_value_abstract
@@ -23,25 +23,25 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
     {
         static $counter = 0;
         ++$counter;
-        
+
         $values = $this->fetchValues();
 
 //        dump($values);
 
         $values = $this->rearange_widget_values($values);
-       
+
         if (!$values) {
             $values = $this->load_values();
         }
-        
+
         if ($this->needsOutput()) {
-            $this->params['form_output'][$this->getId()] = 'field_output';            
+            $this->params['form_output'][$this->getId()] = 'field_output';
             $name = $this->getFieldName();
-            
+
             $attributes_for_article = $this->get_attributes_for_article();
-            
+
             $formElements = [];
-            
+
             // Ausgabe erstellen
             foreach ($attributes_for_article as $i=>$attr) {
                 $n = [];
@@ -49,9 +49,9 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
                 $n['label'] .=  $attr['unit'] ? " [".$attr['unit']."]" : '';
                 $n['label'] .= '</label>';
                 $n['note'] = $attr['notice'];
-                
+
                 // SELECT Feld - derzeit nur multiple - kein single
-                if ($attr['type'] == 'SELECT') {                    
+                if ($attr['type'] == 'SELECT') {
                     $sel = new rex_select();
                     $sel->setId('widget_attributes_'.$i);
                     $sel->setName($name."[$i][]");
@@ -65,11 +65,11 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
                     }
                     $n['field'] = $sel->get();
                 } elseif ($attr['type'] == 'WIDGET') {
-                // WIDGET 
+                // WIDGET
                 // - Attribute value (z.B. gr47)
                 // - Attribute label (z.B. Größe 47)
                 // - Attribute Price (Mehr-/Minderkosten vom Hauptartikel)
-                    
+
                     $n['field'] = '';
                     $n['field'] .= '<input type="hidden" name="'.$name."[$i][widgettype]".'" value="WIDGET">';
                     $n['field'] .= '<table class="sortable table table-bordered">';
@@ -78,7 +78,7 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
                     $n['field'] .= '</thead><tbody>';
 
 //                    dump($values);
-                    
+
                     if (isset($values[$i]) && is_array($values[$i])) {
                         foreach ($values[$i] as $v) {
                             $n['field'] .= '<tr><td>'
@@ -89,10 +89,10 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
                                     . '<option value="1" ' . ($v['available'] == "1" ? ' selected="selected" ' : '') .' >lieferbar</option>'
                                     . '<option value="0" ' . ($v['available'] == "0" ? ' selected="selected" ' : '') .' >nicht lieferbar</option>'
                                 . '</select>'
-                                . '</td><td><a class="row_add rex-icon rex-icon-add"></a> <a class="rex-icon rex-icon-delete row_del"></a></td></tr>';                        
+                                . '</td><td><a class="row_add rex-icon rex-icon-add"></a> <a class="rex-icon rex-icon-delete row_del"></a></td></tr>';
                         }
                     }
-                    
+
                     if (!isset($values[$i]) || !$values[$i]) {
                         $n['field'] .= '<tr><td>'
                                 . '<input type="text" id="widget_attributes_'.$i.'" name="'.$name."[$i][value][]".'" />'
@@ -102,15 +102,15 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
                                 . '<option value="1">lieferbar</option>'
                                 . '<option value="0">nicht lieferbar</option>'
                                 . '</select>'
-                            . '</td><td><a class="row_add rex-icon rex-icon-add"></a> <a class="rex-icon rex-icon-delete row_del"></a></td></tr>';                        
+                            . '</td><td><a class="row_add rex-icon rex-icon-add"></a> <a class="rex-icon rex-icon-delete row_del"></a></td></tr>';
                     }
-                    
+
                     $n['field'] .= '</tbody></table>';
-                    
+
 
 //                    $n['field'] = '<textarea class="form-control" type="text" id="widget_attributes_'.$i.'" name="'.$name."[$i]".'">'.$values[$i].'</textarea>';
-                
-                    
+
+
                 // TEXT Input Feld
                 } else {
                     $n['field'] = '<input class="form-control" type="text" id="widget_attributes_'.$i.'" name="'.$name."[$i]".'" value="' . $values[$i] . '" />';
@@ -119,28 +119,28 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
             }
             $fragment = new rex_fragment();
             $fragment->setVar('elements', $formElements, false);
-            
-            
-            
+
+
+
             $this->params['form_output'][$this->getId()] = $fragment->parse('core/form/form.php');
-            
-            
+
+
         }
 
 //        $this->params['value_pool']['email'][$this->getElement(1)] = $this->getValue();
 //        $this->params['value_pool']['sql'][$this->getElement(1)] = json_encode($this->getValue());
-        
+
         if ($this->params['send'] && $this->fetchValues()) {
             $this->save_values();
         }
 
-        
-        
+
+
     }
-    
+
     /**
      * Liest die Werte aus $this->getValue und wendet htmlspecialchars an
-     * 
+     *
      * @return array
      */
     private function fetchValues() {
@@ -164,19 +164,19 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
                     $values[$k] = $v;
                 }
             }
-            return $values;        
+            return $values;
         } else {
             return [];
         }
     }
-    
+
     /**
      * Liest aus dem aktuellen Artikel die zugeordnete Attributgruppe und liest aus der Attributgruppe die Attribute
-     * 
+     *
      * @return array
      */
     private function get_attributes_for_article () {
-        
+
         // passendes Feld mit dem Wert der Attributgruppe suchen
         foreach ($this->params['values'] as $v) {
             if ($v->name == 'attributegroup_id') {
@@ -194,16 +194,16 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
 
         $sql = rex_sql::factory();
         $r2 = [];
-        
+
         foreach (explode(',',$r1[0]['attributes']) as $v) {
             $sql->setQuery($qry,['id'=>$v]);
             $r2[] = $sql->getArray()[0];
         }
-        
-        return $r2;        
+
+        return $r2;
     }
-    
-    
+
+
     /**
      * Speichert die Werte in der Tabelle
      */
@@ -218,7 +218,7 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
         $sql = rex_sql::factory()->setTable($attribute_value_table);
 
         $sql->setWhere('article_id = :article_id',['article_id'=>$main_id])->delete();
-        
+
 
         /*
         // Setzt auto_increment id zurück
@@ -228,7 +228,7 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
                 ALTER TABLE $attribute_value_table AUTO_INCREMENT =1;";
         $sql->setQuery($qry);
         */
-        
+
         foreach ($attributes_for_article as $k=>$attr) {
             $sql->setTable($this->elements['table_attributevalues']);
             $value = '';
@@ -243,7 +243,7 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
                     ];
                     $insert = array_merge($insert,$_val);
                     $sql->setValues($insert);
-                    $sql->insert();                    
+                    $sql->insert();
                 }
             } else {
                 if (isset($values[$k])) {
@@ -261,10 +261,10 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
                 $sql->insert();
             }
         }
-//        exit; 
+//        exit;
     }
-    
-    
+
+
     private function get_widget_values ($values) {
         $vals = [];
         $k = 0;
@@ -276,14 +276,14 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
         }
         return $vals;
     }
-    
-    
+
+
     /**
      * Lädt die gespeicherten Werte
      */
     private function load_values() {
 //        return [];
-        
+
         $main_id = $this->params['main_id'];
         $attributes_for_article = $this->get_attributes_for_article();
         $attribute_value_table = $this->elements['table_attributevalues'];
@@ -300,15 +300,15 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
                     if ($v['attribute_id'] == $attr['id']) {
                         $values[$k][] = $v;
                     }
-                }                
+                }
             } else {
                 $values[$k] = $res[$k]['value'];
             }
         }
         $this->setValue($values);
-        return $values;        
+        return $values;
     }
-    
+
     private function rearange_widget_values($values) {
         $vals = [];
         foreach ($values as $k=>$v) {
@@ -321,15 +321,15 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
                     } else {
 //                        $vals[$k][$_k] = $_v;
                     }
-                }                
+                }
             } else {
                 $vals[$k] = $v;
             }
         }
         return $vals;
     }
-    
-    
+
+
     public function getDefinitions() : array
     {
         return [
@@ -348,14 +348,14 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
             'dbtype' => 'none',
         ];
     }
-    
+
     /**
-     * 
+     *
      * @param type $params
      */
     public static function getListValues($table, $field_name, $value) : array {
         $qry = "SELECT id, $field_name name FROM `$table` WHERE id = :id";
-        
+
         $sql = rex_sql::factory();
         $res = [];
         foreach (explode(',',$value) as $val) {
@@ -364,14 +364,14 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
         }
         return $res;
     }
-    
+
     public static function getListValue($params)
-    {   
+    {
         $table = $params['params']['field']['table'];
         $field_name = $params['params']['field']['field_name'];
         $value = $params['subject'];
         $qry = "SELECT id, $field_name name FROM `$table` WHERE id = :id";
-        
+
         $sql = rex_sql::factory();
         $res = [];
         $out = [];
@@ -379,11 +379,11 @@ class rex_yform_value_widget_attributes extends rex_yform_value_abstract
             $sql->setQuery($qry,['id'=>$val]);
             $res = $sql->getArray()[0];
             $out[] = $res['name'].' [id='.$res['id'].']';
-            
+
         }
-        
+
         return implode('<br>',$out);
-    }    
+    }
 
 
     public static function getSearchField($params)
