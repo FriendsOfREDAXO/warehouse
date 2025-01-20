@@ -1,6 +1,5 @@
 <?php
 
-
 if (rex::getUser()->isAdmin()) {
 
     $content = '';

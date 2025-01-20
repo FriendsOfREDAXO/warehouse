@@ -4,14 +4,89 @@ author: Friends Of REDAXO
 supportpage: https://github.com/friendsofredaxo/warehouse
 
 page:
-    title: Warehouse
-    perm: warehouse[params]
-    pjax: true    
+    title: translate:warehouse_settings
+    perm: warehouse[]
+    pjax: true
+    block: warehouse
     icon: rex-icon fa-shopping-cart
     subpages:
-        settings: { title: 'Einstellungen' }
-        setup: { title: 'Setup', perm: admin }
-        info: { title: 'Info', itemclass: pull-right }
+        settings:
+            title: translate:warehouse_settings_shop
+            perm: warehouse[settings]
+            icon: rex-icon fa-cog
+            subpages:
+                general:
+                    title: translate:warehouse_settings_general
+                    perm: warehouse[settings]
+                    icon: rex-icon fa-wrench
+                tax:
+                    title: translate:warehouse_settings_tax
+                    perm: warehouse[settings]
+                    icon: rex-icon fa-percent
+                discount:
+                    title: translate:warehouse_settings_discount
+                    perm: warehouse[settings]
+                    icon: rex-icon fa-tag
+        shipping:
+            title: translate:warehouse_shipping
+            perm: warehouse[shipping]
+            icon: rex-icon fa-truck
+            subpages:
+                settings:
+                    title: translate:warehouse_settings_shipping
+                    perm: warehouse[shipping]
+                    icon: rex-icon fa-cogs
+                zones:
+                    title: translate:warehouse_zones
+                    perm: warehouse[shipping]
+                    icon: rex-icon fa-globe
+                countries:
+                    title: translate:warehouse_countries
+                    perm: warehouse[shipping]
+                    icon: rex-icon fa-flag
+                counties:
+                    title: translate:warehouse_counties
+                    perm: warehouse[shipping]
+                    icon: rex-icon fa-map-marker
+        payment:
+            title: translate:warehouse_settings_payment
+            perm: warehouse[payment]
+            icon: rex-icon fa-credit-card
+            subpages:
+                paypal:
+                    title: translate:warehouse_settings_paypal
+                    perm: warehouse[payment]
+                    icon: rex-icon fa-paypal
+                giropay:
+                    title: translate:warehouse_settings_giropay
+                    perm: warehouse[payment]
+                    icon: rex-icon fa-euro
+                wallee:
+                    title: translate:warehouse_settings_wallee
+                    perm: warehouse[payment]
+                    icon: rex-icon fa-money
+        setup:
+            title: translate:warehouse_settings_system
+            perm: warehouse[setup]
+            icon: rex-icon fa-wrench
+            subpages:
+                domain:
+                    title: translate:warehouse_settings_domain
+                    perm: warehouse[setup]
+                    icon: rex-icon fa-sitemap
+                email:
+                    title: translate:warehouse_settings_email
+                    perm: warehouse[setup]
+                    icon: rex-icon fa-envelope
+                install:
+                    title: translate:warehouse_settings_install
+                    perm: admin
+                    icon: rex-icon fa-download
+        info:
+            title: translate:warehouse_info
+            perm: warehouse[info]
+            icon: rex-icon fa-info-circle
+            itemclass: pull-right
 
 requires:
     redaxo: '^5.17'
