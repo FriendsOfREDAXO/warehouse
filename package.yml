@@ -82,9 +82,9 @@ page:
                     title: translate:warehouse_settings_install
                     perm: admin
                     icon: rex-icon fa-download
-        info:
-            title: translate:warehouse_info
-            perm: warehouse[info]
+        docs:
+            title: translate:warehouse_docs
+            perm: warehouse[docs]
             icon: rex-icon fa-info-circle
             itemclass: pull-right
 
