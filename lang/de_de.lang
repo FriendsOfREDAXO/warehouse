@@ -88,12 +88,12 @@ warehouse_article_tax = Steuersatz
 # V2.0.0
 # Tabellennamen
 
-warehouse_article.tablename = Artikel
-warehouse_article_variant.tablename = Varianten
-warehouse_category.tablename = Kategorien
-warehouse_order.tablename = Bestellungen
-warehouse_country.tablename = Länder
-warehouse_shipping.tablename = Versand
+warehouse_article.tablename = 📦 Artikel
+warehouse_article_variant.tablename = 📦 Varianten
+warehouse_category.tablename = 📦 Kategorien
+warehouse_order.tablename = 📦 Bestellungen
+warehouse_country.tablename = 📦 Länder
+warehouse_shipping.tablename = 📦 Versand
 
 # V2.0.0
 # Backend-Seiten
