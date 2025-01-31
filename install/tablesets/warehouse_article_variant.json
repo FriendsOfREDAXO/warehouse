@@ -3,7 +3,7 @@
         "table": {
             "status": 1,
             "table_name": "rex_warehouse_article_variant",
-            "name": "Artikelvarianten",
+            "name": "translate:warehouse_article_variant.tablename",
             "description": "",
             "list_amount": 50,
             "list_sortfield": "prio",
