@@ -1,20 +1,17 @@
 <?php
 
-$tables = [
-    'warehouse_articles',
-    'warehouse_article_variants',
-    'warehouse_categories',
-    'warehouse_attributes',
-    'warehouse_attribute_values',
-    'warehouse_attributegroups',
-    'warehouse_orders'    
+$table_names = [
+    'warehouse_article',
+    'warehouse_article_variant',
+    'warehouse_category',
+    'warehouse_order',
+    'warehouse_country',
+    'warehouse_shipping'
 ];
 
-$sql = rex_sql::factory();
-
-foreach ($tables as $table) {
-    $sql->setQuery('DELETE FROM `'.rex::getTable('yform_table').'` WHERE table_name = "'.rex::getTable($table).'"');
-    $sql->setQuery('DELETE FROM `'.rex::getTable('yform_field').'` WHERE table_name = "'.rex::getTable($table).'"');
-    $sql->setQuery('DELETE FROM `'.rex::getTable('yform_history').'` WHERE table_name = "'.rex::getTable($table).'"');
-    rex_sql_table::get(rex::getTable($table))->drop();
+if (rex_addon::get('yform')->isAvailable()) {
+    foreach ($table_names as $table_name) {
+        rex_yform_manager_table_api::removeTable($table_name);
+    }
+    rex_yform_manager_table::deleteCache();
 }
