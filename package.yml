@@ -88,6 +88,27 @@ page:
             icon: rex-icon fa-info-circle
             itemclass: pull-right
 
+pages:
+    article:
+        block: warehouse
+        title: translate:warehouse_article
+    article_variant:
+        block: warehouse
+        title: translate:warehouse_article_variant
+    category:
+        block: warehouse
+        title: translate:warehouse_category
+    order:
+        block: warehouse
+        title: translate:warehouse_order
+    country:
+        block: warehouse
+        title: translate:warehouse_country
+    shipping:
+        block: warehouse
+        title: translate:warehouse_shipping
+
+
 requires:
     redaxo: '^5.17'
     php:

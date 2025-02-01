@@ -6,12 +6,14 @@
  * @author jan.kristinus[at]redaxo[dot]org Jan Kristinus
  * @author <a href="http://www.yakamara.de">www.yakamara.de</a>
  */
-class rex_yform_value_select_sql_tree extends rex_yform_value_abstract {
+class rex_yform_value_select_sql_tree extends rex_yform_value_abstract
+{
 
     public static $getListValues = [];
     private $query;
 
-    public function enterObject() {
+    public function enterObject()
+    {
         $multiple = $this->getElement('multiple') == 1;
 
         // ----- query
@@ -32,7 +34,7 @@ class rex_yform_value_select_sql_tree extends rex_yform_value_abstract {
 
             $values = $this->getValue();
             if (!is_array($values)) {
-                $values = explode(',', $values);
+                $values = explode(',', $values ?? "");
             }
 
             $real_values = [];
@@ -94,11 +96,13 @@ class rex_yform_value_select_sql_tree extends rex_yform_value_abstract {
         }
     }
 
-    public function getDescription() : string {
+    public function getDescription() : string
+    {
         return 'select_sql_tree|name|label| select id,name from table order by name | [defaultvalue] | [no_db] |1/0 Leeroption|Leeroptionstext|1/0 Multiple Feld|selectsize';
     }
 
-    public function getDefinitions() : array {
+    public function getDefinitions() : array
+    {
         return [
             'type' => 'value',
             'name' => 'select_sql_tree',
@@ -123,7 +127,8 @@ class rex_yform_value_select_sql_tree extends rex_yform_value_abstract {
         ];
     }
 
-    public static function getListValue($params) : string {
+    public static function getListValue($params) : string
+    {
         $return = [];
 
         $query = $params['params']['field']['query'];
@@ -173,23 +178,26 @@ class rex_yform_value_select_sql_tree extends rex_yform_value_abstract {
         return implode('<br />', $return);
     }
 
-    public static function getSearchField($params) {
-//        dump($params);
+    public static function getSearchField($params)
+    {
+        //        dump($params);
         $options = [];
         $options['(empty)'] = '(empty)';
         $options['!(empty)'] = '!(empty)';
 
         $options_sql = rex_sql::factory();
-//        $options_sql->setDebug(true);
-        $qry = explode('WHERE',$params['field']['query']);
-//        $options_sql->setQuery($params['field']['query']);
+        //        $options_sql->setDebug(true);
+        $qry = explode('WHERE', $params['field']['query']);
+        //        $options_sql->setQuery($params['field']['query']);
         $options_sql->setQuery($qry[0]);
 
         foreach ($options_sql->getArray() as $t) {
             $options[$t['id']] = $t['name'];
         }
 
-        $params['searchForm']->setValueField('select', [
+        $params['searchForm']->setValueField(
+            'select',
+            [
             'name' => $params['field']->getName(),
             'label' => $params['field']->getLabel(),
             'options' => $options,
@@ -200,7 +208,8 @@ class rex_yform_value_select_sql_tree extends rex_yform_value_abstract {
         );
     }
 
-    public static function getSearchFilter($params) {
+    public static function getSearchFilter($params)
+    {
         $sql = rex_sql::factory();
         $field = $params['field']->getName();
         $values = (array) $params['value'];
@@ -231,32 +240,33 @@ class rex_yform_value_select_sql_tree extends rex_yform_value_abstract {
         }
     }
 
-    public function sqlTree($parent_id = 0, $level = 0, $depth = 0) {
+    public function sqlTree($parent_id = 0, $level = 0, $depth = 0)
+    {
 
         $return = array();
         $level++;
 
         $sql = rex_sql::factory();
-//        $sql->setDebug(1);
+        //        $sql->setDebug(1);
         $sql->setQuery(str_replace('|parent_id|', $parent_id, $this->query));
 
         $res = $sql->getArray();
         
-        if ($res != NULL) {
+        if ($res != null) {
 
             foreach ($res as $t) {
                 $v = str_repeat('- ', $level - 1) . $t['name'];
                 $k = $t['id'];
                 
-                $return[] = array_merge($t,array('id' => $k, 'name' => $v, 'name_raw' => $t['name']));
+                $return[] = array_merge($t, array('id' => $k, 'name' => $v, 'name_raw' => $t['name']));
                 /*
-                
+
                 if (isset($t['image'])) {
                     $return[] = array('id' => $k, 'name' => $v, 'name_raw' => $t['name'], 'image'=>$t['image']);
                 } else {
                     $return[] = array('id' => $k, 'name' => $v, 'name_raw' => $t['name']);
                 }
-                 * 
+                 *
                  */
                 if ($depth == 0 || $level < $depth) {
                     $return = array_merge($return, $this->sqlTree($k, $level, $depth));
@@ -267,7 +277,8 @@ class rex_yform_value_select_sql_tree extends rex_yform_value_abstract {
         return $return;
     }
     
-    public function set_query($query) {
+    public function set_query($query)
+    {
         $this->query = $query;
     }
     
