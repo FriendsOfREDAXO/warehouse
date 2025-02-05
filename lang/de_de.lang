@@ -62,6 +62,7 @@ warehouse_article_media = Medien
 warehouse_article_stock = Lager
 warehouse_article_variant_categories = Varianten und Kategorie Zuordnung
 warehouse_article_variants = Artikelvarianten [Verknüfungen]
+warehouse_article_variants_notice = Die Artikelvarianten werden in einem separaten Popup-Window editiert
 warehouse_article_attributes = Attribute
 warehouse_article_price_tax_shipping = Preis, Steuern & Versand
 warehouse_article_number = Artikelnummer
@@ -83,4 +84,26 @@ warehouse_article_pdf_downloads = PDF zum Download
 warehouse_article_price = Preis
 warehouse_article_price_text = Preis Zusatz [Text]
 warehouse_article_relay_price = Staffelpreis
+warehouse_article_relay_price_notice = Preis ab Menge ...
+warehouse_article_relay_custom_price = Freier Preis
+warehouse_article_relay_custom_price_notice = Wenn die Checkbox angeklickt ist, kann der Preis beim Artikel vom Kunden eingetragen werden (z.B. bei Gutscheinen oder Spenden)
+warehouse_article_add_parent_price = Artikelpreis zurechnen
+warehouse_article_add_parent_price_notice = Wenn die Checkbox ausgewählt ist, wird der Preis des Basisartikels zum Variantenpreis hinzugerechnet
 warehouse_article_tax = Steuersatz
+warehouse_article_ycom_access = Sichtbar für Mitglieder der Gruppe
+warehouse_article_basearticle = Basisartikel
+warehouse_article_variantid = VariantId
+
+warehouse_article_is_store_article = Lagerartikel
+warehouse_article_is_store_article_notice = Wird die Checkbox angehakt, handelt es sich um einen Lagerartikel und der Bestand wird ausgewertet. Bei einem Bestand von 0 wird der Artikel im Frontend nicht mehr angezeigt
+warehouse_article_variant_is_store_article = Lagerartikel (optional von abweichend vom Basisartikel)
+warehouse_article_store_count = Lagerbestand
+warehouse_article_store_count_notice = Der Wert wird nur ausgewertet, wenn die Checkbox "Lagerartikel" angewählt ist
+
+warehouse_article_attributegroups = Attributgruppe
+warehouse_article_attributegroups_notice = Bitte erst eine Attributegruppe auswählen und speichern / übernehmen. Erst nach dem Speichern erscheinen die Attribute-Eingabe-Felder der gewünschten Attributegruppe.
+
+warehouse_category_name = Bezeichnung
+warehouse_category_description = Beschreibung [langer Text]
+warehouse_category_parentcat = Elternkategorie
+warehouse_category_image = Kategoriebild
