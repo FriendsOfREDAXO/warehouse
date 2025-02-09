@@ -7,18 +7,24 @@ page:
     title: translate:warehouse_settings
     perm: warehouse[]
     pjax: true
-    block: warehouse
+    block: system
+    prio: 1
     icon: rex-icon fa-shopping-cart
     subpages:
         settings:
             title: translate:warehouse_settings_shop
             perm: warehouse[settings]
             icon: rex-icon fa-cog
+            itemclass: pull-right
             subpages:
                 general:
                     title: translate:warehouse_settings_general
                     perm: warehouse[settings]
                     icon: rex-icon fa-wrench
+                domain:
+                    title: translate:warehouse_settings_domain
+                    perm: warehouse[setup]
+                    icon: rex-icon fa-sitemap
                 tax:
                     title: translate:warehouse_settings_tax
                     perm: warehouse[settings]
@@ -27,6 +33,15 @@ page:
                     title: translate:warehouse_settings_discount
                     perm: warehouse[settings]
                     icon: rex-icon fa-tag
+                shipping:
+                    title: translate:warehouse_shipping
+                    perm: warehouse[shipping]
+                    icon: rex-icon fa-truck
+                setup:
+                    title: translate:warehouse_settings_system
+                    perm: warehouse[setup]
+                    icon: rex-icon fa-cogs
+
         shipping:
             title: translate:warehouse_shipping
             perm: warehouse[shipping]
@@ -44,10 +59,6 @@ page:
                     title: translate:warehouse_countries
                     perm: warehouse[shipping]
                     icon: rex-icon fa-flag
-                counties:
-                    title: translate:warehouse_counties
-                    perm: warehouse[shipping]
-                    icon: rex-icon fa-map-marker
         payment:
             title: translate:warehouse_settings_payment
             perm: warehouse[payment]
@@ -65,23 +76,6 @@ page:
                     title: translate:warehouse_settings_wallee
                     perm: warehouse[payment]
                     icon: rex-icon fa-money
-        setup:
-            title: translate:warehouse_settings_system
-            perm: warehouse[setup]
-            icon: rex-icon fa-wrench
-            subpages:
-                domain:
-                    title: translate:warehouse_settings_domain
-                    perm: warehouse[setup]
-                    icon: rex-icon fa-sitemap
-                email:
-                    title: translate:warehouse_settings_email
-                    perm: warehouse[setup]
-                    icon: rex-icon fa-envelope
-                install:
-                    title: translate:warehouse_settings_install
-                    perm: admin
-                    icon: rex-icon fa-download
         docs:
             title: translate:warehouse_docs
             perm: warehouse[docs]
@@ -104,9 +98,6 @@ pages:
     country:
         block: warehouse
         title: translate:warehouse_country
-    shipping:
-        block: warehouse
-        title: translate:warehouse_shipping
 
 
 requires:
@@ -120,13 +111,7 @@ requires:
 default_config:
     store_name: 
     store_country_code: "DE"
-    cart_page:
-    address_page:
-    order_page:
-    thankyou_page:
-    payment_error: 
-    shippinginfo_page: 
-    my_orders_page:
+
     currency: "EUR"
     currency_symbol: "€"
     country_codes: "DE,AT,CH"

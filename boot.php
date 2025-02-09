@@ -13,6 +13,7 @@ use rex_article;
 use rex_config;
 use rex_yrewrite;
 use Url\Url;
+use FriendsOfRedaxo\Warehouse\WarehouseDomainSettings;
 
 rex_yform_manager_dataset::setModelClass('rex_warehouse_article', Article::class);
 rex_yform_manager_dataset::setModelClass('rex_warehouse_category', Category::class);
@@ -63,6 +64,7 @@ if (rex::isFrontend()) {
                 $user_path[] = rex_article::getCurrentId();
                 $user_path = array_slice($user_path, -5);
                 rex_set_session('user_path', $user_path);
+                //                dump($user_path);
             }
         }
 
@@ -146,4 +148,12 @@ if (rex::isFrontend()) {
             }
         }
     });
+}
+
+
+if (rex_addon::get('yform')->isAvailable() && !rex::isSafeMode()) {
+    rex_yform_manager_dataset::setModelClass(
+        'rex_warehouse_settings_domain',
+        WarehouseDomainSettings::class,
+    );
 }

@@ -1,11 +1,8 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+$addon = rex_addon::get('warehouse');
+echo rex_view::title($addon->i18n('warehouse.title'));
+ 
 $form = rex_config_form::factory('warehouse');
 
 // ==== Frachtrechnung
@@ -39,4 +36,3 @@ $fragment->setVar('body', $content, false);
 $content = $fragment->parse('core/page/section.php');
 
 echo $content;
-

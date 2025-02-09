@@ -1,9 +1,12 @@
 <?php
 
+use Alexplusde\Wsm\Wsm;
+
 $addon = rex_addon::get('warehouse');
+
 echo rex_view::title($addon->i18n('warehouse.title'));
 
-$table_name = 'rex_warehouse_shipping';
+$table_name = 'rex_warehouse_settings_domain';
 
 rex_extension::register(
     'YFORM_MANAGER_DATA_PAGE_HEADER',

@@ -1,3 +1,5 @@
+warehouse.title = Warehouse 3.0
+
 warehouse_shipping_title = Versand
 warehouse_shipping_description = Versandparameter und Ländereinstellungen für internationalen Versand
 warehouse_shipping_settings = Einstellungen
@@ -13,6 +15,7 @@ ycom_media_auth_failed_header_redirect_notfound = Weiterleitung zu NotFound Arti
 ycom_media_auth_settings_updated = Einstellungen wurden aktualisiert
 
 navigation_warehouse = Warehouse
+warehouse_docs = Hilfe
 warehouse_title = Warehouse
 warehouse_setup = Setup
 warehouse_info = Info
@@ -22,8 +25,8 @@ warehouse_country = Land
 warehouse_shipping = Versand
 warehouse_counties = Staaten
 warehouse_settings = Warehouse
-warehouse_settings_system = Shop-Systemeinstellungen
-warehouse_settings_shop = Shopeinstellungen
+warehouse_settings_setup = Setup
+warehouse_settings_shop = Einstellungen
 warehouse_settings_general = Grundeinstellungen
 warehouse_settings_shipping = Versandeinstellungen
 warehouse_settings_payment = Zahlungsarten
@@ -104,3 +107,22 @@ warehouse_category = Kategorien
 warehouse_order = Bestellungen
 warehouse_country = Länder
 warehouse_shipping = Versand
+
+# Warehouse Einstellungen - YForm Tabelle
+
+warehouse_settings_domain.fieldset_art_ids = Seiten
+warehouse_settings_domain.yrewrite_domain_id = Domain
+warehouse_settings_domain.cart_art_id = Warenkorb
+warehouse_settings_domain.shippinginfo_art_id = Versandinfo
+warehouse_settings_domain.order_art_id = Bestellung
+warehouse_settings_domain.address_art_id = Adresse
+warehouse_settings_domain.payment_error_art_id = Zahlungsfehler
+warehouse_settings_domain.thankyou_art_id = Danke
+
+warehouse_settings_domain.fieldset_email = E-Mail-Einstellungen
+warehouse_settings_domain.email_template_customer = E-Mail-Template an Kunden
+warehouse_settings_domain.email_template_seller = E-Mail-Template an Verkäufer
+warehouse_settings_domain.order_email = Empfänger E-Mail für Bestellungen
+warehouse_settings_domain.order_email.notice = Mehrere Empfänger durch Komma trennen
+
+warehouse_settings_domain.fieldset_end = 🔚
