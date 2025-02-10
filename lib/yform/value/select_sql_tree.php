@@ -110,7 +110,7 @@ class rex_yform_value_select_sql_tree extends rex_yform_value_abstract
                 'name' => ['type' => 'name', 'label' => rex_i18n::msg('yform_values_defaults_name')],
                 'label' => ['type' => 'text', 'label' => rex_i18n::msg('yform_values_defaults_label')],
                 'query' => [
-                    'type' => 'text', 'label' => 'Query mit "select id, name from .." es müssen id und name übergeben werden, ggf. "SELECT id, name_1 name FROM rex_warehouse_categories WHERE parent_id = |parent_id|"',
+                    'type' => 'text', 'label' => 'Query mit "select id, name from .." es müssen id und name übergeben werden, ggf. "SELECT id, name_1 name FROM rex_warehouse_category WHERE parent_id = |parent_id|"',
                     'notice' => '|parent_id| ist ein Platzhalter, der intern durch die jeweilige Parent-id ersetzt wird. Das Feld "parent_id" muss vorhanden sein. Die erste Ebene muss den Wert 0 haben.'
                     ],
                 'default' => ['type' => 'text', 'label' => rex_i18n::msg('yform_values_select_sql_default')],

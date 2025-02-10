@@ -773,7 +773,7 @@ PayPalHttp\HttpResponse {#170 ▼
     {
 
         $path = [];
-        $qry = 'SELECT name_' . rex_clang::getCurrentId() . ' `name`, `id`, parent_id FROM ' . rex::getTable('warehouse_categories') . ' WHERE `id` = :id';
+        $qry = 'SELECT name_' . rex_clang::getCurrentId() . ' `name`, `id`, parent_id FROM ' . rex::getTable('warehouse_category') . ' WHERE `id` = :id';
         $sql = rex_sql::factory();
         while ($cat_id > 0) {
             $current = $sql->getArray($qry, ['id' => $cat_id]);
@@ -786,7 +786,7 @@ PayPalHttp\HttpResponse {#170 ▼
     public static function get_category_tree($depth = 2)
     {
         $otree = new Helper();
-        $otree->set_query('SELECT id, name_' . rex_clang::getCurrentId() . ' name, image, parent_id FROM ' . rex::getTable('warehouse_categories') . ' WHERE status = 1 AND parent_id = |parent_id| ORDER BY prio');
+        $otree->set_query('SELECT id, name_' . rex_clang::getCurrentId() . ' name, image, parent_id FROM ' . rex::getTable('warehouse_category') . ' WHERE status = 1 AND parent_id = |parent_id| ORDER BY prio');
         $otree->set_maxlev($depth);
         $tree = $otree->sql_full_tree();
         return $tree;
