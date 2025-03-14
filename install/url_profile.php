@@ -5,6 +5,7 @@
  *
  * @var rex_sql $sql
  */
+$sql = rex_sql::factory();
 $sql->setTable(rex::getTable('url_generator_profile'));
 $sql->setValue('namespace', 'category_id');
 $sql->setValue('article_id', rex_article::getSiteStartArticleId());
