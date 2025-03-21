@@ -1,5 +1,8 @@
 <?php
 
+$addon = rex_addon::get('warehouse');
+echo rex_view::title($addon->i18n('warehouse.title'));
+
 $content = '';
 
 $all_modules = rex_sql::factory()->getArray('SELECT * FROM ' . rex::getTable('module'));

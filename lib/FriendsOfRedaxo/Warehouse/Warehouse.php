@@ -20,13 +20,13 @@ use rex_yform_email_template;
 class Warehouse
 {
 
-    static $fields = [
+    public static $fields = [
         'salutation','firstname', 'lastname', 'birthdate', 'company', 'department', 'address', 'zip', 'city', 'country', 'email', 'phone',
         'to_salutation','to_firstname', 'to_lastname', 'to_company', 'to_department', 'to_address', 'to_zip', 'to_city', 'to_country',
         'separate_delivery_address', 'payment_type', 'note', 'iban', 'bic', 'direct_debit_name', 'info_news_ok'
     ];
 
-    static $age_checked_values = [
+    public static $age_checked_values = [
         'postident',
         'known',
         'other'
@@ -181,7 +181,7 @@ class Warehouse
     /**
      * Regelt das Redirect nach Modifikationen des Warenkorbs
      * Aus Artikelseiten wird der request Parameter current_article als Redaxo Article Id angenommen
-     * 
+     *
      * @param type $added - wenn ein Artikel erfolgreich hinzugefügt wurde, wird 1 übergeben
      */
     public static function redirect_from_cart($added = 0, $force_current_page = 0)
@@ -230,7 +230,7 @@ class Warehouse
     }
 
     /**
-     * 
+     *
      */
     public static function modify_cart()
     {
@@ -260,10 +260,11 @@ class Warehouse
      * Aufruf aus dem Warenkorb
      * Feldnamen = Artikel_Ids.
      */
-    public static function modify_qty() {
+    public static function modify_qty()
+    {
         $cart = self::get_cart();
         foreach ($cart as $art_uid=>$item) {
-            if ($qty = rex_request($art_uid,'int')) {
+            if ($qty = rex_request($art_uid, 'int')) {
                 $cart[$art_uid]['count'] = $qty;
             }
         }
@@ -398,7 +399,7 @@ class Warehouse
     }
 
     /**
-     * 
+     *
      * @param type $payment_id
      */
     public static function save_order_to_db($payment_id = '')
@@ -427,7 +428,7 @@ class Warehouse
         $sql = rex_sql::factory();
 
         $sql->setTable(rex::getTable('warehouse_orders'));
-        $fields = $sql->select()->getFieldnames();        
+        $fields = $sql->select()->getFieldnames();
 
         $sql->setDebug();
         $values = [
@@ -452,7 +453,7 @@ class Warehouse
         ];
 
         foreach ($values as $k=>$v) {
-            if (!in_array($k,$fields)) {
+            if (!in_array($k, $fields)) {
                 unset($values[$k]);
             }
         }
@@ -665,7 +666,7 @@ class Warehouse
     /**
      * Funktion wird aus warehouse_paypal->execute_payment aufgerufen, wenn die Zahlung abgeschlossen ist.
      * Kann nur einmal ausgeführt werden (wenn payment_confirm noch leer ist).
-     * 
+     *
      */
     public static function paypal_approved($payment)
     {
@@ -772,7 +773,7 @@ PayPalHttp\HttpResponse {#170 ▼
     {
 
         $path = [];
-        $qry = 'SELECT name_' . rex_clang::getCurrentId() . ' `name`, `id`, parent_id FROM ' . rex::getTable('warehouse_categories') . ' WHERE `id` = :id';
+        $qry = 'SELECT name_' . rex_clang::getCurrentId() . ' `name`, `id`, parent_id FROM ' . rex::getTable('warehouse_category') . ' WHERE `id` = :id';
         $sql = rex_sql::factory();
         while ($cat_id > 0) {
             $current = $sql->getArray($qry, ['id' => $cat_id]);
@@ -785,7 +786,7 @@ PayPalHttp\HttpResponse {#170 ▼
     public static function get_category_tree($depth = 2)
     {
         $otree = new Helper();
-        $otree->set_query('SELECT id, name_' . rex_clang::getCurrentId() . ' name, image, parent_id FROM ' . rex::getTable('warehouse_categories') . ' WHERE status = 1 AND parent_id = |parent_id| ORDER BY prio');
+        $otree->set_query('SELECT id, name_' . rex_clang::getCurrentId() . ' name, image, parent_id FROM ' . rex::getTable('warehouse_category') . ' WHERE status = 1 AND parent_id = |parent_id| ORDER BY prio');
         $otree->set_maxlev($depth);
         $tree = $otree->sql_full_tree();
         return $tree;
@@ -919,7 +920,8 @@ PayPalHttp\HttpResponse {#170 ▼
     /**
      * Aktualisiert nach der Zahlung die Lagerbestände
      */
-    public static function update_stock () {
+    public static function update_stock()
+    {
         $cart = self::get_cart();
         foreach ($cart as $k=>$art) {
             if ($art['stock_item'] ?? false) {
@@ -935,16 +937,17 @@ PayPalHttp\HttpResponse {#170 ▼
 
     /**
      * check_input_weight
-     * 
+     *
      * Kann als Validate Funktion in yform verwendet werden.
-     * 
+     *
      * warehouse::check_input_weight
-     * 
+     *
      * Feld weight
      */
-    public static function check_input_weight ($params, $vars, $names = '', $yform) {
+    public static function check_input_weight($params, $vars, $names = '', $yform)
+    {
 
-        if (!trim(rex_config::get('warehouse','check_weight'),'|')) {
+        if (!trim(rex_config::get('warehouse', 'check_weight'), '|')) {
             // wenn in den Einstellungen kein Gewichtscheck aktiviert ist, Gewicht nicht prüfen
             return false;
         }
@@ -957,11 +960,11 @@ PayPalHttp\HttpResponse {#170 ▼
         $has_error = false;
         $has_variants = false;
 
-        foreach ($yform->getObjects() as $Object) {            
+        foreach ($yform->getObjects() as $Object) {
             if ($Object->getName() == 'weight') {
                 $art_weight = (float) $Object->getValue();
             }
-        }            
+        }
 
         foreach ($yform->getObjects() as $Object) {
 
@@ -1011,14 +1014,15 @@ PayPalHttp\HttpResponse {#170 ▼
 
     }
 
-    public static function get_config($param) {
+    public static function get_config($param)
+    {
         $config_value = rex_config::get("warehouse", $param);
         if (!rex_addon::get('yrewrite')->isAvailable()) {
             return $config_value;
         }
         $domain = rex_yrewrite::getCurrentDomain();
         if ($domain) {
-            $param_val = rex_config::get('warehouse',$param.'_'.$domain->getId());
+            $param_val = rex_config::get('warehouse', $param.'_'.$domain->getId());
             if ($param_val) {
                 $config_value = $param_val;
             }
@@ -1027,9 +1031,17 @@ PayPalHttp\HttpResponse {#170 ▼
     }
 
 
-
-
-
-
+    public static function getSettingsDomainOptions()
+    {
+        $options = ['' => 'Standard'];
+        if (!rex_addon::get('yrewrite')->isAvailable()) {
+            return $options;
+        }
+        $domains = rex_yrewrite::getDomains();
+        foreach ($domains as $domain) {
+            $options[$domain->getId()] = $domain->getName();
+        }
+        return $options;
+    }
 
 }

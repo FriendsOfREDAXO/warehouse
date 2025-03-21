@@ -2,9 +2,10 @@
 
 $lang = 'de_de';
 
-// echo rex_view::title('Warehouse - Dokumentation');
+$addon = rex_addon::get('warehouse');
+echo rex_view::title($addon->i18n('warehouse.title'));
 
-$content = rex_file::get(rex_path::addon('warehouse','doc/'.$lang.'/readme.md'));
+$content = rex_file::get(rex_path::addon('warehouse', 'doc/'.$lang.'/readme.md'));
 if ($content == '') {
     $content = '<p class="alert alert-warning">'.rex_i18n::rawMsg('yform_docs_filenotfound').'</p>';
 }
@@ -19,6 +20,3 @@ $fragment = new rex_fragment();
 $fragment->setVar('title', 'Warehouse - Dokumentation', false);
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');
-
-
-

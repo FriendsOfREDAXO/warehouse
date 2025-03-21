@@ -1,5 +1,8 @@
 <?php
 
+$addon = rex_addon::get('warehouse');
+echo rex_view::title($addon->i18n('warehouse.title'));
+
 $form = rex_config_form::factory('warehouse');
 
 $form->addFieldset('Mehrwertsteuer Einstellungen');
