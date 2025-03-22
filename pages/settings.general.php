@@ -42,14 +42,11 @@ $field->setLabel('Artikelgewicht prüfen');
 $field->addOption('Artikelgewicht prüfen', "1");
 $field->setNotice('Wenn die Checkbox angewählt ist, wird bei der Artikeleingabe im Backend geprüft, ob auch ein Gewicht angegeben wurde. Es ist dann nicht möglich, Artikel ohne Gewicht zu erfassen. Für die Gewichtsprüfung muss zusätzlich in der Artikeltabelle in yform die Customfunction warehouse::check_input_weight zur Validierung verwendet werden.<br><code>rex_config::get("warehouse","check_weight")</code>');
 
-// Alterscheck
 
-$form->addFieldset('Alterscheck');
+$field = $form->addInputField('text', 'editor', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse_editor'));
+$field->setNotice('z.B. <code>class="form-control redactor-editor--default"</code>');
 
-$field = $form->addCheckboxField('agecheck');
-$field->setLabel('Alterscheck aktivieren');
-$field->addOption('Alterscheck aktivieren', "1");
-$field->setNotice('Wenn der Alterscheck aktiviert ist, kann eine Erstbestellung nur per giropay Alterscheck ausgeführt werden. Wenn der Besucher über die Community eingeloggt ist, wird der Alterscheck in der Community gespeichert. Wenn der Alterscheck in der Community gespeichert ist und der Benutzer eingeloggt ist, kann er auch mit anderen Zahlungsweisen bezahlen.');
 
 $content = $form->get();
 

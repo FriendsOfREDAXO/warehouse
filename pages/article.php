@@ -18,4 +18,6 @@ rex_extension::register(
 // @phpstan-ignore-next-line
 $_REQUEST['table_name'] = $table_name;
 
+echo rex_view::title($addon->i18n('warehouse.title'));
+
 include rex_path::plugin('yform', 'manager', 'pages/data_edit.php');

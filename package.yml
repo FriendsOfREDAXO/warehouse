@@ -1,5 +1,5 @@
 package: warehouse
-version: '2.0.0-dev-2025-01-29'
+version: '3.0.0-dev-2025-03-22'
 author: FriendsOfREDAXO
 supportpage: https://github.com/FriendsOfREDAXO/warehouse
 
@@ -116,6 +116,7 @@ default_config:
     currency_symbol: "€"
     country_codes: "DE,AT,CH"
     cart_mode: "cart"
+    editor: 'class="form-control redactor-editor--default"'
     check_weight: 0
     tax_value: 19
     tax_value_1: 7
