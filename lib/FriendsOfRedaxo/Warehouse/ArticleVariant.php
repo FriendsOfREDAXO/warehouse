@@ -118,9 +118,7 @@ class ArticleVariant extends rex_yform_manager_dataset
     /** @api */
     public function setImage(string $filename) : self
     {
-        if (rex_media::get($filename)) {
-            $this->getValue("image", $filename);
-        }
+        $this->setValue("image", $filename);
         return $this;
     }
 

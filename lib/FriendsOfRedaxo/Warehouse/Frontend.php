@@ -64,7 +64,7 @@ class Frontend {
                 // Bei Dankeseite Paypal bestätigen
                 if (rex_get('paymentId')) {
                     Warehouse::set_cart_from_payment_id(rex_get('paymentId'));
-                    PayPal::execute_payment();
+                    PayPal::ExecutePayment();
                     // Führt den E-Mail Versand im Hintergrund aus
                     //                $yf = warehouse::summary_form(true);
                     Warehouse::clear_cart();
