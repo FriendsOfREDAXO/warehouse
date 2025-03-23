@@ -68,8 +68,16 @@ requires:
     packages:
         structure: '^2.0'
         yform: '^4.1'
+        yform_field: '^2.9'
+
+# Wenn Warehouse 1.x installiert ist, dann abbrechen - es ist keine Migration vorgesehen.
+conflicts:
+    packages:
+        warehouse: '<2.0.0'
 
 default_config:
+
+    # Grundeinstellungen
     store_name: 
     store_country_code: "DE"
 
@@ -81,13 +89,10 @@ default_config:
     check_weight: 0
     tax_options: '19,7,0'
 
-    email_template_customer: 
-    email_template_seller:
-    order_email:
-
-    # Rabatt
-    global_discount_text: ''
-    global_discount: 0
+    # E-Mail Einstellungen
+    email_template_customer: 'warehouse_order_customer'
+    email_template_seller: 'warehouse_order_seller'
+    order_email: 
 
     # Paypal Einstellungen
     paypal_client_id:

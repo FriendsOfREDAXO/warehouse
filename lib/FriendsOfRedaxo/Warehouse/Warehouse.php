@@ -593,4 +593,10 @@ $return .= 'Zahlungsweise: ' . (self::PAYMENT_OPTIONS[$user_data['payment_type']
     {
         return rex_config::get('warehouse', $key);
     }
+
+    /** @api */
+    public static function setConfig(string $key, mixed $value) :void
+    {
+        rex_config::set('warehouse', $key, $value);
+    }
 }
