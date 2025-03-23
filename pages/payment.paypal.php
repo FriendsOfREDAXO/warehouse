@@ -1,8 +1,21 @@
 <?php
 
+use FriendsOfRedaxo\Warehouse\PayPal;
+
 $form = rex_config_form::factory('warehouse');
 
 // ==== Paypal
+$field = $form->addTextField('store_name');
+$field->setLabel('Name des Shops');
+$field->setNotice('z.B. <code>Martin Muster GmbH</code>, wird u.a. bei Zahlung an PayPal übermittelt.');
+
+$field = $form->addSelectField('store_country_code');
+$field->setLabel('Ländercode des Shops');
+$select = $field->getSelect();
+$select->addOptions(
+    PayPal::COUNTRY_CODES
+);
+$field->setNotice('z.B. <code>de-DE</code> - wird u.a. bei Zahlung an PayPal übermittelt.');
 
 $form->addFieldset('Paypal Einstellungen');
 
@@ -47,4 +60,3 @@ $fragment->setVar('body', $content, false);
 $content = $fragment->parse('core/page/section.php');
 
 echo $content;
-

@@ -286,7 +286,7 @@ class PayPal
         $params = json_decode(rex_config::get('warehouse', 'paypal_getparams'), true);
         $return_url = trim(rex::getServer(), '/') . rex_getUrl(rex_config::get('warehouse', 'paypal_page_success'), '', $params ?? [], '&');
         $cancel_url = trim(rex::getServer(), '/') . rex_getUrl(rex_config::get('warehouse', 'paypal_page_error'));
-        $cart = Warehouse::get_cart();
+        $cart = Warehouse::getCart();
         $user_data = Warehouse::get_user_data();
 
         $user_data['to_firstname'] = $user_data['to_firstname'] ?: $user_data['firstname'] ?? '';

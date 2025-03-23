@@ -42,7 +42,7 @@ if (rex::isBackend()) {
     // log payment
     FriendsOfRedaxo\Warehouse\Warehouse::paypal_approved_v2($response);
 
-    $cart = FriendsOfRedaxo\Warehouse\Warehouse::get_cart();
+    $cart = FriendsOfRedaxo\Warehouse\Warehouse::getCart();
     $warehouse_userdata = FriendsOfRedaxo\Warehouse\Warehouse::get_user_data();
     
     $yf = new rex_yform();
