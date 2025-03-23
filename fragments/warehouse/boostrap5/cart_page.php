@@ -3,45 +3,43 @@
 /** @var rex_fragment $this */
 
 ?>
-<div class="uk-grid-margin">
-    <div class="uk-grid-medium uk-grid" uk-grid="">
-        <div class="uk-width-1-1 uk-width-expand@m">
-            <div class="uk-card uk-card-default uk-card-small tm-ignore-container">
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <div class="card">
                 <?php if ($this->cart) : ?>
-                    <header class="uk-card-header uk-text-uppercase uk-text-muted uk-text-center uk-text-small uk-visible@m">
-                        <div class="uk-grid-small uk-child-width-1-2 uk-grid" uk-grid="">
-                            <div>Artikel</div>
-                            <div>
-                                <div class="uk-grid-small uk-child-width-expand uk-grid" uk-grid="">
-                                    <div>Preis</div>
-                                    <div class="tm-quantity-column">Menge</div>
-                                    <div>Summe</div>
-                                    <div class="uk-width-auto">
-                                        <div style="width: 20px;"></div>
-                                    </div>
+                    <div class="card-header text-uppercase text-muted text-center text-small d-none d-md-block">
+                        <div class="row row-cols-1 row-cols-md-2">
+                            <div class="col">Artikel</div>
+                            <div class="col">
+                                <div class="row row-cols-auto">
+                                    <div class="col">Preis</div>
+                                    <div class="col tm-quantity-column">Menge</div>
+                                    <div class="col">Summe</div>
+                                    <div class="col" style="width: 20px;"></div>
                                 </div>
                             </div>
                         </div>
-                    </header>
+                    </div>
 
                     <?php foreach ($this->cart as $uid=>$item) : ?>
                         <?php $base_id = explode('__',$item['art_id'])[0] ?>
                         <!-- Item -->
-                        <div class="uk-card-body">
-                            <div class="uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-flex-middle uk-grid" uk-grid="">
+                        <div class="card-body">
+                            <div class="row row-cols-1 row-cols-md-2 align-items-center">
                                 <!-- Product cell-->
-                                <div>
-                                    <div class="uk-grid-small uk-grid" uk-grid="">
-                                        <div class="uk-width-1-1 uk-width-1-3@s">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-12 col-md-4">
                                             <?php if ($item['image']) : ?>
                                                 <a class="tm-media-box" href="<?= rex_getUrl('','',['warehouse_art_id'=>$base_id]) ?>">
-                                                    <figure class="tm-media-box-wrap"><img src="/images/products/<?= $item['image'] ?>" alt="<?= $item['name'] ?>"></figure>
+                                                    <figure class="tm-media-box-wrap"><img src="/images/products/<?= $item['image'] ?>" alt="<?= $item['name'] ?>" class="img-fluid"></figure>
                                                 </a>
                                             <?php endif ?>
                                         </div>
-                                        <div class="uk-width-expand">
-                                            <div class="uk-text-meta"><?= $item['cat_name'] ?></div>
-                                            <a class="uk-link-heading" href="<?= rex_getUrl('','',['warehouse_art_id'=>$base_id]) ?>"><?= html_entity_decode($item['name']) ?>
+                                        <div class="col">
+                                            <div class="text-meta"><?= $item['cat_name'] ?></div>
+                                            <a class="link-heading" href="<?= rex_getUrl('','',['warehouse_art_id'=>$base_id]) ?>"><?= html_entity_decode($item['name']) ?>
                                             <?php $attr_text = []; ?>
                                             <?php foreach ($item['attributes'] as $attr) : ?>
                                                 <?php $attr_text[] = $attr['value'] ?>
@@ -52,22 +50,22 @@
                                     </div>
                                 </div>
                                 <!-- Other cells-->
-                                <div>
-                                    <div class="uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-center uk-grid" uk-grid="">
-                                        <div>
-                                            <div class="uk-text-muted uk-hidden@m">{{ Price }}</div>
+                                <div class="col">
+                                    <div class="row row-cols-1 row-cols-sm-auto text-center">
+                                        <div class="col">
+                                            <div class="text-muted d-md-none">Preis</div>
                                             <div><?= rex_config::get('warehouse','currency_symbol').'&nbsp;'.number_format($item['price'],2) ?></div>                        
                                         </div>
-                                        <div class="wh-cart-quantity-column">
-                                            <a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uid ?>&mod=-1" uk-icon="icon: minus; ratio: .75" class="uk-icon"></a>
-                                            <input class="uk-input wh-qty-input" id="product-1" type="text" maxlength="3" value="<?= $item['count'] ?>" disabled>
-                                            <a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uid ?>&mod=+1" uk-icon="icon: plus; ratio: .75" class="uk-icon"></a>
+                                        <div class="col wh-cart-quantity-column">
+                                            <a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uid ?>&mod=-1" class="btn btn-sm"><i class="bi bi-dash"></i></a>
+                                            <input class="form-control wh-qty-input" id="product-1" type="text" maxlength="3" value="<?= $item['count'] ?>" disabled>
+                                            <a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uid ?>&mod=+1"  class="btn btn-sm"><i class="bi bi-plus"></i></a>
                                         </div>
-                                        <div>
-                                            <div class="uk-text-muted uk-hidden@m">Sum</div>
+                                        <div class="col">
+                                            <div class="text-muted d-md-none">Summe</div>
                                             <div><?= rex_config::get('warehouse','currency_symbol').'&nbsp;'.number_format($item['total'],2) ?></div>                        
                                         </div>
-                                        <div class="uk-width-auto@s"><a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uid ?>&mod=del" class="uk-text-danger" uk-tooltip="Remove" title="" aria-expanded="false"><span uk-icon="close" class="uk-icon"></span></a></div>
+                                        <div class="col"><a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uid ?>&mod=del" class="text-danger" data-bs-toggle="tooltip" data-bs-title="Remove"><i class="bi bi-x-circle"></i></a></div>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +73,7 @@
                     <!-- // Item -->
                     <?php endforeach ?>
                 <?php else : ?>
-                    <div class="uk-card-body">
+                    <div class="card-body">
                         <h3>Der Warenkorb ist leer.</h3>
                     </div>
                 <?php endif ?>
@@ -83,41 +81,44 @@
             </div>
         </div>
         <?php if ($this->cart) : ?>
-            <div class="uk-width-1-1 tm-aside-column uk-width-1-4@m">
-                <div class="uk-card uk-card-default uk-card-small tm-ignore-container uk-sticky" uk-sticky="offset: 30; bottom: true; media: @m;">
-                    <div class="uk-card-body">
-                        <div class="uk-grid-small uk-grid" uk-grid="">
-                            <div class="uk-width-expand uk-text-muted">{{ Subtotal }}</div>
-                            <div><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getSubTotal(),2) ?></div>
+            <div class="col-12 col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col text-muted">Zwischensumme</div>
+                            <div class="col"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getSubTotal(),2) ?></div>
                         </div>
-                        <div class="uk-grid-small uk-grid" uk-grid="">
-                            <div class="uk-width-expand uk-text-muted">{{ Shipping }}</div>
-                            <div class="uk-text"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::getShippingCost(),2) ?></div>
+                        <div class="row">
+                            <div class="col text-muted">Versand</div>
+                            <div class="col text"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::getShippingCost(),2) ?></div>
                         </div>
                     </div>
-                    <div class="uk-card-body">
-                        <div class="uk-grid-small uk-flex-middle uk-grid" uk-grid="">
-                            <div class="uk-width-expand uk-text-muted">{{ Total }}</div>
-                            <div class="uk-text-lead uk-text-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getCartTotal(),2) ?></div>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col text-muted">Total</div>
+                            <div class="col text-lead fw-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getCartTotal(),2) ?></div>
                         </div>
-                        <a class="uk-button uk-button-primary uk-margin-small uk-width-1-1" href="<?= rex_getUrl(rex_config::get('warehouse','address_page')) ?>">checkout</a>
+                        <a class="btn btn-primary mt-3 w-100" href="<?= rex_getUrl(rex_config::get('warehouse','address_page')) ?>">checkout</a>
                     </div>
                 </div>
-                <div class="uk-sticky-placeholder" hidden="" style="height: 230px; margin: 0px;"></div>
             </div>
-            <div class="uk-width-1-1">
+            <div class="col-12">
                 <?php if (rex_session('current_page')) : ?>
-                    <a href="<?= FriendsOfRedaxo\Warehouse\Warehouse::clean_url(rex_session('current_page')) ?>" class="uk-button uk-button-primary">Zurück</a>&nbsp;&nbsp;
+                    <a href="<?= FriendsOfRedaxo\Warehouse\Warehouse::clean_url(rex_session('current_page')) ?>" class="btn btn-primary">Zurück</a>&nbsp;&nbsp;
                 <?php endif ?>
-                <a href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>" class="uk-button uk-button-primary">Weiter</a>
+                <a href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>" class="btn btn-primary">Weiter</a>
             </div>
         <?php else : ?>
-            <div class="uk-width-1-1">
+            <div class="col-12">
                 <?php if (rex_session('current_page')) : ?>
-                    <a href="<?= FriendsOfRedaxo\Warehouse\Warehouse::clean_url(rex_session('current_page')) ?>" class="uk-button uk-button-primary">Zurück</a>&nbsp;&nbsp;
+                    <a href="<?= FriendsOfRedaxo\Warehouse\Warehouse::clean_url(rex_session('current_page')) ?>" class="btn btn-primary">Zurück</a>&nbsp;&nbsp;
                 <?php endif ?>
             </div>
         <?php endif ?>
 
     </div>
 </div>
+<script>
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>

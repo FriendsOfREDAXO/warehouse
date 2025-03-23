@@ -1,5 +1,7 @@
 <?php
 
+/** @var rex_fragment $this */
+
 $main_article = $this->articles[0];
 $warehouse_prop = rex::getProperty('warehouse_prop');
 
