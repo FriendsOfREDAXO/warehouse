@@ -1,5 +1,7 @@
 <?php
 
+use FriendsOfRedaxo\Warehouse\Shipping;
+
 $addon = rex_addon::get('warehouse');
 echo rex_view::title($addon->i18n('warehouse.title'));
  
@@ -31,17 +33,12 @@ $field->setAttribute('step', '0.01');
 $field = $form->addSelectField('shipping_calculation_mode');
 $field->setLabel('translate:warehouse.settings.shipping_calculation_mode');
 $select = $field->getSelect();
-$select->addOptions([
-    '' => 'translate:warehouse.settings.shipping_calculation_mode.options.default',
-    'quantity' => 'translate:warehouse.settings.shipping_calculation_mode.options.quantity',
-    'weight' => 'translate:warehouse.settings.shipping_calculation_mode.options.weight',
-    'order_total' => 'translate:warehouse.settings.shipping_calculation_mode.options.order_total',
-]);
+$select->addOptions(Shipping::CALCULATION_MODE_OPTIONS);
 
 $content = $form->get();
 
 $fragment = new rex_fragment();
-$fragment->setVar('title', 'Einstellungen');
+$fragment->setVar('title', rex_i18n::msg('warehouse.settings'));
 $fragment->setVar('body', $content, false);
 $content = $fragment->parse('core/page/section.php');
 
