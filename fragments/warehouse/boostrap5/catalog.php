@@ -1,23 +1,9 @@
-<?php /*  Ausgabe der Katalog-Seite (Übersicht) */ ?>
+<?php
+/** @var rex_fragment $this */
+?>
 <div class="container px-5">
 
     <div class="flex flex-wrap border-4" >
-
-    <?php /*
-        <!-- <aside class="uk-width-1-4 uk-visible@m tm-aside-column uk-first-column">
-            <nav class="uk-card uk-card-default uk-card-body uk-card-small uk-sticky" uk-sticky="bottom: true; offset: 90" style="">
-                <ul class="uk-nav uk-nav-default" uk-scrollspy-nav="closest: li; scroll: true; offset: 90">
-                    <?php foreach ($this->tree as $main_item) : ?>
-                        <li><a href="#<?= rex_string::normalize($main_item['name_raw']) ?>"><?= $main_item['name_raw'] ?></a></li>
-                    <?php endforeach ?>
-                </ul>
-            </nav>
-            <div class="uk-sticky-placeholder" style="height: 185px; margin: 0px;" hidden=""></div>
-        </aside>
-    */
-    ?>
-
-
 
                 <?php foreach ($this->tree as $main_item) : ?>
                     <div class="shadow-lg w-full border-4" id="<?= rex_string::normalize($main_item['name_raw']) ?>">

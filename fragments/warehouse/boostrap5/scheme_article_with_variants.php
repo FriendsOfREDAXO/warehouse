@@ -1,4 +1,8 @@
-<?php foreach ($this->items as $item) : ?>
+<?php
+
+/** @var rex_fragment $this */
+
+foreach ($this->items as $item) : ?>
 
 <script type="application/ld+json">
 {

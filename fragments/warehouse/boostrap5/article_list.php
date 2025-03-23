@@ -1,6 +1,6 @@
-<?php /*
-https://chekromul.github.io/uikit-ecommerce-template
- *  */ 
+<?php
+
+/** @var rex_fragment $this */
 
 ?>
 <div>

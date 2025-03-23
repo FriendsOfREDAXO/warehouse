@@ -1,7 +1,8 @@
-<?php if (rex_get('error')) : ?>
-<p class="error">Sie müssen mindestens bei einem Artikel eine Anzahl wählen.</p>
-<?php endif ?>
+<?php
 
+/** @var rex_fragment $this */
+
+?>
 <form action="/" method="post">
 <input type="hidden" name="action" value="add_group_to_cart">
 <input type="hidden" name="current_article" value="<?= rex_article::getCurrentId() ?>">

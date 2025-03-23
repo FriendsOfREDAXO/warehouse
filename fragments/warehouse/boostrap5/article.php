@@ -1,4 +1,8 @@
-<h2>Artikel</h2>
+<?php
+
+/** @var rex_fragment $this */
+
+?><h2>Artikel</h2>
 
 <?php foreach ($this->items as $item) : ?>
     <div class="article_item">

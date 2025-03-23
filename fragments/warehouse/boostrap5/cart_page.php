@@ -1,7 +1,7 @@
 <?php
-/*
-  https://chekromul.github.io/uikit-ecommerce-template
- *   */
+
+/** @var rex_fragment $this */
+
 ?>
 <div class="uk-grid-margin">
     <div class="uk-grid-medium uk-grid" uk-grid="">

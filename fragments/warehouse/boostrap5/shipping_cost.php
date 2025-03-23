@@ -1,3 +1,8 @@
+<?php
+
+/** @var rex_fragment $this */
+
+?>
 <p>Versandkosten innerhalb Deutschlands:</p>
 <?php $shipping_parameters = json_decode(rex_config::get('warehouse','shipping_parameters')); ?>
 <ul class="uk-list uk-list-striped">

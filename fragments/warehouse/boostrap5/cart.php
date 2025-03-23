@@ -1,4 +1,7 @@
 <?php
+
+/** @var rex_fragment $this */
+
 $cart = $this->cart;
 $showcart = $this->mode == 'template' && rex_request('showcart','int') ? 1 : 0;
 $rex_article_id = rex_article::getCurrentId();
