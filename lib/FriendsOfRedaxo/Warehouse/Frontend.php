@@ -18,13 +18,13 @@ class Frontend {
         rex_extension::register('PACKAGES_INCLUDED', function () {
     
             if (rex_request('action', 'string') == 'add_to_cart') {
-                Warehouse::add_to_cart();
+                Warehouse::addToCart();
             }
             if (rex_request('action', 'string') == 'modify_cart') {
-                Warehouse::modify_cart();
+                Warehouse::modifyCart();
             }
     
-            if (rex_article::getCurrentId() == Warehouse::get_config('order_page')) {
+            if (rex_article::getCurrentId() == Warehouse::getConfig('order_page')) {
                 Warehouse::clean_cart();
             }
     
@@ -48,11 +48,11 @@ class Frontend {
                     }
                     $warehouse_prop['sitemode'] = 'article';
                     $warehouse_prop['seo_title'] = $article->get_name();
-                    $warehouse_prop['path'] = Warehouse::get_path($article->category_id);
+                    $warehouse_prop['path'] = Warehouse::getCategoryPath($article->category_id);
                 } elseif ($profile->getTableName() == rex::getTable('warehouse_category')) {
                     $warehouse_prop['sitemode'] = 'category';
                     $warehouse_prop['seo_title'] = $seo['title'];
-                    $warehouse_prop['path'] = Warehouse::get_path($data_id);
+                    $warehouse_prop['path'] = Warehouse::getCategoryPath($data_id);
                 }
                 $curl = rtrim(rex_yrewrite::getFullPath(), '/') . $_SERVER['REQUEST_URI'];
                 rex_set_session('current_page', $curl);
@@ -60,7 +60,7 @@ class Frontend {
             $warehouse_prop['tree'] = Warehouse::get_category_tree();
             rex::setProperty('warehouse_prop', $warehouse_prop);
     
-            if (rex_article::getCurrentId() == Warehouse::get_config('thankyou_page')) {
+            if (rex_article::getCurrentId() == Warehouse::getConfig('thankyou_page')) {
                 // Bei Dankeseite Paypal bestätigen
                 if (rex_get('paymentId')) {
                     Warehouse::set_cart_from_payment_id(rex_get('paymentId'));
@@ -73,7 +73,7 @@ class Frontend {
     
                 // Bei Dankeseite Wallee - Zahlungsbestätigung Wallee
                 if (rex_get('action') == 'wpayment_confirm') {
-                    $user_data = Warehouse::get_user_data();
+                    $user_data = Warehouse::getCustomerData();
                     if (rex_get('key') == $user_data['payment_confirm']) {
                         // Confirm Order in db
                         $order = Order::query()
@@ -84,15 +84,15 @@ class Frontend {
                         }
                         $order->setValue('payed', 1);
                         if (!$order->save()) {
-                            rex_redirect(Warehouse::get_config("payment_error"));
+                            rex_redirect(Warehouse::getConfig("payment_error"));
                         }
     
                         // Send Mails
                         Warehouse::send_mails();
-                        Warehouse::update_stock();
+                        Warehouse::updateStockAfterOrder();
                         Warehouse::clear_cart();
                     } else {
-                        rex_redirect(Warehouse::get_config("payment_error"));
+                        rex_redirect(Warehouse::getConfig("payment_error"));
                     }
                 }
             }
