@@ -76,6 +76,10 @@ warehouse_settings_domain.order_email.notice = Mehrere Empfänger durch Komma tr
 
 warehouse_settings_domain.fieldset_end = 🔚
 
+# Warehouse Einstellungen: Rabatte
+
+warehouse.discount_info = Rabatte werden derzeit nicht unterstützt. Beteilige dich an der Entwicklung von <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> für die Entwicklung eines erweiterten Rabatt-Systems, bestehend aus: Pauschaler Rabatt, Versandkostenfrei, Aktionszeiträumen, Gutschein-Codes und Rabatte für bestimmte YCom-Gruppen.
+
 # YForm-Tabellen: Tabellennamen
 
 warehouse_article.tablename = 📦 Artikel
