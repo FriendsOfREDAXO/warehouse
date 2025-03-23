@@ -20,7 +20,7 @@ class Shipping {
         $cart = Warehouse::getCart();
 
         $total_weight = Cart::weighWeight();
-        $total_pieces = Cart::countPieces();
+        $total_pieces = Cart::countItems();
         $total_price = Cart::calculateTotal();
 
         $free_shipping_from = (float) rex_config::get('warehouse', 'free_shipping_from');
