@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @var rex_addon $this
+ * @psalm-scope-this rex_addon
+ */
+
 $lang = 'de_de';
 
 $addon = rex_addon::get('warehouse');

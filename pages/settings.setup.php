@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @var rex_addon $this
+ * @psalm-scope-this rex_addon
+ */
+
 $addon = rex_addon::get('warehouse');
 echo rex_view::title($addon->i18n('warehouse.title'));
 

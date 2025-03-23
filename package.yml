@@ -11,76 +11,9 @@ page:
     prio: 0
     icon: rex-icon fa-shopping-cart
     subpages:
-        settings:
-            title: translate:warehouse_settings_shop
-            perm: warehouse[settings]
-            icon: rex-icon fa-cog
-            itemclass: pull-right
-            subpages:
-                general:
-                    title: translate:warehouse_settings_general
-                    perm: warehouse[settings]
-                    icon: rex-icon fa-wrench
-                domain:
-                    title: translate:warehouse_settings_domain
-                    perm: warehouse[setup]
-                    icon: rex-icon fa-sitemap
-                tax:
-                    title: translate:warehouse_settings_tax
-                    perm: warehouse[settings]
-                    icon: rex-icon fa-percent
-                discount:
-                    title: translate:warehouse_settings_discount
-                    perm: warehouse[settings]
-                    icon: rex-icon fa-tag
-                shipping:
-                    title: translate:warehouse_shipping
-                    perm: warehouse[shipping]
-                    icon: rex-icon fa-truck
-                setup:
-                    title: translate:warehouse_settings_setup
-                    perm: warehouse[setup]
-                    icon: rex-icon fa-cogs
-
-        shipping:
-            title: translate:warehouse_shipping
-            perm: warehouse[shipping]
-            icon: rex-icon fa-truck
-            subpages:
-                settings:
-                    title: translate:warehouse_settings_shipping
-                    perm: warehouse[shipping]
-                    icon: rex-icon fa-cogs
-                zones:
-                    title: translate:warehouse_zones
-                    perm: warehouse[shipping]
-                    icon: rex-icon fa-globe
-                countries:
-                    title: translate:warehouse_countries
-                    perm: warehouse[shipping]
-                    icon: rex-icon fa-flag
-        payment:
-            title: translate:warehouse_settings_payment
-            perm: warehouse[payment]
-            icon: rex-icon fa-credit-card
-            subpages:
-                paypal:
-                    title: translate:warehouse_settings_paypal
-                    perm: warehouse[payment]
-                    icon: rex-icon fa-paypal
-                giropay:
-                    title: translate:warehouse_settings_giropay
-                    perm: warehouse[payment]
-                    icon: rex-icon fa-euro
-                wallee:
-                    title: translate:warehouse_settings_wallee
-                    perm: warehouse[payment]
-                    icon: rex-icon fa-money
-        docs:
-            title: translate:warehouse_docs
-            perm: warehouse[docs]
-            icon: rex-icon fa-info-circle
-            itemclass: pull-right
+        order:
+            block: warehouse
+            title: translate:warehouse_order
 
 pages:
     article:
@@ -92,14 +25,42 @@ pages:
     category:
         block: warehouse
         title: translate:warehouse_category
-    order:
-        block: warehouse
-        title: translate:warehouse_order
-    country:
-        block: warehouse
-        title: translate:warehouse_country
-
-
+    settings:
+        title: translate:warehouse_settings_shop
+        perm: warehouse[settings]
+        icon: rex-icon fa-cog
+        itemclass: pull-right
+        subpages:
+            general:
+                title: translate:warehouse_settings_general
+                perm: warehouse[settings]
+                icon: rex-icon fa-wrench
+            payment:
+                title: translate:warehouse_settings_payment
+                perm: warehouse[payment]
+                icon: rex-icon fa-credit-card
+            shipping:
+                title: translate:warehouse_shipping
+                perm: warehouse[shipping]
+                icon: rex-icon fa-truck
+            domain:
+                title: translate:warehouse_settings_domain
+                perm: warehouse[setup]
+                icon: rex-icon fa-sitemap
+            discount:
+                title: translate:warehouse_settings_discount
+                perm: warehouse[settings]
+                icon: rex-icon fa-tag
+            setup:
+                title: translate:warehouse_settings_setup
+                perm: warehouse[setup]
+                icon: rex-icon fa-cogs
+    docs:
+        title: translate:warehouse_docs
+        perm: warehouse[docs]
+        icon: rex-icon fa-info-circle
+        itemclass: pull-right
+        
 requires:
     redaxo: '^5.17'
     php:
@@ -118,6 +79,7 @@ default_config:
     cart_mode: "cart"
     editor: 'class="form-control redactor-editor--default"'
     check_weight: 0
+    tax_options: '19,7,0'
 
     email_template_customer: 
     email_template_seller:

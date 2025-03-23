@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @var rex_addon $this
+ * @psalm-scope-this rex_addon
+ */
+
 $addon = rex_addon::get('warehouse');
 
 $table_name = 'rex_warehouse_article';

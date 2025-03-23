@@ -1,6 +1,13 @@
 <?php
 
+/**
+ * @var rex_addon $this
+ * @psalm-scope-this rex_addon
+ */
+
 use FriendsOfRedaxo\Warehouse\PayPal;
+
+echo rex_view::title($this->i18n('warehouse.title'));
 
 $form = rex_config_form::factory('warehouse');
 
@@ -59,4 +66,12 @@ $fragment->setVar('title', 'Einstellungen');
 $fragment->setVar('body', $content, false);
 $content = $fragment->parse('core/page/section.php');
 
-echo $content;
+?>
+<div class="row">
+    <div class="col-12 col-md-8">
+        <?php echo $content; ?>
+    </div>
+    <div class="col-12 col-md-4">
+        <?= rex_view::info('Derzeit wird nur PayPal als Zahlungsanbieter unterstützt. Beteilige dich an der Weiterentwicklung auf GitHub unter <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a>.'); ?>
+    </div>
+</div>
