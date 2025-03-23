@@ -1,0 +1,8 @@
+.rex-form-group:not(.rex-form-group-vertical)>dt {
+    width: auto;
+    padding: initial;
+    padding-right: initial;
+}
+.rex-form-group:not(.rex-form-group-vertical)>dt, .rex-form-group:not(.rex-form-group-vertical)>dd {
+    display: block;
+}

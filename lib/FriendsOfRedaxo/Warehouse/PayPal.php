@@ -8,38 +8,270 @@ use rex_response;
 
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\HttpException;
+use PayPalCheckoutSdk\Core\PayPalEnvironment;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 
-if (rex::isDebugMode()) {
-    ini_set('error_reporting', E_ALL); // or error_reporting(E_ALL);
-    ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');
-}
-
-
 class PayPal
 {
+
+    // https://developer.paypal.com/api/rest/reference/currency-codes/
+    const CURRENCY_CODES =
+    [
+    "AUD" => "Australian dollar",
+    "BRL" => "Brazilian real 2",
+    "CAD" => "Canadian dollar",
+    "CNY" => "Chinese Renmenbi 3",
+    "CZK" => "Czech koruna",
+    "DKK" => "Danish krone",
+    "EUR" => "Euro",
+    "HKD" => "Hong Kong dollar",
+    "HUF" => "Hungarian forint 1",
+    "ILS" => "Israeli new shekel",
+    "JPY" => "Japanese yen 1",
+    "MYR" => "Malaysian ringgit 3",
+    "MXN" => "Mexican peso",
+    "TWD" => "New Taiwan dollar 1",
+    "NZD" => "New Zealand dollar",
+    "NOK" => "Norwegian krone",
+    "PHP" => "Philippine peso",
+    "PLN" => "Polish złoty",
+    "GBP" => "Pound sterling",
+    "RUB" => "Russian ruble",
+    "SGD" => "Singapore dollar",
+    "SEK" => "Swedish krona",
+    "CHF" => "Swiss franc",
+    "THB" => "Thai baht",
+    "USD" => "United States dollar"
+    ];
+
+
+    // https://developer.paypal.com/api/rest/reference/country-codes/
+    public const COUNTRY_CODES = 
+    [
+        "AL" => "ALBANIA",
+        "DZ" => "ALGERIA",
+        "AD" => "ANDORRA",
+        "AO" => "ANGOLA",
+        "AI" => "ANGUILLA",
+        "AG" => "ANTIGUA & BARBUDA",
+        "AR" => "ARGENTINA",
+        "AM" => "ARMENIA",
+        "AW" => "ARUBA",
+        "AU" => "AUSTRALIA",
+        "AT" => "AUSTRIA",
+        "AZ" => "AZERBAIJAN",
+        "BS" => "BAHAMAS",
+        "BH" => "BAHRAIN",
+        "BB" => "BARBADOS",
+        "BY" => "BELARUS",
+        "BE" => "BELGIUM",
+        "BZ" => "BELIZE",
+        "BJ" => "BENIN",
+        "BM" => "BERMUDA",
+        "BT" => "BHUTAN",
+        "BO" => "BOLIVIA",
+        "BA" => "BOSNIA & HERZEGOVINA",
+        "BW" => "BOTSWANA",
+        "BR" => "BRAZIL",
+        "VG" => "BRITISH VIRGIN ISLANDS",
+        "BN" => "BRUNEI",
+        "BG" => "BULGARIA",
+        "BF" => "BURKINA FASO",
+        "BI" => "BURUNDI",
+        "KH" => "CAMBODIA",
+        "CM" => "CAMEROON",
+        "CA" => "CANADA",
+        "CV" => "CAPE VERDE",
+        "KY" => "CAYMAN ISLANDS",
+        "TD" => "CHAD",
+        "CL" => "CHILE",
+        "C2" => "CHINA",
+        "CO" => "COLOMBIA",
+        "KM" => "COMOROS",
+        "CG" => "CONGO - BRAZZAVILLE",
+        "CD" => "CONGO - KINSHASA",
+        "CK" => "COOK ISLANDS",
+        "CR" => "COSTA RICA",
+        "CI" => "CÔTE D’IVOIRE",
+        "HR" => "CROATIA",
+        "CY" => "CYPRUS",
+        "CZ" => "CZECH REPUBLIC",
+        "DK" => "DENMARK",
+        "DJ" => "DJIBOUTI",
+        "DM" => "DOMINICA",
+        "DO" => "DOMINICAN REPUBLIC",
+        "EC" => "ECUADOR",
+        "EG" => "EGYPT",
+        "SV" => "EL SALVADOR",
+        "ER" => "ERITREA",
+        "EE" => "ESTONIA",
+        "ET" => "ETHIOPIA",
+        "FK" => "FALKLAND ISLANDS",
+        "FO" => "FAROE ISLANDS",
+        "FJ" => "FIJI",
+        "FI" => "FINLAND",
+        "FR" => "FRANCE",
+        "GF" => "FRENCH GUIANA",
+        "PF" => "FRENCH POLYNESIA",
+        "GA" => "GABON",
+        "GM" => "GAMBIA",
+        "GE" => "GEORGIA",
+        "DE" => "GERMANY",
+        "GI" => "GIBRALTAR",
+        "GR" => "GREECE",
+        "GL" => "GREENLAND",
+        "GD" => "GRENADA",
+        "GP" => "GUADELOUPE",
+        "GT" => "GUATEMALA",
+        "GN" => "GUINEA",
+        "GW" => "GUINEA-BISSAU",
+        "GY" => "GUYANA",
+        "HN" => "HONDURAS",
+        "HK" => "HONG KONG SAR CHINA",
+        "HU" => "HUNGARY",
+        "IS" => "ICELAND",
+        "IN" => "INDIA",
+        "ID" => "INDONESIA",
+        "IE" => "IRELAND",
+        "IL" => "ISRAEL",
+        "IT" => "ITALY",
+        "JM" => "JAMAICA",
+        "JP" => "JAPAN",
+        "JO" => "JORDAN",
+        "KZ" => "KAZAKHSTAN",
+        "KE" => "KENYA",
+        "KI" => "KIRIBATI",
+        "KW" => "KUWAIT",
+        "KG" => "KYRGYZSTAN",
+        "LA" => "LAOS",
+        "LV" => "LATVIA",
+        "LS" => "LESOTHO",
+        "LI" => "LIECHTENSTEIN",
+        "LT" => "LITHUANIA",
+        "LU" => "LUXEMBOURG",
+        "MK" => "MACEDONIA",
+        "MG" => "MADAGASCAR",
+        "MW" => "MALAWI",
+        "MY" => "MALAYSIA",
+        "MV" => "MALDIVES",
+        "ML" => "MALI",
+        "MT" => "MALTA",
+        "MH" => "MARSHALL ISLANDS",
+        "MQ" => "MARTINIQUE",
+        "MR" => "MAURITANIA",
+        "MU" => "MAURITIUS",
+        "YT" => "MAYOTTE",
+        "MX" => "MEXICO",
+        "FM" => "MICRONESIA",
+        "MD" => "MOLDOVA",
+        "MC" => "MONACO",
+        "MN" => "MONGOLIA",
+        "ME" => "MONTENEGRO",
+        "MS" => "MONTSERRAT",
+        "MA" => "MOROCCO",
+        "MZ" => "MOZAMBIQUE",
+        "NA" => "NAMIBIA",
+        "NR" => "NAURU",
+        "NP" => "NEPAL",
+        "NL" => "NETHERLANDS",
+        "NC" => "NEW CALEDONIA",
+        "NZ" => "NEW ZEALAND",
+        "NI" => "NICARAGUA",
+        "NE" => "NIGER",
+        "NG" => "NIGERIA",
+        "NU" => "NIUE",
+        "NF" => "NORFOLK ISLAND",
+        "NO" => "NORWAY",
+        "OM" => "OMAN",
+        "PW" => "PALAU",
+        "PA" => "PANAMA",
+        "PG" => "PAPUA NEW GUINEA",
+        "PY" => "PARAGUAY",
+        "PE" => "PERU",
+        "PH" => "PHILIPPINES",
+        "PN" => "PITCAIRN ISLANDS",
+        "PL" => "POLAND",
+        "PT" => "PORTUGAL",
+        "QA" => "QATAR",
+        "RE" => "RÉUNION",
+        "RO" => "ROMANIA",
+        "RU" => "RUSSIA",
+        "RW" => "RWANDA",
+        "WS" => "SAMOA",
+        "SM" => "SAN MARINO",
+        "ST" => "SÃO TOMÉ & PRÍNCIPE",
+        "SA" => "SAUDI ARABIA",
+        "SN" => "SENEGAL",
+        "RS" => "SERBIA",
+        "SC" => "SEYCHELLES",
+        "SL" => "SIERRA LEONE",
+        "SG" => "SINGAPORE",
+        "SK" => "SLOVAKIA",
+        "SI" => "SLOVENIA",
+        "SB" => "SOLOMON ISLANDS",
+        "SO" => "SOMALIA",
+        "ZA" => "SOUTH AFRICA",
+        "KR" => "SOUTH KOREA",
+        "ES" => "SPAIN",
+        "LK" => "SRI LANKA",
+        "SH" => "ST. HELENA",
+        "KN" => "ST. KITTS & NEVIS",
+        "LC" => "ST. LUCIA",
+        "PM" => "ST. PIERRE & MIQUELON",
+        "VC" => "ST. VINCENT & GRENADINES",
+        "SR" => "SURINAME",
+        "SJ" => "SVALBARD & JAN MAYEN",
+        "SZ" => "SWAZILAND",
+        "SE" => "SWEDEN",
+        "CH" => "SWITZERLAND",
+        "TW" => "TAIWAN",
+        "TJ" => "TAJIKISTAN",
+        "TZ" => "TANZANIA",
+        "TH" => "THAILAND",
+        "TG" => "TOGO",
+        "TO" => "TONGA",
+        "TT" => "TRINIDAD & TOBAGO",
+        "TN" => "TUNISIA",
+        "TM" => "TURKMENISTAN",
+        "TC" => "TURKS & CAICOS ISLANDS",
+        "TV" => "TUVALU",
+        "UG" => "UGANDA",
+        "UA" => "UKRAINE",
+        "AE" => "UNITED ARAB EMIRATES",
+        "GB" => "UNITED KINGDOM",
+        "US" => "UNITED STATES",
+        "UY" => "URUGUAY",
+        "VU" => "VANUATU",
+        "VA" => "VATICAN",
+        "VE" => "VENEZUELA",
+        "VN" => "VIETNAM",
+        "WF" => "WALLIS & FUTUNA",
+        "YE" => "YEMEN",
+        "ZM" => "ZAMBIA",
+        "ZW" => "ZIMBABWE",
+    ];
+
     /**
      * Returns PayPal HTTP client instance with environment which has access
      * credentials context. This can be used invoke PayPal API's provided the
      * credentials have the access to do so.
      */
-    public static function client()
+    public static function getClient() : PayPalHttpClient
     {
-        return new PayPalHttpClient(self::environment());
+        return new PayPalHttpClient(self::initEnviroment());
     }
     /**
      * Setting up and Returns PayPal SDK environment with PayPal Access credentials.
      * For demo purpose, we are using SandboxEnvironment. In production this will be
      * ProductionEnvironment.
      */
-    public static function environment()
+    public static function initEnviroment() :PayPalEnvironment
     {
-        $clientId = getenv("CLIENT_ID") ?: Warehouse::get_paypal_client_id();
-        $clientSecret = getenv("CLIENT_SECRET") ?: Warehouse::get_paypal_secret();
+        $clientId = getenv("CLIENT_ID") ?: Warehouse::getPaypalClientId();
+        $clientSecret = getenv("CLIENT_SECRET") ?: Warehouse::getPaypalSecret();
 
         if (rex_config::get('warehouse', 'sandboxmode')) {
             return new SandboxEnvironment($clientId, $clientSecret);
@@ -48,15 +280,15 @@ class PayPal
         }
     }
 
-    public static function create_order()
+    public static function createOrder()
     {
-        $client = self::client();
+        $client = self::getClient();
         $request = new OrdersCreateRequest();
         $params = json_decode(rex_config::get('warehouse', 'paypal_getparams'), true);
         $return_url = trim(rex::getServer(), '/') . rex_getUrl(rex_config::get('warehouse', 'paypal_page_success'), '', $params ?? [], '&');
         $cancel_url = trim(rex::getServer(), '/') . rex_getUrl(rex_config::get('warehouse', 'paypal_page_error'));
-        $cart = Warehouse::get_cart();
-        $user_data = Warehouse::get_user_data();
+        $cart = Warehouse::getCart();
+        $user_data = Warehouse::getCustomerData();
 
         $user_data['to_firstname'] = $user_data['to_firstname'] ?: $user_data['firstname'] ?? '';
         $user_data['to_lastname'] = $user_data['to_lastname'] ?: $user_data['lastname'] ?? '';
@@ -95,16 +327,16 @@ class PayPal
                 'amount' =>
                 [
                     'currency_code' => rex_config::get('warehouse', 'currency'),
-                    'value' => number_format(Warehouse::get_cart_total(), 2),
+                    'value' => number_format(Warehouse::getCartTotal(), 2),
                     'breakdown' =>
                     [
                         'item_total' => [
                             'currency_code' => rex_config::get('warehouse', 'currency'),
-                            'value' => number_format(Warehouse::get_sub_total_netto(), 2),
+                            'value' => number_format(Warehouse::getSubTotalNetto(), 2),
                         ],
                         'shipping' => [
                             'currency_code' => rex_config::get('warehouse', 'currency'),
-                            'value' => number_format((float) Warehouse::get_shipping_cost(), 2),
+                            'value' => number_format(Shipping::getCost(), 2),
                         ],
                         /*
                         'handling' =>
@@ -115,11 +347,11 @@ class PayPal
                         */
                         'tax_total' => [
                             'currency_code' => rex_config::get('warehouse', 'currency'),
-                            'value' => number_format(Warehouse::get_tax_total(), 2),
+                            'value' => number_format(Warehouse::getTaxTotal(), 2),
                         ],
                         'shipping_discount' => [
                             'currency_code' => rex_config::get('warehouse', 'currency'),
-                            'value' => number_format(Warehouse::get_discount_value(), 2),
+                            'value' => number_format(Warehouse::getDiscountValue(), 2),
                         ],
                     ],
                 ],
@@ -157,9 +389,8 @@ class PayPal
             ]
         ];
         try {
-//            dump($request); exit;
             $response = $client->execute($request);
-            Warehouse::save_order_to_db($response->result->id);
+            Warehouse::saveOrder($response->result->id);
             rex_set_session('pp_order_id', $response->result->id);
             foreach ($response->result->links as $link) {
                 if ($link->rel == 'approve') {
@@ -170,12 +401,12 @@ class PayPal
         }
         return $response;
     }
-    static function execute_payment()
+    static function ExecutePayment()
     {
         $env = rex_config::get('warehouse', 'sandboxmode') ? 'sandbox' : 'live';
-        $client_id = Warehouse::get_paypal_client_id();
-        $paypal_secret = Warehouse::get_paypal_secret();
-        $client = self::client();
+        $client_id = Warehouse::getPaypalClientId();
+        $paypal_secret = Warehouse::getPaypalSecret();
+        $client = self::getClient();
         // $response->result->id gives the orderId of the order created above
         $order_id = rex_session('pp_order_id');
         $request = new OrdersCaptureRequest($order_id);

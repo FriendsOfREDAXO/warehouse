@@ -3,46 +3,193 @@
 namespace FriendsOfRedaxo\Warehouse;
 
 use rex_clang;
-use rex_yform_value_select_sql_tree;
+use rex_article;
+use rex_user;
+use rex_media;
+use yrewrite_domain;
+use rex_yform_manager_collection;
+use rex_yform_manager_dataset;
 
+class Category extends \rex_yform_manager_dataset
+{
 
-class Category extends \rex_yform_manager_dataset {
+    public const status =
+        [
+            'active' => 'translate:warehouse_article_variant.status.active',
+            'draft' => 'translate:warehouse_article_variant.status.draft',
+            'hidden' => 'translate:warehouse_article_variant.status.hidden',
+        ];
+    
+    /* Status */
+    /** @api */
+    public function getStatus() : mixed
+    {
+        return $this->getValue("status");
+    }
+    /** @api */
+    public function setStatus(mixed $param) : mixed
+    {
+        $this->setValue("status", $param);
+        return $this;
+    }
+    
+    /* Name */
+    /** @api */
+    public function getName() : mixed
+    {
+        return $this->getValue("name");
+    }
+    /** @api */
+    public function setName(mixed $value) : self
+    {
+        $this->setValue("name", $value);
+        return $this;
+    }
+    
+    /* Teaser */
+    /** @api */
+    public function getTeaser() : ?string
+    {
+        return $this->getValue("teaser");
+    }
+    /** @api */
+    public function setTeaser(mixed $value) : self
+    {
+        $this->setValue("teaser", $value);
+        return $this;
+    }
+    
+    /* Bild */
+    /** @api */
+    public function getImage(bool $asMedia = false) : mixed
+    {
+        if ($asMedia) {
+            return rex_media::get($this->getValue("image"));
+        }
+        return $this->getValue("image");
+    }
 
-    public static function get_query() {
-        $clang = rex_clang::getCurrentId();
+    public function getImageAsMedia() : ?rex_media
+    {
+        return rex_media::get($this->getValue("image"));
+    }
+
+    /** @api */
+    public function setImage(string $filename) : self
+    {
+        if (rex_media::get($filename)) {
+            $this->setValue("image", $filename);
+        }
+        return $this;
+    }
+                
+    /* Text */
+    /** @api */
+    public function getText(bool $asPlaintext = false) : ?string
+    {
+        if ($asPlaintext) {
+            return strip_tags($this->getValue("text"));
+        }
+        return $this->getValue("text");
+    }
+    /** @api */
+    public function setText(mixed $value) : self
+    {
+        $this->setValue("text", $value);
+        return $this;
+    }
+                
+    /* Zuletzt geändert */
+    /** @api */
+    public function getUpdatedate() : ?string
+    {
+        return $this->getValue("updatedate");
+    }
+    /** @api */
+    public function setUpdatedate(string $value) : self
+    {
+        $this->setValue("updatedate", $value);
+        return $this;
+    }
+    
+    /* Übergeordente Kategorie */
+    /** @api */
+    public function getParent() : ?rex_yform_manager_dataset
+    {
+        return $this->getRelatedDataset("parent_id");
+    }
+    
+    /* UUID */
+    /** @api */
+    public function getUuid() : mixed
+    {
+        return $this->getValue("uuid");
+    }
+    /** @api */
+    public function setUuid(mixed $value) : self
+    {
+        $this->setValue("uuid", $value);
+        return $this;
+    }
+
+    public function findChildren(int $status = 1)
+    {
         return self::query()
-            ->select('longtext_'.$clang,'`longtext`')
-            ->select('name_'.$clang,'`name`')
-        ;
+            ->where('parent_id', $this->getId())
+            ->where('status', $status, '>=')
+            ->find();
     }
 
-    public static function get_category($id = 0) {
-        $query = self::get_query();
-        $query->where('id',$id);
-        return $query->findOne();
+    public function getArticles(int $status = 1)
+    {
+        return Article::query()
+            ->where('category_id', $this->getId())
+            ->where('status', $status, '>=')
+            ->find();
     }
 
-    public static function get_children($cat, $depth = 1, $level = 0) {
-        $clang = rex_clang::getCurrentId();
-        $tree_select = new rex_yform_value_select_sql_tree();
-        $tree_select->set_query('SELECT id, image, name_'.$clang.' name FROM rex_warehouse_categories WHERE status = 1 AND parent_id = |parent_id| ORDER BY prio');
-        $data = $tree_select->sqlTree($cat, $level, $depth);
-        return $data;
+    public static function findRootCategories(int $status = 1)
+    {
+        return self::query()
+            ->where('parent_id', 0)
+            ->where('status', $status, '>=')
+            ->find();
     }
-	
-    public static function get_all() {
-        $clang = rex_clang::getCurrentId();
-		$data = self::query()
-				->alias('cat')
-				->select('cat.name_' . $clang, 'cat_name')
-				->select('cat.longtext_' . $clang, 'cat_longtext')
-				->orderBy('cat.prio')
-				->where('cat.status',1)
-				;
-				
 
-        return $data->find();
+    public static function getStatusOptions() : array
+    {
+        return self::status;
     }
-	
+
+    public function getProjectValue(string $key)
+    {
+        return $this->getValue('project_' . $key);
+    }
+
+    public function setProjectValue(string $key, mixed $value) : self
+    {
+        $this->setValue('project_' . $key, $value);
+        return $this;
+    }
+    
+    /**
+     * Standards für das Formular anpassen
+     * - Editor-Konfiguration einfügen.
+     *
+     * @api
+     */
+    public function getForm(): \rex_yform
+    {
+        $yform = parent::getForm();
+
+        $suchtext = '###warehouse_editor###';
+        foreach ($yform->objparams['form_elements'] as $k => &$e) {
+            if ('textarea' === $e[0] && str_contains($e[5], $suchtext)) {
+                $e[5] = str_replace($suchtext, \rex_config::get('warehouse', 'editor'), $e[5]);
+            }
+        }
+
+        return $yform;
+    }
 
 }

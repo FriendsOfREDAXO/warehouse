@@ -1,93 +1,66 @@
 package: warehouse
-version: '2.0.0-dev-2025-01-29'
+version: '2.0.0-dev-2025-03-23'
 author: FriendsOfREDAXO
 supportpage: https://github.com/FriendsOfREDAXO/warehouse
 
 page:
     title: translate:warehouse_settings
-    perm: warehouse[]
+    perm: warehouse
     pjax: true
     block: warehouse
+    prio: 0
     icon: rex-icon fa-shopping-cart
     subpages:
-        settings:
-            title: translate:warehouse_settings_shop
-            perm: warehouse[settings]
-            icon: rex-icon fa-cog
-            subpages:
-                general:
-                    title: translate:warehouse_settings_general
-                    perm: warehouse[settings]
-                    icon: rex-icon fa-wrench
-                tax:
-                    title: translate:warehouse_settings_tax
-                    perm: warehouse[settings]
-                    icon: rex-icon fa-percent
-                discount:
-                    title: translate:warehouse_settings_discount
-                    perm: warehouse[settings]
-                    icon: rex-icon fa-tag
-        shipping:
-            title: translate:warehouse_shipping
-            perm: warehouse[shipping]
-            icon: rex-icon fa-truck
-            subpages:
-                settings:
-                    title: translate:warehouse_settings_shipping
-                    perm: warehouse[shipping]
-                    icon: rex-icon fa-cogs
-                zones:
-                    title: translate:warehouse_zones
-                    perm: warehouse[shipping]
-                    icon: rex-icon fa-globe
-                countries:
-                    title: translate:warehouse_countries
-                    perm: warehouse[shipping]
-                    icon: rex-icon fa-flag
-                counties:
-                    title: translate:warehouse_counties
-                    perm: warehouse[shipping]
-                    icon: rex-icon fa-map-marker
-        payment:
-            title: translate:warehouse_settings_payment
-            perm: warehouse[payment]
-            icon: rex-icon fa-credit-card
-            subpages:
-                paypal:
-                    title: translate:warehouse_settings_paypal
-                    perm: warehouse[payment]
-                    icon: rex-icon fa-paypal
-                giropay:
-                    title: translate:warehouse_settings_giropay
-                    perm: warehouse[payment]
-                    icon: rex-icon fa-euro
-                wallee:
-                    title: translate:warehouse_settings_wallee
-                    perm: warehouse[payment]
-                    icon: rex-icon fa-money
-        setup:
-            title: translate:warehouse_settings_system
-            perm: warehouse[setup]
-            icon: rex-icon fa-wrench
-            subpages:
-                domain:
-                    title: translate:warehouse_settings_domain
-                    perm: warehouse[setup]
-                    icon: rex-icon fa-sitemap
-                email:
-                    title: translate:warehouse_settings_email
-                    perm: warehouse[setup]
-                    icon: rex-icon fa-envelope
-                install:
-                    title: translate:warehouse_settings_install
-                    perm: admin
-                    icon: rex-icon fa-download
-        docs:
-            title: translate:warehouse_docs
-            perm: warehouse[docs]
-            icon: rex-icon fa-info-circle
-            itemclass: pull-right
+        order:
+            block: warehouse
+            title: translate:warehouse_order
 
+pages:
+    article:
+        block: warehouse
+        title: translate:warehouse_article
+    article_variant:
+        block: warehouse
+        title: translate:warehouse_article_variant
+    category:
+        block: warehouse
+        title: translate:warehouse_category
+    settings:
+        title: translate:warehouse_settings_shop
+        perm: warehouse[settings]
+        icon: rex-icon fa-cog
+        itemclass: pull-right
+        subpages:
+            general:
+                title: translate:warehouse_settings_general
+                perm: warehouse[settings]
+                icon: rex-icon fa-wrench
+            payment:
+                title: translate:warehouse_settings_payment
+                perm: warehouse[payment]
+                icon: rex-icon fa-credit-card
+            shipping:
+                title: translate:warehouse_shipping
+                perm: warehouse[shipping]
+                icon: rex-icon fa-truck
+            domain:
+                title: translate:warehouse_settings_domain
+                perm: warehouse[setup]
+                icon: rex-icon fa-sitemap
+            discount:
+                title: translate:warehouse_settings_discount
+                perm: warehouse[settings]
+                icon: rex-icon fa-tag
+            setup:
+                title: translate:warehouse_settings_setup
+                perm: warehouse[setup]
+                icon: rex-icon fa-cogs
+    docs:
+        title: translate:warehouse_docs
+        perm: warehouse[docs]
+        icon: rex-icon fa-info-circle
+        itemclass: pull-right
+        
 requires:
     redaxo: '^5.17'
     php:
@@ -95,35 +68,31 @@ requires:
     packages:
         structure: '^2.0'
         yform: '^4.1'
+        yform_field: '^2.9'
+
+# Wenn Warehouse 1.x installiert ist, dann abbrechen - es ist keine Migration vorgesehen.
+conflicts:
+    packages:
+        warehouse: '<2.0.0'
 
 default_config:
+
+    # Grundeinstellungen
     store_name: 
     store_country_code: "DE"
-    cart_page:
-    address_page:
-    order_page:
-    thankyou_page:
-    payment_error: 
-    shippinginfo_page: 
-    my_orders_page:
+
     currency: "EUR"
     currency_symbol: "€"
-    country_codes: "DE,AT,CH"
+    country_codes: "DE"
     cart_mode: "cart"
+    editor: 'class="form-control redactor-editor--default"'
     check_weight: 0
-    tax_value: 19
-    tax_value_1: 7
-    tax_value_2: 0
-    tax_value_3: 0
-    tax_value_4: 0
+    tax_options: '19,7,0'
 
-    email_template_customer: 
-    email_template_seller:
-    order_email:
-
-    # Rabatt
-    global_discount_text: ''
-    global_discount: 0
+    # E-Mail Einstellungen
+    email_template_customer: 'warehouse_order_customer'
+    email_template_seller: 'warehouse_order_seller'
+    order_email: 
 
     # Paypal Einstellungen
     paypal_client_id:
@@ -136,10 +105,9 @@ default_config:
     paypal_page_success:
     paypal_page_error: 
 
-    # To-Do: Wallee
-    
-    # Frachtkosten
-    shipping: 
-    shipping_mode: 0
-    shipping_parameters:
+    # Versandkosten
+    minimum_order_value: 0
+    shipping_fee: 0
+    free_shipping_from: 0
+    shipping_calculation_mode: ''
     

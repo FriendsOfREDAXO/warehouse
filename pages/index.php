@@ -1,5 +1,8 @@
 <?php
-echo rex_view::title($this->i18n('warehouse_title'));
 
-//include rex_be_controller::getCurrentPageObject()->getSubPath();
+/**
+ * @var rex_addon $this
+ * @psalm-scope-this rex_addon
+ */
+
 rex_be_controller::includeCurrentPageSubPath();

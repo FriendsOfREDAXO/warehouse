@@ -3,116 +3,65 @@
 namespace FriendsOfRedaxo\Warehouse;
 
 use rex_config;
+use rex_extension;
+use rex_extension_point;
 
 class Shipping {
-    
-    public static function get_cost() {
 
-        $cart = Warehouse::get_cart();
+    public const CALCULATION_MODE_OPTIONS = [
+        '' => 'translate:warehouse.settings.shipping_calculation_mode.options.default',
+        'quantity' => 'translate:warehouse.settings.shipping_calculation_mode.options.quantity',
+        'weight' => 'translate:warehouse.settings.shipping_calculation_mode.options.weight',
+        'order_total' => 'translate:warehouse.settings.shipping_calculation_mode.options.order_total',
+    ];
 
+    public static function getCost() {
 
+        $cart = Warehouse::getCart();
 
-        // prüft, ob überhaupt Artikel mit Fracht im Warenkorb liegen.
-        $free_shipping = true;
-        foreach ($cart as $ci) {
-            if (!$ci['free_shipping']) {
-                $free_shipping = false;
-                break;
+        $total_weight = Cart::weighWeight();
+        $total_pieces = Cart::countItems();
+        $total_price = Cart::calculateTotal();
+
+        $free_shipping_from = (float) rex_config::get('warehouse', 'free_shipping_from');
+        $shipping_fee = (float) rex_config::get('warehouse', 'shipping_fee');
+        $minimum_order_value = (float) rex_config::get('warehouse', 'minimum_order_value');
+        $shipping_calculation_mode = (string) rex_config::get('warehouse', 'shipping_calculation_mode');
+
+        $return = $shipping_fee;
+        // Wenn Standard-Shipping-MOdus ausgewählt ist, dann nur Standard-Berechnung durchführen
+        if($shipping_calculation_mode == '') {
+            if ($total_price >= $free_shipping_from) {
+                $return = 0;
             }
         }
-        if ($free_shipping) {
-            return 0;
+
+        if($shipping_calculation_mode == 'quantity') {
+            if ($total_pieces >= $free_shipping_from) {
+                $return = 0;
+            }
+            // TODO: Implement quantity calculation
         }
 
-        if (rex_config::get('warehouse','shipping_mode') == 'pieces') {
-            // Nach Stück
-            $sum_pcs = 0;
-            foreach ($cart as $ci) {
-                if ((int) $ci['free_shipping'] < 1) {
-                    $sum_pcs += $ci['count'];
-                }
+        if($shipping_calculation_mode == 'weight') {
+            if ($total_weight >= $free_shipping_from) {
+                $return = 0;
             }
-            if (($shipping = self::check_val($sum_pcs)) !== false) {
-                return $shipping;
-            }
-        } elseif (rex_config::get('warehouse','shipping_mode') == 'weight') {
-            // Nach Gewicht (Alle weight zusammengezählt)
-            $weight = 0;
-            foreach ($cart as $uid=>$item) {
-                $warehouse_article = Article::get_article($uid);
-//                dump($warehouse_article);
-                $art_weight = 0;
-                if ($warehouse_article && isset($warehouse_article->weight) && $warehouse_article->weight) {
-                    $art_weight = $warehouse_article->weight * $item['count'];
-                }
-                if ($warehouse_article && isset($warehouse_article->var_weight) && (float) $warehouse_article->var_weight) {
-                    $art_weight = $warehouse_article->var_weight * $item['count'];
-                }
-                $weight += $art_weight;
-            }
-            $shipping = self::check_val($weight);
-            if ($shipping !== false) {
-                return $shipping;
-            }            
-
-        } elseif (rex_config::get('warehouse','shipping_mode') == 'order_total') {
-            $sum_brutto = Warehouse::get_sub_total();
-            $shipping = self::check_val($sum_brutto);
-            if ($shipping !== false) {
-                return $shipping;
-            }            
+            // TODO: Implement weight calculation
         }
-        return rex_config::get('warehouse', 'shipping');
+
+        if($shipping_calculation_mode == 'order_total') {
+            if ($total_price >= $free_shipping_from) {
+                $return = 0;
+            }
+            // TODO: Implement advanced order_total calculation
+        }
+
+        return rex_extension::registerPoint(new rex_extension_point(
+            'WAREHOUSE_CART_SHIPPING_COST',
+            $return,
+            ['cart' => $cart, 'total_weight' => $total_weight, 'total_pieces' => $total_pieces, 'total_price' => $total_price, 'free_shipping_from' => $free_shipping_from, 'shipping_fee' => $shipping_fee, 'minimum_order_value' => $minimum_order_value, 'shipping_calculation_mode' => $shipping_calculation_mode]
+        ));
     }
-    
-    /**
-     * Führt den Vergleich auf Basis der in den Settings gesetzten json Parameter durch
-     * 
-     * @param type $check_val
-     * @return boolean
-     */
-    private static function check_val($check_val) {
-        $shipping_params = json_decode(rex_config::get('warehouse','shipping_parameters'));
-        $stop = false;
-        foreach ($shipping_params as $param) {
-            switch ($param[0]) {
-                case '>':
-                    if ((float) $check_val > (float) $param[1]) {
-                        return $param[2];
-                        $stop = true;
-                    }
-                    break;
-                case '>=':
-                    if ((float) $check_val >= (float) $param[1]) {
-                        return $param[2];
-                        $stop = true;
-                    }
-                    break;
-                case '<':
-                    if ((float) $check_val < (float) $param[1]) {
-                        return $param[2];
-                        $stop = true;
-                    }
-                    break;
-                case '<=':
-                    if ((float) $check_val <= (float) $param[1]) {
-                        return $param[2];
-                        $stop = true;
-                    }
-                    break;
-                case '=':
-                    if ((float) $check_val == (float) $param[1]) {
-                        return $param[2];
-                        $stop = true;
-                    }
-                    break;
-            }
-            if ($stop) {
-                break;
-            }
-        }
-        return false;        
-    }
-    
     
 }

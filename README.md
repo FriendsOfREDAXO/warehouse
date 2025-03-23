@@ -1,4 +1,4 @@
-# Warehouse 2 - Shop-Addon für REDAXO ^5.17 (Work in Progress)
+# Warehouse 2 - Shop-Add-on für REDAXO ^5.17 (Work in Progress)
 
 Das Warehouse stellt Basisfunktionalitäten für einen Webshop in REDAXO zur Verfügung:
 
@@ -6,24 +6,27 @@ Das Warehouse stellt Basisfunktionalitäten für einen Webshop in REDAXO zur Ver
 * Kategorien, Artikel, Varianten und Attribute
 * Warenkorb
 * Bestellprozess inkl. PayPal SDK auf Basis der API v2
+* Extension Points für eigene Anpassungen (z. B. Versandkostenberechnung)
 
 Die Ausgabe basiert auf Fragmenten, sodass der Shop sich in jede Umgebung einfügen lässt.
 
-Über das AddOn `ycom` ist eine Benutzerverwaltung möglich.
+Über das Add-on `ycom` ist eine Benutzerverwaltung möglich.
 
 ## Installation
 
-### Vorausssetzungen
+### Voraussetzungen
 
 * REDAXO ^5.17
 * PHP ^8.3
 * YForm ^4.1
+* YForm Field ^2.9
 * YRewrite ^2.9
 
 optional:
 
-* Für Mehrsprachigkeit wird das AddOn `sprog` benötigt.
-* Für SEO-freundliche URLs wird das AddOn `url` benötigt.
+* Für Mehrsprachigkeit wird das Add-on `sprog` benötigt.
+* Für SEO-freundliche URLs wird das Add-on `url` benötigt.
+* Für Kundenkonten und Login wird das Add-on `ycom` benötigt.
 
 Nicht vergessen:
 
@@ -32,46 +35,62 @@ Nicht vergessen:
 
 ## Weitere Features
 
-### Gewichte
+### Artikel und Varianten
 
-Ebenso wie eine Versandberechnung nach Warenwert und nach Stückzahl möglich ist, ist auch eine Berechnung der Versandkosten nach Gewicht möglich. Um sicherzustellen, dass auch ein Gewicht im Artikel eingetragen wird, kann man in den Einstellungen festlegen, dass im Backend das Gewicht > 0 überprüft wird. In der Artikeltabelle muss hierfür eine Customfunction für die Validierung eingetragen werden: warehouse::check_input_weight, das zugehörige Feld muss das Feld weight sein. Wenn es sich nicht um Variantenartikel handelt, wird das Gewicht des Hauptartikels verwendet. Wenn bei der Variante 0 als Gewicht eingetragen wird, wird ebenfalls das Gewicht des Hauptartikels zur Berechnung verwendet.
+Artikel bestehen standardmäßig aus ID, Name und optionalen Eigenschaften. Über YForm können beliebig viele weitere Felder hinzugefügt werden. Empfehlung: Verwende für projektspezifische Felder den Präfix `project_` in deinen Feldnamen.
+
+```php
+// Findet alle verfügbaren Artikel
+FriendsOfREDAXO\Warehouse\Article::query()->find();
+```
 
 ### Staffelpreise
 
-Sowohl für Artikel als auch für Varianten lassen sich Staffelpreise hinterlegen. Wenn für Varianten unterschiedliche Preise gelten, so muss beim Hauptartikel der Preis 0 eingetragen werden und für jede Variante muss ein Preis erfasst werden.
+Für Artikel und Varianten können zusätzlich Staffelpreise (Mengenrabatt) hinterlegt werden.
 
-### Einzelartikel
+### Gewicht und Versandkosten
 
-Es gibt jetzt ganz neu, auf vielfachen Wunsch, eine Möglichkeit Einzelartikel in den Shop zu packen. Das heißt: der Artikel wird nicht in der Artikeltabelle von warehouse abgelegt sondern ganz easy als REDAXO Artikel angelegt. Im REDAXO Artikel muss man dann das Modul "Warehouse Einzelartikel" einbauen. Als Moduleingabe kann man lediglich eine Artikelnummer angeben, einen Artikelnamen und einen Preis. WICHTIG: Die Artikelnummer muss unique, also einmalig sein, denn sonst findet das System den Artikel nicht korrekt. Für alle Insider: der Slice speichert zusätzlich hidden im value20 noch den Wert warehouse_single. Der Slice muss online sein. Über dieses Modul "Warehouse Einzelartikel" wird nur der Bestellteil (also Eingabemöglichkeit der Anzahl und Bestellbutton und Preis) ausgegeben. Die Artikelbeschreibung wird in normalen Inhaltsmodulen aufgebaut.
+Artikel können ein Gewicht haben, das für die Versandkostenberechnung genutzt wird. Die Versandkosten können nach Warenwert, Stückzahl oder Gewicht berechnet werden.
 
-Auf einer REDAXO Artikelseite können mehrere Blöcke "Warehouse Einzelartikel" angelegt werden.
+> Hinweis: In Version 2 gibt es ein Feld, um Gewicht zu hinterlegen - die Versandkostenberechnung muss jedoch vom Entwickler über den Extension Point `WAREHOUSE_` implementiert werden.
 
-In dieser Version wird auch immer der Mehrwertsteuersatz aus Steuersatz 1 verwendet. Es ist das auch wiederum mehr oder weniger ein Beispiel, dass das Warehouse sehr flexibel auf eigene Bedürfnisse angepasst werden kann. Wenn jetzt also die Anfrage kommt: Einzelartikel mit Varianten - geht das? Natürlich geht das, aber es ist nicht ausprogrammiert.
+### Steuern
 
-### Multidomainfähigkeit
+Artikel können mit einem Steuersatz versehen werden. Standardmäßig stehen `0%`, `7%` und `19%` zur Auswahl.
 
-Das Warehouse hat eine Multidomainfähigkeit bekommen. Das heißt, dass der Warenkorb, der Checkout und die E-Mail Einstellungen für jede installierte Domain individuell vorgenommen werden können. Die Parameter werden jeweils mit ihrer Domain-Id abgelegt. Es gibt also einen Eintrag `cart_page` für die allgemeine Domain und einen Eintrag `cart_page_2` für die zweite Domain. Der Aufruf `warehouse::get_config("cart_page")` liefert den gewünschten Wert für die aktuelle Domain. Wenn für die Domain kein Wert gefunden wird, wird der Standardwert aus dem Eintrag `cart_page` geliefert. Die Einträge für die Domain sind daher optional.
+### Lagerbestand
 
-### Ergänzungen
+Artikel können einen Lagerbestand haben, der beim Kauf automatisch aktualisiert wird.
 
-im Warenkorb kann die Anzahl per Input-Felder geändert werden.
+### Direktkauf
 
-```php
-<input type="hidden" name="action" value="modify_cart">
-<input type="hidden" name="mod" value="qty">
-<input name="<?= $uid ?>" type="text" maxlength="3" value="<?= $item['count'] ?>">
-```
+Artikel können ohne Warenkorb direkt gekauft und bezahlt werden.
 
-### Bekannte Fehler
+### Zahlungsmöglichkeiten
 
-In der obigen Konfiguration kann die Bestelltabelle nicht aufgerufen werden. Hierfür muss zusätzlich die ycom installiert werden und in der ycom Usertabelle das Feld company angelegt werden.
-Die Bilder in der Demo sind absichtlich verkleinert.
+Standardmäßig stehen `PayPal` und `Vorkasse` zur Verfügung. Weitere Zahlungsmöglichkeiten können über den Extension Point `WAREHOUSE_PAYMENT` hinzugefügt werden.
+
+### Multidomain-Fähigkeit
+
+In Warehouse 2 wurde die Multidomain-Fähigkeit verbessert. Es können jetzt beliebig viele Domains.
+
+### Mehrsprachigkeit
+
+In Warehouse 2 gibt es derzeit keine integrierte Mehrsprachigkeit für Artikel. Es wird empfohlen, das Add-on `sprog` zu verwenden. Zusätzlich können die Artikel und Varianten um eine eigene Sprachenverwaltung erweitert werden, z. B. per eigener Datenbank-Tabelle mit `be_manager_relation`.
+
+### Rabatte und Gutschein-Codes
+
+Rabatte und Gutschein-Codes können über den Extension Point `WAREHOUSE_DISCOUNT` hinzugefügt werden.
+
+### Kundenkonto
+
+Über das Add-on `ycom` können Kundenkonten und Rechnungsadresse sowie Lieferadresse angelegt werden.
 
 ## Lizenz, Autor, Credits
 
 ### Lizenz
 
-MIT Lizenz, siehe [LICENSE.md](https://github.com/FriendsOfREDAXO/warehouse/blob/main/LICENSE.md)
+MIT-Lizenz, siehe [LICENSE.md](https://github.com/FriendsOfREDAXO/warehouse/blob/main/LICENSE.md)
 
 ### Autor
 
