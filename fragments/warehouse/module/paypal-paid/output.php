@@ -5,7 +5,7 @@ if (rex::isBackend()) {
     echo '<h2>PayPal Abschluss der Zahlung, Bestätigungsmail und Bestellmail verschicken.</h2>';
     return;
 } else {
-    $response = FriendsOfRedaxo\Warehouse\PayPal::execute_payment();
+    $response = FriendsOfRedaxo\Warehouse\PayPal::ExecutePayment();
 //    dump($response); exit;
     /*
     PayPalHttp\HttpResponse {#170 ▼
