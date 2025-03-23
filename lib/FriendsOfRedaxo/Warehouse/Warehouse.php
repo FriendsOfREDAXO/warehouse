@@ -410,7 +410,7 @@ class Warehouse
         $return .= PHP_EOL;
         $return .= ($user_data['note'] ?? '') ? 'Bemerkung:' . PHP_EOL . $user_data['note'] . PHP_EOL : '';
         $return .= PHP_EOL;
-        $return .= 'Zahlungsweise: ' . self::getPaymentOptions($user_data['payment_type']) . PHP_EOL;
+$return .= 'Zahlungsweise: ' . (self::PAYMENT_OPTIONS[$user_data['payment_type']] ?? $user_data['payment_type']) . PHP_EOL;
         $return .= PHP_EOL;
         if ($user_data['payment_type'] == 'direct_debit') {
             $return .= 'IBAN: ' . $user_data['iban'] . PHP_EOL;
