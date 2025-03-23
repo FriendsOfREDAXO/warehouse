@@ -7,7 +7,7 @@ if (rex::isBackend()) {
     return;
 } else {
     $warehouse_userdata = FriendsOfRedaxo\Warehouse\Warehouse::get_user_data();
-    $cart = FriendsOfRedaxo\Warehouse\Warehouse::get_cart();
+    $cart = FriendsOfRedaxo\Warehouse\Warehouse::getCart();
 //    dump($cart);
     $fragment = new rex_fragment();
     $fragment->setVar('cart', $cart);

@@ -116,7 +116,7 @@ class Warehouse
             $art['attributes'] = [];
         }
 
-        $cart = self::get_cart();
+        $cart = self::getCart();
         if ($art['count'] > 0) {
             if (isset($cart[$art_uid])) {
                 //            unset($cart[$art_id]);
@@ -140,7 +140,7 @@ class Warehouse
 
     public static function cart_recalc()
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         foreach ($cart as $k => $art) {
             // Artikel nochmal aus der db einlesen, um zu prüfen, ob er nicht zwischenzeitlich verkauft wurde
             $warehouse_art = Article::get_article($k);
@@ -234,7 +234,7 @@ class Warehouse
      */
     public static function modify_cart()
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         $art_uid = rex_get('art_uid');
         $mod = rex_get('mod', 'string');
         if (isset($cart[$art_uid])) {
@@ -262,7 +262,7 @@ class Warehouse
      */
     public static function modify_qty()
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         foreach ($cart as $art_uid=>$item) {
             if ($qty = rex_request($art_uid, 'int')) {
                 $cart[$art_uid]['count'] = $qty;
@@ -303,7 +303,7 @@ class Warehouse
      */
     public static function get_sub_total()
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         $sum = 0;
         foreach ($cart as $item) {
             $sum += $item['total'];
@@ -313,7 +313,7 @@ class Warehouse
 
     public static function get_sub_total_netto()
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         $sum = 0;
         foreach ($cart as $item) {
             $sum += $item['price_netto'] * $item['count'];
@@ -323,7 +323,7 @@ class Warehouse
 
     public static function get_tax_total()
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         $sum = 0;
         foreach ($cart as $item) {
             $sum += $item['taxval'];
@@ -342,10 +342,10 @@ class Warehouse
      */
     public static function get_shipping_cost()
     {
-        return Shipping::get_cost();
+        return Shipping::getCost();
     }
 
-    public static function get_cart()
+    public static function getCart()
     {
         return rex_session('warehouse_cart', 'array');
     }
@@ -404,7 +404,7 @@ class Warehouse
      */
     public static function save_order_to_db($payment_id = '')
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         //        $cart['payment_confirm'] = md5(microtime(true).rand(0,999).'myspecialSecret');
         //        rex_set_session('warehouse_cart',$cart);
 
@@ -473,7 +473,7 @@ class Warehouse
 
     public static function get_order_text()
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         $shipping = (float) self::get_shipping_cost();
         $total = (float) self::get_cart_total();
 
@@ -540,7 +540,7 @@ class Warehouse
 
     public static function get_order_html()
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         $shipping = (float) self::get_shipping_cost();
         $total = (float) self::get_cart_total();
         $out = '';
@@ -760,7 +760,7 @@ PayPalHttp\HttpResponse {#170 ▼
      */
     public static function clean_cart()
     {
-        $mycart = self::get_cart();
+        $mycart = self::getCart();
         foreach ($mycart as $k => $v) {
             if ($v['count'] == 0) {
                 unset($mycart[$k]);
@@ -832,7 +832,7 @@ PayPalHttp\HttpResponse {#170 ▼
 
     public static function send_notification_email($send_redirect = true, $order_id = '')
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         $warehouse_userdata = self::get_user_data();
 
         $yf = new rex_yform();
@@ -922,7 +922,7 @@ PayPalHttp\HttpResponse {#170 ▼
      */
     public static function update_stock()
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         foreach ($cart as $k=>$art) {
             if ($art['stock_item'] ?? false) {
                 $warehouse_art = Article::get_article($k);
