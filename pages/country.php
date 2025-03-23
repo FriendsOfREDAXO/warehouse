@@ -1,6 +1,7 @@
 <?php
 
 $addon = rex_addon::get('warehouse');
+echo rex_view::title($addon->i18n('warehouse.title'));
 
 $table_name = 'rex_warehouse_country';
 
