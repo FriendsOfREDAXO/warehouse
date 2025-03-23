@@ -40,6 +40,18 @@ warehouse_settings_discount = Rabatte
 warehouse_settings_setup = Setup
 warehouse_docs = Hilfe
 
+warehouse_docs.README = Intro
+warehouse_docs.warehouse_article = Artikel
+warehouse_docs.warehouse_article_variant = Varianten
+warehouse_docs.warehouse_category = Kategorien
+warehouse_docs.order = Bestellungen
+warehouse_docs.settings.setup = Setup
+warehouse_docs.settings.general = Grundeinstellungen
+warehouse_docs.settings.shipping = Versand
+warehouse_docs.settings.payment = Zahlung
+warehouse_docs.settings.domain = Domain
+warehouse_docs.settings.discount = Rabatte
+
 # Warehouse Einstellungen: Grundeinstellungen
 
 warehouse.settings.editor = WYSIWYG-Editor
