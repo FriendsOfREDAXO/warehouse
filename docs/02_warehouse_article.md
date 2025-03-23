@@ -1,13 +1,14 @@
-# Die Klasse `MeineKlasse`
+# Die Klasse `Article`
 
-Kind-Klasse von `rex_yform_manager_dataset`, damit stehen alle Methoden von YOrm-Datasets zur Verfügung. Greift auf die Tabelle `MeineTabelle` zu.
+Kind-Klasse von `rex_yform_manager_dataset`, damit stehen alle Methoden von YOrm-Datasets zur Verfügung. Greift auf die Tabelle `rex_warehouse_article` zu.
 
 > Es werden nachfolgend zur die durch dieses Addon ergänzte Methoden beschrieben. Lerne mehr über YOrm und den Methoden für Querys, Datasets und Collections in der [YOrm Doku](https://github.com/yakamara/yform/blob/master/docs/04_yorm.md)
 
 ## Alle Einträge erhalten
 
 ```php
-$entries = MeineKlasse::query()->find(); // YOrm-Standard-Methode zum Finden von Einträgen, lässt sich mit where(), Limit(), etc. einschränken und Filtern.
+use FriendsOfREDAXO\Warehouse\Article;
+$articles = Article::query()->find(); // YOrm-Standard-Methode zum Finden von Einträgen, lässt sich mit where(), Limit(), etc. einschränken und Filtern.
 ```
 
 ## Methoden und Beispiele
@@ -19,7 +20,7 @@ Gibt den Wert für das Feld `name` (Name) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 echo $dataset->getName();
 ```
 
@@ -28,7 +29,7 @@ echo $dataset->getName();
 Setzt den Wert für das Feld `name` (Name).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setName($value);
 $dataset->save();
 ```
@@ -40,7 +41,7 @@ Gibt den Wert für das Feld `availability` (Verfügbarkeit) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 echo $dataset->getAvailability();
 ```
 
@@ -49,7 +50,7 @@ echo $dataset->getAvailability();
 Setzt den Wert für das Feld `availability` (Verfügbarkeit).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setAvailability($value);
 $dataset->save();
 ```
@@ -61,7 +62,7 @@ Gibt den Wert für das Feld `category_id` (Kategorie) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 $beziehung = $dataset->getCategoryId();
 ```
 
@@ -70,7 +71,7 @@ $beziehung = $dataset->getCategoryId();
 Setzt den Wert für das Feld `category_id` (Kategorie).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setCategoryId($value);
 $dataset->save();
 ```
@@ -82,7 +83,7 @@ Gibt den Wert für das Feld `status` (Status) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 $auswahl = $dataset->getStatus();
 ```
 
@@ -91,7 +92,7 @@ $auswahl = $dataset->getStatus();
 Setzt den Wert für das Feld `status` (Status).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setStatus($param);
 $dataset->save();
 ```
@@ -103,7 +104,7 @@ Gibt den Wert für das Feld `price` (Preis) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 $nummer = $dataset->getPrice();
 ```
 
@@ -112,7 +113,7 @@ $nummer = $dataset->getPrice();
 Setzt den Wert für das Feld `price` (Preis).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setPrice($value);
 $dataset->save();
 ```
@@ -124,7 +125,7 @@ Gibt den Wert für das Feld `tax` (Steuer) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 echo $dataset->getTax();
 ```
 
@@ -133,7 +134,7 @@ echo $dataset->getTax();
 Setzt den Wert für das Feld `tax` (Steuer).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setTax($value);
 $dataset->save();
 ```
@@ -145,7 +146,7 @@ Gibt den Wert für das Feld `price_text` (Preis-Text) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 echo $dataset->getPriceText();
 ```
 
@@ -154,7 +155,7 @@ echo $dataset->getPriceText();
 Setzt den Wert für das Feld `price_text` (Preis-Text).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setPriceText($value);
 $dataset->save();
 ```
@@ -166,7 +167,7 @@ Gibt den Wert für das Feld `weight` (Gewicht) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 $nummer = $dataset->getWeight();
 ```
 
@@ -175,7 +176,7 @@ $nummer = $dataset->getWeight();
 Setzt den Wert für das Feld `weight` (Gewicht).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setWeight($value);
 $dataset->save();
 ```
@@ -187,7 +188,7 @@ Gibt den Wert für das Feld `short_text` (Kurztext) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 $text = $dataset->getShortText(true);
 ```
 
@@ -196,7 +197,7 @@ $text = $dataset->getShortText(true);
 Setzt den Wert für das Feld `short_text` (Kurztext).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setShortText($value);
 $dataset->save();
 ```
@@ -208,7 +209,7 @@ Gibt den Wert für das Feld `text` (Text) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 $text = $dataset->getText(true);
 ```
 
@@ -217,7 +218,7 @@ $text = $dataset->getText(true);
 Setzt den Wert für das Feld `text` (Text).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setText($value);
 $dataset->save();
 ```
@@ -229,7 +230,7 @@ Gibt den Wert für das Feld `image` (Bild) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 $media = $dataset->getImage(true);
 ```
 
@@ -238,7 +239,7 @@ $media = $dataset->getImage(true);
 Setzt den Wert für das Feld `image` (Bild).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setImage($filename);
 $dataset->save();
 ```
@@ -250,7 +251,7 @@ Gibt den Wert für das Feld `gallery` (Galerie) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 $media = $dataset->getGallery(true);
 ```
 
@@ -259,7 +260,7 @@ $media = $dataset->getGallery(true);
 Setzt den Wert für das Feld `gallery` (Galerie).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setGallery($filename);
 $dataset->save();
 ```
@@ -271,7 +272,7 @@ Gibt den Wert für das Feld `variant_ids` (Varianten) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 $beziehung = $dataset->getVariantIds();
 ```
 
@@ -280,7 +281,7 @@ $beziehung = $dataset->getVariantIds();
 Setzt den Wert für das Feld `variant_ids` (Varianten).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setVariantIds($value);
 $dataset->save();
 ```
@@ -292,7 +293,7 @@ Gibt den Wert für das Feld `uuid` (UUID) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 echo $dataset->getUuid();
 ```
 
@@ -301,7 +302,7 @@ echo $dataset->getUuid();
 Setzt den Wert für das Feld `uuid` (UUID).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setUuid($value);
 $dataset->save();
 ```
@@ -313,7 +314,7 @@ Gibt den Wert für das Feld `updatedate` (Zuletzt geändert) zurück:
 Beispiel:
 
 ```php
-$dataset = warehouse_article::get($id);
+$dataset = Article::get($id);
 $datestamp = $dataset->getUpdatedate();
 ```
 
@@ -322,7 +323,7 @@ $datestamp = $dataset->getUpdatedate();
 Setzt den Wert für das Feld `updatedate` (Zuletzt geändert).
 
 ```php
-$dataset = warehouse_article::create();
+$dataset = Article::create();
 $dataset->setUpdatedate($value);
 $dataset->save();
 ```
