@@ -1,8 +1,7 @@
+navigation_warehouse = Warehouse 3.0
 warehouse.title = Warehouse 3.0
 
-warehouse[settings] = Warehouse: Einstellungen
-warehouse[shipping] = Warehouse: Versand-Einstellungen
-
+# V1
 warehouse_iso_code = ISO Code
 warehouse_iso2 = ISO Code2
 warehouse_iso3 = ISO Code3
@@ -17,15 +16,10 @@ warehouse_tax = Steuer
 warehouse_tax_tax_disable = Steuer entfällt generell
 
 # V2.0.0
-# Tabellennamen
-
-warehouse_article.tablename = 📦 Artikel
-warehouse_article_variant.tablename = 📦 Varianten
-warehouse_category.tablename = 📦 Kategorien
-warehouse_order.tablename = 📦 Bestellungen
-warehouse_country.tablename = 📦 Länder
-warehouse_shipping.tablename = 📦 Versand
-warehouse_settings_domain.tablename = 📦 Domain-Einstellungen
+# Berechtigungen
+warehouse = Warehouse: Zugriff auf alle Bereiche
+warehouse[settings] = Warehouse: Einstellungen
+warehouse[shipping] = Warehouse: Versand-Einstellungen
 
 # V2.0.0
 # Backend-Seiten
@@ -36,8 +30,29 @@ warehouse_category = Kategorien
 warehouse_order = Bestellungen
 warehouse_country = Länder
 warehouse_shipping = Versand
+warehouse_settings = Verwaltung
+warehouse_settings_shop = Shop
+warehouse_settings_payment = Zahlung
+warehouse_settings_general = Grundeinstellungen
+warehouse_settings_domain = Domain-Profile
+warehouse_settings_tax = Steuern
+warehouse_settings_discount = Rabatte
+warehouse_settings_setup = Setup
+warehouse_docs = Hilfe
 
-# Warehouse Einstellungen - YForm Tabelle
+# Warehouse Einstellungen: Verandkosten
+
+warehouse.settings.shipping = Verandkosten
+warehouse.settings.shipping_fee = Verandkosten
+warehouse.settings.free_shipping_from = Versandkostenfrei ab
+warehouse.settings.minimum_order_value = Mindestbestellwert
+warehouse.settings.shipping_calculation_mode = Erweiterte Versandkosten
+warehouse.settings.shipping_calculation_mode.options.default = keine (Standard)
+warehouse.settings.shipping_calculation_mode.options.quantity = ANZAHL: Verandkosten nach Anzahl abstufen
+warehouse.settings.shipping_calculation_mode.options.weight = GEWICHT: Verandkosten nach Gewicht abstufen
+warehouse.settings.shipping_calculation_mode.options.order_total = BESTELLSUMME: Verandkosten nach Bestellsumme abstufen
+
+# Warehouse Einstellungen: Domain
 
 warehouse_settings_domain.fieldset_art_ids = Seiten
 warehouse_settings_domain.yrewrite_domain_id = Domain
@@ -56,7 +71,19 @@ warehouse_settings_domain.order_email.notice = Mehrere Empfänger durch Komma tr
 
 warehouse_settings_domain.fieldset_end = 🔚
 
-# Neue Warehouse Artikel Labels
+# YForm-Tabellen: Tabellennamen
+
+warehouse_article.tablename = 📦 Artikel
+warehouse_article_variant.tablename = 📦 Varianten
+warehouse_category.tablename = 📦 Kategorien
+warehouse_order.tablename = 📦 Bestellungen
+warehouse_country.tablename = 📦 Länder
+warehouse_shipping.tablename = 📦 Versand
+warehouse_settings_domain.tablename = 📦 Domain-Einstellungen
+
+
+# YForm-Tabelle "Artikel": Labels
+
 warehouse_article.name = Name
 warehouse_article.category_id = Kategorie
 warehouse_article.status = Status
@@ -78,6 +105,8 @@ warehouse_article.availability = Verfügbarkeit
 warehouse_article.uuid = UUID
 warehouse_article.bulk_prices = Staffelpreise
 
+# YForm-Tabelle "Kategorien": Labels
+
 warehouse_category.status = Status
 warehouse_category.status.active = 🟢 Aktiv
 warehouse_category.status.draft = 🟡 Entwurf
@@ -90,6 +119,8 @@ warehouse_category.text = Text
 warehouse_category.updatedate = Zuletzt geändert
 warehouse_category.parent_id = Übergeordente Kategorie
 warehouse_category.uuid = UUID
+
+# YForm-Tabelle "Artikel-Varianten": Labels
 
 warehouse_article_variant.article_id = Haupt-Artikel
 warehouse_article_variant.name = Name
@@ -108,12 +139,16 @@ warehouse_article_variant.status.hidden = 🔴 Versteckt
 warehouse_article_variant.image = Bild
 warehouse_article_variant.uuid = UUID
 
+# YForm-Tabelle "Länder": Labels
+
 warehouse_country.code = Code
 warehouse_country.name = Name
 warehouse_country.mode = Modus
 warehouse_country.status = Status
 warehouse_country.prio = Reihenfolge
 warehouse_country.tax = Steuer
+
+# YForm-Tabelle "Bestellung": Labels
 
 warehouse_order.salutation = Anrede
 warehouse_order.firstname = Vorname
@@ -137,11 +172,14 @@ warehouse_order.payment_type = Zahlungsart
 warehouse_order.payed = Bezahlt
 warehouse_order.imported = Importiert
 
+# YForm-Tabelle "Versand": Labels
+
 warehouse_shipping.name = Name
 warehouse_shipping.mode = Modus
 warehouse_shipping.params = Parameter
 
 # Warehouse-Artikel und Varianten: Verfügbarkeit
+
 warehouse_article.availability.BackOrder = 🟡 Nachbestellung
 warehouse_article.availability.Discontinued = 🟡 Auslaufartikel
 warehouse_article.availability.InStock = 🟢 Auf Lager
