@@ -1,14 +1,14 @@
 package: warehouse
-version: '3.0.0-dev-2025-03-22'
+version: '2.0.0-dev-2025-03-22'
 author: FriendsOfREDAXO
 supportpage: https://github.com/FriendsOfREDAXO/warehouse
 
 page:
     title: translate:warehouse_settings
-    perm: warehouse[]
+    perm: warehouse
     pjax: true
-    block: system
-    prio: 1
+    block: warehouse
+    prio: 0
     icon: rex-icon fa-shopping-cart
     subpages:
         settings:
@@ -38,7 +38,7 @@ page:
                     perm: warehouse[shipping]
                     icon: rex-icon fa-truck
                 setup:
-                    title: translate:warehouse_settings_system
+                    title: translate:warehouse_settings_setup
                     perm: warehouse[setup]
                     icon: rex-icon fa-cogs
 
@@ -114,15 +114,10 @@ default_config:
 
     currency: "EUR"
     currency_symbol: "€"
-    country_codes: "DE,AT,CH"
+    country_codes: "DE"
     cart_mode: "cart"
     editor: 'class="form-control redactor-editor--default"'
     check_weight: 0
-    tax_value: 19
-    tax_value_1: 7
-    tax_value_2: 0
-    tax_value_3: 0
-    tax_value_4: 0
 
     email_template_customer: 
     email_template_seller:
@@ -143,10 +138,9 @@ default_config:
     paypal_page_success:
     paypal_page_error: 
 
-    # To-Do: Wallee
-    
-    # Frachtkosten
-    shipping: 
-    shipping_mode: 0
-    shipping_parameters:
+    # Versandkosten
+    minimum_order_value: 0
+    shipping_fee: 0
+    free_shipping_from: 0
+    shipping_calculation_mode: ''
     
