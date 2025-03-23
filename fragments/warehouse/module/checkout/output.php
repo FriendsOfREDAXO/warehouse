@@ -39,14 +39,14 @@ rex::setProperty('js',$js.rex::getProperty('js',''));
 
 <?php /* Checkout - Adresseingabe - Output */
 
-$userdata = FriendsOfRedaxo\Warehouse\Warehouse::get_user_data();
+$userdata = FriendsOfRedaxo\Warehouse\Warehouse::getCustomerData();
 $userdata = FriendsOfRedaxo\Warehouse\Warehouse::ensure_userdata_fields($userdata);
 
 // dump($userdata);
 
 $article_id = "REX_ARTICLE_ID";
 
-$current_payment_types = FriendsOfRedaxo\Warehouse\Warehouse::get_available_payment_types();
+$current_payment_types = FriendsOfRedaxo\Warehouse\Warehouse::getPaymentOptions();
 // dump($current_payment_types);
        
 $yf = new rex_yform();
@@ -179,4 +179,3 @@ $form = $yf->getForm();
 $fragment = new rex_fragment();
 $fragment->setVar('form',$form);
 echo $fragment->parse('warehouse/checkout_page.php');
-

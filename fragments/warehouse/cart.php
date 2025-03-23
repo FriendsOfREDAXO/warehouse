@@ -24,8 +24,8 @@ $rex_article_id = rex_article::getCurrentId();
         </td>
     </tr>
 <?php endforeach; ?>
-    <tr><td class="align-left">{{ Versandkosten }}</td><td></td><td></td><td class="align-right"><?= rex_config::get('warehouse','currency') ?> <?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_shipping_cost(),2) ?></td><td></td></tr>
-    <tr class="bigtext"><td class="align-left">{{ Total }}</td><td></td><td></td><td class="align-right"><?= rex_config::get('warehouse','currency') ?> <?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_cart_total(),2) ?></td><td></td></tr>
+    <tr><td class="align-left">{{ Versandkosten }}</td><td></td><td></td><td class="align-right"><?= rex_config::get('warehouse','currency') ?> <?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getShippingCost(),2) ?></td><td></td></tr>
+    <tr class="bigtext"><td class="align-left">{{ Total }}</td><td></td><td></td><td class="align-right"><?= rex_config::get('warehouse','currency') ?> <?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getCartTotal(),2) ?></td><td></td></tr>
 </table>
 
 <p><a href="<?= rex_getUrl(rex_config::get('warehouse','address_page')) ?>" class="white_big_circle">Weiter</a></p>

@@ -69,7 +69,7 @@ $rex_article_id = rex_article::getCurrentId();
 
                                                 <td colspan="3"><span class="fontbold">Summe netto</span></td>
 
-                                                <td colspan="2"><span class="fontbold"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_sub_total_netto(), 2) ?>
+                                                <td colspan="2"><span class="fontbold"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getSubTotalNetto(), 2) ?>
                                                 <?= rex_config::get('warehouse', 'currency_symbol') ?></span>
                                                 </td>
                                             </tr>
@@ -80,7 +80,7 @@ $rex_article_id = rex_article::getCurrentId();
                                                 <td colspan="3" class="lighter"><i>MwSt 19%</i>
                                                 </td>
 
-                                                <td colspan="2" class="lighter"><i><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_tax_total(), 2) ?></i>
+                                                <td colspan="2" class="lighter"><i><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getTaxTotal(), 2) ?></i>
                                                 <?= rex_config::get('warehouse', 'currency_symbol') ?>
                                                 </td>
                                             </tr>
@@ -90,7 +90,7 @@ $rex_article_id = rex_article::getCurrentId();
 
                                                 <td colspan="3"><span class="fontbold">Zwischensumme</span></td>
 
-                                                <td colspan="2"><span class="fontbold"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_sub_total(), 2) ?>
+                                                <td colspan="2"><span class="fontbold"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getSubTotal(), 2) ?>
                                                 <?= rex_config::get('warehouse', 'currency_symbol') ?></span>
                                                 </td>
                                             </tr>
@@ -100,7 +100,7 @@ $rex_article_id = rex_article::getCurrentId();
 
                                                 <td colspan="3" class="lighter"><i>{{ Versandkosten }}</i></td>
 
-                                                <td colspan="2" class="lighter"><i><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_shipping_cost(), 2) ?>
+                                                <td colspan="2" class="lighter"><i><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getShippingCost(), 2) ?>
                                                 <?= rex_config::get('warehouse', 'currency_symbol') ?></i>
                                                 </td>
                                             </tr>
@@ -111,7 +111,7 @@ $rex_article_id = rex_article::getCurrentId();
                                                 <td colspan="3"><span class="fontbold fontred">{{ Total }}</span></td>
 
                                                 <td colspan="2">
-	                                                <span class="fontbold fontred"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_cart_total(), 2) ?>
+	                                                <span class="fontbold fontred"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getCartTotal(), 2) ?>
                                                  <?= rex_config::get('warehouse', 'currency_symbol') ?>
 												 	</span>
 												</td>

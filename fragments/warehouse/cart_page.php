@@ -88,17 +88,17 @@
                     <div class="uk-card-body">
                         <div class="uk-grid-small uk-grid" uk-grid="">
                             <div class="uk-width-expand uk-text-muted">{{ Subtotal }}</div>
-                            <div><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_sub_total(),2) ?></div>
+                            <div><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getSubTotal(),2) ?></div>
                         </div>
                         <div class="uk-grid-small uk-grid" uk-grid="">
                             <div class="uk-width-expand uk-text-muted">{{ Shipping }}</div>
-                            <div class="uk-text"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::get_shipping_cost(),2) ?></div>
+                            <div class="uk-text"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::getShippingCost(),2) ?></div>
                         </div>
                     </div>
                     <div class="uk-card-body">
                         <div class="uk-grid-small uk-flex-middle uk-grid" uk-grid="">
                             <div class="uk-width-expand uk-text-muted">{{ Total }}</div>
-                            <div class="uk-text-lead uk-text-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_cart_total(),2) ?></div>
+                            <div class="uk-text-lead uk-text-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getCartTotal(),2) ?></div>
                         </div>
                         <a class="uk-button uk-button-primary uk-margin-small uk-width-1-1" href="<?= rex_getUrl(rex_config::get('warehouse','address_page')) ?>">checkout</a>
                     </div>

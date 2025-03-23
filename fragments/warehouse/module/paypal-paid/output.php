@@ -40,10 +40,10 @@ if (rex::isBackend()) {
     */
     
     // log payment
-    FriendsOfRedaxo\Warehouse\Warehouse::paypal_approved_v2($response);
+    FriendsOfRedaxo\Warehouse\Warehouse::PaypalPaymentApprovedViaResponse($response);
 
     $cart = FriendsOfRedaxo\Warehouse\Warehouse::getCart();
-    $warehouse_userdata = FriendsOfRedaxo\Warehouse\Warehouse::get_user_data();
+    $warehouse_userdata = FriendsOfRedaxo\Warehouse\Warehouse::getCustomerData();
     
     $yf = new rex_yform();
     $fragment = new rex_fragment();
