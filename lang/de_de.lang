@@ -57,17 +57,17 @@ warehouse_docs.settings.discount = Rabatte
 warehouse.settings.editor = WYSIWYG-Editor
 warehouse.settings.editor.notice = z.B. <code>class="form-control redactor-editor--default"</code>
 
-# Warehouse Einstellungen: Verandkosten
+# Warehouse Einstellungen: Versandkosten
 
-warehouse.settings.shipping = Verandkosten
-warehouse.settings.shipping_fee = Verandkosten
+warehouse.settings.shipping = Versandkosten
+warehouse.settings.shipping_fee = Versandkosten
 warehouse.settings.free_shipping_from = Versandkostenfrei ab
 warehouse.settings.minimum_order_value = Mindestbestellwert
 warehouse.settings.shipping_calculation_mode = Erweiterte Versandkosten
 warehouse.settings.shipping_calculation_mode.options.default = keine (Standard)
-warehouse.settings.shipping_calculation_mode.options.quantity = ANZAHL: Verandkosten nach Anzahl abstufen
-warehouse.settings.shipping_calculation_mode.options.weight = GEWICHT: Verandkosten nach Gewicht abstufen
-warehouse.settings.shipping_calculation_mode.options.order_total = BESTELLSUMME: Verandkosten nach Bestellsumme abstufen
+warehouse.settings.shipping_calculation_mode.options.quantity = ANZAHL: Versandkosten nach Anzahl abstufen
+warehouse.settings.shipping_calculation_mode.options.weight = GEWICHT: Versandkosten nach Gewicht abstufen
+warehouse.settings.shipping_calculation_mode.options.order_total = BESTELLSUMME: Versandkosten nach Bestellsumme abstufen
 
 # Warehouse Einstellungen: Domain
 
