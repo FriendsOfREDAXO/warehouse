@@ -40,6 +40,11 @@ warehouse_settings_discount = Rabatte
 warehouse_settings_setup = Setup
 warehouse_docs = Hilfe
 
+# Warehouse Einstellungen: Grundeinstellungen
+
+warehouse.settings.editor = WYSIWYG-Editor
+warehouse.settings.editor.notice = z.B. <code>class="form-control redactor-editor--default"</code>
+
 # Warehouse Einstellungen: Verandkosten
 
 warehouse.settings.shipping = Verandkosten
