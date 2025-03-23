@@ -49,15 +49,15 @@
         <footer class="uk-card-footer">
             <div class="uk-grid-small" uk-grid>
                 <div class="uk-width-expand uk-text-muted uk-h4">Subtotal</div>
-                <div class="uk-h4 uk-text-bolder"><?= rex_config::get('warehouse', 'currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_sub_total(), 2) ?></div>
+                <div class="uk-h4 uk-text-bolder"><?= rex_config::get('warehouse', 'currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getSubTotal(), 2) ?></div>
             </div>
             <div class="uk-grid-small uk-grid" uk-grid="">
                 <div class="uk-width-expand uk-text-muted">{{ Shipping }}</div>
-                <div class="uk-text"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_shipping_cost(),2) ?></div>
+                <div class="uk-text"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getShippingCost(),2) ?></div>
             </div>
             <div class="uk-grid-small uk-flex-middle uk-grid" uk-grid="">
                 <div class="uk-width-expand uk-text-muted">{{ Total }}</div>
-                <div class="uk-text-lead uk-text-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::get_cart_total(),2) ?></div>
+                <div class="uk-text-lead uk-text-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getCartTotal(),2) ?></div>
             </div>           
             
             

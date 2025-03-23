@@ -1,235 +1,298 @@
 <?php
 namespace FriendsOfRedaxo\Warehouse;
 
+use NumberFormatter;
 use rex;
 use rex_clang;
 use rex_config;
+use rex_i18n;
+use rex_yform;
+use rex_article;
+use rex_user;
+use rex_media;
+use yrewrite_domain;
+use rex_yform_manager_collection;
+use rex_yform_manager_dataset;
 
-class Article extends \rex_yform_manager_dataset
+class Article extends rex_yform_manager_dataset
 {
+    
+    public const availability =
+        [
+            'BackOrder' => 'translate:warehouse_article.availability.BackOrder',
+            'Discontinued' => 'translate:warehouse_article.availability.Discontinued',
+            'InStock' => 'translate:warehouse_article.availability.InStock',
+            'InStoreOnly' => 'translate:warehouse_article.availability.InStoreOnly',
+            'LimitedAvailability' => 'translate:warehouse_article.availability.LimitedAvailability',
+            'MadeToOrder' => 'translate:warehouse_article.availability.MadeToOrder',
+            'OnlineOnly' => 'translate:warehouse_article.availability.OnlineOnly',
+            'OutOfStock' => 'translate:warehouse_article.availability.OutOfStock',
+            'PreOrder' => 'translate:warehouse_article.availability.PreOrder',
+            'PreSale' => 'translate:warehouse_article.availability.PreSale',
+            'Reserved' => 'translate:warehouse_article.availability.Reserved',
+            'SoldOut' => 'translate:warehouse_article.availability.SoldOut',
+        ];
 
-    public static function get_query()
+    public const status =
+        [
+            'active' => 'translate:warehouse_article.status.active',
+            'draft' => 'translate:warehouse_article.status.draft',
+            'hidden' => 'translate:warehouse_article.status.hidden',
+        ];
+
+    /* Name */
+    /** @api */
+    public function getName() : ?string
     {
-        $qry = self::query();
-        $qry->whereRaw('(stock_item = 0 OR (stock_item = 1 AND stock > 0))');
-        return $qry;
+        return $this->getValue("name");
     }
-
-    public function get_val($key)
+    /** @api */
+    public function setName(mixed $value) : self
     {
-        if (isset($this->{$key})) {
-            return $this->{$key};
-        } else {
-            return 'nicht gefunden';
-        }
+        $this->setValue("name", $value);
+        return $this;
     }
 
-    public function get_art_id()
+    /* Kategorie */
+    /** @api */
+    public function getCategory() : ?rex_yform_manager_dataset
     {
-        if (isset($this->var_id)) {
-            return $this->id . '__' . $this->var_id;
-        } else {
-            return $this->id;
-        }
+        return $this->getRelatedDataset("category_id");
     }
 
-    public function get_name()
+    /* Status */
+    /** @api */
+    public function getStatus() : mixed
     {
-        if (isset($this->var_id)) {
-            return $this->art_name . ($this->var_name ?  ' - ' . $this->var_name : '');
-        } else {
-            return $this->art_name;
-        }
+        return $this->getValue("status");
     }
 
-    public function get_image()
+    public function getStatusLabel() : ?string
     {
-        if (isset($this->var_id) && $this->var_image) {
-            return $this->var_image;
-        } else {
-            return $this->image;
-        }
+        return rex_i18n::rawMsg(self::status[$this->getStatus()] ?? '');
     }
 
-    public function get_gallery()
+    /** @api */
+    public function setStatus(mixed $param) : mixed
     {
-        if ($this->var_id && $this->var_gallery) {
-            return $this->var_gallery;
-        } else {
-            return $this->gallery;
-        }
+        $this->setValue("status", $param);
+        return $this;
     }
 
-    public function get_price($with_currency = false)
+    /* Gewicht */
+    /** @api */
+    public function getWeight() : ?float
     {
-        $price = $this->var_price ?? $this->price;
-        if (isset($this->var_add_parent_price) && $this->var_add_parent_price) {
-            $price = $this->price + $this->var_price;
-        }
-        if ($with_currency) {
-            return rex_config::get('warehouse', 'currency_symbol') . '&nbsp;<span class="product_price">' . number_format($price, 2) . '</span>';
-        }
-        return $price;
+        return $this->getValue("weight");
     }
-
-    /*
-    public function get_price_netto() {
-        $brutto_price = $this->get_price();
-        $tax = rex_config::get('warehouse', 'tax_value');
-        $factor = (100 + $tax) / 100;
-        return round($brutto_price / $factor, 2);
-    }
-
-    public function get_tax_value() {
-        return $this->get_price() - $this->get_price_netto();
-    }
-    */
-
-    /**
-     * Bei Variantenartikeln: articleid__varianteid
-     * @param type $article_id
-     * @return type
-     */
-    public static function get_article($article_id = '')
+    /** @api */
+    public function setWeight(float $value) : self
     {
-        if (strpos($article_id, '__')) {
-            $art_id = explode('__', $article_id);
-        } else {
-            $art_id = [$article_id];
-        }
-        //        dump($art_id); exit;
-        return self::get_articles(0, $art_id, true);
+        $this->setValue("weight", $value);
+        return $this;
+    }
+            
+    /* Bild */
+    /** @api */
+    public function getImage() : mixed
+    {
+        return $this->getValue("image");
+    }
+    
+    /** @api */
+    public function getImageAsMedia() : ?rex_media
+    {
+        return rex_media::get($this->getValue("image"));
     }
 
-    /**
-     *
-     * @param type $cat_id  - ausgewählt in der Moduleingabe
-     * @param type $article_id
-     * @param type $find_one
-     * @param type $with_attributes
-     * @param type $articles_only - liefert nur Artikel - keine Varianten
-     * @return type
-     */
-    public static function get_articles($cat_id = 0, $article_id = [], $find_one = false, $with_attributes = false, $articles_only = false)
+    /** @api */
+    public function setImage(string $filename) : self
     {
-        $clang = rex_clang::getCurrentId();
-        if ($articles_only) {
-            $data = self::get_query()
-                ->alias('art')
-                ->leftJoin('rex_warehouse_category', 'cat', 'art.category_id', 'cat.id')
-                ->select('art.name_' . $clang, 'art_name')
-                ->select('cat.name_' . $clang, 'cat_name')
-                ->select('cat.id', 'cat_id')
-                ->select('art.description_' . $clang, 'art_description')
-                ->select('art.longtext_' . $clang, 'art_longtext')
-                ->orderBy('art.prio')
-                ->where('art.status', 1)
-            ;
-        } else {
-            $data = self::get_query()
-                ->alias('art')
-                ->leftJoin('rex_warehouse_article_variants', 'var', 'art.id', 'var.parent_id')
-                ->leftJoin('rex_warehouse_category', 'cat', 'art.category_id', 'cat.id')
-                ->select('art.name_' . $clang, 'art_name')
-                ->select('art.description_' . $clang, 'art_description')
-                ->select('art.longtext_' . $clang, 'art_longtext')
-                ->select('var.name_' . $clang, 'var_name')
-                ->select('var.image', 'var_image')
-                ->select('var.freeprice', 'var_freeprice')
-                ->select('var.add_parent_price', 'var_add_parent_price')
-                ->select('var.id', 'var_id')
-                ->select('var.whvarid', 'var_whvarid')
-                ->select('var.weight', 'var_weight')
-                ->select('var.price', 'var_price')
-                ->select('var.relay_price', 'var_relay_price')
-                ->select('var.gallery', 'var_gallery')
-                ->select('cat.name_' . $clang, 'cat_name')
-                ->select('cat.id', 'cat_id')
-                ->orderBy('art.prio')
-                ->orderBy('var.prio')
-                ->where('art.status', 1)
-            ;
-        }
-
-
-
-        if ($cat_id) {
-            //            $data->where('art.category_id', $cat_id);
-            $data->whereRaw('FIND_IN_SET(:cat_id,art.category_id)', ['cat_id'=>$cat_id]);
-        }
-        if (count($article_id) == 2) {
-            $data->where('art.id', $article_id[0]);
-            $data->where('var.id', $article_id[1]);
-        } elseif (count($article_id) == 1) {
-            $data->where('art.id', $article_id[0]);
-        }
-
-        //       dump($data->getQuery()); exit;
-
-        if ($find_one) {
-            return $data->findOne();
-        }
-
-        $articles = $data->find();
-
-        return $articles;
+        $this->setValue("image", $filename);
+        return $this;
+    }
+            
+    /* Galerie */
+    /** @api */
+    public function getGallery() : mixed
+    {
+        return $this->getValue("gallery");
     }
 
-    public function get_variants()
+    /** @api */
+    public function getGalleryAsMedia() : ?array
     {
-        $clang = rex_clang::getCurrentId();
-        $query = \rex_yform_manager_table::get(\rex::getTable('warehouse_article_variants'))->query();
-        $query->select('name_'.$clang, '`name`');
-        $query->selectRaw('CONCAT("'.$this->id.'__",id)', 'art_id');
-        $query->where('parent_id', $this->id)->orderBy('prio');
+        $filenames = explode(',', $this->getValue("gallery"));
+        $medias = [];
+        foreach ($filenames as $filename) {
+            $media = rex_media::get($filename);
+            if ($media) {
+                $medias[] = $media;
+            }
+        }
+        return $medias;
+    }
+
+    /** @api */
+    public function setGallery(string $filename) : self
+    {
+        $this->setValue("gallery", $filename);
+        return $this;
+    }
+            
+    /* Kurztext */
+    /** @api */
+    public function getShortText(bool $asPlaintext = false) : ?string
+    {
+        if ($asPlaintext) {
+            return strip_tags($this->getValue("short_text"));
+        }
+        return $this->getValue("short_text");
+    }
+    /** @api */
+    public function setShortText(mixed $value) : self
+    {
+        $this->setValue("short_text", $value);
+        return $this;
+    }
+            
+    /* Text */
+    /** @api */
+    public function getText(bool $asPlaintext = false) : ?string
+    {
+        if ($asPlaintext) {
+            return strip_tags($this->getValue("text"));
+        }
+        return $this->getValue("text");
+    }
+    /** @api */
+    public function setText(mixed $value) : self
+    {
+        $this->setValue("text", $value);
+        return $this;
+    }
+            
+    /* Preis */
+    /** @api */
+    public function getPrice() : ?float
+    {
+        return $this->getValue("price");
+    }
+    /** @api */
+    public function setPrice(float $value) : self
+    {
+        $this->setValue("price", $value);
+        return $this;
+    }
+
+    public function getPriceFormatted() : string
+    {
+        $formatter = new NumberFormatter('de_de', NumberFormatter::CURRENCY);
+        return $formatter->formatCurrency($this->getPrice(), rex_config::get('warehouse', 'currency'));
+    }
+
+    /* Preis-Text */
+    /** @api */
+    public function getPriceText() : ?string
+    {
+        return $this->getValue("price_text");
+    }
+    /** @api */
+    public function setPriceText(mixed $value) : self
+    {
+        $this->setValue("price_text", $value);
+        return $this;
+    }
+
+    /* Steuer */
+    /** @api */
+    public function getTax() : ?string
+    {
+        return $this->getValue("tax");
+    }
+    /** @api */
+    public function setTax(mixed $value) : self
+    {
+        $this->setValue("tax", $value);
+        return $this;
+    }
+
+    /* Zuletzt geändert */
+    /** @api */
+    public function getUpdatedate() : ?string
+    {
+        return $this->getValue("updatedate");
+    }
+    /** @api */
+    public function setUpdatedate(string $value) : self
+    {
+        $this->setValue("updatedate", $value);
+        return $this;
+    }
+
+    /* Varianten */
+    /** @api */
+    public function getVariants() : ?rex_yform_manager_collection
+    {
+        return $this->getRelatedCollection("variant_ids");
+    }
+
+    /* Verfügbarkeit */
+    /** @api */
+    public function getAvailability() : ?string
+    {
+        return $this->getValue("availability");
+    }
+
+    public function getAvailabilityLabel() : ?string
+    {
+        return rex_i18n::rawMsg(self::availability[$this->getAvailability()] ?? '');
+    }
+
+
+    /** @api */
+    public function setAvailability(mixed $value) : self
+    {
+        $this->setValue("availability", $value);
+        return $this;
+    }
+
+    public static function findArticle(int|array $category_ids = null, string $status = 'active', bool $available = true) : ?rex_yform_manager_collection
+    {
+        $query = self::query();
+        if ($category_ids !== null) {
+            $query->where('category_id', $category_ids);
+        }
+        $query->where('status', $status);
+        if ($available) {
+            $query->where('availability', 'InStock');
+        }
         return $query->find();
     }
 
-
-    public static function get_attributes_for_article($article)
+    public static function getAvailabilityOptions()
     {
-
-        $clang = rex_clang::getCurrentId();
-
-        $atg = self::query(rex::getTable('warehouse_attributegroups'))
-            ->where('id', $article->attributegroup_id)
-            ->findOne()
-        ;
-
-        if (!$atg) {
-            return [];
-        }
-
-        $at = self::query(rex::getTable('warehouse_attributes'))
-            ->alias('at')
-            ->whereRaw('FIND_IN_SET (id, "'.$atg->attributes.'")')
-            ->find()
-        ;
-
-        $outdata = [];
-
-        foreach ($at as $k=>$attr) {
-            $data = self::query(rex::getTable('warehouse_attribute_values'))
-                ->alias('av')
-                ->leftJoin('rex_warehouse_attributes', 'at', 'av.attribute_id', 'at.id')
-                ->select('at.name_' . $clang, 'at_name')
-                ->select('at.unit', 'at_unit')
-                ->select('at.type', 'at_type')
-                ->select('at.orderable', 'at_orderable')
-                ->select('at.whattrid', 'at_whattrid')
-                ->where('av.attribute_id', $attr->id)
-                ->where('av.article_id', $article->id)
-                ->orderBy('at.prio')
-                ->orderBy('av.prio')
-                ->find();
-            $outdata[] = [
-                'attr'=>$attr->getData(),
-                'data'=>$data
-            ];
-        }
-
-        return $outdata;
+        
+        return self::availability;
     }
+    
+    /**
+     * Standards für das Formular anpassen
+     * - Editor-Konfiguration einfügen.
+     *
+     * @api
+     */
+    public function getForm(): rex_yform
+    {
+        $yform = parent::getForm();
 
+        $suchtext = '###warehouse_editor###';
+        foreach ($yform->objparams['form_elements'] as $k => &$e) {
+            if ('textarea' === $e[0] && str_contains($e[5], $suchtext)) {
+                $e[5] = str_replace($suchtext, \rex_config::get('warehouse', 'editor'), $e[5]);
+            }
+        }
 
+        return $yform;
+    }
 }

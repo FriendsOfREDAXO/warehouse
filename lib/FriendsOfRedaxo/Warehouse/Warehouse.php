@@ -2,7 +2,7 @@
 
 namespace FriendsOfRedaxo\Warehouse;
 
-use rex_plugin;
+use InvalidArgumentException;
 use rex_ycom_auth;
 use rex_config;
 use rex_sql;
@@ -10,10 +10,9 @@ use rex;
 use rex_response;
 use rex_addon;
 use rex_clang;
+use rex_exception;
 use rex_logger;
 use rex_yform;
-use rex_yrewrite;
-use rex_yform_manager_table;
 use rex_fragment;
 use rex_yform_email_template;
 
@@ -26,41 +25,21 @@ class Warehouse
         'separate_delivery_address', 'payment_type', 'note', 'iban', 'bic', 'direct_debit_name', 'info_news_ok'
     ];
 
+    public const PAYMENT_OPTIONS = [
+        'prepayment' => '{{ payment_type_prepayment }}',
+        'invoice' => '{{ payment_type_invoice }}',
+        'paypal' => '{{ payment_type_paypal }}',
+        'direct_debit' => '{{ payment_type_direct_debit }}',
+    ];
+
+    /*
     public static $age_checked_values = [
-        'postident',
         'known',
         'other'
     ];
+    */
 
-    public static function ensure_userdata_fields($user_data)
-    {
-        foreach (self::$fields as $field) {
-            if (!isset($user_data[$field])) {
-                $user_data[$field] = '';
-            }
-        }
-        if (rex_plugin::get('ycom', 'auth')->isAvailable()) {
-            $ycom_user = rex_ycom_auth::getUser();
-            if ($ycom_user) {
-                $ycom_userdata = $ycom_user->getData();
-                // Sonderfall name
-                if ($user_data['lastname'] == '') {
-                    $user_data['lastname'] = $ycom_userdata['name'];
-                }
-                foreach ($user_data as $k => $v) {
-                    if (isset($ycom_userdata[$k]) && $v == '') {
-                        $user_data[$k] = $ycom_userdata[$k];
-                    }
-                }
-                $user_data['ycom_userid'] = $ycom_user->getId();
-                //            dump($ycom_user->getData());
-            }
-        }
-
-        return $user_data;
-    }
-
-    public static function get_paypal_client_id()
+    public static function getPaypalClientId() :string
     {
         if (rex_config::get('warehouse', 'sandboxmode')) {
             return rex_config::get('warehouse', 'paypal_sandbox_client_id');
@@ -68,7 +47,7 @@ class Warehouse
         return rex_config::get('warehouse', 'paypal_client_id');
     }
 
-    public static function get_paypal_secret()
+    public static function getPaypalSecret() :string
     {
         if (rex_config::get('warehouse', 'sandboxmode')) {
             return rex_config::get('warehouse', 'paypal_sandbox_secret');
@@ -76,234 +55,102 @@ class Warehouse
         return rex_config::get('warehouse', 'paypal_secret');
     }
 
-    public static function add_to_cart()
+    public static function addToCart(int $article_id, int $article_variant_id = null, int $quantity = 1) :bool
     {
-        $added = 0;
-        $art_id = trim(rex_request('art_id'), '_');
-        if (rex_request('art_type', 'string') == 'warehouse_single') {
-            $art = SingleArticle::get_article();
-            $art_uid = $art['art_id'];
+        $added = false;
+        if($article_variant_id > 0) {
+            $article_variant = ArticleVariant::get($article_variant_id);
+            $article = $article_variant->getArticle();
         } else {
-            $article = Article::get_article($art_id);
-            $attr_ids = rex_request('warehouse_attr', 'array', []);
-            $art_uid = trim($art_id . '$$' . implode('$$', $attr_ids), '$');
-
-            $art = [];
-            $art['count'] = rex_request('order_count', 'int') ?: 1;
-            if ($article->stock_item && $art['count'] > $article->stock) {
-                $art['count'] = $article->stock;
-            }
-            $art['price'] = $article->get_price();
-            if ($article->var_freeprice) {
-                $art['price'] = abs(rex_request('price', 'float'));
-                $art_id .= '-' . $art['price'];
-                $art_uid = $art_id;
-            }
-            $art['name'] = $article->get_name();
-            $art['cat_name'] = $article->cat_name;
-            $art['cat_id'] = $article->cat_id;
-            $art['description'] = $article->art_description;
-            $art['image'] = $article->get_image();
-            $art['art_id'] = $art_id;
-            $art['var_id'] = $article->var_id;
-            $art['var_whvarid'] = $article->var_whvarid;
-            $art['var_freeprice'] = $article->var_freeprice ?? false;
-            $art['whid'] = $article->whid;
-            $art['tax'] = $article->tax;
-            $art['stock_item'] = $article->stock_item;
-            $art['stock'] = $article->stock;
-            $art['free_shipping'] = $article->free_shipping;
-            $art['attributes'] = [];
+            $article = Article::get($article_id);
         }
 
-        $cart = self::get_cart();
-        if ($art['count'] > 0) {
-            if (isset($cart[$art_uid])) {
-                //            unset($cart[$art_id]);
-                $cart[$art_uid]['count'] += $art['count'];
-            } else {
-                $cart[$art_uid] = $art;
-            }
-            $added = 1;
+        $cart = self::getCart();
+        if ($quantity >= 1) {
+            $cart[$article->getId()]['count'] += $quantity;
+            $added = true;
         }
 
         rex_set_session('warehouse_cart', $cart);
-        //        dump($cart); exit;
-        self::cart_recalc();
+        self::cartUpdate();
+
+        // TODO: Aktion nach hinzufügen zum Warenkorb - entweder direkt zum Checkout, zum Warekorb oder auf der Artikelseite bleiben
+        /*
         if (rex_request('art_type', 'string') == 'warehouse_single' || (rex_config::get('warehouse', 'cart_mode') == 'page' && rex_request('article_id', 'int'))) {
             rex_redirect(rex_request('article_id'), '', ['showcart' => 1]);
         } else {
             self::redirect_from_cart($added, 1);
         }
+        */
+        return $added;
     }
 
 
-    public static function cart_recalc()
+    /**
+     * Warenkorb aktualisieren (Preise, Steuern, Gesamtsumme)
+     * @return void 
+     */
+    public static function cartUpdate() :void
     {
-        $cart = self::get_cart();
-        foreach ($cart as $k => $art) {
-            // Artikel nochmal aus der db einlesen, um zu prüfen, ob er nicht zwischenzeitlich verkauft wurde
-            $warehouse_art = Article::get_article($k);
-            if (isset($art['stock_item'])) {
-                if ($art['stock_item'] && ($art['count'] > $warehouse_art->stock)) {
-                    $cart[$k]['count'] = $warehouse_art->stock;
-                }
-            }
-
-            $taxpercent = 0;
-            if ($art['tax']) {
-                $taxpercent = rex_config::get('warehouse', $art['tax']);
-            }
-            $factor = (100 + $taxpercent) / 100;
-            $cart[$k]['price_netto'] = round((float) $cart[$k]['price'] / $factor, 2);
-            $cart[$k]['total'] = $cart[$k]['price'] * $cart[$k]['count'];
-            $cart[$k]['taxsingle'] = ((float) $cart[$k]['price'] - $cart[$k]['price_netto']);
-            $cart[$k]['taxval'] = ((float) $cart[$k]['price'] - $cart[$k]['price_netto']) * $cart[$k]['count'];
-            $cart[$k]['taxpercent'] = $taxpercent;
-            $cart[$k]['total'] = $cart[$k]['price'] * $cart[$k]['count'];
-        }
+        $cart = self::getCart();
+        // TODO: Warenkorb aktualisieren
         rex_set_session('warehouse_cart', $cart);
     }
 
-
-    /**
-     * Löscht showcart=1 aus der Url
-     */
-    public static function clean_url($url = "") : string
+    public static function modifyCart(int $article_id, int $article_variant_id, int|false $quantity, string $mode = '=') :void
     {
-        $prev_url = str_replace('?showcart=1&', '?', $url);
-        $prev_url = str_replace('?showcart=1', '', $prev_url);
-        $prev_url = str_replace('&showcart=1', '', $prev_url);
-        return $prev_url;
-    }
-
-
-    /**
-     * Regelt das Redirect nach Modifikationen des Warenkorbs
-     * Aus Artikelseiten wird der request Parameter current_article als Redaxo Article Id angenommen
-     *
-     * @param type $added - wenn ein Artikel erfolgreich hinzugefügt wurde, wird 1 übergeben
-     */
-    public static function redirect_from_cart($added = 0, $force_current_page = 0)
-    {
-        //        dump($_SERVER); exit;
-        $old_page_id = rex_request('current_article', 'int', 0);
-        if (rex_request('action') == 'modify_cart' || rex_request('action') == 'add_group_to_cart') {
-            $added = 1;
+        $cart = self::getCart();
+        if($quantity === false) {
+            unset($cart[$article_id]);
         }
-
-        if (rex_session('current_page') && (!$old_page_id || $force_current_page)) {
-            $prev_url = self::clean_url(rex_session('current_page'));
-            $deli = strpos($prev_url, '?') ? '&' : '?';
-            if (rex_config::get('warehouse', 'cart_mode') == 'cart') {
-                rex_redirect(Warehouse::get_config('cart_page'));
-            } else {
-                rex_response::sendRedirect($prev_url . $deli . 'showcart=1');
-            }
+        // mode = "=" => "set", "+" => "add", "-" => "remove"
+        if($mode == '=' && $quantity !== false) {
+            $cart[$article_id][$article_variant_id]['count'] = $quantity;
+        } elseif($mode == '+') {
+            $cart[$article_id][$article_variant_id]['count'] += $quantity;
+        } elseif($mode == '-') {
+            $cart[$article_id][$article_variant_id]['count'] -= $quantity;
         }
-
-        if ($added && $old_page_id > 0) {
-            // wenn in den Settings auf Cart eingestellt ist, auf Cart weiterleiten
-            if (rex_config::get('warehouse', 'cart_mode') == 'cart') {
-                rex_redirect(Warehouse::get_config('cart_page'));
-            } else {
-                if (rex_request('old_url')) {
-                    $oldpage = rex_request('old_url');
-                    if ($added) {
-                        $oldpage .= '?showcart=1';
-                    }
-                } else {
-                    if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER']) {
-                        $oldpage = explode('?', $_SERVER['HTTP_REFERER'])[0] . '?showcart=1';
-                    } else {
-                        $oldpage = rtrim(rex::getServer(), '/') . rex_getUrl(rex_request('current_article'), '', ['showcart' => 1]);
-                    }
-                }
-                rex_response::sendRedirect($oldpage); // Redirect from Del
-            }
-        } elseif ($old_page_id > 0) {
-            $oldpage = rtrim(rex::getServer(), '/') . rex_getUrl(rex_request('current_article'), '', ['error' => 1]);
-            rex_response::sendRedirect($oldpage);
-        } else {
-            rex_redirect(Warehouse::get_config('cart_page'));
-        }
-    }
-
-    /**
-     *
-     */
-    public static function modify_cart()
-    {
-        $cart = self::get_cart();
-        $art_uid = rex_get('art_uid');
-        $mod = rex_get('mod', 'string');
-        if (isset($cart[$art_uid])) {
-            if ($mod == 'del') {
-                unset($cart[$art_uid]);
-            } else {
-                $cart[$art_uid]['count'] += (int) $mod;
-                if ($cart[$art_uid]['count'] < 0) {
-                    $cart[$art_uid]['count'] = 0;
-                }
-            }
-            rex_set_session('warehouse_cart', $cart);
-        }
-        self::cart_recalc();
-        if (rex_request('showcart', 'int')) {
-            self::redirect_from_cart();
-        } else {
-            rex_redirect(Warehouse::get_config('cart_page'));
-        }
-    }
-
-    /**
-     * Aufruf aus dem Warenkorb
-     * Feldnamen = Artikel_Ids.
-     */
-    public static function modify_qty()
-    {
-        $cart = self::get_cart();
-        foreach ($cart as $art_uid=>$item) {
-            if ($qty = rex_request($art_uid, 'int')) {
-                $cart[$art_uid]['count'] = $qty;
-            }
+        // Check if quantity is valid, no negative values - remove article from cart
+        if ($cart[$article_id][$article_variant_id]['count'] <= 0) {
+            unset($cart[$article_id][$article_variant_id]);
         }
         rex_set_session('warehouse_cart', $cart);
-        self::cart_recalc();
+        self::cartUpdate();
+    }
+
+    public static function deleteArticleFromCart(int $article_id, int $variant_id) :void
+    {
+        self::modifyCart($article_id, $variant_id, false);
     }
 
     /**
      * Total (Warenkorb mit Shipping)
-     * @return type
+     * @return float
      */
-    public static function get_cart_total()
+    public static function getCartTotal() :float
     {
-        $sum = (float) self::get_sub_total();
-        $sum += (float) self::get_shipping_cost();
-        $sum -= (float) self::get_discount_value();
+        $sum = (float) self::getSubTotal();
+        $sum += (float) Shipping::getCost();
+        $sum -= (float) self::getDiscountValue();
         return $sum;
     }
 
     /*
      * Warenkorbrabatt
      */
-    public static function get_discount_value()
+    public static function getDiscountValue()
     {
-        if (!rex_config::get("warehouse", "global_discount")) {
-            return 0;
-        }
-        $total = (int) self::get_sub_total();
-        $discount_value = round(($total * rex_config::get("warehouse", "global_discount") / 100), 2);
-        return $discount_value;
+        return 0;
     }
 
     /**
-     * Sub Total (Warenkorb ohne Shipping)
-     * @return type
+     * Sub Total (Warenkorb ohne Versandkosten)
+     * @return float
      */
-    public static function get_sub_total()
+    public static function getSubTotal() :float
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         $sum = 0;
         foreach ($cart as $item) {
             $sum += $item['total'];
@@ -311,9 +158,9 @@ class Warehouse
         return $sum;
     }
 
-    public static function get_sub_total_netto()
+    public static function getSubTotalNetto()
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         $sum = 0;
         foreach ($cart as $item) {
             $sum += $item['price_netto'] * $item['count'];
@@ -321,9 +168,9 @@ class Warehouse
         return round($sum, 2);
     }
 
-    public static function get_tax_total()
+    public static function getTaxTotal()
     {
-        $cart = self::get_cart();
+        $cart = self::getCart();
         $sum = 0;
         foreach ($cart as $item) {
             $sum += $item['taxval'];
@@ -331,409 +178,287 @@ class Warehouse
         return round($sum, 2);
     }
 
-    public static function cart_positions_count()
+    public static function countCart()
     {
-        return count(rex_session('warehouse_cart', 'array'));
+        return count(self::getCart());
     }
 
-    /**
-     * Versandkosten nur berechnen, wenn versandkostenpflichtige Artikel verschickt werden
-     * @return type
-     */
-    public static function get_shipping_cost()
-    {
-        return Shipping::get_cost();
-    }
-
-    public static function get_cart()
+    public static function getCart()
     {
         return rex_session('warehouse_cart', 'array');
     }
 
-    public static function get_user_data()
+    public static function getCustomerData()
     {
         return rex_session('user_data', 'array');
     }
 
-    /**
-     * Warenkorb kann nur geladen werden, wenn die Bestellung noch nicht abgeschlossen ist
-     * @param type $payment_id
-     */
-    public static function set_cart_from_payment_id($payment_id)
-    {
-        $data = rex_sql::factory()
-            ->setTable(rex::getTable('warehouse_orders'))
-            ->setWhere('payment_id = :payment_id', ['payment_id' => $payment_id])
-            //                ->setWhere('paypal_confirm = :empty', ['empty' => ''])
-            ->select('order_json')
-            ->getArray();
-        if ($data) {
-            $cart_data = json_decode($data[0]['order_json'], true);
-            rex_set_session('warehouse_cart', $cart_data['cart']);
-            rex_set_session('user_data', $cart_data['user_data']);
-        }
-    }
-
-    public static function get_tax()
-    {
-        $sub_total = (int) self::get_sub_total();
-        $tax = rex_config::get('warehouse', 'tax_value');
-        $tax_value = round(($sub_total / (100 + $tax) * $tax), 2);
-        return $tax_value;
-    }
-
-    public static function get_cart_netto()
-    {
-        return self::get_sub_total_netto();
-    }
-
-    public static function clear_cart()
+    public static function emptyCart()
     {
         rex_unset_session('warehouse_cart');
     }
 
-    // für Aufruf aus yform Action
-    public static function save_order()
+    public static function getTax()
     {
-        self::save_order_to_db(0);
+        // TODO: Tax pro Warenkorb-Inhalt berechnen
+        return 0;
     }
 
-    /**
-     *
-     * @param type $payment_id
-     */
-    public static function save_order_to_db($payment_id = '')
+    public static function getCartNetto()
     {
-        $cart = self::get_cart();
-        //        $cart['payment_confirm'] = md5(microtime(true).rand(0,999).'myspecialSecret');
-        //        rex_set_session('warehouse_cart',$cart);
+        return self::getSubTotalNetto();
+    }
 
-        foreach ($cart as $k => $v) {
-            unset($v['attributes']);
-            unset($v['description']);
-            $cart[$k] = $v;
-        }
+    public static function saveCartAsOrder(string $payment_id = '') :bool
+    {
+        $order = Order::create();
+        $cart = self::getCart();
 
-        $shipping = self::get_shipping_cost();
-        $total = self::get_cart_total();
+        $shipping = Shipping::getCost();
         $user_data = rex_session('user_data', 'array');
-        $user_data['payment_confirm'] = md5(microtime(true) . rand(0, 1000) . 'mySpecialsecret');
-        rex_set_session('user_data', $user_data);
 
-        $order_text = self::get_user_data_text();
-        $order_text .= PHP_EOL . PHP_EOL;
-        $order_text .= self::get_order_text();
-
-
-        $sql = rex_sql::factory();
-
-        $sql->setTable(rex::getTable('warehouse_orders'));
-        $fields = $sql->select()->getFieldnames();
-
-        $sql->setDebug();
-        $values = [
-            'order_total' => $total,
-            'payment_id' => $payment_id,
-            'session_id' => session_id(),
-            'payment_type' => $user_data['payment_type'],
-            'payment_confirm' => $user_data['payment_confirm'],
-            'order_json' => json_encode([
-                'cart' => $cart,
-                'user_data' => $user_data
-            ]),
-            'createdate' => date('Y-m-d H:i:s'),
-            'order_text' => $order_text,
-            'firstname' => $user_data['firstname'],
-            'lastname' => $user_data['lastname'],
-            'birthdate' => $user_data['birthdate'] ?? '',
-            'address' => $user_data['address'] ?? '',
-            'zip' => $user_data['zip'] ?? '',
-            'city' => $user_data['city'] ?? '',
-            'email' => $user_data['email']
-        ];
-
-        foreach ($values as $k=>$v) {
-            if (!in_array($k, $fields)) {
-                unset($values[$k]);
-            }
-        }
+        $order->setOrderTotal(self::getCartTotal());
+        $order->setPaymentId($payment_id);
+        $order->setPaymentType($user_data['payment_type']);
+        $order->setPaymentConfirm($user_data['payment_confirm']);
+        $order->setOrderJson(json_encode([
+            'cart' => $cart,
+            'user_data' => $user_data
+        ]));
+        $order->setCreateDate(date('Y-m-d H:i:s'));
+        $order->setOrderText(self::getOrderAsText());
+        $order->setFirstname($user_data['firstname']);
+        $order->setLastname($user_data['lastname']);
+        // $order->setBirthdate($user_data['birthdate'] ?? '');
+        $order->setAddress($user_data['address'] ?? '');
+        $order->setZip($user_data['zip'] ?? '');
+        $order->setCity($user_data['city'] ?? '');
+        $order->setEmail($user_data['email']);
 
         if (rex_addon::get('ycom')->isAvailable()) {
             $ycom_user = rex_ycom_auth::getUser();
             if ($ycom_user) {
-                $values['ycom_userid'] = $ycom_user->id;
+                $values['ycom_user_id'] = $ycom_user->getId();
             }
         }
-
-        $sql->setTable(rex::getTable('warehouse_orders'));
-        $sql->setValues($values);
-        $sql->insert();
-        return $sql->getLastId();
+        
+        return $order->save();
     }
 
-    public static function get_order_text()
+    public static function getOrderAsText()
     {
-        $cart = self::get_cart();
-        $shipping = (float) self::get_shipping_cost();
-        $total = (float) self::get_cart_total();
+        $cart = self::getCart();
+        $shipping = Shipping::getCost();
+        $total = self::getCartTotal();
 
-        $out = '';
-        $out .= mb_str_pad('Art. Nr.', 20, ' ', STR_PAD_RIGHT);
-        $out .= mb_str_pad('Artikel', 45, ' ', STR_PAD_RIGHT);
-        $out .= mb_str_pad('Anzahl', 7, ' ', STR_PAD_LEFT);
-        $out .= mb_str_pad(rex_config::get('warehouse', 'currency'), 10, ' ', STR_PAD_LEFT);
-        $out .= mb_str_pad(rex_config::get('warehouse', 'currency'), 10, ' ', STR_PAD_LEFT);
-        $out .= PHP_EOL;
-        $out .= str_repeat('-', 92);
-        $out .= PHP_EOL;
+        $return = '';
+        $return .= mb_str_pad('Art. Nr.', 20, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad('Artikel', 45, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad('Anzahl', 7, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad(rex_config::get('warehouse', 'currency'), 10, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad(rex_config::get('warehouse', 'currency'), 10, ' ', STR_PAD_LEFT);
+        $return .= PHP_EOL;
+        $return .= str_repeat('-', 92);
+        $return .= PHP_EOL;
 
         foreach ($cart as $pos) {
             if ($pos['var_whvarid']) {
-                $out .= mb_str_pad(mb_substr(html_entity_decode($pos['var_whvarid']), 0, 20), 20, ' ', STR_PAD_RIGHT);
+                $return .= mb_str_pad(mb_substr(html_entity_decode($pos['var_whvarid']), 0, 20), 20, ' ', STR_PAD_RIGHT);
             } else {
-                $out .= mb_str_pad(mb_substr(html_entity_decode($pos['whid']), 0, 20), 20, ' ', STR_PAD_RIGHT);
+                $return .= mb_str_pad(mb_substr(html_entity_decode($pos['whid']), 0, 20), 20, ' ', STR_PAD_RIGHT);
             }
-            $out .= mb_str_pad(mb_substr(html_entity_decode($pos['name']), 0, 45), 45, ' ', STR_PAD_RIGHT);
-            $out .= mb_str_pad($pos['count'], 7, ' ', STR_PAD_LEFT);
-            $out .= mb_str_pad(number_format($pos['price_netto'], 2), 10, ' ', STR_PAD_LEFT);
-            $out .= mb_str_pad(number_format($pos['price_netto'] * $pos['count'], 2), 10, ' ', STR_PAD_LEFT);
-            $out .= PHP_EOL;
+            $return .= mb_str_pad(mb_substr(html_entity_decode($pos['name']), 0, 45), 45, ' ', STR_PAD_RIGHT);
+            $return .= mb_str_pad($pos['count'], 7, ' ', STR_PAD_LEFT);
+            $return .= mb_str_pad(number_format($pos['price_netto'], 2), 10, ' ', STR_PAD_LEFT);
+            $return .= mb_str_pad(number_format($pos['price_netto'] * $pos['count'], 2), 10, ' ', STR_PAD_LEFT);
+            $return .= PHP_EOL;
             if (is_array($pos['attributes'])) {
                 foreach ($pos['attributes'] as $attr) {
-                    $out .= str_repeat(' ', 20);
-                    $out .= mb_substr(html_entity_decode($attr['value'] . '  ' . $attr['at_name'] . ': ' . $attr['label']), 0, 70);
-                    $out .= PHP_EOL;
+                    $return .= str_repeat(' ', 20);
+                    $return .= mb_substr(html_entity_decode($attr['value'] . '  ' . $attr['at_name'] . ': ' . $attr['label']), 0, 70);
+                    $return .= PHP_EOL;
                 }
             }
-            $out .= str_repeat(' ', 20);
-            $out .= mb_substr(html_entity_decode('Steuer: ' . $pos['taxpercent'] . '% = ' . number_format($pos['taxval'], 2)), 0, 70);
-            $out .= PHP_EOL;
+            $return .= str_repeat(' ', 20);
+            $return .= mb_substr(html_entity_decode('Steuer: ' . $pos['taxpercent'] . '% = ' . number_format($pos['taxval'], 2)), 0, 70);
+            $return .= PHP_EOL;
         }
-        $out .= str_repeat('-', 92);
-        $out .= PHP_EOL;
-        $out .= mb_str_pad('Summe', 55, ' ', STR_PAD_RIGHT);
-        $out .= mb_str_pad(number_format(Warehouse::get_sub_total_netto(), 2), 37, ' ', STR_PAD_LEFT);
-        $out .= PHP_EOL;
-        $out .= mb_str_pad('Mehrwertsteuer', 55, ' ', STR_PAD_RIGHT);
-        $out .= mb_str_pad(number_format(Warehouse::get_tax_total(), 2), 37, ' ', STR_PAD_LEFT);
-        $out .= PHP_EOL;
-        if (Warehouse::get_discount_value()) {
-            $out .= mb_str_pad(rex_config::get("warehouse", "global_discount_text"), 55, ' ', STR_PAD_RIGHT);
-            $out .= mb_str_pad(number_format(Warehouse::get_discount_value(), 2), 37, ' ', STR_PAD_LEFT);
-            $out .= PHP_EOL;
+        $return .= str_repeat('-', 92);
+        $return .= PHP_EOL;
+        $return .= mb_str_pad('Summe', 55, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad(number_format(Warehouse::getSubTotalNetto(), 2), 37, ' ', STR_PAD_LEFT);
+        $return .= PHP_EOL;
+        $return .= mb_str_pad('Mehrwertsteuer', 55, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad(number_format(Warehouse::getTaxTotal(), 2), 37, ' ', STR_PAD_LEFT);
+        $return .= PHP_EOL;
+        if (Warehouse::getDiscountValue()) {
+            $return .= mb_str_pad(rex_config::get("warehouse", "global_discount_text"), 55, ' ', STR_PAD_RIGHT);
+            $return .= mb_str_pad(number_format(Warehouse::getDiscountValue(), 2), 37, ' ', STR_PAD_LEFT);
+            $return .= PHP_EOL;
         }
-        $out .= mb_str_pad('Versand', 55, ' ', STR_PAD_RIGHT);
-        $out .= mb_str_pad(number_format($shipping, 2), 37, ' ', STR_PAD_LEFT);
-        $out .= PHP_EOL;
-        $out .= str_repeat('-', 92);
-        $out .= PHP_EOL;
-        $out .= mb_str_pad('Total', 55, ' ', STR_PAD_RIGHT);
-        $out .= mb_str_pad(number_format($total, 2), 37, ' ', STR_PAD_LEFT);
-        $out .= PHP_EOL;
-        $out .= str_repeat('=', 92);
-        $out .= PHP_EOL;
+        $return .= mb_str_pad('Versand', 55, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad(number_format($shipping, 2), 37, ' ', STR_PAD_LEFT);
+        $return .= PHP_EOL;
+        $return .= str_repeat('-', 92);
+        $return .= PHP_EOL;
+        $return .= mb_str_pad('Total', 55, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad(number_format($total, 2), 37, ' ', STR_PAD_LEFT);
+        $return .= PHP_EOL;
+        $return .= str_repeat('=', 92);
+        $return .= PHP_EOL;
 
-        return $out;
+        return $return;
     }
 
 
 
-    public static function get_order_html()
+    public static function getOrderAsHtml()
     {
-        $cart = self::get_cart();
-        $shipping = (float) self::get_shipping_cost();
-        $total = (float) self::get_cart_total();
-        $out = '';
+        $cart = self::getCart();
+        $shipping = Shipping::getCost();
+        $total = self::getCartTotal();
+        $return = '';
 
-        $out .= '<style>
-            table { border-collapse: collapse; }
-            td { padding: 0 4px; vertical-align: top; }
-            th { padding: 0 4px; }
-            .bottomline td { border-bottom: 1px solid black }
-            .bottomline th { border-bottom: 1px solid black }
-            .bottomthickline td { border-bottom: 2px solid black }
-            .topline td { border-top: 1px solid black }
-            th { text-align: left }
-        </style>';
-
-        $out .= '<table style="width:700px"><thead><tr class="bottomline"><th>';
-        $out .= 'Art. Nr.</th><th>';
-        $out .= 'Artikel</th><th style="text-align:right">';
-        $out .= 'Anzahl</th><th style="text-align:right">';
-        $out .= rex_config::get('warehouse', 'currency') . '</th><th style="text-align:right">';
-        $out .= rex_config::get('warehouse', 'currency') . '</th></tr></head><tbody>';
+        $return .= '<table><thead><tr><th>';
+        $return .= 'Art. Nr.</th><th>';
+        $return .= 'Artikel</th><th style="text-align:right">';
+        $return .= 'Anzahl</th><th style="text-align:right">';
+        $return .= rex_config::get('warehouse', 'currency') . '</th><th style="text-align:right">';
+        $return .= rex_config::get('warehouse', 'currency') . '</th></tr></head><tbody>';
 
 
         foreach ($cart as $pos) {
-            $out .= '<tr><td>';
+            $return .= '<tr><td>';
             if ($pos['var_whvarid']) {
-                $out .= mb_substr(html_entity_decode($pos['var_whvarid']), 0, 20) . '</td><td>';
+                $return .= mb_substr(html_entity_decode($pos['var_whvarid']), 0, 20) . '</td><td>';
             } else {
-                $out .= mb_substr(html_entity_decode($pos['whid']), 0, 20) . '</td><td>';
+                $return .= mb_substr(html_entity_decode($pos['whid']), 0, 20) . '</td><td>';
             }
-            $out .= mb_substr(html_entity_decode($pos['name']), 0, 45);
+            $return .= mb_substr(html_entity_decode($pos['name']), 0, 45);
 
             if (is_array($pos['attributes'])) {
                 foreach ($pos['attributes'] as $attr) {
-                    $out .= '<br>';
-                    $out .= mb_substr(html_entity_decode($attr['value'] . '  ' . $attr['at_name'] . ': ' . $attr['label']), 0, 70);
+                    $return .= '<br>';
+                    $return .= mb_substr(html_entity_decode($attr['value'] . '  ' . $attr['at_name'] . ': ' . $attr['label']), 0, 70);
                 }
             }
 
-            $out .= '<br>' . html_entity_decode('Steuer: ' . $pos['taxpercent'] . '% = ' . number_format($pos['taxval'], 2));
+            $return .= '<br>' . html_entity_decode('Steuer: ' . $pos['taxpercent'] . '% = ' . number_format($pos['taxval'], 2));
 
-            $out .= '</td><td style="text-align:right">';
+            $return .= '</td><td style="text-align:right">';
 
-            $out .= $pos['count'] . '</td><td style="text-align:right">';
-            $out .= number_format($pos['price_netto'], 2) . '</td><td style="text-align:right">';
-            $out .= number_format($pos['price_netto'] * $pos['count'], 2) . '</td></tr>';
+            $return .= $pos['count'] . '</td><td style="text-align:right">';
+            $return .= number_format($pos['price_netto'], 2) . '</td><td style="text-align:right">';
+            $return .= number_format($pos['price_netto'] * $pos['count'], 2) . '</td></tr>';
         }
-        $out .= '<tr class="topline"><td></td><td>Summe</td><td></td><td></td><td style="text-align:right">';
-        $out .= number_format(Warehouse::get_sub_total_netto(), 2) . '</td></tr>';
-        $out .= '<tr><td></td><td>Mehrwertsteuer</td><td></td><td></td><td style="text-align:right">';
-        $out .= number_format(Warehouse::get_tax_total(), 2) . '</td></tr>';
+        $return .= '<tr class="topline"><td></td><td>Summe</td><td></td><td></td><td style="text-align:right">';
+        $return .= number_format(Warehouse::getSubTotalNetto(), 2) . '</td></tr>';
+        $return .= '<tr><td></td><td>Mehrwertsteuer</td><td></td><td></td><td style="text-align:right">';
+        $return .= number_format(Warehouse::getTaxTotal(), 2) . '</td></tr>';
 
-        if (Warehouse::get_discount_value()) {
-            $out .= '<tr><td></td><td>' . rex_config::get("warehouse", "global_discount_text") . '</td><td></td><td style="text-align:right">';
+        if (Warehouse::getDiscountValue()) {
+            $return .= '<tr><td></td><td>' . rex_config::get("warehouse", "global_discount_text") . '</td><td></td><td style="text-align:right">';
 
-            $out .= number_format(Warehouse::get_discount_value(), 2) . '</td></tr>';
+            $return .= number_format(Warehouse::getDiscountValue(), 2) . '</td></tr>';
         }
-        $out .= '<tr><td></td><td>Versand</td><td></td><td></td><td style="text-align:right">';
-        $out .= number_format($shipping, 2) . '</td></tr>';
+        $return .= '<tr><td></td><td>Versand</td><td></td><td></td><td style="text-align:right">';
+        $return .= number_format($shipping, 2) . '</td></tr>';
 
-        $out .= '<tr class="topline bottomthickline"><td></td><td>Total</td><td></td><td></td><td style="text-align:right">';
-        $out .= number_format($total, 2) . '</td></tr>';
+        $return .= '<tr class="topline bottomthickline"><td></td><td>Total</td><td></td><td></td><td style="text-align:right">';
+        $return .= number_format($total, 2) . '</td></tr>';
 
-        $out .= '</tbody></table>';
-        return $out;
+        $return .= '</tbody></table>';
+        return $return;
     }
 
 
-    public static function get_user_data_text()
+    public static function getCustomerDataAsText()
     {
 
-        $user_data = self::get_user_data();
+        $user_data = self::getCustomerData();
 
-        $out = '';
+        $return = '';
 
-        $out .= 'Adresse' . PHP_EOL;
-        $out .= PHP_EOL;
+        $return .= 'Adresse' . PHP_EOL;
+        $return .= PHP_EOL;
 
-        $out .= ($user_data['company'] ?? '') ? $user_data['company'] . PHP_EOL : '';
-        $out .= ($user_data['salutation'] ?? '') ? $user_data['salutation'] . PHP_EOL : '';
-        $out .= $user_data['firstname'] . ' ' . $user_data['lastname'] . PHP_EOL;
-        $out .= ($user_data['department'] ?? '') ? $user_data['department'] . PHP_EOL : '';
-        $out .= ($user_data['address'] ?? '') ? $user_data['address'] . PHP_EOL : '';
-        $out .= trim(($user_data['country'] ?? '') . ' ' . ($user_data['zip'] ?? '') . ' ' . ($user_data['city'] ?? '')) . PHP_EOL;
-        //        rex_logger::factory()->log('info','hier',[],__FILE__,__LINE__);
-        $out .= PHP_EOL;
-        $out .= ($user_data['phone'] ?? '') ? 'Telefon: ' . $user_data['phone'] . PHP_EOL : '';
-        $out .= ($user_data['email'] ?? '') ? $user_data['email'] . PHP_EOL : '';
-        $out .= PHP_EOL;
+        $return .= ($user_data['company'] ?? '') ? $user_data['company'] . PHP_EOL : '';
+        $return .= ($user_data['salutation'] ?? '') ? $user_data['salutation'] . PHP_EOL : '';
+        $return .= $user_data['firstname'] . ' ' . $user_data['lastname'] . PHP_EOL;
+        $return .= ($user_data['department'] ?? '') ? $user_data['department'] . PHP_EOL : '';
+        $return .= ($user_data['address'] ?? '') ? $user_data['address'] . PHP_EOL : '';
+        $return .= trim(($user_data['country'] ?? '') . ' ' . ($user_data['zip'] ?? '') . ' ' . ($user_data['city'] ?? '')) . PHP_EOL;
+        $return .= PHP_EOL;
+        $return .= ($user_data['phone'] ?? '') ? 'Telefon: ' . $user_data['phone'] . PHP_EOL : '';
+        $return .= ($user_data['email'] ?? '') ? $user_data['email'] . PHP_EOL : '';
+        $return .= PHP_EOL;
         if (isset($user_data['birthdate']) && $user_data['birthdate']) {
-            $out .= 'Geburtsdatum:' . PHP_EOL;
-            $out .= $user_data['birthdate'] . PHP_EOL;
+            $return .= 'Geburtsdatum:' . PHP_EOL;
+            $return .= $user_data['birthdate'] . PHP_EOL;
         }
-        $out .= PHP_EOL;
-        $out .= 'Lieferadresse' . PHP_EOL;
-        $out .= PHP_EOL;
+        $return .= PHP_EOL;
+        $return .= 'Lieferadresse' . PHP_EOL;
+        $return .= PHP_EOL;
 
 
-        $out .= ($user_data['to_company'] ?? '') ? $user_data['to_company'] . PHP_EOL : '';
-        $out .= ($user_data['to_salutation'] ?? '') . PHP_EOL;
-        $out .= $user_data['to_firstname'] . ' ' . $user_data['to_lastname'] . PHP_EOL;
-        $out .= ($user_data['to_department'] ?? '') ? $user_data['to_department'] . PHP_EOL : '';
-        $out .= ($user_data['to_address'] ?? '') ? $user_data['to_address'] . PHP_EOL : '';
-        $out .= trim($user_data['to_country'] . ' ' . $user_data['to_zip'] . ' ' . $user_data['to_city']) . PHP_EOL;
-        $out .= PHP_EOL;
-        $out .= ($user_data['note'] ?? '') ? 'Bemerkung:' . PHP_EOL . $user_data['note'] . PHP_EOL : '';
-        $out .= PHP_EOL;
-        $out .= 'Zahlungsweise: ' . self::get_payment_type($user_data['payment_type']) . PHP_EOL;
-        $out .= PHP_EOL;
+        $return .= ($user_data['to_company'] ?? '') ? $user_data['to_company'] . PHP_EOL : '';
+        $return .= ($user_data['to_salutation'] ?? '') . PHP_EOL;
+        $return .= $user_data['to_firstname'] . ' ' . $user_data['to_lastname'] . PHP_EOL;
+        $return .= ($user_data['to_department'] ?? '') ? $user_data['to_department'] . PHP_EOL : '';
+        $return .= ($user_data['to_address'] ?? '') ? $user_data['to_address'] . PHP_EOL : '';
+        $return .= trim($user_data['to_country'] . ' ' . $user_data['to_zip'] . ' ' . $user_data['to_city']) . PHP_EOL;
+        $return .= PHP_EOL;
+        $return .= ($user_data['note'] ?? '') ? 'Bemerkung:' . PHP_EOL . $user_data['note'] . PHP_EOL : '';
+        $return .= PHP_EOL;
+$return .= 'Zahlungsweise: ' . (self::PAYMENT_OPTIONS[$user_data['payment_type']] ?? $user_data['payment_type']) . PHP_EOL;
+        $return .= PHP_EOL;
         if ($user_data['payment_type'] == 'direct_debit') {
-            $out .= 'IBAN: ' . $user_data['iban'] . PHP_EOL;
-            $out .= 'BIC: ' . $user_data['bic'] . PHP_EOL;
+            $return .= 'IBAN: ' . $user_data['iban'] . PHP_EOL;
+            $return .= 'BIC: ' . $user_data['bic'] . PHP_EOL;
             if ($user_data['direct_debit_name']) {
-                $out .= 'Kontoinhaber: ' . $user_data['direct_debit_name'] . PHP_EOL;
+                $return .= 'Kontoinhaber: ' . $user_data['direct_debit_name'] . PHP_EOL;
             } else {
-                $out .= 'Kontoinhaber: ' . $user_data['firstname'] . ' ' . $user_data['lastname'] . PHP_EOL;
+                $return .= 'Kontoinhaber: ' . $user_data['firstname'] . ' ' . $user_data['lastname'] . PHP_EOL;
             }
         }
 
-        return $out;
+        return $return;
     }
 
     /**
-     * Funktion wird aus warehouse_paypal->execute_payment aufgerufen, wenn die Zahlung abgeschlossen ist.
-     * Kann nur einmal ausgeführt werden (wenn payment_confirm noch leer ist).
-     *
+     * execute_payment wird aufgerufen, wenn die Zahlung abgeschlossen ist.
      */
-    public static function paypal_approved($payment)
+    public static function PaypalPaymentApproved($payment) :bool
     {
-        $sql = rex_sql::factory()->setTable(rex::getTable('warehouse_orders'))
-            ->setWhere('payment_id = :payment_id', ['payment_id' => $payment->id])
-            ->setWhere('payment_confirm = :empty', ['empty' => '']);
-        $sql->setValue('payment_confirm', date('Y-m-d H:i:s'));
-        $sql->update();
-        // db
-        // $payment->id = paypalId
+        // TODO: Stattdessen response auswerten, PayPalHttp\HttpResponse, dort id, status auswerten. Ansatz war in warehouse v1
+        $order = Order::query()->where('payment_id', $payment->id)->where('payment_confirm', '')->findOne();
+        if ($order) {
+            $order->setPaymentConfirm(date('Y-m-d H:i:s'));
+            return $order->save();
+        }
+        return false;
     }
 
-    public static function paypal_approved_v2($response)
+    public static function PaypalPaymentApprovedViaResponse($response)
     {
-
-        /* $response
-PayPalHttp\HttpResponse {#170 ▼
-    +statusCode: 201
-    +result: {#151 ▼
-        +"id": "37G433630R1366212"
-        +"intent": "CAPTURE"
-        +"status": "COMPLETED"
-        +"purchase_units": array:1 [▼
-            0 => {#147 ▶}
-        ]
-        +"payer": {#167 ▶}
-        +"create_time": "2021-08-04T10:25:05Z"
-        +"update_time": "2021-08-04T10:25:15Z"
-        +"links": array:1 [▼
-            0 => {#169 ▶}
-        ]
-    }
-    +headers: array:10 [▼
-        "" => ""
-        "Content-Type" => "application/json"
-        "Content-Length" => "1653"
-        "Connection" => "keep-alive"
-        "Date" => "Wed, 04 Aug 2021 10"
-        "Application_id" => "APP-80W284485P519543T"
-        "Cache-Control" => "max-age=0, no-cache, no-store, must-revalidate"
-        "Caller_acct_num" => "TYMDVHDDBLE62"
-        "Paypal-Debug-Id" => "b9d0345b88d06"
-        "Strict-Transport-Security" => "max-age=31536000; includeSubDomains"
-    ]
-}
-*/
-
-
-        $sql = rex_sql::factory()->setTable(rex::getTable('warehouse_orders'))
-            ->setWhere('payment_id = :payment_id AND payment_confirm = ""', ['payment_id' => $response->result->id]);
-        $sql->setValue('paypal_confirm_token', json_encode($response));
-        $sql->setValue('payment_confirm', date('Y-m-d H:i:s'));
-        $sql->update();
-        // db
-        // $payment->id = paypalId
+        $order = Order::query()->where('payment_id', $response->result->id)->where('payment_confirm', '')->findOne();
+        if ($order) {
+            $order->setPaypalConfirmToken(json_encode($response));
+            $order->setPaymentConfirm(date('Y-m-d H:i:s'));
+            return $order->save();
+        }
     }
 
-    public static function get_items_count_in_basket()
+    public static function countItemsInCart()
     {
-        return count(rex_session('warehouse_cart', 'array'));
+        return Cart::countItems();
     }
 
     /**
      * Aufruf aus Action der Adresseingabe
      * @param type $params
      */
-    public static function save_cart_in_session($params)
+    public static function saveCartInSession($params)
     {
         $value_pool = $params->params['value_pool']['email'];
         rex_set_session('warehouse_data', $value_pool);
@@ -743,7 +468,7 @@ PayPalHttp\HttpResponse {#170 ▼
      * Aufruf aus Action der Adresseingabe
      * @param type $params
      */
-    public static function save_userdata_in_session($params)
+    public static function saveCustomerInSession($params)
     {
         $value_pool = $params->params['value_pool']['email'];
         foreach (self::$fields as $field) {
@@ -755,85 +480,31 @@ PayPalHttp\HttpResponse {#170 ▼
         rex_set_session('user_data', $value_pool);
     }
 
-    /**
-     * Sortiert Elemente aus, die 0 Stück haben
-     */
-    public static function clean_cart()
+    public static function getCategoryPath(int $cat_id)
     {
-        $mycart = self::get_cart();
-        foreach ($mycart as $k => $v) {
-            if ($v['count'] == 0) {
-                unset($mycart[$k]);
-            }
+        $category = Category::get($cat_id);
+        if (!$category) {
+            return [];
         }
-        rex_set_session('warehouse_cart', $mycart);
-    }
-
-    public static function get_path($cat_id)
-    {
-
         $path = [];
-        $qry = 'SELECT name_' . rex_clang::getCurrentId() . ' `name`, `id`, parent_id FROM ' . rex::getTable('warehouse_category') . ' WHERE `id` = :id';
-        $sql = rex_sql::factory();
-        while ($cat_id > 0) {
-            $current = $sql->getArray($qry, ['id' => $cat_id]);
-            $path[] = $current[0];
-            $cat_id = $current[0]['parent_id'];
+
+        $current_category = $category;
+        while ($current_category !== null) {
+            $path[] = $current_category;
+            $current_category = $current_category->getParent();
         }
         return array_reverse($path);
     }
 
-    public static function get_category_tree($depth = 2)
+    public static function getPaymentOptions()
     {
-        $otree = new Helper();
-        $otree->set_query('SELECT id, name_' . rex_clang::getCurrentId() . ' name, image, parent_id FROM ' . rex::getTable('warehouse_category') . ' WHERE status = 1 AND parent_id = |parent_id| ORDER BY prio');
-        $otree->set_maxlev($depth);
-        $tree = $otree->sql_full_tree();
-        return $tree;
+        return self::PAYMENT_OPTIONS;
     }
-
-    public static function get_payment_type($payment_key)
-    {
-        $payment_types = [
-            'prepayment' => '{{ payment_type_prepayment }}',
-            'invoice' => '{{ payment_type_invoice }}',
-            'paypal' => '{{ payment_type_paypal }}',
-            'direct_debit' => '{{ payment_type_direct_debit }}',
-        ];
-        if (isset($payment_types[$payment_key])) {
-            return $payment_types[$payment_key];
-        } else {
-            return $payment_key;
-        }
-    }
-
-
-    public static function get_available_payment_types()
-    {
-        $current_payment_types = [
-            '{{ payment_type_prepayment }}' => 'prepayment',
-            '{{ payment_type_direct_debit }}' => 'direct_debit',
-            '{{ payment_type_paypal }}' => 'paypal'
-        ];
-
-        return $current_payment_types;
-    }
-
-
-    public static function update_order($id, $values, $where = [])
-    {
-        $sql = rex_sql::factory();
-        $sql->setTable(rex::getTable('warehouse_orders'));
-        $sql->setValues($values);
-        $sql->setWhere('id = :id', ['id' => $id]);
-        $sql->update();
-    }
-
 
     public static function send_notification_email($send_redirect = true, $order_id = '')
     {
-        $cart = self::get_cart();
-        $warehouse_userdata = self::get_user_data();
+        $cart = self::getCart();
+        $warehouse_userdata = self::getCustomerData();
 
         $yf = new rex_yform();
         $fragment = new rex_fragment();
@@ -851,10 +522,10 @@ PayPalHttp\HttpResponse {#170 ▼
         $yf->setValueField('hidden', ['payment_type', $warehouse_userdata['payment_type']]);
         $yf->setValueField('hidden', ['info_news_ok', $warehouse_userdata['info_news_ok']]);
 
-        foreach (explode(',', Warehouse::get_config('order_email')) as $email) {
-            $yf->setActionField('tpl2email', [Warehouse::get_config('email_template_seller'), $email]);
+        foreach (explode(',', Warehouse::getConfig('order_email')) as $email) {
+            $yf->setActionField('tpl2email', [Warehouse::getConfig('email_template_seller'), $email]);
         }
-        $yf->setActionField('tpl2email', [Warehouse::get_config('email_template_customer'), 'email']);
+        $yf->setActionField('tpl2email', [Warehouse::getConfig('email_template_customer'), 'email']);
         $yf->setActionField('callback', ['warehouse::clear_cart']);
 
         $yf->getForm();
@@ -864,7 +535,7 @@ PayPalHttp\HttpResponse {#170 ▼
             rex_logger::factory()->log('notice', 'Warehouse Order Email sent', [], __FILE__, __LINE__);
         }
         if ($send_redirect) {
-            rex_response::sendRedirect(rex_getUrl(Warehouse::get_config('thankyou_page'), '', json_decode(rex_config::get('warehouse', 'paypal_getparams'), true), '&'));
+            rex_response::sendRedirect(rex_getUrl(Warehouse::getConfig('thankyou_page'), '', json_decode(rex_config::get('warehouse', 'paypal_getparams'), true), '&'));
         }
     }
 
@@ -888,7 +559,7 @@ PayPalHttp\HttpResponse {#170 ▼
 
     public static function send_mails()
     {
-        $warehouse_userdata = Warehouse::get_user_data();
+        $warehouse_userdata = Warehouse::getCustomerData();
 
         $yf = new rex_yform();
 
@@ -901,12 +572,12 @@ PayPalHttp\HttpResponse {#170 ▼
         $yf->setValueField('hidden', ['lastname', $warehouse_userdata['lastname']]);
         $yf->setValueField('hidden', ['payment_type', $warehouse_userdata['payment_type']]);
 
-        foreach (explode(',', Warehouse::get_config('order_email')) as $email) {
+        foreach (explode(',', Warehouse::getConfig('order_email')) as $email) {
             $yf->setValueField('html', ['', $email]);
-            $yf->setActionField('tpl2email', [Warehouse::get_config('email_template_seller'), trim($email)]);
+            $yf->setActionField('tpl2email', [Warehouse::getConfig('email_template_seller'), trim($email)]);
         }
 
-        $etpl = Warehouse::get_config('email_template_customer');
+        $etpl = Warehouse::getConfig('email_template_customer');
         if (rex_yform_email_template::getTemplate($etpl . '_' . rex_clang::getCurrent()->getCode())) {
             $etpl = $etpl . '_' . rex_clang::getCurrent()->getCode();
         }
@@ -917,131 +588,9 @@ PayPalHttp\HttpResponse {#170 ▼
         $yf->getForm();
     }
 
-    /**
-     * Aktualisiert nach der Zahlung die Lagerbestände
-     */
-    public static function update_stock()
+    /** @api */
+    public static function getConfig(string $key) :mixed
     {
-        $cart = self::get_cart();
-        foreach ($cart as $k=>$art) {
-            if ($art['stock_item'] ?? false) {
-                $warehouse_art = Article::get_article($k);
-                $warehouse_art->stock = $warehouse_art->stock - $art['count'];
-                $warehouse_art->save();
-            }
-        }
-
+        return rex_config::get('warehouse', $key);
     }
-
-
-
-    /**
-     * check_input_weight
-     *
-     * Kann als Validate Funktion in yform verwendet werden.
-     *
-     * warehouse::check_input_weight
-     *
-     * Feld weight
-     */
-    public static function check_input_weight($params, $vars, $names = '', $yform)
-    {
-
-        if (!trim(rex_config::get('warehouse', 'check_weight'), '|')) {
-            // wenn in den Einstellungen kein Gewichtscheck aktiviert ist, Gewicht nicht prüfen
-            return false;
-        }
-
-        $names = explode(',', $names);
-
-        $art_weight = 0;
-        $var_weight = 0;
-
-        $has_error = false;
-        $has_variants = false;
-
-        foreach ($yform->getObjects() as $Object) {
-            if ($Object->getName() == 'weight') {
-                $art_weight = (float) $Object->getValue();
-            }
-        }
-
-        foreach ($yform->getObjects() as $Object) {
-
-            if ($Object->getName() == 'variants_id') {
-
-                $be_relation_values = $Object->getValue();
-                $table = rex_yform_manager_table::get(rex::getTable('warehouse_article_variants'));
-
-                // ----- Find PrioFieldname if exists
-                $prioFieldName = '';
-                $fields = [];
-                foreach ($table->getFields() as $field) {
-                    if ('value' == $field->getType()) {
-                        if ('prio' == $field->getTypeName()) {
-                            $prioFieldName = $field->getName();
-                        } else {
-                            $fields[] = $field->getName();
-                        }
-                    }
-                }
-                $weight_field_num = 0;
-                foreach ($fields as $k=>$v) {
-                    // an welcher Stelle der Fieldlist steht das Gewichtsfeld? => $weight_field_num
-                    if ('weight' == $v) {
-                        $weight_field_num = $k;
-                        break;
-                    }
-                }
-
-                foreach ($be_relation_values as $be_value) {
-                    $has_variants = true;
-                    $var_weight = (float) $be_value[$weight_field_num] ?? 0;
-                    if (($art_weight + $var_weight) == 0) {
-                        $has_error = true;
-                    }
-                }
-                
-            }
-
-        }
-
-        if (!$has_variants && $art_weight == 0) {
-            $has_error = true;
-        }
-
-        return $has_error;
-
-    }
-
-    public static function get_config($param)
-    {
-        $config_value = rex_config::get("warehouse", $param);
-        if (!rex_addon::get('yrewrite')->isAvailable()) {
-            return $config_value;
-        }
-        $domain = rex_yrewrite::getCurrentDomain();
-        if ($domain) {
-            $param_val = rex_config::get('warehouse', $param.'_'.$domain->getId());
-            if ($param_val) {
-                $config_value = $param_val;
-            }
-        }
-        return $config_value;
-    }
-
-
-    public static function getSettingsDomainOptions()
-    {
-        $options = ['' => 'Standard'];
-        if (!rex_addon::get('yrewrite')->isAvailable()) {
-            return $options;
-        }
-        $domains = rex_yrewrite::getDomains();
-        foreach ($domains as $domain) {
-            $options[$domain->getId()] = $domain->getName();
-        }
-        return $options;
-    }
-
 }

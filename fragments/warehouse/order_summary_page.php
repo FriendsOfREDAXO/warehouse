@@ -29,11 +29,11 @@ $user_data = $this->warehouse_userdata;
     <?php endforeach ?>
     <tr>
         <td>{{ Shipping }} <?= $this->warehouse_userdata['country'] ?></td>
-        <td class="uk-text-right"><?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::get_shipping_cost(), 2) ?></td>
+        <td class="uk-text-right"><?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::getShippingCost(), 2) ?></td>
     </tr>
     <tr>
         <td>{{ Total }}</td>
-        <td class="uk-text-right"><?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::get_cart_total(), 2) ?></td>
+        <td class="uk-text-right"><?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::getCartTotal(), 2) ?></td>
     </tr>
 </table>
 

@@ -1,6 +1,6 @@
 <?php /* Warehouse Cart Page - Output */ 
 
-$cart = FriendsOfRedaxo\Warehouse\Warehouse::get_cart();
+$cart = FriendsOfRedaxo\Warehouse\Warehouse::getCart();
 $fragment = new rex_fragment();
 $fragment->setVar('cart',$cart);
 $fragment->setVar('mode','modul');

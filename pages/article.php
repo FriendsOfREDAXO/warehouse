@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @var rex_addon $this
+ * @psalm-scope-this rex_addon
+ */
+
 $addon = rex_addon::get('warehouse');
 
 $table_name = 'rex_warehouse_article';
@@ -17,5 +22,7 @@ rex_extension::register(
 
 // @phpstan-ignore-next-line
 $_REQUEST['table_name'] = $table_name;
+
+echo rex_view::title($addon->i18n('warehouse.title'));
 
 include rex_path::plugin('yform', 'manager', 'pages/data_edit.php');

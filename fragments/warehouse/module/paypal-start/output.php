@@ -4,6 +4,6 @@ if (rex::isBackend()) {
     echo '<h2>Paypal Start</h2>';
     return;
 } else {
-    FriendsOfRedaxo\Warehouse\PayPal::create_order();
+    FriendsOfRedaxo\Warehouse\PayPal::createOrder();
 }
 ?>

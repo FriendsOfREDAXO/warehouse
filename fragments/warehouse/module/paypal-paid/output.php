@@ -5,7 +5,7 @@ if (rex::isBackend()) {
     echo '<h2>PayPal Abschluss der Zahlung, Bestätigungsmail und Bestellmail verschicken.</h2>';
     return;
 } else {
-    $response = FriendsOfRedaxo\Warehouse\PayPal::execute_payment();
+    $response = FriendsOfRedaxo\Warehouse\PayPal::ExecutePayment();
 //    dump($response); exit;
     /*
     PayPalHttp\HttpResponse {#170 ▼
@@ -40,10 +40,10 @@ if (rex::isBackend()) {
     */
     
     // log payment
-    FriendsOfRedaxo\Warehouse\Warehouse::paypal_approved_v2($response);
+    FriendsOfRedaxo\Warehouse\Warehouse::PaypalPaymentApprovedViaResponse($response);
 
-    $cart = FriendsOfRedaxo\Warehouse\Warehouse::get_cart();
-    $warehouse_userdata = FriendsOfRedaxo\Warehouse\Warehouse::get_user_data();
+    $cart = FriendsOfRedaxo\Warehouse\Warehouse::getCart();
+    $warehouse_userdata = FriendsOfRedaxo\Warehouse\Warehouse::getCustomerData();
     
     $yf = new rex_yform();
     $fragment = new rex_fragment();
