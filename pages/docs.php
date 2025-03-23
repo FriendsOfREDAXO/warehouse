@@ -5,14 +5,14 @@
  * @psalm-scope-this rex_addon
  */
 
-$mdFiles = [];
+$mdFiles = ['00_README' => rex_addon::get('warehouse')->getPath('README.md')];
 foreach (glob(rex_addon::get('warehouse')->getPath('docs') . '/*.md') ?: [] as $file) {
     $mdFiles[mb_substr(basename($file), 0, -3)] = $file;
 }
 
-$currentMDFile = rex_request('mdfile', 'string', '01_intro');
+$currentMDFile = rex_request('mdfile', 'string', '00_README');
 if (!array_key_exists($currentMDFile, $mdFiles)) {
-    $currentMDFile = '01_intro';
+    $currentMDFile = '00_README';
 }
 
 $page = rex_be_controller::getPageObject('warehouse/docs');
@@ -20,9 +20,9 @@ $page = rex_be_controller::getPageObject('warehouse/docs');
 if (null !== $page) {
     foreach ($mdFiles as $key => $mdFile) {
         $keyWithoudPrio = mb_substr($key, 3);
-        $currentMDFileWithoudPrio = mb_substr($currentMDFile, 3);
+        $currentMDFileWithoutPrio = mb_substr($currentMDFile, 3);
         $page->addSubpage(
-            (new rex_be_page($key, rex_i18n::msg('warehouse_docs_' . $keyWithoudPrio)))
+            (new rex_be_page($key, rex_i18n::msg('warehouse_docs.' . $keyWithoudPrio)))
             ->setSubPath($mdFile)
             ->setHref('index.php?page=warehouse/docs&mdfile=' . $key)
             ->setIsActive($key == $currentMDFile),
@@ -43,6 +43,6 @@ $fragment->setVar('toc', $Toc, false);
 $content = $fragment->parse('core/page/docs.php');
 
 $fragment = new rex_fragment();
-$fragment->setVar('title', rex_i18n::msg('package_help') . ' ', false);
+$fragment->setVar('title', '<div><span>'.rex_i18n::msg('package_help') . ' Warehouse </span><a href="https://github.com/FriendsOfREDAXO/warehouse/tree/main/docs" class="btn btn-primary btn-sm"><i class="fa fa-icon rex-icon fa-github"></i> Auf GitHub bearbeiten</a></div>', false);
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');
