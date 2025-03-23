@@ -15,11 +15,7 @@
             "mass_deletion": 0,
             "mass_edit": 0,
             "schema_overwrite": 1,
-            "history": 0,
-            "createdate": "0000-00-00 00:00:00",
-            "updatedate": "0000-00-00 00:00:00",
-            "createuser": "",
-            "updateuser": ""
+            "history": 0
         },
         "fields": [
             {
