@@ -4,9 +4,9 @@ Wir bedanken uns bei Ihnen für die Bestellung in unserem Webshop. Hiermit sende
 
 Wenn Sie Fragen zum Stand ihrer Bestellung haben, wenden Sie sich gerne an uns.
 
-<?php echo FriendsOfRedaxo\Warehouse\Warehouse::get_order_text(); ?>
+<?php echo FriendsOfRedaxo\Warehouse\Warehouse::getOrderAsText(); ?>
 
-<?php echo FriendsOfRedaxo\Warehouse\Warehouse::get_user_data_text(); ?>
+<?php echo FriendsOfRedaxo\Warehouse\Warehouse::getCustomerDataAsText(); ?>
 
 <?php if (REX_YFORM_DATA[field="payment_type"] == "prepayment") : ?>
 Bitte überweisen Sie den Betrag auf das Konto
