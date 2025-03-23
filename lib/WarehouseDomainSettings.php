@@ -39,11 +39,12 @@ class WarehouseDomainSettings extends rex_yform_manager_dataset
     {
         return $this->getValue("cart_art_id");
     }
-    public function getCartArtIdUrl() : ?string
+    public function getCartArtIdUrl() : string
     {
-        if ($article = $this->getCartArt()) {
+        if (null !== ($article = $this->getCartArt())) {
             return $article->getUrl();
         }
+        return '';
     }
     /** @api */
     public function setCartArtId(string $id) : self
@@ -64,11 +65,12 @@ class WarehouseDomainSettings extends rex_yform_manager_dataset
     {
         return $this->getValue("shippinginfo_art_id");
     }
-    public function getShippinginfoArtIdUrl() : ?string
+    public function getShippinginfoArtIdUrl() : string
     {
         if ($article = $this->getShippinginfoArt()) {
             return $article->getUrl();
         }
+        return '';
     }
     /** @api */
     public function setShippinginfoArtId(string $id) : self
@@ -89,11 +91,12 @@ class WarehouseDomainSettings extends rex_yform_manager_dataset
     {
         return $this->getValue("address_art_id");
     }
-    public function getAddressArtIdUrl() : ?string
+    public function getAddressArtIdUrl() : string
     {
-        if ($article = $this->getAddressArt()) {
+        if (null !== ($article = $this->getAddressArt())) {
             return $article->getUrl();
         }
+        return '';
     }
     /** @api */
     public function setAddressArtId(string $id) : self
@@ -114,11 +117,12 @@ class WarehouseDomainSettings extends rex_yform_manager_dataset
     {
         return $this->getValue("order_art_id");
     }
-    public function getOrderArtIdUrl() : ?string
+    public function getOrderArtIdUrl() : string
     {
-        if ($article = $this->getOrderArt()) {
+        if (null !== $article = $this->getOrderArt()) {
             return $article->getUrl();
         }
+        return '';
     }
     /** @api */
     public function setOrderArtId(string $id) : self
@@ -139,11 +143,12 @@ class WarehouseDomainSettings extends rex_yform_manager_dataset
     {
         return $this->getValue("payment_error_art_id");
     }
-    public function getPaymentErrorArtIdUrl() : ?string
+    public function getPaymentErrorArtIdUrl() : string
     {
-        if ($article = $this->getPaymentErrorArt()) {
+        if (null !== ($article = $this->getPaymentErrorArt())) {
             return $article->getUrl();
         }
+        return '';
     }
     /** @api */
     public function setPaymentErrorArtId(string $id) : self
@@ -164,11 +169,12 @@ class WarehouseDomainSettings extends rex_yform_manager_dataset
     {
         return $this->getValue("thankyou_art_id");
     }
-    public function getThankyouArtIdUrl() : ?string
+    public function getThankyouArtIdUrl() : string
     {
-        if ($article = $this->getThankyouArt()) {
+        if (null !== ($article = $this->getThankyouArt())) {
             return $article->getUrl();
         }
+        return '';
     }
     /** @api */
     public function setThankyouArtId(string $id) : self
@@ -217,6 +223,7 @@ class WarehouseDomainSettings extends rex_yform_manager_dataset
             }
             return $options;
         }
+        return [];
     }
 
 }
