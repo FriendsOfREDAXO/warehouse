@@ -28,7 +28,7 @@ $user_data = $this->warehouse_userdata;
                         <?php endforeach ?>
                         <tr class="tr_shipping">
                             <td class="col1">{{ Versandkosten }} <?= $this->warehouse_userdata['country'] ?></td>
-                            <td class="col2 text-right"><?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getShippingCost(), 2) ?></td>
+                            <td class="col2 text-right"><?= number_format(FriendsOfRedaxo\Warehouse\Shipping::getCost(), 2) ?></td>
                         </tr>
                         <tr class="tr_total">
                             <td class="bigtext col1">{{ Total }}</td>
