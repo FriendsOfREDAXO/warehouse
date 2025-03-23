@@ -7,7 +7,7 @@ use rex_ycom_user;
 
 class Customer
 {
-    public $customer = [
+    const CUSTOMER = [
         'firstname' => '',
         'lastname' => '',
         'company' => '',
@@ -31,11 +31,14 @@ class Customer
         'email' => '',
         'birthdate' => '',
     ];
+    
+    private $customer = [];
+
     // initialisieren des Kunden
     public static function init()
     {
         if (rex_session('warehouse_customer', 'array', null) === null) {
-            rex_set_session('warehouse_customer', []);
+            rex_set_session('warehouse_customer', self::CUSTOMER);
         }
     }
 
