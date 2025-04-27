@@ -3,10 +3,12 @@
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 // Überprüfe aktuell installierte Version von Warehouse
+/*
 if (rex_version::compare($this->getVersion(), '2.0.0', '<')) {
     rex_view::error('Warehouse ' . $this->getVersion() .' ist bereits installiert. Ein Upgrade ist nicht vorgesehen und kann zu unvorhersehbaren Fehlern führen. Bitte deinstalliere Warehouse und installiere die aktuelle Version.');
     return;
 }
+*/
 
 $this->includeFile(__DIR__ . '/install/update_scheme.php');
 
