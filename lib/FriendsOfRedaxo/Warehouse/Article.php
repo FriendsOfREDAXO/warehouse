@@ -276,6 +276,11 @@ class Article extends rex_yform_manager_dataset
         return self::availability;
     }
 
+    public static function getStatusOptions() : array
+    {
+        return self::status;
+    }
+
     public function getProjectValue(string $key)
     {
         return $this->getValue('project_' . $key);
