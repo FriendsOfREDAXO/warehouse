@@ -73,7 +73,7 @@ requires:
 # Wenn Warehouse 1.x installiert ist, dann abbrechen - es ist keine Migration vorgesehen.
 conflicts:
     packages:
-        warehouse: '<2.0.0'
+        warehouse: '<1.99.999'
 
 default_config:
 
