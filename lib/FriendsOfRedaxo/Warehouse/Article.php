@@ -281,6 +281,15 @@ class Article extends rex_yform_manager_dataset
         return self::status;
     }
 
+    public static function getTaxOptions() : array
+    {
+        return [
+            '19' => '19%',
+            '7' => '7%',
+            '0' => '0%',
+        ];
+    }
+
     public function getProjectValue(string $key)
     {
         return $this->getValue('project_' . $key);
