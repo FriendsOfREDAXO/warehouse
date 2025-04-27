@@ -30,9 +30,9 @@
                 "label": "translate:warehouse_article.name",
                 "not_required": "",
                 "attributes": "",
+                "notice": "",
                 "default": "",
                 "no_db": "0",
-                "notice": "",
                 "append": "",
                 "prepend": ""
             },
@@ -78,9 +78,9 @@
                 "choices": "FriendsOfRedaxo\\Warehouse\\Article::getAvailabilityOptions",
                 "choice_attributes": "",
                 "attributes": "",
+                "notice": "",
                 "default": "InStock",
                 "no_db": "0",
-                "notice": "",
                 "preferred_choices": "InStock,SoldOut",
                 "group_by": "",
                 "placeholder": "",
@@ -125,9 +125,9 @@
                 "choices": "FriendsOfRedaxo\\Warehouse\\Article::getStatusOptions",
                 "choice_attributes": "",
                 "attributes": "",
+                "notice": "",
                 "default": "0",
                 "no_db": "0",
-                "notice": "",
                 "preferred_choices": "",
                 "group_by": "",
                 "placeholder": "",
@@ -146,13 +146,13 @@
                 "label": "translate:warehouse_article.price",
                 "not_required": "",
                 "attributes": "{\"min\":\"0\",\"max\":\"99999999.99\",\"step\":\"0.01\"}",
+                "notice": "",
                 "default": "",
                 "no_db": "0",
-                "notice": "",
-                "unit": "\ud83d\udcb6",
                 "widget": "input:number",
-                "precision": "10",
-                "scale": "2"
+                "scale": "2",
+                "unit": "\ud83d\udcb6",
+                "precision": "10"
             },
             {
                 "table_name": "rex_warehouse_article",
@@ -167,12 +167,12 @@
                 "not_required": "",
                 "multiple": "0",
                 "expanded": "0",
-                "choices": "SELECT `key` value, concat(REPLACE(`value`,'\"',''),\" %\") label FROM rex_config rc WHERE namespace=\"warehouse\" AND (`key` LIKE \"tax_value_%\" OR `key` = \"tax_value\")  AND value != \"\\\"\\\"\"",
+                "choices": "FriendsOfRedaxo\\Warehouse\\Article::getTaxOptions",
                 "choice_attributes": "",
                 "attributes": "",
+                "notice": "",
                 "default": "19",
                 "no_db": "0",
-                "notice": "",
                 "preferred_choices": "0,7,19",
                 "group_by": "",
                 "placeholder": "translate:warehouse_article.tax.none",
@@ -191,9 +191,9 @@
                 "label": "translate:warehouse_article.price_text",
                 "not_required": "",
                 "attributes": "",
+                "notice": "",
                 "default": "",
                 "no_db": "0",
-                "notice": "",
                 "append": "",
                 "prepend": ""
             },
@@ -209,13 +209,13 @@
                 "label": "translate:warehouse_article.weight",
                 "not_required": "",
                 "attributes": "",
+                "notice": "",
                 "default": "",
                 "no_db": "0",
-                "notice": "",
-                "unit": "kg",
                 "widget": "input:text",
-                "precision": "10",
-                "scale": "2"
+                "scale": "2",
+                "unit": "kg",
+                "precision": "10"
             },
             {
                 "table_name": "rex_warehouse_article",
@@ -229,9 +229,9 @@
                 "label": "translate:warehouse_article.short_text",
                 "not_required": "",
                 "attributes": "{\"class\":\"###warehouse_editor###\"}",
+                "notice": "",
                 "default": "",
-                "no_db": "0",
-                "notice": ""
+                "no_db": "0"
             },
             {
                 "table_name": "rex_warehouse_article",
@@ -245,9 +245,9 @@
                 "label": "translate:warehouse_article.text",
                 "not_required": "",
                 "attributes": "{\"class\":\"###warehouse_editor###\"}",
+                "notice": "",
                 "default": "",
-                "no_db": "0",
-                "notice": ""
+                "no_db": "0"
             },
             {
                 "table_name": "rex_warehouse_article",
@@ -262,8 +262,8 @@
                 "not_required": "",
                 "multiple": "0",
                 "notice": "",
-                "types": "jpg,jpeg,png",
                 "preview": "1",
+                "types": "jpg,jpeg,png",
                 "category": ""
             },
             {
@@ -279,8 +279,8 @@
                 "not_required": "",
                 "multiple": "1",
                 "notice": "",
-                "types": "jpg,jpeg,png",
                 "preview": "0",
+                "types": "jpg,jpeg,png",
                 "category": ""
             },
             {
