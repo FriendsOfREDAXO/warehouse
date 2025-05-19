@@ -25,10 +25,10 @@ if (rex_addon::get('yform')->isAvailable()) {
 }
 // $this->includeFile(__DIR__ . '/install/url_profile.php');
 
-if(Warehouse::getConfig('store_name') == '') {
-    Warehouse::setConfig('store_name', rex::getServerName());
+if(rex_config::get('store_name') == '') {
+    rex_config::set('store_name', rex::getServerName());
 }
 
-if(Warehouse::getConfig('order_email') == '') {
-    Warehouse::setConfig('order_email', rex::getErrorEmail());
+if(rex_config::get('order_email') == '') {
+    rex_config::set('order_email', rex::getErrorEmail());
 }
