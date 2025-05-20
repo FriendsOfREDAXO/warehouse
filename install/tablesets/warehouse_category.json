@@ -180,6 +180,36 @@
                 "only_empty": "0",
                 "format": "Y-m-d H:i:s",
                 "modify_default": ""
+            },
+            {
+                "table_name": "rex_warehouse_category",
+                "prio": 10,
+                "type_id": "validate",
+                "type_name": "unique",
+                "db_type": "",
+                "list_hidden": 1,
+                "search": 0,
+                "name": "uuid",
+                "label": "",
+                "not_required": "",
+                "table": "",
+                "empty_option": "0",
+                "message": ""
+            },
+            {
+                "table_name": "rex_warehouse_category",
+                "prio": 11,
+                "type_id": "validate",
+                "type_name": "unique",
+                "db_type": "",
+                "list_hidden": 1,
+                "search": 0,
+                "name": "parent_id,name",
+                "label": "",
+                "not_required": "",
+                "table": "",
+                "empty_option": "0",
+                "message": ""
             }
         ]
     }

@@ -16,6 +16,7 @@ rex_sql_table::get(rex::getTable('warehouse_article'))
     ->ensureColumn(new rex_sql_column('gallery', 'text'))
     ->ensureColumn(new rex_sql_column('uuid', 'varchar(36)'))
     ->ensureColumn(new rex_sql_column('updatedate', 'datetime'))
+    ->ensureIndex(new rex_sql_index('uuid', ['uuid'], rex_sql_index::UNIQUE))
     ->ensure();
 
 rex_sql_table::get(rex::getTable('warehouse_article_variant'))
@@ -30,6 +31,7 @@ rex_sql_table::get(rex::getTable('warehouse_article_variant'))
     ->ensureColumn(new rex_sql_column('image', 'text'))
     ->ensureColumn(new rex_sql_column('status', 'text'))
     ->ensureColumn(new rex_sql_column('uuid', 'varchar(36)'))
+    ->ensureIndex(new rex_sql_index('uuid', ['uuid'], rex_sql_index::UNIQUE))
     ->ensure();
 
 rex_sql_table::get(rex::getTable('warehouse_category'))
@@ -44,6 +46,7 @@ rex_sql_table::get(rex::getTable('warehouse_category'))
     ->ensureColumn(new rex_sql_column('uuid', 'varchar(36)'))
     ->ensureColumn(new rex_sql_column('updatedate', 'datetime'))
     ->ensureColumn(new rex_sql_column('link_intern', 'text'))
+    ->ensureIndex(new rex_sql_index('uuid', ['uuid'], rex_sql_index::UNIQUE))
     ->ensure();
 
 rex_sql_table::get(rex::getTable('warehouse_order'))
@@ -69,4 +72,39 @@ rex_sql_table::get(rex::getTable('warehouse_order'))
     ->ensureColumn(new rex_sql_column('payment_type', 'varchar(191)', false, ''))
     ->ensureColumn(new rex_sql_column('payed', 'tinyint(1)'))
     ->ensureColumn(new rex_sql_column('imported', 'tinyint(1)', false, '0'))
+    ->ensureIndex(new rex_sql_index('firstname_lastname_company_email', ['firstname', 'lastname', 'company', 'email'], rex_sql_index::FULLTEXT))
+    ->ensure();
+
+rex_sql_table::get(rex::getTable('warehouse_shipping'))
+    ->ensurePrimaryIdColumn()
+    ->ensureColumn(new rex_sql_column('name', 'varchar(191)', false, ''))
+    ->ensureColumn(new rex_sql_column('mode', 'text'))
+    ->ensureColumn(new rex_sql_column('params', 'varchar(191)', false, ''))
+    ->ensure();
+
+
+rex_sql_table::get(rex::getTable('warehouse_settings_domain'))
+    ->ensurePrimaryIdColumn()
+    ->ensureColumn(new rex_sql_column('email_template_customer', 'varchar(191)'))
+    ->ensureColumn(new rex_sql_column('yrewrite_domain_id', 'int(11)'))
+    ->ensureColumn(new rex_sql_column('cart_art_id', 'int(11)'))
+    ->ensureColumn(new rex_sql_column('shippinginfo_art_id', 'int(11)'))
+    ->ensureColumn(new rex_sql_column('address_art_id', 'int(11)'))
+    ->ensureColumn(new rex_sql_column('order_art_id', 'int(11)'))
+    ->ensureColumn(new rex_sql_column('payment_error_art_id', 'int(11)'))
+    ->ensureColumn(new rex_sql_column('thankyou_art_id', 'int(11)'))
+    ->ensureColumn(new rex_sql_column('email_template_seller', 'varchar(191)'))
+    ->ensureColumn(new rex_sql_column('order_email', 'varchar(191)', false, ''))
+    ->ensure();
+
+
+rex_sql_table::get(rex::getTable('warehouse_country'))
+    ->ensurePrimaryIdColumn()
+    ->ensureColumn(new rex_sql_column('code', 'varchar(191)', false, ''))
+    ->ensureColumn(new rex_sql_column('name', 'varchar(191)', false, ''))
+    ->ensureColumn(new rex_sql_column('mode', 'text'))
+    ->ensureColumn(new rex_sql_column('status', 'text'))
+    ->ensureColumn(new rex_sql_column('prio', 'int(11)'))
+    ->ensureColumn(new rex_sql_column('tax', 'tinyint(1)', false, '0'))
+    ->ensureIndex(new rex_sql_index('name', ['name'], rex_sql_index::UNIQUE))
     ->ensure();
