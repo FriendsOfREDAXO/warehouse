@@ -27,7 +27,7 @@ $user_data = $this->warehouse_userdata;
                 
                 
                 
-                <?= $item['count'] ?> x à <?= number_format($item['price'], 2) ?>
+                <?= $item['amount'] ?> x à <?= number_format($item['price'], 2) ?>
             </td>
             <td class="uk-text-right"><?= number_format($item['total'], 2) ?></td>
         </tr>

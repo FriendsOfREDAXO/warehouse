@@ -35,7 +35,7 @@
                                 </a>
                                 <div class="mt-1 row g-2 align-items-center">
                                     <div class="col-auto fw-bolder small"><?= rex_config::get('warehouse', 'currency_symbol') ?>&nbsp;<?= number_format($item['total'], 2) ?></div>
-                                    <div class="col-auto text-muted small"><?= $item['count'] ?> &times; <?= rex_config::get('warehouse', 'currency_symbol') ?>&nbsp;<?= number_format($item['price'], 2) ?></div>
+                                    <div class="col-auto text-muted small"><?= $item['amount'] ?> &times; <?= rex_config::get('warehouse', 'currency_symbol') ?>&nbsp;<?= number_format($item['price'], 2) ?></div>
                                 </div>
                             </div>
                             <div class="col-auto">

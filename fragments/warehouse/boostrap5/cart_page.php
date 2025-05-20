@@ -58,7 +58,7 @@
                                         </div>
                                         <div class="col wh-cart-quantity-column">
                                             <a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uid ?>&mod=-1" class="btn btn-sm"><i class="bi bi-dash"></i></a>
-                                            <input class="form-control wh-qty-input" id="product-1" type="text" maxlength="3" value="<?= $item['count'] ?>" disabled>
+                                            <input class="form-control wh-qty-input" id="product-1" type="text" maxlength="3" value="<?= $item['amount'] ?>" disabled>
                                             <a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uid ?>&mod=+1"  class="btn btn-sm"><i class="bi bi-plus"></i></a>
                                         </div>
                                         <div class="col">

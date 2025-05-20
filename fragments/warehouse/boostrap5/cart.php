@@ -18,7 +18,7 @@ $rex_article_id = rex_article::getCurrentId();
         <td class="align-right"><?= rex_config::get('warehouse','currency') ?> <?= number_format($item['price'],2) ?></td>
         <td class="no-wrap td_warehouse_count">
             <a href="/?current_article=<?= $rex_article_id ?>&showcart=<?= $showcart ?>&action=modify_cart&art_uid=<?= $k ?>&mod=-1" class="circle minus white">-</a>
-            <span class="countnum"><?= $item['count'] ?></span>
+            <span class="countnum"><?= $item['amount'] ?></span>
             <a href="/?current_article=<?= $rex_article_id ?>&showcart=<?= $showcart ?>&action=modify_cart&art_uid=<?= $k ?>&mod=+1" class="circle plus white">+</a>
         </td>
         <td class="align-right"><?= rex_config::get('warehouse','currency') ?> <?= number_format($item['total'],2) ?></td>
