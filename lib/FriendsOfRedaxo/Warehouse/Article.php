@@ -2,17 +2,15 @@
 namespace FriendsOfRedaxo\Warehouse;
 
 use NumberFormatter;
-use rex;
-use rex_clang;
 use rex_config;
 use rex_i18n;
 use rex_yform;
-use rex_article;
-use rex_user;
 use rex_media;
-use yrewrite_domain;
 use rex_yform_manager_collection;
 use rex_yform_manager_dataset;
+use rex_url;
+use rex_extension_point;
+use rex_csrf_token;
 
 class Article extends rex_yform_manager_dataset
 {
@@ -320,4 +318,43 @@ class Article extends rex_yform_manager_dataset
 
         return $yform;
     }
+
+    
+    public static function epYformDataList(rex_extension_point $ep)
+    {
+        /** @var rex_yform_manager_table $table */
+        $table = $ep->getParam('table');
+        if ($table->getTableName() !== self::table()->getTableName()) {
+            return;
+        }
+
+        /** @var rex_yform_list $list */
+        $list = $ep->getSubject();
+
+        $list->setColumnFormat(
+            'name',
+            'custom',
+            static function ($a) {
+                $_csrf_key = self::table()->getCSRFKey();
+                $token = rex_csrf_token::factory($_csrf_key)->getUrlParams();
+
+                $params = [];
+                $params['table_name'] = self::table()->getTableName();
+                $params['rex_yform_manager_popup'] = '0';
+                $params['_csrf_token'] = $token['_csrf_token'];
+                $params['data_id'] = $a['list']->getValue('id');
+                $params['func'] = 'edit';
+
+                return '<a href="' . rex_url::backendPage('warehouse/article', $params) . '">' . $a['value'] . '</a>';
+            },
+        );
+        $list->setColumnFormat(
+            'id',
+            'custom',
+            static function ($a) {
+                return $a['value'];
+            },
+        );
+    }
+
 }

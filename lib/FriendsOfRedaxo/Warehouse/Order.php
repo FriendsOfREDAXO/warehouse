@@ -2,13 +2,14 @@
 
 namespace FriendsOfRedaxo\Warehouse;
 
+use rex_addon;
 use rex_ycom_auth;
-use rex_article;
-use rex_user;
-use rex_media;
-use yrewrite_domain;
+use rex_url;
 use rex_yform_manager_collection;
 use rex_yform_manager_dataset;
+use rex_extension_point;
+use rex_i18n;
+use rex_formatter;
 
 class Order extends rex_yform_manager_dataset {
         
@@ -272,5 +273,185 @@ class Order extends rex_yform_manager_dataset {
     public static function findByUuid($uuid) : ?self {
         return self::query()->where('uuid',$uuid)->findOne();
        
+    }
+
+    public static function epYformDataList(rex_extension_point $ep)
+    {
+        /** @var rex_yform_manager_table $table */
+        $table = $ep->getParam('table');
+        if ($table->getTableName() !== self::table()->getTableName()) {
+            return;
+        }
+
+        /** @var rex_yform_list $list */
+        $list = $ep->getSubject();
+
+        $list->removeColumn('id');
+
+        $list->removeColumn('company');
+
+        $list->removeColumn('salutation');
+        $list->removeColumn('firstname');
+        $list->removeColumn('lastname');
+
+        $list->removeColumn('address');
+
+        $list->removeColumn('zip');
+        $list->removeColumn('city');
+
+        $name = rex_i18n::msg('warehouse_order.buyer');
+        $list->addColumn($name, '', 2);
+
+        $list->setColumnFormat(
+            $name,
+            'custom',
+            static function ($a) {
+                $_csrf_key = self::table()->getCSRFKey();
+                $token = \rex_csrf_token::factory($_csrf_key)->getUrlParams();
+
+                $params = [];
+                $params['table_name'] = self::table()->getTableName();
+                $params['rex_yform_manager_popup'] = '0';
+                $params['_csrf_token'] = $token['_csrf_token'];
+                $params['data_id'] = $a['list']->getValue('id');
+                $params['func'] = 'edit';
+
+                $return = '';
+                $values = $a['list'];
+                // Anrede, Name, Adresse in einer Zelle
+                if($values->getValue('company') != '') {
+                    $return .= $values->getValue('company') . '<br>';
+                }
+                $return .= $values->getValue('salutation') . ' ' . $values->getValue('firstname') . ' ' . $values->getValue('lastname') . '<br>';
+                $return .= $values->getValue('address') . '<br>';
+                $return .= $values->getValue('zip') . ' ' . $values->getValue('city') . '<br>';
+                $return .= $values->getValue('country') . '<br>';
+
+                return '<div class="text-nowrap">' . $return . '</div>';
+
+            },
+        );
+
+        $list->setColumnFormat(
+            'email',
+            'custom',
+            static function ($a) {
+                if($a !== '') {
+                    return '<a href="mailto:' . $a['value'] . '">' . $a['value'] . '</a>';
+                }
+            }
+        );
+
+        $list->setColumnFormat(
+            'payment_id',
+            'custom',
+            static function ($a) {
+                // Kürze auf 10 Zeichen
+                $payment_id = $a['value'];
+                if (strlen($payment_id) > 10) {
+                    $payment_id = substr($payment_id, 0, 10) . '…';
+                }
+                return $payment_id;
+            },
+        );
+        
+        $list->setColumnFormat(
+            'createdate',
+            'custom',
+            static function ($a) {
+                return rex_formatter::intlDate($a['value']);
+            },
+        );
+
+        $list->setColumnPosition('ycom_userid', 2);
+        $list->setColumnLabel('ycom_userid', '<i class=\'rex-icon rex-icon-user\'></i>');
+
+        $list->setColumnFormat(
+            'ycom_userid',
+            'custom',
+            static function ($a) {
+                if($a['value'] > 0 && rex_addon::get('ycom')->isAvailable()) {
+                    $user = \rex_ycom_user::get($a['value']);
+                    $user_status = $user->getValue('status');
+
+                    $user_status_class = '';
+                    if($user_status == 0) {
+                        $user_status_class = 'text-info';
+                    } elseif($user_status < 0) {
+                        $user_status_class = 'text-danger';
+                    } elseif($user_status > 0) {
+                        $user_status_class = 'text-success';
+                    }
+                    if($user === null && $a['value'] > 0) {
+                        return '<i class="rex-icon rex-icon-user text-warning"></i>';
+                    }
+                    if($user) {
+                        // index.php?page=yform/manager/data_edit&table_name=rex_ycom_user&list=45e18d03&sort=&sorttype=&start=0&_csrf_token=Qk3DRM8nOTKy8pFY9H7jA8qL7PQAORVL0hYGfUmEtw8&rex_yform_manager_popup=0&data_id=1&func=edit&45e18d03_start=0
+                        return '<a href="' . rex_url::backendController(['page' => 'yform/manager/data_edit', 'table_name' => 'rex_ycom_user', '_csrf_token' => \rex_csrf_token::factory('ycom_user')->getUrlParams()['_csrf_token'], 'rex_yform_manager_popup' => 0, 'data_id' => $user->getId(), 'func' => 'edit']) . '"><i class="rex-icon rex-icon-user '.$user_status_class.'"></i></a>';
+                    }
+                }
+                return '<i class="rex-icon rex-icon-user text-muted"></i>';
+            }
+        );
+
+        $list->removeColumn('payment_confirm');
+        $list->removeColumn('payment_type');
+        $list->removeColumn('payed');
+
+        $list->setColumnFormat(
+            'order_total',
+            'custom',
+            static function ($a) {
+                $order_total = $a['list']->getValue('order_total');
+                $payment_confirm = $a['list']->getValue('payment_confirm');
+                $payment_type = $a['list']->getValue('payment_type');
+                $payed = $a['list']->getValue('payed');
+
+                $return = '';
+
+                if($order_total > 0) {
+                    $return .= '<span class="">' . rex_formatter::number($order_total) . '</span><br>';
+                } else {
+                    $return .= '<span class="text-danger">' . rex_formatter::number($order_total) . '</span><br>';
+                }
+
+                if($payment_confirm != '') {            
+                    $return .= $payment_confirm . '<br>';           
+                }
+                if ($payment_type != '') {
+                    $return .= '<span class="badge badge-info">' . $payment_type . '</span><br>';
+                }
+                if ($payed) {
+                    $return .= '<span class="badge badge-success">' . rex_i18n::msg('warehouse_order.payed') . '</span>';
+                } else {
+                    $return .= '<span class="badge badge-danger">' . rex_i18n::msg('warehouse_order.not_payed') . '</span>';
+                }
+
+                return $return;
+            }
+        );
+    }
+    public static function epYformDataListActionButtons(rex_extension_point $ep)
+    {
+        /** @var rex_yform_manager_table $table */
+        $table = $ep->getParam('table');
+        if ($table->getTableName() !== self::table()->getTableName()) {
+            return;
+        }
+
+        $buttons = $ep->getSubject();
+
+        $params = $ep->getParam('link_vars');
+
+        unset($buttons['clone']);
+        unset($buttons['edit']);
+        $buttons['details'] = [
+            'params' => array_merge($params, [
+                'page' => 'warehouse/order/details'
+            ]),
+            'content' => '<i class="rex-icon rex-icon-info"></i> Details',
+            'attributes' => null
+        ];
+        return $buttons;
     }
 }
