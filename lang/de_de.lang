@@ -28,6 +28,7 @@ warehouse_article = Artikel
 warehouse_article_variant = Varianten
 warehouse_category = Kategorien
 warehouse_order = Bestellungen
+warehouse_order_details = Bestelldetails
 warehouse_country = Länder
 warehouse_shipping = Versand
 warehouse_settings = Verwaltung
@@ -180,7 +181,7 @@ warehouse_order.zip = PLZ
 warehouse_order.city = Stadt
 warehouse_order.country = Land
 warehouse_order.email = E-Mail
-warehouse_order.createdate = Erstellungsdatum
+warehouse_order.createdate = Bestelldatum
 warehouse_order.paypal_id = PayPal-ID
 warehouse_order.payment_id = Zahlungs-ID
 warehouse_order.paypal_confirm_token = PayPal-Bestätigungstoken
@@ -193,11 +194,19 @@ warehouse_order.payment_type = Zahlungsart
 warehouse_order.payed = Bezahlt
 warehouse_order.imported = Importiert
 
+warehouse_order.buyer = Käufer*in
+
 # YForm-Tabelle "Versand": Labels
 
 warehouse_shipping.name = Name
 warehouse_shipping.mode = Modus
 warehouse_shipping.params = Parameter
+
+# Warehouse-Artikel und Varianten: Status
+
+warehouse_article.status.active = 🟢 Aktiv
+warehouse_article.status.draft = 🟡 Entwurf
+warehouse_article.status.hidden = 🔴 Versteckt
 
 # Warehouse-Artikel und Varianten: Verfügbarkeit
 

@@ -14,6 +14,11 @@ page:
         order:
             block: warehouse
             title: translate:warehouse_order
+            subpages:
+                list:
+                    title: translate:warehouse_order
+                details:
+                    title: translate:warehouse_order_details
 
 pages:
     article:
