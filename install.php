@@ -35,3 +35,14 @@ if (rex_config::get('store_name') == '') {
 if (rex_config::get('order_email') == '') {
     rex_config::set('order_email', rex::getErrorEmail());
 }
+
+// Patch Addon YForm - kopiere uuid.php in die YForm Addon - wenn Version <= 5.0.0
+// Sonst funktioniert das Klonen mit UUID nicht
+// https://github.com/yakamara/yform/commit/df79eff090ad0460c655c2f852b17e6aec53987a
+// https://github.com/yakamara/yform/pull/1517
+if(rex_version::compare(rex_addon::get('yform')->getVersion(), '5.0.0', '<=')) {
+    $yform = rex_addon::get('yform');
+    $source = __DIR__ . '/install/patch/uuid.php';
+    $target = $yform->getPath('lib/yForm/value/uuid.php');
+    rex_file::copy($source, $target);
+}
