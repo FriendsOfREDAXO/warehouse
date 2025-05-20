@@ -17,7 +17,7 @@ class Cart
         $cart = Warehouse::getCart();
         $sum_pcs = 0;
         foreach ($cart as $ci) {
-            $sum_pcs += $ci['count'];
+            $sum_pcs += $ci['amount'];
         }
         return $sum_pcs;
     }
@@ -32,10 +32,10 @@ class Cart
             $warehouse_article = Article::getArticle($uid);
             $art_weight = 0;
             if ($warehouse_article && isset($warehouse_article->weight) && $warehouse_article->weight) {
-                $art_weight = $warehouse_article->weight * $item['count'];
+                $art_weight = $warehouse_article->weight * $item['amount'];
             }
             if ($warehouse_article && isset($warehouse_article->var_weight) && (float) $warehouse_article->var_weight) {
-                $art_weight = $warehouse_article->var_weight * $item['count'];
+                $art_weight = $warehouse_article->var_weight * $item['amount'];
             }
             $weight += $art_weight;
         }
@@ -48,8 +48,8 @@ class Cart
     {
         $cart = Warehouse::getCart();
         $total = 0;
-        foreach ($cart as $ci) {
-            $total += $ci['price'] * $ci['count'];
+        foreach ($cart as $cart_item) {
+            $total += $cart_item['price'] * $cart_item['amount'];
         }
         return $total;
     }

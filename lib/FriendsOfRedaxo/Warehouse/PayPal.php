@@ -13,6 +13,7 @@ use PayPalCheckoutSdk\Core\SandboxEnvironment;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
+use PayPalHttp\HttpException as PayPalHttpHttpException;
 
 class PayPal
 {
@@ -312,7 +313,7 @@ class PayPal
                     'currency_code' => rex_config::get('warehouse', 'currency'),
                     'value' => number_format($position['taxsingle'], 2),
                 ],
-                'quantity' => $position['count'],
+                'quantity' => $position['amount'],
                 'category' => 'PHYSICAL_GOODS', // DIGITAL_GOODS oder PHYSICAL_GOODS
             ];
         }
@@ -397,7 +398,7 @@ class PayPal
                     rex_response::sendRedirect($link->href);
                 }
             }
-        } catch (HttpException $ex) {
+        } catch (PayPalHttpHttpException $ex) {
         }
         return $response;
     }
@@ -417,7 +418,7 @@ class PayPal
             return $response;
             // If call returns body in response, you can get the deserialized version from the result attribute of the response
             //            print_r($response);
-        } catch (HttpException $ex) {
+        } catch (PayPalHttpHttpException $ex) {
             echo $ex->statusCode;
             print_r($ex->getMessage());
         }
