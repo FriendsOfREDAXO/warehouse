@@ -53,10 +53,13 @@ $field->setNotice('Es kann entweder die Warenkorbseite aufgerufen werden oder di
 
 // TODO: Gewicht ausblenden / einblenden in Formularen und in Optionen berücksichtigen / nicht berücksichtigen
 
-$field = $form->addCheckboxField('enable_weight');
-$field->setLabel('Artikelgewicht verwenden');
-$field->addOption('Artikelgewicht verwenden', "1");
-$field->setAttribute('disabled', 'disabled');
+$field = $form->addCheckboxField('enable_features');
+$field->setLabel('Zusätzliche Optionen für Artikel und Varianten');
+$field->addOption('Staffelpreise abfragen', "bulk_prices");
+$field->addOption('Artikelgewicht abfragen', "weight");
+$field->addOption('Varianten zulassen', "variants");
+
+// $field->setAttribute('disabled', 'disabled');
 
 $field = $form->addInputField('text', 'editor', null, ['class' => 'form-control']);
 $field->setLabel(rex_i18n::msg('warehouse.settings.editor'));

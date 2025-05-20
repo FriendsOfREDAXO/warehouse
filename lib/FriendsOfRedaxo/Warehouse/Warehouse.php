@@ -599,4 +599,31 @@ class Warehouse
     {
         rex_config::set('warehouse', $key, $value);
     }
+
+    public static function getEnabledFeatures() :array
+    {
+        $value = rex_config::get('warehouse', 'enable_features');
+        if (is_string($value)) {
+            return explode('|', $value);
+        }
+        return [];
+    }
+
+    public static function isPricePerAmountEnabled() :bool
+    {
+        // Überprüfe, ob 'bulk_prices' im Config-Wert vorhanden ist
+        return in_array('bulk_prices', self::getEnabledFeatures());
+    }
+
+    public static function isWeightEnabled() :bool
+    {
+        // Überprüfe, ob 'weight' im Config-Wert vorhanden ist
+        return in_array('weight', self::getEnabledFeatures());
+    }
+
+    public static function isVariantsEnabled() :bool
+    {
+        // Überprüfe, ob 'variants' im Config-Wert vorhanden ist
+        return in_array('variants', self::getEnabledFeatures());
+    }
 }

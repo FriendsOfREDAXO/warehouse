@@ -40,7 +40,6 @@ class ArticleVariant extends rex_yform_manager_dataset
             'hidden' => 'translate:warehouse_article_variant.status.hidden',
         ];
 
-        
     /* Haupt-Artikel */
     /** @api */
     public function getArticle() : ?rex_yform_manager_dataset
@@ -160,6 +159,22 @@ class ArticleVariant extends rex_yform_manager_dataset
         foreach ($yform->objparams['form_elements'] as $k => &$e) {
             if ('textarea' === $e[0] && str_contains($e[5], $suchtext)) {
                 $e[5] = str_replace($suchtext, \rex_config::get('warehouse', 'editor'), $e[5]);
+            }
+        }
+
+        $removeFields = [];
+        if (!Warehouse::isPricePerAmountEnabled()) {
+            $removeFields[] = 'bulk_prices';
+        }
+        if (!Warehouse::isWeightEnabled()) {
+            $removeFields[] = 'weight';
+        }
+
+        foreach ($removeFields as $field) {
+            foreach ($yform->objparams['form_elements'] as $k => &$e) {
+                if ($e[1] === $field) {
+                    unset($yform->objparams['form_elements'][$k]);
+                }
             }
         }
 

@@ -298,27 +298,6 @@ class Article extends rex_yform_manager_dataset
         $this->setValue('project_' . $key, $value);
         return $this;
     }
-
-    /**
-     * Standards für das Formular anpassen
-     * - Editor-Konfiguration einfügen.
-     *
-     * @api
-     */
-    public function getForm(): rex_yform
-    {
-        $yform = parent::getForm();
-
-        $suchtext = '###warehouse_editor###';
-        foreach ($yform->objparams['form_elements'] as $k => &$e) {
-            if ('textarea' === $e[0] && str_contains($e[5], $suchtext)) {
-                $e[5] = str_replace($suchtext, \rex_config::get('warehouse', 'editor'), $e[5]);
-            }
-        }
-
-        return $yform;
-    }
-
     
     public static function epYformDataList(rex_extension_point $ep)
     {
@@ -357,4 +336,42 @@ class Article extends rex_yform_manager_dataset
         );
     }
 
+    /**
+     * Standards für das Formular anpassen
+     * - Editor-Konfiguration einfügen.
+     *
+     * @api
+     */
+    public function getForm(): rex_yform
+    {
+        $yform = parent::getForm();
+
+        $suchtext = '###warehouse_editor###';
+        foreach ($yform->objparams['form_elements'] as $k => &$e) {
+            if ('textarea' === $e[0] && str_contains($e[5], $suchtext)) {
+                $e[5] = str_replace($suchtext, \rex_config::get('warehouse', 'editor'), $e[5]);
+            }
+        }
+
+        $removeFields = [];
+        if (!Warehouse::isPricePerAmountEnabled()) {
+            $removeFields[] = 'bulk_prices';
+        }
+        if (!Warehouse::isWeightEnabled()) {
+            $removeFields[] = 'weight';
+        }
+        if (!Warehouse::isVariantsEnabled()) {
+            $removeFields[] = 'variant_ids';
+        }
+
+        foreach ($removeFields as $field) {
+            foreach ($yform->objparams['form_elements'] as $k => &$e) {
+                if ($e[1] === $field) {
+                    unset($yform->objparams['form_elements'][$k]);
+                }
+            }
+        }
+
+        return $yform;
+    }
 }
