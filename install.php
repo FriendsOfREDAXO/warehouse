@@ -23,12 +23,15 @@ if (rex_addon::get('yform')->isAvailable()) {
     rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_country.json'));
     rex_yform_manager_table::deleteCache();
 }
-// $this->includeFile(__DIR__ . '/install/url_profile.php');
 
-if(rex_config::get('store_name') == '') {
+if (rex_addon::get('url')->isAvailable()) {
+    $this->includeFile(__DIR__ . '/install/url_profile.php');
+}
+
+if (rex_config::get('store_name') == '') {
     rex_config::set('store_name', rex::getServerName());
 }
 
-if(rex_config::get('order_email') == '') {
+if (rex_config::get('order_email') == '') {
     rex_config::set('order_email', rex::getErrorEmail());
 }
