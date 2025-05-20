@@ -58,7 +58,7 @@ class Warehouse
     public static function addToCart(int $article_id, int $article_variant_id = null, int $quantity = 1) :bool
     {
         $added = false;
-        if($article_variant_id > 0) {
+        if ($article_variant_id > 0) {
             $article_variant = ArticleVariant::get($article_variant_id);
             $article = $article_variant->getArticle();
         } else {
@@ -67,7 +67,7 @@ class Warehouse
 
         $cart = self::getCart();
         if ($quantity >= 1) {
-            $cart[$article->getId()]['count'] += $quantity;
+            $cart[$article->getId()]['amount'] += $quantity;
             $added = true;
         }
 
@@ -88,7 +88,7 @@ class Warehouse
 
     /**
      * Warenkorb aktualisieren (Preise, Steuern, Gesamtsumme)
-     * @return void 
+     * @return void
      */
     public static function cartUpdate() :void
     {
@@ -100,19 +100,19 @@ class Warehouse
     public static function modifyCart(int $article_id, int $article_variant_id, int|false $quantity, string $mode = '=') :void
     {
         $cart = self::getCart();
-        if($quantity === false) {
+        if ($quantity === false) {
             unset($cart[$article_id]);
         }
         // mode = "=" => "set", "+" => "add", "-" => "remove"
-        if($mode == '=' && $quantity !== false) {
-            $cart[$article_id][$article_variant_id]['count'] = $quantity;
-        } elseif($mode == '+') {
-            $cart[$article_id][$article_variant_id]['count'] += $quantity;
-        } elseif($mode == '-') {
-            $cart[$article_id][$article_variant_id]['count'] -= $quantity;
+        if (($mode == '=' || $mode == 'set') && $quantity > 0) {
+            $cart[$article_id][$article_variant_id]['amount'] = $quantity;
+        } elseif ($mode == '+' || $mode == 'add') {
+            $cart[$article_id][$article_variant_id]['amount'] += $quantity;
+        } elseif ($mode == '-' || $mode == 'remove') {
+            $cart[$article_id][$article_variant_id]['amount'] -= $quantity;
         }
-        // Check if quantity is valid, no negative values - remove article from cart
-        if ($cart[$article_id][$article_variant_id]['count'] <= 0) {
+        // Check if quantity is valid, no empty quantity - remove article from cart
+        if ($cart[$article_id][$article_variant_id]['amount'] <= 0) {
             unset($cart[$article_id][$article_variant_id]);
         }
         rex_set_session('warehouse_cart', $cart);
@@ -163,7 +163,7 @@ class Warehouse
         $cart = self::getCart();
         $sum = 0;
         foreach ($cart as $item) {
-            $sum += $item['price_netto'] * $item['count'];
+            $sum += $item['price_netto'] * $item['amount'];
         }
         return round($sum, 2);
     }
@@ -268,9 +268,9 @@ class Warehouse
                 $return .= mb_str_pad(mb_substr(html_entity_decode($pos['whid']), 0, 20), 20, ' ', STR_PAD_RIGHT);
             }
             $return .= mb_str_pad(mb_substr(html_entity_decode($pos['name']), 0, 45), 45, ' ', STR_PAD_RIGHT);
-            $return .= mb_str_pad($pos['count'], 7, ' ', STR_PAD_LEFT);
+            $return .= mb_str_pad($pos['amount'], 7, ' ', STR_PAD_LEFT);
             $return .= mb_str_pad(number_format($pos['price_netto'], 2), 10, ' ', STR_PAD_LEFT);
-            $return .= mb_str_pad(number_format($pos['price_netto'] * $pos['count'], 2), 10, ' ', STR_PAD_LEFT);
+            $return .= mb_str_pad(number_format($pos['price_netto'] * $pos['amount'], 2), 10, ' ', STR_PAD_LEFT);
             $return .= PHP_EOL;
             if (is_array($pos['attributes'])) {
                 foreach ($pos['attributes'] as $attr) {
@@ -347,9 +347,9 @@ class Warehouse
 
             $return .= '</td><td style="text-align:right">';
 
-            $return .= $pos['count'] . '</td><td style="text-align:right">';
+            $return .= $pos['amount'] . '</td><td style="text-align:right">';
             $return .= number_format($pos['price_netto'], 2) . '</td><td style="text-align:right">';
-            $return .= number_format($pos['price_netto'] * $pos['count'], 2) . '</td></tr>';
+            $return .= number_format($pos['price_netto'] * $pos['amount'], 2) . '</td></tr>';
         }
         $return .= '<tr class="topline"><td></td><td>Summe</td><td></td><td></td><td style="text-align:right">';
         $return .= number_format(Warehouse::getSubTotalNetto(), 2) . '</td></tr>';
@@ -410,7 +410,7 @@ class Warehouse
         $return .= PHP_EOL;
         $return .= ($user_data['note'] ?? '') ? 'Bemerkung:' . PHP_EOL . $user_data['note'] . PHP_EOL : '';
         $return .= PHP_EOL;
-$return .= 'Zahlungsweise: ' . (self::PAYMENT_OPTIONS[$user_data['payment_type']] ?? $user_data['payment_type']) . PHP_EOL;
+        $return .= 'Zahlungsweise: ' . (self::PAYMENT_OPTIONS[$user_data['payment_type']] ?? $user_data['payment_type']) . PHP_EOL;
         $return .= PHP_EOL;
         if ($user_data['payment_type'] == 'direct_debit') {
             $return .= 'IBAN: ' . $user_data['iban'] . PHP_EOL;
