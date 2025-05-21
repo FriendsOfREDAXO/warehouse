@@ -15,6 +15,13 @@ warehouse_tax_disable_by_ust_ident = Steuer entfällt bei Ust.Ident
 warehouse_tax = Steuer
 warehouse_tax_tax_disable = Steuer entfällt generell
 
+# v2.0.0
+warehouse_module = Warehouse - Shop
+
+warehouse.module.title = Überschrift
+warehouse.module.description = Text
+warehouse.module.select.default = Bitte wählen
+
 # V2.0.0
 # Berechtigungen
 warehouse = Warehouse: Zugriff auf alle Bereiche
@@ -38,6 +45,7 @@ warehouse_settings_payment = Zahlung
 warehouse_settings_general = Grundeinstellungen
 warehouse_settings_domain = Domain-Profile
 warehouse_settings_tawarehouse_article_variant.weightx = Steuern
+warehouse_settings_log = Log
 warehouse_settings_discount = Rabatte
 warehouse_settings_setup = Setup
 warehouse_docs = Hilfe
@@ -58,6 +66,29 @@ warehouse_docs.settings.discount = Rabatte
 
 warehouse.settings.editor = WYSIWYG-Editor
 warehouse.settings.editor.notice = z.B. <code>class="form-control redactor-editor--default"</code>
+
+warehouse.settings.currency = Währung
+warehouse.settings.currency_symbol = Währungssymbol (z.B. €)
+warehouse.settings.currency_symbol.notice = <code>rex_config::get("warehouse","currency_symbol")</code>
+
+warehouse.settings.tax_options = Steuersätze
+warehouse.settings.tax_options.notice = Mögliche Steuersätze zur Auswahl in Artikeln und Varianten. Standard: <code>19,7,0</code> für 19%, 7% und 0% Steuersatz
+
+warehouse.settings.shipping_allowed = Erlaubte Länder für die Lieferung
+
+warehouse.settings.cart_mode = Nach Warenkorb-Aktion
+warehouse.settings.cart_mode.notice = Es kann entweder die Warenkorbseite aufgerufen werden oder die vorherige Artikelseite. Wenn die Artikelseite aufgerufen wird, so wird showcart=1 als Get-Parameter angehängt.
+
+warehouse.settings.enable_features = Zusätzliche Optionen für Artikel und Varianten
+warehouse.settings.enable_features.bulk_prices = Staffelpreise abfragen
+warehouse.settings.enable_features.weight = Artikelgewicht abfragen
+warehouse.settings.enable_features.variants = Varianten zulassen
+
+warehouse.settings.fallback_category_image = Fallback-Kategorie-Bild
+warehouse.settings.fallback_category_image.notice = Wird verwendet, wenn kein Bild für die Kategorie vorhanden ist.
+
+warehouse.settings.fallback_article_image = Fallback-Artikelbild
+warehouse.settings.fallback_article_image.notice = Wird verwendet, wenn kein Bild für den Artikel oder die Variante vorhanden ist.
 
 # Warehouse Einstellungen: Versandkosten
 
@@ -252,3 +283,57 @@ warehouse_article.icon_label = Artikel
 warehouse_article_variant.icon_label = Variante
 warehouse_category.icon_label = Kategorie
 warehouse_order.icon_label = Bestellung
+
+# Warehouse Log
+warehouse.log.activated = Logging wurde aktiviert.
+warehouse.log.deactivated = Logging wurde deaktiviert.
+warehouse.log.warning_logisinactive = Das Logging ist derzeit <b>deaktiviert</b>. <a href="{0}">Logging aktivieren</a>
+warehouse.log.warning_logisactive = Das Logging ist derzeit <b>aktiv</b>. <a href="{0}">Logging deaktivieren</a>
+warehouse.log.time = Zeit
+warehouse.log.ip = IP
+warehouse.log.user_id = Benutzer-ID
+warehouse.log.event = Ereignis
+warehouse.log.params = Parameter
+warehouse.log.user_ip = Benutzer-IP
+warehouse.log.type = Typ
+warehouse.log.email = E-Mail
+warehouse.log.delete_log_msg = Möchten Sie das Log wirklich löschen?
+warehouse.log.title = Logdatei: {0}
+
+# Warehouse Einstellungen - Versand
+
+warehouse.settings = Versand-Einstellungen
+warehouse.settings.shipping_costs = Versandkosten
+warehouse.settings.minimum_order_value = Mindestbestellwert
+warehouse.settings.shipping_fee = Versandkosten
+warehouse.settings.free_shipping_from = Versandkostenfrei ab
+warehouse.settings.shipping_calculation_mode = Versandkostenberechnung
+
+warehouse.settings.shipping_calculation_mode.options.default = Pauschal (Standard)
+warehouse.settings.shipping_calculation_mode.options.quantity = Anzahl
+warehouse.settings.shipping_calculation_mode.options.weight = Gewicht
+warehouse.settings.shipping_calculation_mode.options.order_total = Bestellsumme
+
+# Warehouse Paypal
+
+warehouse.settings.payment = Zahlungseinstellungen
+
+warehouse.settings.payment.store_name = Name des Shops
+warehouse.settings.payment.store_name.notice = z.B. <code>Martin Muster GmbH</code>, wird u.a. bei Zahlung an PayPal übermittelt.
+
+warehouse.settings.payment.store_country_code = Ländercode des Shops
+warehouse.settings.payment.store_country_code.notice = z.B. <code>de-DE</code> - wird u.a. bei Zahlung an PayPal übermittelt.
+
+warehouse.settings.payment.paypal_client_id = Paypal Client Id
+warehouse.settings.payment.paypal_secret = Paypal Secret
+
+warehouse.settings.payment.sandboxmode = Paypal Sandbox ein
+warehouse.settings.payment.sandboxmode.option = Paypal Sandbox ein
+
+warehouse.settings.payment.paypal_sandbox_client_id = Paypal Sandbox Client Id
+warehouse.settings.payment.paypal_sandbox_secret = Paypal Sandbox Secret
+
+warehouse.settings.payment.paypal_getparams = Paypal Zusätzliche Get-Parameter für Paypal
+warehouse.settings.payment.paypal_getparams.notice = z.B. um Maintenance bei der Entwicklung zu verwenden. Als JSON in der Form <code>{"key1":"value1","key2":"value2"}</code> angeben.
+
+warehouse.settings.payment.info = Derzeit wird nur PayPal als Zahlungsanbieter unterstützt. Beteilige dich an der Weiterentwicklung auf GitHub unter <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a>.
