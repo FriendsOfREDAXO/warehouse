@@ -15,7 +15,11 @@
             "mass_deletion": 1,
             "mass_edit": 1,
             "schema_overwrite": 1,
-            "history": 0
+            "history": 0,
+            "createdate": "0000-00-00 00:00:00",
+            "updatedate": "0000-00-00 00:00:00",
+            "createuser": "",
+            "updateuser": ""
         },
         "fields": [
             {
@@ -91,7 +95,7 @@
                 "not_required": "",
                 "no_db": "0",
                 "notice": "",
-                "columns": "number|amount|translate:warehouse_article_variant.bulk_prices.amount|5|0||0|input:number|\u00d7||{\"min\":\"2\",\"max\":\"99999\",\"step\":\"1\"},number|price|translate:warehouse_article_variant.bulk_prices.price|10|2||0|input:number|EUR||{\"min\":\"0\",\"max\":\"99999999.99\",\"step\":\"0.01\"}"
+                "columns": "number|amount|Menge|5|0||0|input:number|\u00d7||{\"min\":\"2\",\"max\":\"99999\",\"step\":\"1\"},number|price|Preis|10|2||0|input:number|EUR||{\"min\":\"0\",\"max\":\"99999999.99\",\"step\":\"0.01\"}"
             },
             {
                 "table_name": "rex_warehouse_article_variant",
@@ -127,8 +131,8 @@
                 "attributes": "",
                 "default": "",
                 "notice": "Bitte zun\u00e4chst den Hauptartikel ausw\u00e4hlen, auf \"\u00dcbernehmen\" klicken und anschlie\u00dfend die Priorit\u00e4t (Reihenfolge) w\u00e4hlen.",
-                "fields": "name_1",
-                "scope": "parent_id"
+                "fields": "name",
+                "scope": ""
             },
             {
                 "table_name": "rex_warehouse_article_variant",
@@ -209,7 +213,39 @@
                 "label": "translate:warehouse_article_variant.uuid",
                 "not_required": "",
                 "no_db": "0",
-                "show_value": "0"
+                "show_value": "1"
+            },
+            {
+                "table_name": "rex_warehouse_article_variant",
+                "prio": 11,
+                "type_id": "value",
+                "type_name": "datestamp",
+                "db_type": "datetime",
+                "list_hidden": 1,
+                "search": 0,
+                "name": "updatedate",
+                "label": "translate:warehouse_article_variant.updatedate",
+                "not_required": "",
+                "no_db": "0",
+                "only_empty": "0",
+                "format": "Y-m-d H:i:s",
+                "modify_default": ""
+            },
+            {
+                "table_name": "rex_warehouse_article_variant",
+                "prio": 12,
+                "type_id": "value",
+                "type_name": "datestamp",
+                "db_type": "datetime",
+                "list_hidden": 1,
+                "search": 0,
+                "name": "createdate",
+                "label": "translate:warehouse_article_variant.createdate",
+                "not_required": "",
+                "no_db": "0",
+                "only_empty": "1",
+                "format": "Y-m-d H:i:s",
+                "modify_default": ""
             }
         ]
     }

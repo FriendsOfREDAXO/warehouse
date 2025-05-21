@@ -5,17 +5,21 @@
             "table_name": "rex_warehouse_category",
             "name": "translate:warehouse_category.tablename",
             "description": "",
-            "list_amount": 50,
+            "list_amount": 100,
             "list_sortfield": "prio",
             "list_sortorder": "ASC",
-            "search": 1,
+            "search": 0,
             "hidden": 1,
             "export": 1,
             "import": 1,
-            "mass_deletion": 0,
-            "mass_edit": 0,
+            "mass_deletion": 1,
+            "mass_edit": 1,
             "schema_overwrite": 1,
-            "history": 0
+            "history": 0,
+            "createdate": "0000-00-00 00:00:00",
+            "updatedate": "0000-00-00 00:00:00",
+            "createuser": "",
+            "updateuser": ""
         },
         "fields": [
             {
@@ -163,7 +167,7 @@
                 "label": "translate:warehouse_category.uuid",
                 "not_required": "",
                 "no_db": "0",
-                "show_value": "0"
+                "show_value": "1"
             },
             {
                 "table_name": "rex_warehouse_category",
@@ -210,6 +214,22 @@
                 "table": "",
                 "empty_option": "0",
                 "message": ""
+            },
+            {
+                "table_name": "rex_warehouse_category",
+                "prio": 12,
+                "type_id": "value",
+                "type_name": "datestamp",
+                "db_type": "datetime",
+                "list_hidden": 1,
+                "search": 0,
+                "name": "createdate",
+                "label": "translate:warehouse_article_category.createdate",
+                "not_required": "",
+                "no_db": "0",
+                "only_empty": "1",
+                "format": "Y-m-d H:i:s",
+                "modify_default": ""
             }
         ]
     }

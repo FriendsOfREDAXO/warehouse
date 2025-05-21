@@ -6,16 +6,20 @@
             "name": "translate:warehouse_order.tablename",
             "description": "",
             "list_amount": 50,
-            "list_sortfield": "id",
+            "list_sortfield": "createdate",
             "list_sortorder": "DESC",
             "search": 1,
             "hidden": 1,
             "export": 1,
             "import": 1,
-            "mass_deletion": 0,
-            "mass_edit": 0,
+            "mass_deletion": 1,
+            "mass_edit": 1,
             "schema_overwrite": 1,
-            "history": 0
+            "history": 0,
+            "createdate": "0000-00-00 00:00:00",
+            "updatedate": "0000-00-00 00:00:00",
+            "createuser": "",
+            "updateuser": ""
         },
         "fields": [
             {
@@ -408,6 +412,22 @@
                 "no_db": "0",
                 "notice": "Wird extern verwaltet - bitte nicht \u00fcber REDAXO anpassen!",
                 "output_values": "\u25a2,\u25a3"
+            },
+            {
+                "table_name": "rex_warehouse_order",
+                "prio": 22,
+                "type_id": "value",
+                "type_name": "datestamp",
+                "db_type": "datetime",
+                "list_hidden": 1,
+                "search": 0,
+                "name": "updatedate",
+                "label": "translate:warehouse_order.updatedate",
+                "not_required": "",
+                "no_db": "0",
+                "only_empty": "0",
+                "format": "Y-m-d H:i:s",
+                "modify_default": ""
             }
         ]
     }
