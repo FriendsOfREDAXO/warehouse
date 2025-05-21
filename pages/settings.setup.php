@@ -13,7 +13,7 @@ $content = '';
 $all_modules = rex_sql::factory()->getArray('SELECT * FROM ' . rex::getTable('module'));
 $all_etpls = rex_sql::factory()->getArray('SELECT * FROM ' . rex::getTable('yform_email_template'));
 
-$modules_dir = scandir(rex_path::addon($this->getName(), 'install/modules/'));
+$modules_dir = scandir(rex_path::addon($this->getName(), 'install/module/'));
 foreach ($modules_dir as $k => $v) {
     if (in_array($v, ['.', '..'])) {
         unset($modules_dir[$k]);
@@ -38,8 +38,8 @@ if (rex_request('install_module')) {
     }
 
     if ($mod_to_install) {
-        $input = rex_file::get(rex_path::addon($this->getName(), 'install/modules/' . $mod_to_install . '/input.php'));
-        $output = rex_file::get(rex_path::addon($this->getName(), 'install/modules/' . $mod_to_install . '/output.php'));
+        $input = rex_file::get(rex_path::addon($this->getName(), 'install/module/' . $mod_to_install . '/input.php'));
+        $output = rex_file::get(rex_path::addon($this->getName(), 'install/module/' . $mod_to_install . '/output.php'));
 
         $is_installed = false;
         foreach ($all_modules as $mod) {
@@ -67,8 +67,8 @@ if (rex_request('install_module')) {
     }
 }
 
-if (rex_request('install_etpl')) {
-    $tpl_key = rex_request('install_etpl');
+if (rex_request('install_yform_email')) {
+    $tpl_key = rex_request('install_yform_email');
     $body = rex_file::get(rex_path::addon($this->getName(), 'install/yform_email/' . $tpl_key . '/body.php'));
     $body_html = rex_file::get(rex_path::addon($this->getName(), 'install/yform_email/' . $tpl_key . '/body_html.php'));
     $meta = rex_string::yamlDecode(rex_file::get(rex_path::addon($this->getName(), 'install/yform_email/' . $tpl_key . '/metadata.yml')));
@@ -121,10 +121,10 @@ foreach ($etpl_dir as $etpl_name) {
             $is_installed = true;
         }
     }
-    $content .= '<p><a class="btn btn-primary ' . ($is_installed ? '' : 'btn-save') . '" href="index.php?page=' . $this->getName() . '/setup&amp;install_etpl=' . $etpl_name . '" class="rex-button">Template ' . $etpl_name . ' ' . ($is_installed ? 'aktualisieren' : 'installieren') . '</a></p>';
+    $content .= '<p><a class="btn btn-primary ' . ($is_installed ? '' : 'btn-save') . '" href="index.php?page=' . $this->getName() . '/setup&amp;install_yform_email=' . $etpl_name . '" class="rex-button">Template ' . $etpl_name . ' ' . ($is_installed ? 'aktualisieren' : 'installieren') . '</a></p>';
 }
 
 $fragment = new rex_fragment();
-$fragment->setVar('title', $this->i18n('warehouse_setup'), false);
+$fragment->setVar('title', $this->i18n('warehouse_settings_setup'), false);
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');

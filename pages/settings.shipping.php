@@ -12,33 +12,39 @@ echo rex_view::title($addon->i18n('warehouse.title'));
 
 $form = rex_config_form::factory('warehouse');
 
-$form->addFieldset('translate:warehouse.settings.shipping_costs');
+$form->addFieldset($this->i18n('warehouse.settings.shipping_costs'));
 
 // Mindestbestellwert
 $field = $form->addTextField('minimum_order_value');
-$field->setLabel('translate:warehouse.settings.minimum_order_value');
+$field->setLabel($this->i18n('warehouse.settings.minimum_order_value'));
 $field->setAttribute('placeholder', '0.00');
 $field->setAttribute('min', '0.00');
 $field->setAttribute('step', '0.01');
 
 // Versandkosten
 $field = $form->addTextField('shipping_fee');
-$field->setLabel('translate:warehouse.settings.shipping_fee');
+$field->setLabel($this->i18n('warehouse.settings.shipping_fee'));
 $field->setAttribute('placeholder', '0.00');
 $field->setAttribute('min', '0.00');
 $field->setAttribute('step', '0.01');
 
 // Versandkostenfrei ab
 $field = $form->addTextField('free_shipping_from');
-$field->setLabel('translate:warehouse.settings.free_shipping_from');
+$field->setLabel($this->i18n('warehouse.settings.free_shipping_from'));
 $field->setAttribute('placeholder', '0.00');
 $field->setAttribute('min', '0.00');
 $field->setAttribute('step', '0.01');
 
 $field = $form->addSelectField('shipping_calculation_mode');
-$field->setLabel('translate:warehouse.settings.shipping_calculation_mode');
+$field->setLabel($this->i18n('warehouse.settings.shipping_calculation_mode'));
 $select = $field->getSelect();
-$select->addOptions(Shipping::CALCULATION_MODE_OPTIONS);
+foreach (Shipping::CALCULATION_MODE_OPTIONS as $key => $value) {
+    $label = $value;
+    if (strpos($label, 'translate:') === 0) {
+        $label = substr($label, strlen('translate:'));
+    }
+    $select->addOption($this->i18n($label), $key);
+}
 
 $content = $form->get();
 
