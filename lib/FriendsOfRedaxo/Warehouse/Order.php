@@ -419,6 +419,11 @@ class Order extends rex_yform_manager_dataset
             static function ($a) {
                 if ($a['value'] > 0 && rex_addon::get('ycom')->isAvailable()) {
                     $user = \rex_ycom_user::get($a['value']);
+                    
+                    if ($user === null && $a['value'] > 0) {
+                        return '<i class="rex-icon rex-icon-user text-warning"></i>';
+                    }
+
                     $user_status = $user->getValue('status');
 
                     $user_status_class = '';
@@ -429,13 +434,9 @@ class Order extends rex_yform_manager_dataset
                     } elseif ($user_status > 0) {
                         $user_status_class = 'text-success';
                     }
-                    if ($user === null && $a['value'] > 0) {
-                        return '<i class="rex-icon rex-icon-user text-warning"></i>';
-                    }
-                    if ($user) {
-                        // index.php?page=yform/manager/data_edit&table_name=rex_ycom_user&list=45e18d03&sort=&sorttype=&start=0&_csrf_token=Qk3DRM8nOTKy8pFY9H7jA8qL7PQAORVL0hYGfUmEtw8&rex_yform_manager_popup=0&data_id=1&func=edit&45e18d03_start=0
-                        return '<a href="' . rex_url::backendController(['page' => 'yform/manager/data_edit', 'table_name' => 'rex_ycom_user', '_csrf_token' => \rex_csrf_token::factory('ycom_user')->getUrlParams()['_csrf_token'], 'rex_yform_manager_popup' => 0, 'data_id' => $user->getId(), 'func' => 'edit']) . '"><i class="rex-icon rex-icon-user '.$user_status_class.'"></i></a>';
-                    }
+
+                    // index.php?page=yform/manager/data_edit&table_name=rex_ycom_user&list=45e18d03&sort=&sorttype=&start=0&_csrf_token=Qk3DRM8nOTKy8pFY9H7jA8qL7PQAORVL0hYGfUmEtw8&rex_yform_manager_popup=0&data_id=1&func=edit&45e18d03_start=0
+                    return '<a href="' . rex_url::backendController(['page' => 'yform/manager/data_edit', 'table_name' => 'rex_ycom_user', '_csrf_token' => \rex_csrf_token::factory('ycom_user')->getUrlParams()['_csrf_token'], 'rex_yform_manager_popup' => 0, 'data_id' => $user->getId(), 'func' => 'edit']) . '"><i class="rex-icon rex-icon-user '.$user_status_class.'"></i></a>';
                 }
                 return '<i class="rex-icon rex-icon-user text-muted" style="opacity: 0.3"></i>';
             }
