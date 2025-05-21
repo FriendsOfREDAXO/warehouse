@@ -248,6 +248,21 @@
                 "table_name": "rex_warehouse_article",
                 "prio": 13,
                 "type_id": "value",
+                "type_name": "be_table",
+                "db_type": "text",
+                "list_hidden": 1,
+                "search": 0,
+                "name": "bulk_prices",
+                "label": "translate:warehouse_article.bulk_prices",
+                "not_required": "",
+                "no_db": "0",
+                "notice": "",
+                "columns": "number|amount|Menge|5|0||0|input:number|\u00d7||{\"min\":\"2\",\"max\":\"99999\",\"step\":\"1\"},number|price|Preis|10|2||0|input:number|EUR||{\"min\":\"0\",\"max\":\"99999999.99\",\"step\":\"0.01\"}"
+            },
+            {
+                "table_name": "rex_warehouse_article",
+                "prio": 14,
+                "type_id": "value",
                 "type_name": "number",
                 "db_type": "",
                 "list_hidden": 1,
@@ -266,7 +281,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 14,
+                "prio": 15,
                 "type_id": "value",
                 "type_name": "be_media",
                 "db_type": "text",
@@ -283,7 +298,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 15,
+                "prio": 16,
                 "type_id": "value",
                 "type_name": "html",
                 "db_type": "none",
@@ -296,7 +311,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 16,
+                "prio": 17,
                 "type_id": "value",
                 "type_name": "be_manager_relation",
                 "db_type": "text",
@@ -318,7 +333,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 17,
+                "prio": 18,
                 "type_id": "value",
                 "type_name": "html",
                 "db_type": "none",
@@ -331,7 +346,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 18,
+                "prio": 19,
                 "type_id": "value",
                 "type_name": "html",
                 "db_type": "none",
@@ -344,7 +359,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 19,
+                "prio": 20,
                 "type_id": "value",
                 "type_name": "html",
                 "db_type": "none",
@@ -357,7 +372,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 20,
+                "prio": 21,
                 "type_id": "value",
                 "type_name": "textarea",
                 "db_type": "text",
@@ -373,7 +388,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 21,
+                "prio": 22,
                 "type_id": "value",
                 "type_name": "html",
                 "db_type": "none",
@@ -386,7 +401,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 22,
+                "prio": 23,
                 "type_id": "value",
                 "type_name": "textarea",
                 "db_type": "text",
@@ -402,7 +417,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 23,
+                "prio": 24,
                 "type_id": "value",
                 "type_name": "html",
                 "db_type": "none",
@@ -415,7 +430,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 24,
+                "prio": 25,
                 "type_id": "value",
                 "type_name": "html",
                 "db_type": "none",
@@ -428,7 +443,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 25,
+                "prio": 26,
                 "type_id": "value",
                 "type_name": "uuid",
                 "db_type": "varchar(36)",
@@ -442,7 +457,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 26,
+                "prio": 27,
                 "type_id": "validate",
                 "type_name": "unique",
                 "db_type": "",
@@ -457,7 +472,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 27,
+                "prio": 28,
                 "type_id": "value",
                 "type_name": "datestamp",
                 "db_type": "datetime",
@@ -473,7 +488,7 @@
             },
             {
                 "table_name": "rex_warehouse_article",
-                "prio": 28,
+                "prio": 29,
                 "type_id": "value",
                 "type_name": "datestamp",
                 "db_type": "datetime",
