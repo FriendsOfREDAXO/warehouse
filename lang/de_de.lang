@@ -24,11 +24,12 @@ warehouse[shipping] = Warehouse: Versand-Einstellungen
 # V2.0.0
 # Backend-Seiten
 
+warehouse_order = Bestellungen
+warehouse_order_details = Bestelldetails
 warehouse_article = Artikel
 warehouse_article_variant = Varianten
 warehouse_category = Kategorien
-warehouse_order = Bestellungen
-warehouse_order_details = Bestelldetails
+warehouse_search = Suche
 warehouse_country = Länder
 warehouse_shipping = Versand
 warehouse_settings = Verwaltung
@@ -193,6 +194,7 @@ warehouse_order.order_total = Bestellsumme
 warehouse_order.ycom_userid = YCom-Benutzer-ID
 warehouse_order.payment_type = Zahlungsart
 warehouse_order.payed = Bezahlt
+warehouse_order.not_payed = Nicht bezahlt
 warehouse_order.imported = Importiert
 
 warehouse_order.buyer = Käufer*in
@@ -236,3 +238,12 @@ warehouse_article_variant.availability.PreOrder = 🟢 Vorbestellung
 warehouse_article_variant.availability.PreSale = 🟢 Vorverkauf
 warehouse_article_variant.availability.Reserved = 🔴 Reserviert
 warehouse_article_variant.availability.SoldOut = 🔴 Ausverkauft
+
+warehouse.search.results = Es wurden {0} Einträge gefunden.
+warehouse.search.no_results = Es wurden keine Einträge gefunden.
+
+warehouse.search.description = Suche in den Artikeln, Kategorien und Bestellungen. Tipp: Du kannst auch über <code>+</code>, <code>-</code> filtern, z.B. <code>+red</code> für alle Artikel mit dem Wort "red" oder <code>+Max -Mustermann</code> für alle Bestellungen von "Max" ohne "Mustermann".
+
+
+warehouse_quicknavigation_search_button = Suche
+warehouse_quicknavigation_search_placeholder = Suchbegriff eingeben
