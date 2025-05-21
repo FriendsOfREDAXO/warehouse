@@ -14,6 +14,7 @@ use rex_exception;
 use rex_logger;
 use rex_yform;
 use rex_fragment;
+use rex_path;
 use rex_yform_email_template;
 
 class Warehouse
@@ -633,4 +634,17 @@ class Warehouse
         // Überprüfe, ob 'variants' im Config-Wert vorhanden ist
         return in_array('variants', self::getEnabledFeatures());
     }
+    /** @api */
+    public static function parse(string $file, string $framework = "bootstrap5", string $title = '', string $description = '')
+    {
+        $fragment = new rex_fragment();
+        $fragment_path = rex_path::addon('warehouse', 'fragments ' .\DIRECTORY_SEPARATOR. 'warehouse ' .\DIRECTORY_SEPARATOR. $framework  . \DIRECTORY_SEPARATOR . $file);
+
+        if (file_exists($fragment_path)) {
+            $fragment->setVar('title', $title);
+            $fragment->setVar('description', $description, false);
+            return $fragment->parse('warehouse' . \DIRECTORY_SEPARATOR . $file);
+        }
+    }
+
 }
