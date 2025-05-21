@@ -95,13 +95,21 @@ class Article extends rex_yform_manager_dataset
     /** @api */
     public function getImage() : mixed
     {
-        return $this->getValue("image");
+        $image = $this->getValue("image");
+        if (!$image && ($fallback = rex_config::get('warehouse', 'fallback_article_image'))) {
+            return $fallback;
+        }
+        return $image;
     }
-    
+
     /** @api */
     public function getImageAsMedia() : ?rex_media
     {
-        return rex_media::get($this->getValue("image"));
+        $image = $this->getImage();
+        if ($image) {
+            return rex_media::get($image);
+        }
+        return null;
     }
 
     /** @api */
@@ -118,7 +126,9 @@ class Article extends rex_yform_manager_dataset
         return $this->getValue("gallery");
     }
 
-    /** @api */
+    /** @api 
+     * @return array<rex_media>
+    */
     public function getGalleryAsMedia() : ?array
     {
         $filenames = explode(',', $this->getValue("gallery"));

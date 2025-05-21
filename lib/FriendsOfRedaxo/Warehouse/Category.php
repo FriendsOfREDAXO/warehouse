@@ -65,17 +65,24 @@ class Category extends \rex_yform_manager_dataset
     
     /* Bild */
     /** @api */
-    public function getImage(bool $asMedia = false) : mixed
+    public function getImage() : mixed
     {
-        if ($asMedia) {
-            return rex_media::get($this->getValue("image"));
+        $image = $this->getValue("image");
+        if ($image) {
+            return $image;
         }
-        return $this->getValue("image");
+        // Fallback-Bild aus den Einstellungen holen
+        $fallback = \rex_config::get('warehouse', 'fallback_category_image');
+        return $fallback ?: null;
     }
 
     public function getImageAsMedia() : ?rex_media
     {
-        return rex_media::get($this->getValue("image"));
+        $image = $this->getImage();
+        if ($image) {
+            return rex_media::get($image);
+        }
+        return null;
     }
 
     /** @api */

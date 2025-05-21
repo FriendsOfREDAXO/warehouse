@@ -109,13 +109,23 @@ class ArticleVariant extends rex_yform_manager_dataset
 
     /* Bild */
     /** @api */
-    public function getImage(bool $asMedia = false) : mixed
+    public function getImage() : mixed
     {
-        if ($asMedia) {
-            return rex_media::get($this->getValue("image"));
+        $image = $this->getValue("image");
+        if (!$image) {
+            $image = rex_config::get('warehouse', 'fallback_article_image');
         }
-        return $this->getValue("image");
+        return $image;
     }
+    public function getImageAsMedia() : ?rex_media
+    {
+        $image = $this->getImage();
+        if ($image) {
+            return rex_media::get($image);
+        }
+        return null;
+    }
+    
     /** @api */
     public function setImage(string $filename) : self
     {
