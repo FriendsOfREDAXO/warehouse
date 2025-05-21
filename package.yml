@@ -24,6 +24,10 @@ page:
                     icon: rex-icon fa-list-alt
 
 pages:
+    system/log/warehouse:
+        title: translate:warehouse_log
+        perm: admin
+        
     article:
         block: warehouse
         title: translate:warehouse_article
@@ -69,6 +73,10 @@ pages:
                 title: translate:warehouse_settings_discount
                 perm: warehouse[settings]
                 icon: rex-icon fa-tag
+            log:
+                title: translate:warehouse_settings_log
+                perm: warehouse[log]
+                icon: rex-icon fa-history
             setup:
                 title: translate:warehouse_settings_setup
                 perm: warehouse[setup]
@@ -78,7 +86,7 @@ pages:
         perm: warehouse[docs]
         icon: rex-icon fa-info-circle
         itemclass: pull-right
-        
+
 requires:
     redaxo: '^5.17.3'
     php:
@@ -106,6 +114,9 @@ default_config:
     editor: 'class="form-control redactor-editor--default"'
     check_weight: 0
     tax_options: '19,7,0'
+
+    fallback_category_image: 'warehouse_placeholder_category.jpeg'
+    fallback_article_image: 'warehouse_placeholder_article.jpeg'
 
     # E-Mail Einstellungen
     email_template_customer: 'warehouse_order_customer'
