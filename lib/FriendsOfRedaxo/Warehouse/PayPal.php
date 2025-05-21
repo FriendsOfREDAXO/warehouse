@@ -255,6 +255,35 @@ class PayPal
         "ZW" => "ZIMBABWE",
     ];
 
+    const CURRENCY_SIGNS =
+    [
+        "AUD" => "$",
+        "BRL" => "R$",
+        "CAD" => "$",
+        "CNY" => "¥",
+        "CZK" => "Kč",
+        "DKK" => "kr.",
+        "EUR" => "€",
+        "HKD" => "$",
+        "HUF" => "Ft",
+        "ILS" => "₪",
+        "JPY" => "¥",
+        "MYR" => "$",
+        "MXN" => "$",
+        "TWD" => "$",
+        "NZD" => "$",
+        "NOK" => "kr.",
+        "PHP" => "₱",
+        "PLN" => "zł",
+        "GBP" => "£",
+        "RUB" => '₽',
+        'SGD' => '$',
+        'SEK' => 'kr',
+        'CHF' => 'CHF',
+        'THB' => '฿',
+        'USD' => '$'
+    ];
+
     /**
      * Returns PayPal HTTP client instance with environment which has access
      * credentials context. This can be used invoke PayPal API's provided the
@@ -391,7 +420,7 @@ class PayPal
         ];
         try {
             $response = $client->execute($request);
-            Warehouse::saveOrder($response->result->id);
+            Warehouse::saveCartAsOrder($response->result->id);
             rex_set_session('pp_order_id', $response->result->id);
             foreach ($response->result->links as $link) {
                 if ($link->rel == 'approve') {
