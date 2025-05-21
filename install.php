@@ -13,6 +13,7 @@ if (rex_version::compare($this->getVersion(), '2.0.0', '<')) {
 $this->includeFile(__DIR__ . '/install/update_scheme.php');
 
 $addon = rex_addon::get('warehouse');
+
 if (rex_addon::get('yform')->isAvailable()) {
     rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_settings_domain.json'));
     rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_article.json'));
@@ -28,6 +29,10 @@ if (rex_addon::get('url')->isAvailable()) {
     $this->includeFile(__DIR__ . '/install/url_profile.php');
 }
 
+if(rex_addon::get('mediapool')->isAvailable()) {
+    $this->includeFile(__DIR__ . '/install/media.php');
+}
+
 if (rex_config::get('store_name') == '') {
     rex_config::set('store_name', rex::getServerName());
 }
@@ -35,6 +40,10 @@ if (rex_config::get('store_name') == '') {
 if (rex_config::get('order_email') == '') {
     rex_config::set('order_email', rex::getErrorEmail());
 }
+
+/* Initialisiere Struktur: Artikel, Kategorien, Domain-Profil */
+$this->includeFile(__DIR__ . '/install/structure.php');
+
 
 // Patch Addon YForm - kopiere uuid.php in die YForm Addon - wenn Version <= 5.0.0
 // Sonst funktioniert das Klonen mit UUID nicht
