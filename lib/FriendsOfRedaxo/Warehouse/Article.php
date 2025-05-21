@@ -11,6 +11,7 @@ use rex_yform_manager_dataset;
 use rex_url;
 use rex_extension_point;
 use rex_csrf_token;
+use Url\Url;
 
 class Article extends rex_yform_manager_dataset
 {
@@ -373,5 +374,29 @@ class Article extends rex_yform_manager_dataset
         }
 
         return $yform;
+    }
+
+    public function getUrl(string $profile = 'article-id'): string
+    {
+        return rex_getUrl(null, null, [$profile => $this->getId()]);
+    }
+
+    public function getBackendUrl() :string
+    {
+        $params = [];
+        $params['table_name'] = self::table()->getTableName();
+        $params['rex_yform_manager_popup'] = '0';
+        $params['_csrf_token'] = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams()['_csrf_token'];
+        $params['data_id'] = $this->getId();
+        $params['func'] = 'edit';
+
+        return rex_url::backendPage('warehouse/article', $params);
+    }
+    public static function getBackendIcon(bool $label = false) :string
+    {
+        if ($label) {
+            return '<i class="rex-icon fa-cube"></i> ' . rex_i18n::msg('warehouse_article.icon_label');
+        }
+        return '<i class="rex-icon fa-cube"></i>';
     }
 }

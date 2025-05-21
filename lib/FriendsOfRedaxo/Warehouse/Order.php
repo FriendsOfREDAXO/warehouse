@@ -4,6 +4,7 @@ namespace FriendsOfRedaxo\Warehouse;
 
 use rex_addon;
 use rex_config;
+use rex_csrf_token;
 use rex_ycom_auth;
 use rex_url;
 use rex_yform_manager_collection;
@@ -501,5 +502,42 @@ class Order extends rex_yform_manager_dataset
             'attributes' => null
         ];
         return $buttons;
+    }
+
+    public function getUrl(string $profile = 'order-id'): string
+    {
+        return rex_getUrl(null, null, [$profile => $this->getId()]);
+    }
+
+    public function getBackendUrl() :string
+    {
+        $params = [];
+        $params['table_name'] = self::table()->getTableName();
+        $params['rex_yform_manager_popup'] = '0';
+        $params['_csrf_token'] = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams()['_csrf_token'];
+        $params['data_id'] = $this->getId();
+        $params['func'] = 'edit';
+
+        return rex_url::backendPage('warehouse/order/list', $params);
+    }
+
+    public function getBackendDetailsUrl() :string
+    {
+        $params = [];
+        $params['table_name'] = self::table()->getTableName();
+        $params['rex_yform_manager_popup'] = '0';
+        $params['_csrf_token'] = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams()['_csrf_token'];
+        $params['data_id'] = $this->getId();
+        $params['func'] = 'details';
+
+        return rex_url::backendPage('warehouse/order/details', $params);
+    }
+
+    public static function getBackendIcon(bool $label = false) :string
+    {
+        if ($label) {
+            return '<i class="rex-icon fa-shopping-cart"></i> ' . rex_i18n::msg('warehouse_order.icon_label');
+        }
+        return '<i class="rex-icon fa-shopping-cart"></i>';
     }
 }

@@ -247,3 +247,8 @@ warehouse.search.description = Suche in den Artikeln, Kategorien und Bestellunge
 
 warehouse_quicknavigation_search_button = Suche
 warehouse_quicknavigation_search_placeholder = Suchbegriff eingeben
+
+warehouse_article.icon_label = Artikel
+warehouse_article_variant.icon_label = Variante
+warehouse_category.icon_label = Kategorie
+warehouse_order.icon_label = Bestellung

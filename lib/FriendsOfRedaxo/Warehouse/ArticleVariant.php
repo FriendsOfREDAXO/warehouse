@@ -8,8 +8,10 @@ use rex_config;
 use rex_i18n;
 use rex_yform;
 use rex_article;
+use rex_csrf_token;
 use rex_user;
 use rex_media;
+use rex_url;
 use yrewrite_domain;
 use rex_yform_manager_collection;
 use rex_yform_manager_dataset;
@@ -179,5 +181,29 @@ class ArticleVariant extends rex_yform_manager_dataset
         }
 
         return $yform;
+    }
+
+    public function getUrl(string $profile = 'article-variant-id'): string
+    {
+        return rex_getUrl(null, null, [$profile => $this->getId()]);
+    }
+
+    public function getBackendUrl() :string
+    {
+        $params = [];
+        $params['table_name'] = self::table()->getTableName();
+        $params['rex_yform_manager_popup'] = '0';
+        $params['_csrf_token'] = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams()['_csrf_token'];
+        $params['data_id'] = $this->getId();
+        $params['func'] = 'edit';
+
+        return rex_url::backendPage('warehouse/article_variant', $params);
+    }
+    public static function getBackendIcon(bool $label = false) :string
+    {
+        if ($label) {
+            return '<i class="rex-icon fa-cubes"></i> ' . rex_i18n::msg('warehouse_article_variant.icon_label');
+        }
+        return '<i class="rex-icon fa-cubes"></i>';
     }
 }

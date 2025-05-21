@@ -10,6 +10,10 @@ echo rex_view::title($addon->i18n('warehouse.title'));
 
 $table_name = 'rex_warehouse_order';
 
+use FriendsOfRedaxo\Warehouse\Article;
+use FriendsOfRedaxo\Warehouse\ArticleVariant;
+use FriendsOfRedaxo\Warehouse\Category;
+use FriendsOfRedaxo\Warehouse\Order;
 use FriendsOfRedaxo\Warehouse\Search;
 
 $results = Search::query(rex_request('query', 'string', ''));
@@ -47,25 +51,28 @@ foreach ($results as $result) {
     $url = '';
     switch ($result['source']) {
         case 'article':
-            $url = rex_url::backendPage('warehouse/article/edit', ['id' => $result['id']]);
+            $url = Article::get($result['id'])->getBackendUrl();
             break;
         case 'article_variant':
-            $url = rex_url::backendPage('warehouse/article_variant/edit', ['id' => $result['id']]);
+            $url = ArticleVariant::get($result['id'])->getBackendUrl();
             break;
         case 'order':
-            $url = rex_url::backendPage('warehouse/order/edit', ['id' => $result['id']]);
+            $url = Order::get($result['id'])->getBackendUrl();
             break;
     }
     $source_emoji = '';
     switch ($result['source']) {
         case 'article':
-            $source_emoji = '📦';
+            $source_emoji = Article::getBackendIcon(true);
             break;
         case 'article_variant':
-            $source_emoji = '👕';
+            $source_emoji = ArticleVariant::getBackendIcon(true);
+            break;
+        case 'category':
+            $source_emoji = Category::getBackendIcon(true);
             break;
         case 'order':
-            $source_emoji = '🛒';
+            $source_emoji =  Order::getBackendIcon(true);
             break;
     }
     echo '<tr>';
@@ -73,7 +80,7 @@ foreach ($results as $result) {
     echo '<td>' . htmlspecialchars($result['name'] ?? '') . '</td>';
     echo '<td>' . htmlspecialchars($result['details'] ?? '') . '</td>';
     echo '<td>' . htmlspecialchars($result['uuid'] ?? '') . '</td>';
-    echo '<td><a href="' . htmlspecialchars($url) . '">Details</a></td>';
+    echo '<td><a href="' . $url . '">Details</a></td>';
     echo '</tr>';
 }
 ?>

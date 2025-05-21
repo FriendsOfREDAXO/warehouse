@@ -19,6 +19,13 @@ use rex_yform_email_template;
 class Warehouse
 {
 
+    public const PATH_ARTICLE = 'warehouse/article/';
+    public const PATH_ARTICLE_VARIANT = 'warehouse/article_variant/';
+    public const PATH_CATEGORY = 'warehouse/category/';
+    public const PATH_ORDER = 'warehouse/order/list';
+    public const PATH_ORDER_DETAIL = 'warehouse/order/detail';
+    
+
     public static $fields = [
         'salutation','firstname', 'lastname', 'birthdate', 'company', 'department', 'address', 'zip', 'city', 'country', 'email', 'phone',
         'to_salutation','to_firstname', 'to_lastname', 'to_company', 'to_department', 'to_address', 'to_zip', 'to_city', 'to_country',
