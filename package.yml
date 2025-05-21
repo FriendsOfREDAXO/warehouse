@@ -14,22 +14,32 @@ page:
         order:
             block: warehouse
             title: translate:warehouse_order
+            icon: rex-icon fa-shopping-cart
             subpages:
                 list:
                     title: translate:warehouse_order
+                    icon: rex-icon fa-list
                 details:
                     title: translate:warehouse_order_details
+                    icon: rex-icon fa-list-alt
 
 pages:
     article:
         block: warehouse
         title: translate:warehouse_article
+        icon: rex-icon fa-cube
     article_variant:
         block: warehouse
         title: translate:warehouse_article_variant
+        icon: rex-icon fa-cubes
     category:
         block: warehouse
         title: translate:warehouse_category
+        icon: rex-icon fa-tag
+    search:
+        block: warehouse
+        title: translate:warehouse_search
+        icon: rex-icon fa-search
     settings:
         title: translate:warehouse_settings_shop
         perm: warehouse[settings]

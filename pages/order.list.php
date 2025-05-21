@@ -1,4 +1,5 @@
 <?php
+use FriendsOfRedaxo\Warehouse\Search;
 
 /**
  * @var rex_addon $this
@@ -23,5 +24,10 @@ rex_extension::register(
 
 // @phpstan-ignore-next-line
 $_REQUEST['table_name'] = $table_name;
+?>
 
+<div class="rex-page-section">
+    <?= Search::getForm() ?>
+</div>
+<?php
 include rex_path::plugin('yform', 'manager', 'pages/data_edit.php');

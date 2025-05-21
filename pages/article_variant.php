@@ -5,6 +5,8 @@
  * @psalm-scope-this rex_addon
  */
 
+use FriendsOfRedaxo\Warehouse\Search;
+
 $addon = rex_addon::get('warehouse');
 
 $table_name = 'rex_warehouse_article_variant';
@@ -24,5 +26,10 @@ rex_extension::register(
 $_REQUEST['table_name'] = $table_name;
 
 echo rex_view::title($addon->i18n('warehouse.title'));
+?>
 
+<div class="rex-page-section">
+    <?= Search::getForm() ?>
+</div>
+<?php
 include rex_path::plugin('yform', 'manager', 'pages/data_edit.php');
