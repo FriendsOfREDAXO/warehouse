@@ -39,27 +39,47 @@ endif; ?>
     <thead>
         <tr>
             <th>Quelle</th>
-            <th>Name</th>
-            <th>Details</th>
-            <th>UUID</th>
-            <th>Aktion</th>
+            <th style="width: 20%;">Name</th>
+            <th style="width: auto">Details</th>
+            <th style="width: 10%;">UUID</th>
+            <th style="white-space: nowrap; min-width: 180px">Aktion</th>
         </tr>
     </thead>
     <tbody>
 <?php 
 foreach ($results as $result) {
-    $url = '';
+    $backend_url = '';
     switch ($result['source']) {
         case 'article':
-            $url = Article::get($result['id'])->getBackendUrl();
+            $backend_url = Article::get($result['id'])->getBackendUrl();
             break;
         case 'article_variant':
-            $url = ArticleVariant::get($result['id'])->getBackendUrl();
+            $backend_url = ArticleVariant::get($result['id'])->getBackendUrl();
             break;
         case 'order':
-            $url = Order::get($result['id'])->getBackendUrl();
+            $backend_url = Order::get($result['id'])->getBackendUrl();
+            break;
+        case 'category':
+            $backend_url = Category::get($result['id'])->getBackendUrl();
             break;
     }
+
+    $frontend_url = '';
+    switch ($result['source']) {
+        case 'article':
+            $frontend_url = Article::get($result['id'])->getUrl();
+            break;
+        case 'article_variant':
+            $frontend_url = ArticleVariant::get($result['id'])->getUrl();
+            break;
+        case 'order':
+            $frontend_url = Order::get($result['id'])->getUrl();
+            break;
+        case 'category':
+            $frontend_url = Category::get($result['id'])->getUrl();
+            break;
+    }
+
     $source_emoji = '';
     switch ($result['source']) {
         case 'article':
@@ -75,12 +95,14 @@ foreach ($results as $result) {
             $source_emoji =  Order::getBackendIcon(true);
             break;
     }
+
     echo '<tr>';
-    echo '<td>' . $source_emoji . '</td>';
+    echo '<td><div style="white-space: nowrap;">' . $source_emoji . '</div></td>';
     echo '<td>' . htmlspecialchars($result['name'] ?? '') . '</td>';
     echo '<td>' . htmlspecialchars($result['details'] ?? '') . '</td>';
-    echo '<td>' . htmlspecialchars($result['uuid'] ?? '') . '</td>';
-    echo '<td><a href="' . $url . '">Details</a></td>';
+    echo '<td><small>' . htmlspecialchars($result['uuid'] ?? '') . '</small></td>';
+    echo '<td style="white-space: nowrap;"><div class="btn-group" style="white-space: nowrap;"><a class="btn btn-primary btn-sm" href="' . $backend_url . '">Bearbeiten</a><a class="btn btn-success btn-sm" href="' . $frontend_url . '">Anzeigen</a></div></td>';
+
     echo '</tr>';
 }
 ?>
