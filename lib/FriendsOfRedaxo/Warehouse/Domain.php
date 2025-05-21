@@ -10,6 +10,11 @@ use rex_yrewrite;
 
 class Domain extends rex_yform_manager_dataset
 {
+    public static function getCurrent() : ?self
+    {
+        $yrewrite_domain_id = rex_yrewrite::getCurrentDomain()?->getId();
+        return self::query()->where('yrewrite_domain_id', $yrewrite_domain_id)->findOne();
+    }
     
     /* Domain */
     /** @api */
@@ -39,7 +44,7 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("cart_art_id");
     }
-    public function getCartArtIdUrl() : string
+    public function getCartArtUrl() : string
     {
         if (null !== ($article = $this->getCartArt())) {
             return $article->getUrl();
@@ -65,7 +70,7 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("shippinginfo_art_id");
     }
-    public function getShippinginfoArtIdUrl() : string
+    public function getShippinginfoArtUrl() : string
     {
         if ($article = $this->getShippinginfoArt()) {
             return $article->getUrl();
@@ -91,7 +96,7 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("address_art_id");
     }
-    public function getAddressArtIdUrl() : string
+    public function getAddressArtUrl() : string
     {
         if (null !== ($article = $this->getAddressArt())) {
             return $article->getUrl();
@@ -117,7 +122,7 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("order_art_id");
     }
-    public function getOrderArtIdUrl() : string
+    public function getOrderArtUrl() : string
     {
         if (null !== $article = $this->getOrderArt()) {
             return $article->getUrl();
@@ -143,7 +148,7 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("payment_error_art_id");
     }
-    public function getPaymentErrorArtIdUrl() : string
+    public function getPaymentErrorArtUrl() : string
     {
         if (null !== ($article = $this->getPaymentErrorArt())) {
             return $article->getUrl();
@@ -169,7 +174,7 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("thankyou_art_id");
     }
-    public function getThankyouArtIdUrl() : string
+    public function getThankyouArtUrl() : string
     {
         if (null !== ($article = $this->getThankyouArt())) {
             return $article->getUrl();
@@ -217,7 +222,7 @@ class Domain extends rex_yform_manager_dataset
         // E-Mail-Templates aus YForm auswählen, wenn YForm installiert
         if (\rex_addon::get('yform')->isAvailable()) {
             $options = [];
-            $templates = rex_sql::factory()->getArray('SELECT id, name FROM ' . \rex::getTable('yform_email_template') . ' WHERE status = 1 ORDER BY name');
+            $templates = rex_sql::factory()->getArray('SELECT id, name FROM ' . \rex::getTable('yform_email_template') . ' ORDER BY name');
             foreach ($templates as $template) {
                 $options[$template['id']] = $template['name'];
             }
