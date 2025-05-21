@@ -1,30 +1,36 @@
+<!-- BEGIN article_with_variants -->
 <?php
-
 /** @var rex_fragment $this */
+use FriendsOfRedaxo\Warehouse\Article;
+use FriendsOfRedaxo\Warehouse\Category;
+
+/** @var Article $article */
+$article = $this->getVar('article');
+
 ?>
 <div class="row">
     <div class="col-12">
-        <h2><?= $this->category->getName() ?></h2>
-        <?php if ($this->category->getImage()) : ?>
-            <img src="<?= rex_url::media($this->category->getImage()) ?>" class="img-fluid" alt="<?= $this->category->getName() ?>">
+        <h2><?= htmlspecialchars($article->category->getName()) ?></h2>
+        <?php if ($article->category->getImage()) : ?>
+            <img src="<?= rex_url::media($article->category->getImage()) ?>" class="img-fluid" alt="<?= htmlspecialchars($article->category->getName()) ?>">
         <?php endif ?>
-        <?= $this->category->getText() ?>
+        <?= $article->category->getText() ?>
     </div>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <?php foreach ($this->items as $item) : ?>
+        <?php foreach ($article->items as $item) : ?>
             <div class="col">
                 <div class="mt-3">
                     <div class="card-title">
-                        <h3 class="mh_title"><a href="<?= rex_getUrl('', '', ['warehouse_art_id' => $item->getId()]) ?>"><?= $item->getName() ?></a></h3>
+                        <h3><a href="<?= $item->getUrl() ?>"><?= htmlspecialchars($item->getName()) ?></a></h3>
                     </div>
                     <div>
                         <?php if ($item->getImage()) : ?>
-                            <a href="<?= rex_url::media($item->getImage()) ?>" data-caption="<?= $item->getName() ?>" class="lightboxlink">
-                                <img src="<?= rex_url::media($item->getImage()) ?>" alt="<?= $item->getName() ?>" class="img-fluid warehouse_prod_image">
+                            <a href="<?= rex_url::media($item->getImage()) ?>" data-caption="<?= htmlspecialchars($item->getName()) ?>" class="lightboxlink">
+                                <img src="<?= rex_url::media($item->getImage()) ?>" alt="<?= htmlspecialchars($item->getName()) ?>" class="img-fluid warehouse_prod_image">
                             </a>
                         <?php endif ?>
                     </div>
-                    <div class="longtext mt-2">
+                    <div class="mt-2">
                         <?= $item->getShortText() ?>
                         <?= $item->getText() ?>
                         <?php
@@ -35,8 +41,8 @@
                             <?php if (is_array($specifications)) : ?>
                                 <dl class="row">
                                     <?php foreach ($specifications as $spec) : ?>
-                                        <dt class="col-sm-4"><?= $spec['name'] ?? '' ?></dt>
-                                        <dd class="col-sm-8"><?= $spec['value'] ?? '' ?></dd>
+                                        <dt class="col-sm-4"><?= htmlspecialchars($spec['name'] ?? '') ?></dt>
+                                        <dd class="col-sm-8"><?= htmlspecialchars($spec['value'] ?? '') ?></dd>
                                     <?php endforeach ?>
                                 </dl>
                             <?php endif ?>
@@ -51,7 +57,7 @@
                             <button class="btn btn-outline-primary switch_count" type="button" data-value="-1"><i class="bi bi-dash"></i></button>
                             <input name="order_count" type="text" class="form-control order_count text-center" id="warehouse_count_<?= $item->getId() ?>" value="1">
                             <button class="btn btn-outline-primary switch_count" type="button" data-value="+1"><i class="bi bi-plus"></i></button>
-                            <button type="submit" name="submit" value="1" class="btn btn-primary ms-2">{{ Bestellen }}</button>
+                            <button type="submit" name="submit" value="1" class="btn btn-primary ms-2">Bestellen</button>
                         </div>
                     </form>
                 </div>
@@ -59,3 +65,4 @@
         <?php endforeach ?>
     </div>
 </div>
+<!-- END article_with_variants -->

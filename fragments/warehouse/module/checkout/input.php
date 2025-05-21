@@ -1,1 +1,0 @@
-<?php /* Checkout - Adresseingabe - Input */ ?>

@@ -1,3 +1,0 @@
-<?php
-/* Paypal Zahlung erfolgt */
-?>
