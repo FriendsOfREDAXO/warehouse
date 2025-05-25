@@ -365,7 +365,7 @@ class Article extends rex_yform_manager_dataset
         }
 
         $removeFields = [];
-        if (!Warehouse::isPricePerAmountEnabled()) {
+        if (!Warehouse::isBulkPricesEnabled()) {
             $removeFields[] = 'bulk_prices';
         }
         if (!Warehouse::isWeightEnabled()) {
@@ -408,5 +408,9 @@ class Article extends rex_yform_manager_dataset
             return '<i class="rex-icon fa-cube"></i> ' . rex_i18n::msg('warehouse_article.icon_label');
         }
         return '<i class="rex-icon fa-cube"></i>';
+    }
+
+    public static function getBulkPrices() {
+        return [];
     }
 }
