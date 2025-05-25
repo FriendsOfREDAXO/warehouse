@@ -6,6 +6,7 @@
  */
 
 use FriendsOfRedaxo\Warehouse\PayPal;
+use FriendsOfRedaxo\Warehouse\Warehouse;
 
 $addon = rex_addon::get('warehouse');
 echo rex_view::title($addon->i18n('warehouse.title'));
@@ -50,11 +51,7 @@ $field->setLabel(rex_i18n::msg('warehouse.settings.ycom_mode'));
 $select = $field->getSelect();
 
 if(rex_addon::get('ycom')->isAvailable()) {
-    $select->addOptions([
-        'guest_only'=>rex_i18n::msg('warehouse.settings.ycom_mode.guest_only'),
-        'choose'=>rex_i18n::msg('warehouse.settings.ycom_mode.choose'),
-        'enforce_account'=>rex_i18n::msg('warehouse.settings.ycom_mode.enforce_account')
-    ]);
+    $select->addOptions(Warehouse::YCOM_MODES);
 } else {
     $select->addOptions([
         'guest_only'=>rex_i18n::msg('warehouse.settings.ycom_mode.guest_only')
