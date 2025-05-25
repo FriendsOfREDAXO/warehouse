@@ -33,6 +33,8 @@ warehouse[shipping] = Warehouse: Versand-Einstellungen
 
 warehouse_order = Bestellungen
 warehouse_order_details = Bestelldetails
+warehouse_customer = Registrierte Kunden
+warehouse_customer_address = Lieferadressen
 warehouse_article = Artikel
 warehouse_article_variant = Varianten
 warehouse_category = Kategorien
@@ -43,7 +45,7 @@ warehouse_settings = Verwaltung
 warehouse_settings_shop = Shop
 warehouse_settings_payment = Zahlung
 warehouse_settings_general = Grundeinstellungen
-warehouse_settings_domain = Domain-Profile
+warehouse_settings_domain = 📦 Domain-Profile
 warehouse_settings_tawarehouse_article_variant.weightx = Steuern
 warehouse_settings_log = Log
 warehouse_settings_discount = Rabatte
@@ -139,10 +141,10 @@ warehouse_article.tablename = 📦 Artikel
 warehouse_article_variant.tablename = 📦 Varianten
 warehouse_category.tablename = 📦 Kategorien
 warehouse_order.tablename = 📦 Bestellungen
-warehouse_country.tablename = 📦 Länder
-warehouse_shipping.tablename = 📦 Versand
+# warehouse_country.tablename = 📦 Länder
+# warehouse_shipping.tablename = 📦 Versand
 warehouse_settings_domain.tablename = 📦 Domain-Einstellungen
-
+warehouse_customer_address.tablename = 📦 Adressen
 
 # YForm-Tabelle "Artikel": Labels
 
@@ -365,3 +367,23 @@ warehouse.payment_options.prepayment = Vorkasse
 warehouse.payment_options.invoice   = Rechnung
 warehouse.payment_options.paypal    = PayPal
 warehouse.payment_options.direct_debit  = Lastschrift
+
+
+warehouse_customer_address.ycom_user_id = YCom-Benutzer-ID
+warehouse_customer_address.salutation = Anrede
+warehouse_customer_address.type = Typ
+warehouse_customer_address.company = Firma
+warehouse_customer_address.name = Name
+warehouse_customer_address.street = Straße
+warehouse_customer_address.zip = PLZ
+warehouse_customer_address.city = Stadt
+warehouse_customer_address.country = Land
+
+warehouse.customer_address.type = Typ
+warehouse.customer_address.type.private = Privat
+warehouse.customer_address.type.company = Firma
+warehouse.customer_address.type.shipping = Versand
+warehouse.customer_address.type.billing = Rechnung
+warehouse.customer_address.type.other = Andere
+
+warehouse_customer_address.validate.unique.ycom_user_id_and_type = Die Kombination aus  YCom-Benutzer-ID und Adress-Typ darf nur einmalig vorkommen. Bitte überprüfen Sie die Eingabe.
