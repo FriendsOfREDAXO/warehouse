@@ -73,6 +73,10 @@ pages:
                 title: translate:warehouse_settings_discount
                 perm: warehouse[settings]
                 icon: rex-icon fa-tag
+            label:
+                title: translate:warehouse_settings_label
+                perm: warehouse[settings]
+                icon: rex-icon fa-text
             log:
                 title: translate:warehouse_settings_log
                 perm: warehouse[log]
@@ -113,7 +117,6 @@ default_config:
     cart_mode: "cart"
     editor: ''
     framework: 'bootstrap5'
-    check_weight: 0
     tax_options: '19,7,0'
 
     fallback_category_image: 'warehouse_placeholder_category.jpeg'
@@ -141,3 +144,7 @@ default_config:
     free_shipping_from: 0
     shipping_calculation_mode: ''
     
+    # Labels
+    label_cart: 'Warenkorb'
+    labeL_cart_empty: 'Der Warenkorb ist leer'
+    label_shipping_costs: 'Versandkosten'
