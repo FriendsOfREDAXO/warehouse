@@ -372,7 +372,7 @@ $dataset->save();
 
 ### `getYcomUserid()`
 
-Gibt den Wert für das Feld `ycom_userid` (YCom-Benutzer-ID) zurück:
+Gibt den Wert für das Feld `ycom_user_id` (YCom-Benutzer-ID) zurück:
 
 Beispiel:
 
@@ -383,7 +383,7 @@ $beziehung = $dataset->getYcomUserid();
 
 ### `setYcomUserid(mixed $value)`
 
-Setzt den Wert für das Feld `ycom_userid` (YCom-Benutzer-ID).
+Setzt den Wert für das Feld `ycom_user_id` (YCom-Benutzer-ID).
 
 ```php
 $dataset = Order::create();
