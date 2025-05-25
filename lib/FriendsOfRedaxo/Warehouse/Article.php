@@ -16,7 +16,7 @@ use Url\Url;
 class Article extends rex_yform_manager_dataset
 {
     
-    public const availability =
+    public const AVAILABILITY =
         [
             'BackOrder' => 'translate:warehouse_article.availability.BackOrder',
             'Discontinued' => 'translate:warehouse_article.availability.Discontinued',
@@ -32,7 +32,7 @@ class Article extends rex_yform_manager_dataset
             'SoldOut' => 'translate:warehouse_article.availability.SoldOut',
         ];
 
-    public const status =
+    public const STATUS =
         [
             'active' => 'translate:warehouse_article.status.active',
             'draft' => 'translate:warehouse_article.status.draft',
@@ -68,7 +68,7 @@ class Article extends rex_yform_manager_dataset
 
     public function getStatusLabel() : ?string
     {
-        return rex_i18n::rawMsg(self::status[$this->getStatus()] ?? '');
+        return rex_i18n::rawMsg(self::STATUS[$this->getStatus()] ?? '');
     }
 
     /** @api */
@@ -255,7 +255,7 @@ class Article extends rex_yform_manager_dataset
 
     public function getAvailabilityLabel() : ?string
     {
-        return rex_i18n::rawMsg(self::availability[$this->getAvailability()] ?? '');
+        return rex_i18n::rawMsg(self::AVAILABILITY[$this->getAvailability()] ?? '');
     }
 
 
@@ -282,12 +282,12 @@ class Article extends rex_yform_manager_dataset
     public static function getAvailabilityOptions() : array
     {
         
-        return self::availability;
+        return self::AVAILABILITY;
     }
 
     public static function getStatusOptions() : array
     {
-        return self::status;
+        return self::STATUS;
     }
 
     public static function getTaxOptions() : array

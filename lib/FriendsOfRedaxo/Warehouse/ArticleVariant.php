@@ -19,7 +19,7 @@ use rex_yform_manager_dataset;
 class ArticleVariant extends rex_yform_manager_dataset
 {
     
-    public const availability =
+    public const AVAILABILITY =
         [
             'BackOrder' => 'translate:warehouse_article_variant.availability.BackOrder',
             'Discontinued' => 'translate:warehouse_article_variant.availability.Discontinued',
@@ -35,7 +35,7 @@ class ArticleVariant extends rex_yform_manager_dataset
             'SoldOut' => 'translate:warehouse_article_variant.availability.SoldOut',
         ];
 
-    public const status =
+    public const STATUS =
         [
             'active' => 'translate:warehouse_article_variant.status.active',
             'draft' => 'translate:warehouse_article_variant.status.draft',
@@ -97,7 +97,7 @@ class ArticleVariant extends rex_yform_manager_dataset
 
     public function getAvailabilityLabel() : ?string
     {
-        return rex_i18n::rawMsg(self::availability[$this->getAvailability()] ?? '');
+        return rex_i18n::rawMsg(self::AVAILABILITY[$this->getAvailability()] ?? '');
     }
 
     /** @api */
@@ -137,12 +137,12 @@ class ArticleVariant extends rex_yform_manager_dataset
     public static function getAvailabilityOptions() : array
     {
         
-        return self::availability;
+        return self::AVAILABILITY;
     }
 
     public static function getStatusOptions() : array
     {
-        return self::status;
+        return self::STATUS;
     }
     
 
@@ -217,7 +217,18 @@ class ArticleVariant extends rex_yform_manager_dataset
         return '<i class="rex-icon fa-cubes"></i>';
     }
 
-    public static function getBulkPrices() {
+    public function getBulkPrices() :array {
+        $bulk_prices = (array) $this->getValue('bulk_prices');
+        if(!empty($bulk_prices)) {
+            $bulkPrices = json_decode($this->getValue('bulk_prices'), true);
+            if (is_array($bulkPrices)) {
+                return $bulkPrices;
+            }
+        }
+        else if ($this->getArticle() && !empty($this->getArticle()->getBulkPrices())) {
+            // Fallback auf die Bulkpreise des Hauptartikels
+            return $this->getArticle()->getBulkPrices();
+        }
         return [];
     }
 }
