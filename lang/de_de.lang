@@ -230,7 +230,7 @@ warehouse_order.payment_confirm = Zahlungsbestätigung
 warehouse_order.order_text = Bestelltext
 warehouse_order.order_json = Bestell-JSON
 warehouse_order.order_total = Bestellsumme
-warehouse_order.ycom_userid = YCom-Benutzer-ID
+warehouse_order.ycom_user_id = YCom-Benutzer-ID
 warehouse_order.payment_type = Zahlungsart
 warehouse_order.payed = Bezahlt
 warehouse_order.not_payed = Nicht bezahlt
@@ -360,3 +360,8 @@ warehouse.settings.shipping_conditions_text.notice = Text, der unter den Versand
 
 warehouse.settings.label_cart = Warenkorb 
 warehouse.settings.label_cart_empty = Der Warenkorb ist leer.
+
+warehouse.payment_options.prepayment = Vorkasse
+warehouse.payment_options.invoice   = Rechnung
+warehouse.payment_options.paypal    = PayPal
+warehouse.payment_options.direct_debit  = Lastschrift
