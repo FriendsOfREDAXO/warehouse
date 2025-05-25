@@ -10,7 +10,7 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
 $cart = Cart::get();
 $cart_items = $cart->getItems();
 
-$domain= Domain::getCurrent();
+$domain = Domain::getCurrent();
 
 if (!$cart) {
 
@@ -47,10 +47,12 @@ if (!$cart) {
             </tr>
         <?php endforeach; ?>
         <tr>
-            <td class="align-left"><?= Warehouse::getLabel('shipping_costs'); ?></td>
+            <td class="align-left">
+                <?= Warehouse::getLabel('shipping_costs'); ?> <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#warehouseShippingCostModal">ℹ️</a>
+            </td>
             <td></td>
             <td></td>
-            <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= Shipping::getCostFormatted() ?></td>
+            <td class="align-right"><?= Shipping::getCostFormatted() ?></td>
             <td></td>
         </tr>
     </tbody>
@@ -65,8 +67,8 @@ if (!$cart) {
 
 <script nonce="<?= rex_response::getNonce() ?>" type="module">
     // Wenn data-warehouse-cart-action="remove" angeklickt wird, confirm anzeigen
-    document.querySelectorAll('[data-warehouse-cart-action="remove"]').forEach(function (element) {
-        element.addEventListener('click', function (event) {
+    document.querySelectorAll('[data-warehouse-cart-action="remove"]').forEach(function(element) {
+        element.addEventListener('click', function(event) {
             event.preventDefault();
             // Bootstrap Loading Animation
             const loadingButton = event.target.closest('a[data-warehouse-cart-action="remove"]');
@@ -86,8 +88,8 @@ if (!$cart) {
         });
     });
     // Wenn die Menge geändert wird, dann Zahl im DOM aktualisieren
-    document.querySelectorAll('[data-warehouse-cart-item="quantity"]').forEach(function (element) {
-        element.addEventListener('click', function (event) {
+    document.querySelectorAll('[data-warehouse-cart-item="quantity"]').forEach(function(element) {
+        element.addEventListener('click', function(event) {
             event.preventDefault();
             // Bootstrap Loading Animation 
             const loadingButton = event.target.closest('a[data-warehouse-cart-item-amount]');
@@ -95,7 +97,7 @@ if (!$cart) {
                 loadingButton.classList.add('disabled');
                 loadingButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
             }
-            
+
             const target = event.target.closest('[data-warehouse-cart-item-amount]');
             if (target) {
                 const mod = target.getAttribute('data-warehouse-cart-item-amount');
@@ -112,8 +114,8 @@ if (!$cart) {
     });
 
     // Klick auf weiter - Loading Animation
-    document.querySelectorAll('[data-warehouse-cart-action="next"]').forEach(function (element) {
-        element.addEventListener('click', function (event) {
+    document.querySelectorAll('[data-warehouse-cart-action="next"]').forEach(function(element) {
+        element.addEventListener('click', function(event) {
             event.preventDefault();
             // Bootstrap Loading Animation
             const loadingButton = event.target.closest('a[data-warehouse-cart-action="next"]');
