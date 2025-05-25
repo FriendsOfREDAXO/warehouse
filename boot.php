@@ -11,7 +11,9 @@ use rex_article;
 use rex_yform_manager_dataset;
 use rex_yform;
 use rex_addon;
+use rex_request;
 use rex_be_controller;
+use rex_response;
 use rex_view;
 use Url\Url;
 
@@ -88,5 +90,18 @@ if (rex::isBackend() && rex_addon::get('quick_navigation')->isAvailable()) {
 }
 
 if(rex::isFrontend()) {
-    $this->setProperty('domain', Domain::getCurrent());
+    $domain  = Domain::getCurrent();
+    $this->setProperty('domain', $domain);
+
+    $action = rex_request('warehouse_deeplink', 'string', '');
+    if($action !== '') {
+        switch ($action) {
+            case 'cart':
+                rex_response::sendRedirect($domain->getCartArtUrl());
+                break;
+            case 'order':
+                rex_response::sendRedirect($domain->getOrderArtUrl());
+                break;
+        }
+    }
 }
