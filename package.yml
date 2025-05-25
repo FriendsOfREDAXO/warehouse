@@ -112,6 +112,7 @@ default_config:
     country_codes: "DE"
     cart_mode: "cart"
     editor: ''
+    framework: 'bootstrap5'
     check_weight: 0
     tax_options: '19,7,0'
 
