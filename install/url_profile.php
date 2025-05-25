@@ -58,7 +58,7 @@ $sql->addGlobalUpdateFields('warehouse');
 $sql->insert();
 
 $sql->setTable(rex::getTable('url_generator_profile'));
-$sql->setValue('namespace', 'warehouse_art_id');
+$sql->setValue('namespace', 'warehouse-article-id');
 $sql->setValue('article_id', rex_article::getSiteStartArticleId());
 $sql->setValue('clang_id', 1);
 $sql->setValue('ep_pre_save_called', 0);
