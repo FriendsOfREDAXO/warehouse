@@ -340,7 +340,7 @@
                 "list_hidden": 0,
                 "search": 1,
                 "name": "ycom_user_id",
-                "label": "translate:warehouse_order.ycom_userid",
+                "label": "translate:warehouse_order.ycom_user_id",
                 "not_required": "",
                 "attributes": "",
                 "notice": "",
