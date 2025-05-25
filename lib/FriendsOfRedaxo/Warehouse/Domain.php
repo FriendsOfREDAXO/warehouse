@@ -15,6 +15,15 @@ class Domain extends rex_yform_manager_dataset
         $yrewrite_domain_id = rex_yrewrite::getCurrentDomain()?->getId();
         return self::query()->where('yrewrite_domain_id', $yrewrite_domain_id)->findOne();
     }
+
+    public static function getCurrentUrl() : string
+    {
+        $domain = rex_yrewrite::getCurrentDomain();
+        if ($domain) {
+            return $domain->getUrl();
+        }
+        return '';
+    }
     
     /* Domain */
     /** @api */
