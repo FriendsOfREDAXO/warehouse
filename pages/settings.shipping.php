@@ -21,6 +21,7 @@ $field->setLabel($this->i18n('warehouse.settings.minimum_order_value'));
 $field->setAttribute('placeholder', '0.00');
 $field->setAttribute('min', '0.00');
 $field->setAttribute('step', '0.01');
+$field->setAttribute('type', 'number');
 
 // Versandkosten
 $field = $form->addTextField('shipping_fee');
@@ -28,6 +29,7 @@ $field->setLabel($this->i18n('warehouse.settings.shipping_fee'));
 $field->setAttribute('placeholder', '0.00');
 $field->setAttribute('min', '0.00');
 $field->setAttribute('step', '0.01');
+$field->setAttribute('type', 'number');
 
 // Versandkostenfrei ab
 $field = $form->addTextField('free_shipping_from');
@@ -35,6 +37,7 @@ $field->setLabel($this->i18n('warehouse.settings.free_shipping_from'));
 $field->setAttribute('placeholder', '0.00');
 $field->setAttribute('min', '0.00');
 $field->setAttribute('step', '0.01');
+$field->setAttribute('type', 'number');
 
 $field = $form->addSelectField('shipping_calculation_mode');
 $field->setLabel($this->i18n('warehouse.settings.shipping_calculation_mode'));
