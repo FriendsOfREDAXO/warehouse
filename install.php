@@ -33,6 +33,10 @@ if (rex_addon::get('mediapool')->isAvailable()) {
     $this->includeFile(__DIR__ . '/install/media.php');
 }
 
+if(rex_addon::get('ycom')->isAvailable() && rex_config::get('warehouse', 'ycom_mode') == '') {
+    rex_config::set('warehouse', 'ycom_mode', 'choose');
+}
+
 if (rex_config::get('warehouse', 'store_name') == '') {
     rex_config::set('store_name', rex::getServerName());
 }
