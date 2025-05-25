@@ -17,7 +17,7 @@ use rex_i18n;
 class Category extends \rex_yform_manager_dataset
 {
 
-    public const status =
+    public const STATUS =
         [
             'active' => 'translate:warehouse_article_variant.status.active',
             'draft' => 'translate:warehouse_article_variant.status.draft',
@@ -174,7 +174,7 @@ class Category extends \rex_yform_manager_dataset
 
     public static function getStatusOptions() : array
     {
-        return self::status;
+        return self::STATUS;
     }
 
     public function getProjectValue(string $key)
