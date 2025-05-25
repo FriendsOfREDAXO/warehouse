@@ -15,7 +15,7 @@ class Shipping {
         'order_total' => 'translate:warehouse.settings.shipping_calculation_mode.options.order_total',
     ];
 
-    public static function getCost() {
+    public static function getCost() :float {
 
         $cart = Cart::get();
 
@@ -62,6 +62,10 @@ class Shipping {
             $return,
             ['cart' => $cart, 'total_weight' => $total_weight, 'total_pieces' => $total_pieces, 'total_price' => $total_price, 'free_shipping_from' => $free_shipping_from, 'shipping_fee' => $shipping_fee, 'minimum_order_value' => $minimum_order_value, 'shipping_calculation_mode' => $shipping_calculation_mode]
         ));
+    }
+
+    public static function getCostFormatted() :string {
+        return Warehouse::getCurrencySign() . ' ' . number_format(self::getCost(), 2, ',', '.');
     }
     
 }
