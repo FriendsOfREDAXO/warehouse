@@ -30,7 +30,7 @@ if (null !== $page) {
     }
 }
 
-echo rex_view::title($this->i18n('warehouse_title'));
+echo rex_view::title($this->i18n('warehouse.title'));
 
 [$Toc, $Content] = rex_markdown::factory()->parseWithToc(rex_file::require($mdFiles[$currentMDFile]), 2, 3, [
     rex_markdown::SOFT_LINE_BREAKS => false,
