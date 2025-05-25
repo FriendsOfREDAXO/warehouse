@@ -1,74 +1,113 @@
 <?php
 
-/** @var rex_fragment $this */
+use FriendsOfRedaxo\Warehouse\Article;
+use FriendsOfRedaxo\Warehouse\Category;
+use FriendsOfRedaxo\Warehouse\Warehouse;
 
-$main_article = $this->articles[0];
-$warehouse_prop = rex::getProperty('warehouse_prop');
+/** @var rex_fragment $this */
+/** @var Article $article */
+$article = $this->getVar('article');
+if (!$article instanceof Article) {
+    return;
+}
+/** @var Category $category */
+$category = $article->getCategory();
+$variants = [];
+if (Warehouse::isVariantsEnabled()) {
+    $variants = $article->getVariants();
+}
+
+$bulkPrices = $article->getBulkPrices();
+/*
+if(Warehouse::isBulkPricesEnabled()) {
+    $varibulkPricesants = $article->getBulkPrices();
+} 
+    */
+
 
 ?>
 <div class="row">
     <div class="col-12">
-        <h3><?= $main_article->getName() ?></h3>
-    </div>
-    <div class="col-12">
-        <div class="card">
-            <div class="row g-0">
-                <div class="col-12 col-md-8">
-                        <div class="col-12">
-                            <div class="card-body p-0">
-                                <?php if ($main_article->getImageAsMedia()) : ?>
-                                    <img src="<?= $main_article->getImageAsMedia()->getUrl() ?>" class="warehouse_prod_image">
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    <?php endif ?>
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <div class="card-body p-0">
+                    <?php if ($article->getImageAsMedia()) : ?>
+                        <img src="<?= $article->getImageAsMedia()->getUrl() ?>" class="img-fluid" alt="<?= htmlspecialchars($article->getName()) ?>">
+                    <?php endif; ?>
                 </div>
-                <div class="col-12 col-md-4 tm-product-info">
-                    <?php if (count($this->articles) > 1) :  // ==== Variantenartikel   
-                    ?>
+            </div>
+            <div class="col-12 col-md-8">
+
+        <p>
+            <a href="<?= $category->getUrl() ?>" class="text-decoration-none">
+                <span class="badge bg-secondary"><?= htmlspecialchars($category->getName()) ?></span>
+            </a>
+        </p>
+        <h3><?= $article->getName() ?></h3>
+        <p><?= htmlspecialchars($article->getShortText(true)) ?></p>
+        
+                <!-- Varianten -->
+                <?php if (count($variants) > 1) :
+                ?>
                     <div class="mb-3">
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                            <?php foreach ($this->articles as $k => $var) : ?>
+                            <?php foreach ($variants as $variant) : ?>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link <?= $k == 0 ? 'active' : '' ?>" id="pills-<?= $var->getId() ?>-tab" data-bs-toggle="pill" data-bs-target="#pills-<?= $var->getId() ?>" type="button" role="tab" aria-controls="pills-<?= $var->getId() ?>" aria-selected="<?= $k == 0 ? 'true' : 'false' ?>" data-price="<?= $var->getPrice() ?>" data-art_id="<?= $var->getId() ?>"><?= $var->getName() ?></button>
+                                    <button class="nav-link <?= $k == 0 ? 'active' : '' ?>" id="pills-<?= $variant->getId() ?>-tab" data-bs-toggle="pill" data-bs-target="#pills-<?= $variant->getId() ?>" type="button" role="tab" aria-controls="pills-<?= $variant->getId() ?>" aria-selected="<?= $k == 0 ? 'true' : 'false' ?>" data-price="<?= $variant->getPrice() ?>" data-art_id="<?= $variant->getId() ?>"><?= $variant->getName() ?></button>
                                 </li>
                             <?php endforeach ?>
                         </ul>
                     </div>
-                    <?php endif ?>
+                <?php endif ?>
+                <!-- / Varianten -->
 
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <?= html_entity_decode($main_article->getText()) ?>
+                <!-- Staffelpreise -->
+                <?php if (count($bulkPrices)) : ?>
+                    <div class="mb-3">
+                        <h4>{{ Staffelpreise }}</h4>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{{ Menge }}</th>
+                                    <th scope="col">{{ Preis }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($bulkPrices as $price) : ?>
+                                    <tr>
+                                        <td><?= $priceGroup->getMinCount() ?> - <?= $priceGroup->getMaxCount() ?></td>
+                                        <td><?= $priceGroup->getPriceFormatted() ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
 
-                            <?php $specifications = json_decode($this->article->{'specifications_' . rex_clang::getCurrentId()}) ?>
-                            <table class="table table-bordered table-responsive">
-                                <tbody>
-                                    <?php if (is_array($specifications)) foreach ($specifications as $speci) : ?>
-                                        <tr>
-                                            <th class=""><?= $speci[0] ?></th>
-                                            <td class=""><?= $speci[1] ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
+                <!-- / Staffelpreise -->
 
+                <!-- Preis -->
+                <div id="warehouse_art_price" class="tm-product-price" data-price="<?= $this->article->getPrice() ?>"><?= $this->article->getPriceFormatted() ?></div>
+                <!-- / Preis -->
 
-                            <div id="warehouse_art_price" class="tm-product-price" data-price="<?= $this->article->getPrice() ?>"><?= $this->article->getPriceFormatted() ?></div>
-                        </div>
-                        <div class="col-12">
-                            <form action="/" method="post" id="warehouse_form_detail">
-                                <input type="hidden" name="art_id" value="<?= $this->article->getId() ?>">
-                                <input type="hidden" name=action value="add_to_cart">
-                                <p class="text-small mb-0">inkl. MwSt. zzgl. <a href="#shipping_modal" data-bs-toggle="modal">Versandkosten</a></p>
-                                <div class="input-group mb-3">
-                                    <button class="btn btn-outline-primary switch_count" type="button" data-value="-1"></button>
-                                    <input name="order_count" type="text" class="form-control order_count" id="warehouse_count_<?= $this->article->getId() ?>" value="1">
-                                    <button class="btn btn-outline-primary switch_count" type="button" data-value="+1"></button>
-                                    <button type="submit" name="submit" value="1" class="btn btn-primary">{{ Bestellen }}</button>
-                                </div>
-                            </form>
-                        </div>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <?= html_entity_decode($article->getText()) ?>
+
+                    </div>
+                    <div class="col-12">
+                        <form action="/" method="post" id="warehouse_form_detail">
+                            <input type="hidden" name="art_id" value="<?= $this->article->getId() ?>">
+                            <input type="hidden" name=action value="add_to_cart">
+                            <p class="text-small mb-0">inkl. MwSt. zzgl. <a href="#shipping_modal" data-bs-toggle="modal">Versandkosten</a></p>
+                            <div class="input-group mb-3">
+                                <button class="btn btn-outline-primary switch_count" type="button" data-value="-1"></button>
+                                <input name="order_count" type="number" min="1" class="form-control order_count" id="warehouse_count_<?= $this->article->getId() ?>" value="1">
+                                <button class="btn btn-outline-primary switch_count" type="button" data-value="+1"></button>
+                            </div>
+                                <button type="submit" name="submit" value="cart" class="btn btn-secondary">{{ In den Warenkorb }}</button>
+                                <button type="submit" name="submit" value="checkout" class="btn btn-primary">{{ Sofort kaufen }}</button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -22,7 +22,7 @@ if ($with_tax) {
             <th>Artikel</th>
             <th></th>
             <?php if ($with_tax): ?><th class="uk-text-right">{{ tax }}</th><?php endif; ?>
-            <th class="uk-text-right"><?= rex_config::get('warehouse', 'currency') ?></th>
+            <th class="uk-text-right"><?= Warehouse::getCurrencySign() ?></th>
         </tr>
     </thead>
     <?php foreach ($this->cart as $item) : ?>
