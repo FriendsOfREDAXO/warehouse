@@ -124,6 +124,7 @@ default_config:
     editor: ''
     framework: 'bootstrap5'
     tax_options: '19,7,0'
+    ycom_mode: 'guest_only'
 
     fallback_category_image: 'warehouse_placeholder_category.jpeg'
     fallback_article_image: 'warehouse_placeholder_article.jpeg'
