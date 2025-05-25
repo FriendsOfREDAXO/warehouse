@@ -71,6 +71,10 @@ $field = $form->addMediaField('fallback_article_image');
 $field->setLabel(rex_i18n::msg('warehouse.settings.fallback_article_image'));
 $field->setNotice(rex_i18n::msg('warehouse.settings.fallback_article_image.notice'));
 
+$field = $form->addInputField('text', 'framework', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.framework'));
+$field->setNotice(rex_i18n::msg('warehouse.settings.framework.notice'));
+
 $content = $form->get();
 
 $fragment = new rex_fragment();
