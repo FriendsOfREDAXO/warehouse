@@ -3,6 +3,7 @@
 /** @var rex_fragment $this */
 
 use FriendsOfRedaxo\Warehouse\Cart;
+use FriendsOfRedaxo\Warehouse\Shipping;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 $cart = Cart::get();
@@ -37,16 +38,16 @@ if (!$cart) {
         <td class="align-left"><?= Warehouse::getLabel('shipping_costs'); ?></td>
         <td></td>
         <td></td>
-        <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getShippingCost(), 2) ?></td>
+        <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= Shipping::getCostFormatted() ?></td>
         <td></td>
     </tr>
     <tr class="bigtext">
-        <td class="align-left">{{ Total }}</td>
+        <td class="align-left"><?= Warehouse::getLabel('total'); ?></td>
         <td></td>
         <td></td>
-        <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getCartTotal(), 2) ?></td>
+        <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= $cart->getCartTotalFormatted() ?></td>
         <td></td>
     </tr>
 </table>
 
-<p><a href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>" class="white_big_circle">Weiter</a></p>
+<p><a href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>" class="white_big_circle"><?= Warehouse::getLabel('next'); ?></a></p>

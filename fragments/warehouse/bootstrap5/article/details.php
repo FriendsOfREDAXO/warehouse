@@ -17,12 +17,11 @@ if (Warehouse::isVariantsEnabled()) {
     $variants = $article->getVariants();
 }
 
-$bulkPrices = $article->getBulkPrices();
-/*
+$bulkPrices = [];
+
 if(Warehouse::isBulkPricesEnabled()) {
-    $varibulkPricesants = $article->getBulkPrices();
+    $bulkPrices = $article->getBulkPrices();
 } 
-    */
 
 
 ?>
@@ -64,12 +63,12 @@ if(Warehouse::isBulkPricesEnabled()) {
                 <!-- Staffelpreise -->
                 <?php if (count($bulkPrices)) : ?>
                     <div class="mb-3">
-                        <h4>{{ Staffelpreise }}</h4>
+                        <h4><?= Warehouse::getLabel('bulk_prices'); ?></h4>
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">{{ Menge }}</th>
-                                    <th scope="col">{{ Preis }}</th>
+                                    <th scope="col"><?= Warehouse::getLabel('amount'); ?></th>
+                                    <th scope="col"><?= Warehouse::getLabel('price'); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -87,7 +86,7 @@ if(Warehouse::isBulkPricesEnabled()) {
                 <!-- / Staffelpreise -->
 
                 <!-- Preis -->
-                <div id="warehouse_art_price" class="tm-product-price" data-price="<?= $this->article->getPrice() ?>"><?= $this->article->getPriceFormatted() ?></div>
+                <div id="warehouse_art_price" data-price="<?= $this->article->getPrice() ?>"><?= $this->article->getPriceFormatted() ?></div>
                 <!-- / Preis -->
 
                 <div class="row g-3">
@@ -97,7 +96,7 @@ if(Warehouse::isBulkPricesEnabled()) {
                     </div>
                     <div class="col-12">
                         <form action="/" method="post" id="warehouse_form_detail">
-                            <input type="hidden" name="art_id" value="<?= $this->article->getId() ?>">
+                            <input type="hidden" name="art_id" value="<?= $article->getId() ?>">
                             <input type="hidden" name=action value="add_to_cart">
                             <p class="text-small mb-0">inkl. MwSt. zzgl. <a href="#shipping_modal" data-bs-toggle="modal">Versandkosten</a></p>
                             <div class="input-group mb-3">
