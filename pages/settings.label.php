@@ -50,6 +50,39 @@ $field = $form->addInputField('text', 'label_next', null, ['class' => 'form-cont
 $field->setLabel(rex_i18n::msg('warehouse.settings.labeL_next'));
 
 
+$field = $form->addInputField('text', 'label_cart_empty', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_cart_empty'));
+
+$field = $form->addInputField('text', 'label_cart_empty_confirm', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_cart_empty_confirm'));
+
+$field = $form->addInputField('text', 'label_back_to_cart', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_back_to_cart'));
+
+$field = $form->addInputField('text', 'label_checkout', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_checkout'));
+
+$field = $form->addInputField('text', 'label_payment_type', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_payment_type'));
+
+$field = $form->addInputField('text', 'label_remove_from_cart', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_remove_from_cart'));
+
+$field = $form->addInputField('text', 'label_cart_remove_item_confirm', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_cart_remove_item_confirm'));
+
+$field = $form->addInputField('text', 'label_article', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_article'));
+
+$field = $form->addInputField('text', 'label_price', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_price'));
+
+$field = $form->addInputField('text', 'label_quantity', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_quantity'));
+
+$field = $form->addInputField('text', 'label_total', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_total'));
+
 $content = $form->get();
 
 $fragment = new rex_fragment();
