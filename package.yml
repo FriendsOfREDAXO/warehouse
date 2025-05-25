@@ -21,7 +21,13 @@ page:
                     icon: rex-icon fa-list
                 details:
                     title: translate:warehouse_order_details
-                    icon: rex-icon fa-list-alt
+                    icon: rex-icon fa-shopping-cart
+                customer:
+                    title: translate:warehouse_customer
+                    icon: rex-icon fa-id-card
+                customer_address:
+                    title: translate:warehouse_customer_address
+                    icon: rex-icon fa-truck-arrow-right
 
 pages:
     system/log/warehouse:
