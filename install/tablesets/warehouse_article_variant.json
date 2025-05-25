@@ -181,7 +181,7 @@
                 "prio": 9,
                 "type_id": "value",
                 "type_name": "choice_status",
-                "db_type": "text",
+                "db_type": "varchar(191)",
                 "list_hidden": 1,
                 "search": 0,
                 "name": "status",

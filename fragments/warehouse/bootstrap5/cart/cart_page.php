@@ -4,6 +4,7 @@
 
 use FriendsOfRedaxo\Warehouse\Warehouse;
 use FriendsOfRedaxo\Warehouse\Cart;
+use FriendsOfRedaxo\Warehouse\Shipping;
 
 $cart = Cart::get();
 $cart_items = $cart->getItems();
@@ -89,17 +90,17 @@ $cart_items = $cart->getItems();
                     <div class="card-body">
                         <div class="row">
                             <div class="col text-muted">Zwischensumme</div>
-                            <div class="col"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getSubTotal(),2) ?></div>
+                            <div class="col"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format($cart->getSubTotal(),2) ?></div>
                         </div>
                         <div class="row">
                             <div class="col text-muted">Versand</div>
-                            <div class="col text"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::getShippingCost(),2) ?></div>
+                            <div class="col text"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format((float) Shipping::getCost(),2) ?></div>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col text-muted">Total</div>
-                            <div class="col text-lead fw-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= number_format(FriendsOfRedaxo\Warehouse\Warehouse::getCartTotal(),2) ?></div>
+                            <div class="col text-lead fw-bolder"><?= rex_config::get('warehouse','currency_symbol') ?>&nbsp;<?= $cart->getCartTotalFormatted() ?></div>
                         </div>
                         <a class="btn btn-primary mt-3 w-100" href="<?= rex_getUrl(rex_config::get('warehouse','address_page')) ?>">checkout</a>
                     </div>

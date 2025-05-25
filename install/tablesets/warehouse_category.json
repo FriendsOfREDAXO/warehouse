@@ -146,7 +146,7 @@
                 "choices": "FriendsOfRedaxo\\Warehouse\\Category::getStatusOptions",
                 "choice_attributes": "",
                 "attributes": "",
-                "default": "1",
+                "default": "draft",
                 "no_db": "0",
                 "notice": "",
                 "preferred_choices": "",

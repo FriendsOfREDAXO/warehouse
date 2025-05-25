@@ -3,7 +3,7 @@
 use FriendsOfRedaxo\Warehouse\Category;
 use FriendsOfRedaxo\Warehouse\Article;
 
-$categories = Category::findRootCategories(0);
+$categories = Category::findRootCategories(1);
 ?>
 
 <section class="container">

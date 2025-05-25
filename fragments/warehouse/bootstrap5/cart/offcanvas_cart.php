@@ -67,7 +67,7 @@ $cart_items = $cart->getItems();
             </div>
 
             <div class="d-grid gap-2 mt-3">
-                <a class="btn btn-primary" href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>"><?= Warehouse::getLabel('cart_checkout') ?></a>
+                <a class="btn btn-primary" href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>"><?= Warehouse::getLabel('next') ?></a>
             </div>
         <?php } else { ?>
             <div class="alert alert-info"><?= Warehouse::getLabel('cart_is_empty'); ?></div>
