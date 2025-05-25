@@ -177,6 +177,11 @@ class Cart
         return $sum;
     }
 
+    public static function getCartTotalFormatted(): string
+    {
+        return rex_config::get('warehouse', 'currency_symbol') . ' ' . number_format(self::getCartTotal(), 2);
+    }
+
 
     /*
     Warenkorbrabatt
