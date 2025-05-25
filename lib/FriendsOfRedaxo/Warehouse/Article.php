@@ -197,7 +197,7 @@ class Article extends rex_yform_manager_dataset
     public function getPriceFormatted() : string
     {
         $formatter = new NumberFormatter('de_de', NumberFormatter::CURRENCY);
-        return $formatter->formatCurrency($this->getPrice(), rex_config::get('warehouse', 'currency'));
+        return $formatter->formatCurrency($this->getPrice(), Warehouse::getCurrencySign());
     }
 
     /* Preis-Text */
@@ -412,5 +412,11 @@ class Article extends rex_yform_manager_dataset
 
     public static function getBulkPrices() {
         return [];
+    }
+    public static function getByUuid(string $uuid) : ?self
+    {
+        $query = self::query();
+        $query->where('uuid', $uuid);
+        return $query->findOne();
     }
 }
