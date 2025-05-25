@@ -6,6 +6,13 @@ class Cart
 {
     public $cart = [];
     // initialisieren des Warenkorbs
+
+    public static function isEmpty() :bool 
+    {
+        $cart = Warehouse::getCart();
+        return empty($cart);
+    }
+
     public static function init()
     {
         if (rex_session('warehouse_cart', 'array', null) === null) {
