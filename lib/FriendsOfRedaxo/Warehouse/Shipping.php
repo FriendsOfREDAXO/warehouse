@@ -30,7 +30,7 @@ class Shipping {
 
         $return = $shipping_fee;
         // Wenn Standard-Shipping-Modus ausgewählt ist, dann nur Standard-Berechnung durchführen
-        if($shipping_calculation_mode == '') {
+        if ($shipping_calculation_mode == '') {
             if ($total_price >= $free_shipping_from) {
                 $return = 0;
             }
