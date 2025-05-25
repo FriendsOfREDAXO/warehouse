@@ -106,3 +106,26 @@ rex_sql_table::get(rex::getTable('warehouse_settings_domain'))
     ->ensureColumn(new rex_sql_column('sepa_iban', 'varchar(191)', false, ''))
     ->ensureColumn(new rex_sql_column('sepa_account_holder_name', 'varchar(191)', false, ''))
     ->ensure();
+
+rex_sql_table::get(rex::getTable('warehouse_customer_address'))
+    ->ensurePrimaryIdColumn()
+    ->ensureColumn(new rex_sql_column('ycom_user_id', 'int(10) unsigned'))
+    ->ensureColumn(new rex_sql_column('type', 'varchar(191)'))
+    ->ensureColumn(new rex_sql_column('company', 'varchar(191)', false, ''))
+    ->ensureColumn(new rex_sql_column('name', 'varchar(191)', false, ''))
+    ->ensureColumn(new rex_sql_column('street', 'varchar(191)', false, ''))
+    ->ensureColumn(new rex_sql_column('zip', 'varchar(191)', false, ''))
+    ->ensureColumn(new rex_sql_column('city', 'varchar(191)', false, ''))
+    ->ensureColumn(new rex_sql_column('country', 'varchar(191)', false, ''))
+    ->ensure();
+
+rex_sql_table::get(rex::getTable('ycom_user'))
+    ->ensurePrimaryIdColumn()
+    ->ensureColumn(new rex_sql_column('lastname', 'varchar(191)', false, ''), 'firstname')
+    ->ensureColumn(new rex_sql_column('company', 'varchar(191)', false, ''), 'ycom_groups')
+    ->ensureColumn(new rex_sql_column('department', 'varchar(191)', false, ''), 'company')
+    ->ensureColumn(new rex_sql_column('address', 'varchar(191)', false, ''), 'department')
+    ->ensureColumn(new rex_sql_column('phone', 'varchar(191)', false, ''), 'address')
+    ->ensureColumn(new rex_sql_column('zip', 'varchar(191)', false, ''), 'phone')
+    ->ensureColumn(new rex_sql_column('city', 'varchar(191)', false, ''), 'zip')
+    ->ensure();
