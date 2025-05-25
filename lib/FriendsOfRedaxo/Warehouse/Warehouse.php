@@ -635,15 +635,19 @@ class Warehouse
         return in_array('variants', self::getEnabledFeatures());
     }
     /** @api */
-    public static function parse(string $file, string $framework = "bootstrap5", string $title = '', string $description = '')
+    public static function parse(string $file, array $values)
     {
         $fragment = new rex_fragment();
-        $fragment_path = rex_path::addon('warehouse', 'fragments ' .\DIRECTORY_SEPARATOR. 'warehouse ' .\DIRECTORY_SEPARATOR. $framework  . \DIRECTORY_SEPARATOR . $file);
+        $framework = Warehouse::getConfig('framework') ?: 'bootstrap5';
+        $fragment_path = rex_path::addon('warehouse', 'fragments' .\DIRECTORY_SEPARATOR. 'warehouse' .\DIRECTORY_SEPARATOR. $framework  . \DIRECTORY_SEPARATOR . $file);
 
+        $title = $values['title'] ?? '';
+        $description = $values['description'] ?? '';
+        
         if (file_exists($fragment_path)) {
             $fragment->setVar('title', $title);
             $fragment->setVar('description', $description, false);
-            return $fragment->parse('warehouse' . \DIRECTORY_SEPARATOR . $file);
+            return $fragment->parse('warehouse' .\DIRECTORY_SEPARATOR. $framework  . \DIRECTORY_SEPARATOR . $file);
         }
     }
 
