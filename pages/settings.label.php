@@ -46,6 +46,10 @@ $field->setLabel(rex_i18n::msg('warehouse.settings.label_cart_total'));
 $field = $form->addInputField('text', 'label_cart_total_weight', null, ['class' => 'form-control']);
 $field->setLabel(rex_i18n::msg('warehouse.settings.label_cart_total_weight'));
 
+$field = $form->addInputField('text', 'label_next', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.labeL_next'));
+
+
 $content = $form->get();
 
 $fragment = new rex_fragment();
