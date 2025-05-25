@@ -388,3 +388,33 @@ warehouse.customer_address.type.billing = Rechnung
 warehouse.customer_address.type.other = Andere
 
 warehouse_customer_address.validate.unique.ycom_user_id_and_type = Die Kombination aus  YCom-Benutzer-ID und Adress-Typ darf nur einmalig vorkommen. Bitte überprüfen Sie die Eingabe.
+
+
+warehouse.settings.ycom_mode = Kundenkonto
+warehouse.settings.ycom_mode.notice = Benötigt das Add-on YCom. Hinweis: Wenn das Add-on YCom nachträglich installiert wurde, muss das Add-on Warehouse reinstalliert werden.
+warehouse.settings.ycom_mode.guest_only = Gastmodus (kein Kundenkonto benötigt)
+warehouse.settings.ycom_mode.choose = Kunde wählt aus, ob er ein Kundenkonto erstellen möchte
+warehouse.settings.ycom_mode.enforce_account = Kundenkonto wird erzwungen
+
+
+warehouse.settings.label_cart_empty_confirm = Sind Sie sicher, dass Sie den Warenkorb leeren möchten?
+warehouse.settings.label_back_to_cart = Zurück zum Warenkorb
+warehouse.settings.label_checkout = Kasse
+warehouse.settings.label_payment_type = Bezahloptionen
+warehouse.settings.label_remove_from_cart = Entfernen
+warehouse.settings.label_cart_remove_item_confirm = Sind Sie sicher, dass Sie den gewünschten Artikel entfernen möchten?
+warehouse.settings.label_article = Artikel
+warehouse.settings.label_price = Einzelpreis
+warehouse.settings.label_quantity = Anzahl
+warehouse.settings.label_total = Gesamtpreis
+warehouse.settings.label_shipping_costs = Versandkosten
+warehouse.settings.label_shipping_costs_free = Ohne Versandkosten
+warehouse.settings.label_shipping_costs_weight = Versandkosten nach Gewicht
+warehouse.settings.label_checkout = Kasse
+warehouse.settings.label_checkout_instant = Sofort kaufen
+warehouse.settings.label_checkout_address = Adresse
+warehouse.settings.label_checkout_payment = Bezahlmethode
+warehouse.settings.label_cart_subtotal = Zwischensumme
+warehouse.settings.label_cart_total = Summe
+warehouse.settings.label_cart_total_weight = Gesamtgewicht
+warehouse.settings.label_next = Weiter
