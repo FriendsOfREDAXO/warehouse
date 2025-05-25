@@ -28,7 +28,7 @@ $cart_items = $cart->getItems();
                                 <div class="row row-cols-auto">
                                     <div class="col"><?= Warehouse::getLabel('price') ?></div>
                                     <div class="col tm-quantity-column"><?= Warehouse::getLabel('quantity') ?></div>
-                                    <div class="col">Summe</div>
+                                    <div class="col"><?= Warehouse::getLabel('total') ?></div>
                                     <div class="col" style="width: 20px;"></div>
                                 </div>
                             </div>
@@ -45,14 +45,14 @@ $cart_items = $cart->getItems();
                                     <div class="row">
                                         <div class="col-12 col-md-4">
                                             <?php if ($item['image']) : ?>
-                                                <a class="tm-media-box" href="<?= rex_getUrl('','',['warehouse-article-id'=>$base_id]) ?>">
+                                                <a class="" href="<?= rex_getUrl('','',['warehouse-article-id'=>$item['id']]) ?>">
                                                     <figure class=""><img src="/images/products/<?= $item['image'] ?>" alt="<?= $item['name'] ?>" class="img-fluid"></figure>
                                                 </a>
                                             <?php endif ?>
                                         </div>
                                         <div class="col">
                                             <div class="text-meta"><?= $item['cat_name'] ?></div>
-                                            <a class="link-heading" href="<?= rex_getUrl('','',['warehouse-article-id'=>$base_id]) ?>"><?= html_entity_decode($item['name']) ?>                               
+                                            <a class="link-heading" href="<?= rex_getUrl('','',['warehouse-article-id'=>$item['id']]) ?>"><?= html_entity_decode($item['name']) ?>                               
                                             </a>
                                         </div>
                                     </div>
@@ -61,16 +61,16 @@ $cart_items = $cart->getItems();
                                 <div class="col">
                                     <div class="row row-cols-1 row-cols-sm-auto text-center">
                                         <div class="col">
-                                            <div class="text-muted d-md-none">Preis</div>
+                                            <div class="text-muted d-md-none"><?= Warehouse::getLabel('price') ?></div>
                                             <div><?= rex_config::get('warehouse','currency_symbol').'&nbsp;'.number_format($item['price'],2) ?></div>                        
                                         </div>
-                                        <div class="col wh-cart-quantity-column">
+                                        <div class="col">
                                             <a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uuid ?>&mod=-1" class="btn btn-sm"><i class="bi bi-dash"></i></a>
                                             <input class="form-control wh-qty-input" id="product-1" type="text" maxlength="3" value="<?= $item['amount'] ?>" disabled>
                                             <a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uuid ?>&mod=+1"  class="btn btn-sm"><i class="bi bi-plus"></i></a>
                                         </div>
                                         <div class="col">
-                                            <div class="text-muted d-md-none">Summe</div>
+                                            <div class="text-muted d-md-none"><?= Warehouse::getLabel('total') ?></div>
                                             <div><?= rex_config::get('warehouse','currency_symbol').'&nbsp;'.number_format($item['total'],2) ?></div>                        
                                         </div>
                                         <div class="col"><a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uuid ?>&mod=del" class="text-danger" data-bs-toggle="tooltip" data-bs-title="Remove"><i class="bi bi-x-circle"></i></a></div>

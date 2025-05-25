@@ -2,14 +2,19 @@
 
 /** @var rex_fragment $this */
 
+use FriendsOfRedaxo\Warehouse\Domain;
+use FriendsOfRedaxo\Warehouse\Warehouse;
+
+$domain = Domain::getCurrent();
+
 ?>
 <div class="row">
     <section class="col-12 text-center">
-        <a class="text-muted small" href="<?= rex_getUrl(rex_config::get('warehouse','cart_page')) ?>">
+        <a class="text-muted small" href="<?= $domain->getCartArtUrl() ?>">
             <i class="bi bi-arrow-left small"></i>
-            {{ return to cart }}
+            <?= Warehouse::getLabel('back_to_cart'); ?>
         </a>
-        <h1 class="mt-sm-2 mb-0">{{ checkout }}</h1>
+        <h1 class="mt-sm-2 mb-0"><?= Warehouse::getLabel('checkout'); ?></h1>
     </section>
     <section class="col-12">
         <div class="row">
@@ -18,8 +23,8 @@
             </div>            
         </div>
         <p>
-            <a class="text-muted small" href="<?= rex_getUrl(rex_config::get('warehouse', 'cart_page')) ?>">
-                {{ return to cart }}
+            <a class="text-muted small" href="<?= $domain->getCartArtUrl() ?>">
+                <?= Warehouse::getLabel('back_to_cart'); ?>
             </a>
         </p>
     </section>

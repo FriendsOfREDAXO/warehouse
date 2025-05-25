@@ -44,10 +44,10 @@ $yform->setValueField('text',['to_city','Ort',$customer_shipping_address?->getCi
 $yform->setValueField('textarea',['note','Bemerkung','','']);
 
 if (count($current_payment_types) > 1) {
-    $yform->setValueField('choice',["payment_type","{{ Payment Type }}",json_encode($current_payment_types),1,0]);
+    $yform->setValueField('choice',["payment_type", Warehouse::getLabel('payment_type'),json_encode($current_payment_types),1,0]);
     $yform->setValidateField('empty',['payment_type','Bitte füllen Sie alle markierten Felder aus']);
 } else {
-    $yform->setValueField('html',['','{{ Payment Type }}: '.array_keys($current_payment_types)[0]]);
+    $yform->setValueField('html',['',Warehouse::getLabel('payment_type')]);
     $yform->setValueField('hidden',['payment_type',array_values($current_payment_types)[0]]);
 }
 

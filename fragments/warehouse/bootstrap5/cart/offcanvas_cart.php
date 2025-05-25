@@ -3,11 +3,13 @@
 /** @var rex_fragment $this */
 
 use FriendsOfRedaxo\Warehouse\Cart;
+use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Shipping;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 $cart = Cart::get();
 $cart_items = $cart->getItems();
+$domain = Domain::getCurrent();
 ?>
 <!-- cart/offcanvas_cart.php -->
 <div class="offcanvas offcanvas-end show" tabindex="-1" id="cart-offcanvas">
@@ -67,20 +69,21 @@ $cart_items = $cart->getItems();
             </div>
 
             <div class="d-grid gap-2 mt-3">
-                <a class="btn btn-primary" href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>"><?= Warehouse::getLabel('next') ?></a>
+                <div class="d-flex justify-content-between">
+                    <a class="btn btn-link text-danger"
+                        href="/?action=empty_cart"
+                        onclick="return confirm('<?= Warehouse::getLabel('cart_empty_confirm') ?>');">
+                        <?= Warehouse::getLabel('cart_empty') ?>
+                    </a>
+                    <a class="btn btn-primary ms-auto" href="<?= $domain->getCheckoutUrl() ?>">
+                        <?= Warehouse::getLabel('next') ?>
+                    </a>
+                </div>
+            </div>
             </div>
         <?php } else { ?>
             <div class="alert alert-info"><?= Warehouse::getLabel('cart_is_empty'); ?></div>
         <?php } ?>
-
-        <!-- Button, um den Warenkorb zu leeren -->
-        <div class="d-grid gap-2 mt-3">
-            <a class="btn btn-secondary" 
-               href="/?action=empty_cart" 
-               onclick="return confirm('Sind Sie sicher, dass Sie den Warenkorb leeren möchten?');">
-            <?= Warehouse::getLabel('cart_empty') ?>
-            </a>
-        </div>
     </div>
 </div>
 <!-- / cart/offcanvas_cart.php -->

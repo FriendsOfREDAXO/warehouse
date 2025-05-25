@@ -3,51 +3,125 @@
 /** @var rex_fragment $this */
 
 use FriendsOfRedaxo\Warehouse\Cart;
+use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Shipping;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 $cart = Cart::get();
 $cart_items = $cart->getItems();
 
-$showcart = Warehouse::getConfig('show_cart') ? 1 : 0;
+$domain= Domain::getCurrent();
 
 if (!$cart) {
 
     echo '<p class="text-center">' . rex_i18n::msg('warehouse.cart_empty') . '</p>';
     return;
 }
-
 ?>
 <table class="table table-striped table-hover table-bordered">
-    <?php foreach ($cart as $k => $item) : ?>
+    <thead>
         <tr>
-            <td class="align-left"><?= html_entity_decode($item['name']) ?></td>
-            <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= number_format($item['price'], 2) ?></td>
-            <td class="no-wrap td_warehouse_count">
-                <a href="/?current_article=<?= $rex_article_id ?>&showcart=<?= $showcart ?>&action=modify_cart&art_uid=<?= $k ?>&mod=-1" class="circle minus white">-</a>
-                <span class="countnum"><?= $item['amount'] ?></span>
-                <a href="/?current_article=<?= $rex_article_id ?>&showcart=<?= $showcart ?>&action=modify_cart&art_uid=<?= $k ?>&mod=+1" class="circle plus white">+</a>
-            </td>
-            <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= number_format($item['total'], 2) ?></td>
-            <td>
-                <a href="/?current_article=<?= $rex_article_id ?>&showcart=<?= $showcart ?>&action=modify_cart&art_uid=<?= $k ?>&mod=del" class="circle plus white cross">{{ delete }}</a>
-            </td>
+            <th class="align-left"><?= Warehouse::getLabel('article') ?></th>
+            <th class="align-right"><?= Warehouse::getLabel('price') ?></th>
+            <th class="tm-quantity-column no-wrap"><?= Warehouse::getLabel('quantity') ?></th>
+            <th class="align-right"><?= Warehouse::getLabel('total') ?></th>
+            <th class="text-center" style="width: 20px;"></th>
         </tr>
-    <?php endforeach; ?>
-    <tr>
-        <td class="align-left"><?= Warehouse::getLabel('shipping_costs'); ?></td>
-        <td></td>
-        <td></td>
-        <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= Shipping::getCostFormatted() ?></td>
-        <td></td>
-    </tr>
-    <tr class="bigtext">
-        <td class="align-left"><?= Warehouse::getLabel('total'); ?></td>
-        <td></td>
-        <td></td>
-        <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= $cart->getCartTotalFormatted() ?></td>
-        <td></td>
-    </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($cart_items as $uuid => $item) : ?>
+            <tr data-article-uuid="<?= $uuid ?>">
+                <td class="align-left"><?= html_entity_decode($item['name']) ?></td>
+                <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= number_format($item['price'], 2) ?></td>
+                <td class="no-wrap" data-warehouse-cart-item="quantity">
+                    <div class="d-inline-flex align-items-center gap-1">
+                        <a data-warehouse-cart-item-amount="-1" href="?&action=modify_cart&art_uuid=<?= $uuid ?>&mod=-1" class="btn btn-outline-secondary btn-sm px-2 py-0">-</a>
+                        <span class="mx-2 warehouse-cart-item-amount"><?= $item['amount'] ?></span>
+                        <a data-warehouse-cart-item-amount="+1" href="?&action=modify_cart&art_uuid=<?= $uuid ?>&mod=+1" class="btn btn-outline-secondary btn-sm px-2 py-0">+</a>
+                    </div>
+                </td>
+                <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= number_format($item['total'], 2) ?></td>
+                <td>
+                    <a data-warehouse-cart-action="remove" href="?&action=modify_cart&art_uuid=<?= $uuid ?>&mod=del" class="btn btn-outline-danger btn-sm px-2 py-0"><?= Warehouse::getLabel('remove_from_cart') ?></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        <tr>
+            <td class="align-left"><?= Warehouse::getLabel('shipping_costs'); ?></td>
+            <td></td>
+            <td></td>
+            <td class="align-right"><?= Warehouse::getCurrencySign() ?> <?= Shipping::getCostFormatted() ?></td>
+            <td></td>
+        </tr>
+    </tbody>
 </table>
+<div class="position-sticky bottom-0 bg-white shadow p-3">
+    <div class="row g-2">
+        <div class="col text-muted h4"><?= Warehouse::getLabel('cart_subtotal') ?></div>
+        <div class="col-auto h4 fw-bolder"><?= Cart::getSubTotalFormatted() ?></div>
+        <p><a data-warehouse-cart-action="next" class="btn btn-primary" href="<?= $domain->getCheckoutUrl() ?>" class="white_big_circle"><?= Warehouse::getLabel('next'); ?></a></p>
+    </div>
+</div>
 
-<p><a href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>" class="white_big_circle"><?= Warehouse::getLabel('next'); ?></a></p>
+<script nonce="<?= rex_response::getNonce() ?>" type="module">
+    // Wenn data-warehouse-cart-action="remove" angeklickt wird, confirm anzeigen
+    document.querySelectorAll('[data-warehouse-cart-action="remove"]').forEach(function (element) {
+        element.addEventListener('click', function (event) {
+            event.preventDefault();
+            // Bootstrap Loading Animation
+            const loadingButton = event.target.closest('a[data-warehouse-cart-action="remove"]');
+            if (loadingButton) {
+                loadingButton.classList.add('disabled');
+                loadingButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            }
+            if (confirm('<?= rex_escape(Warehouse::getLabel('cart_remove_item_confirm')) ?>')) {
+                window.location.href = this.href;
+            } else {
+                // Wenn der Nutzer nicht bestätigt, dann Button wieder zurücksetzen
+                if (loadingButton) {
+                    loadingButton.classList.remove('disabled');
+                    loadingButton.innerHTML = '<?= rex_escape(Warehouse::getLabel('remove_from_cart')) ?>';
+                }
+            }
+        });
+    });
+    // Wenn die Menge geändert wird, dann Zahl im DOM aktualisieren
+    document.querySelectorAll('[data-warehouse-cart-item="quantity"]').forEach(function (element) {
+        element.addEventListener('click', function (event) {
+            event.preventDefault();
+            // Bootstrap Loading Animation 
+            const loadingButton = event.target.closest('a[data-warehouse-cart-item-amount]');
+            if (loadingButton) {
+                loadingButton.classList.add('disabled');
+                loadingButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            }
+            
+            const target = event.target.closest('[data-warehouse-cart-item-amount]');
+            if (target) {
+                const mod = target.getAttribute('data-warehouse-cart-item-amount');
+                const amountElement = element.querySelector('.warehouse-cart-item-amount');
+                let amount = parseInt(amountElement.textContent, 10);
+                if (mod === '+1') {
+                    amount++;
+                } else if (mod === '-1' && amount > 1) {
+                    amount--;
+                }
+                amountElement.textContent = amount;
+            }
+        });
+    });
+
+    // Klick auf weiter - Loading Animation
+    document.querySelectorAll('[data-warehouse-cart-action="next"]').forEach(function (element) {
+        element.addEventListener('click', function (event) {
+            event.preventDefault();
+            // Bootstrap Loading Animation
+            const loadingButton = event.target.closest('a[data-warehouse-cart-action="next"]');
+            if (loadingButton) {
+                loadingButton.classList.add('disabled');
+                loadingButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            }
+            window.location.href = this.href;
+        });
+    });
+</script>

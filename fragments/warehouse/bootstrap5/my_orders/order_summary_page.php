@@ -63,4 +63,4 @@ $user_data = $this->warehouse_userdata;
     </p>
 <?php endif ?>
 
-<p>{{ Payment Type }}: {{ payment_<?= $user_data['payment_type'] ?> }}</p>
+<p><?= Warehouse::getLabel('payment_type'); ?>: {{ payment_<?= $user_data['payment_type'] ?> }}</p>
