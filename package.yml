@@ -111,7 +111,7 @@ default_config:
     currency_symbol: "€"
     country_codes: "DE"
     cart_mode: "cart"
-    editor: 'class="form-control redactor-editor--default"'
+    editor: ''
     check_weight: 0
     tax_options: '19,7,0'
 
