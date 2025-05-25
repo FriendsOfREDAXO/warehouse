@@ -5,9 +5,7 @@ namespace FriendsOfRedaxo\Warehouse;
 use rex_config;
 use rex_sql;
 use rex;
-use rex_response;
 use rex_logger;
-use rex_yform;
 use rex_fragment;
 use rex_path;
 
@@ -25,6 +23,12 @@ class Warehouse
         'invoice' => 'translate:warehouse.payment_options.invoice',
         'paypal' => 'translate:warehouse.payment_options.paypal',
         'direct_debit' => 'translate:warehouse.payment_options.direct_debit'
+    ];
+
+    public const YCOM_MODES = [
+        'enforce_account' => 'translate:warehouse.ycom_modes.enforce_account',
+        'choose' => 'translate:warehouse.ycom_modes.choose',
+        'guest_only' => 'translate:warehouse.ycom_modes.guest_only',
     ];
 
     public static function getCurrencySign() :string
@@ -325,9 +329,9 @@ class Warehouse
     }
 
     /** @api */
-    public static function getConfig(string $key) :mixed
+    public static function getConfig(string $key, mixed $default = null) :mixed
     {
-        return rex_config::get('warehouse', $key);
+        return rex_config::get('warehouse', $key, $default);
     }
 
     /** @api */
