@@ -43,6 +43,24 @@ class Domain extends rex_yform_manager_dataset
         return $this;
     }
 
+    /* Checkout */
+    /** @api */
+    public function getCheckoutArt() : ?rex_article
+    {
+        return rex_article::get($this->getValue("checkout_art_id"));
+    }
+    public function getCheckoutArtId() : ?int
+    {
+        return $this->getValue("checkout_art_id");
+    }
+    public function getCheckoutUrl() : string
+    {
+        if (null !== ($article = $this->getCheckoutArt())) {
+            return $article->getUrl();
+        }
+        return '';
+    }
+
     /* Warenkorb */
     /** @api */
     public function getCartArt() : ?rex_article
