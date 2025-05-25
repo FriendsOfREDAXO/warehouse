@@ -44,7 +44,7 @@ class ArticleVariant extends rex_yform_manager_dataset
 
     /* Haupt-Artikel */
     /** @api */
-    public function getArticle() : ?rex_yform_manager_dataset
+    public function getArticle() : ?Article
     {
         return $this->getRelatedDataset("article_id");
     }
