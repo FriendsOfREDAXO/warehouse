@@ -110,6 +110,7 @@ warehouse.settings.shipping_calculation_mode.options.order_total = BESTELLSUMME:
 warehouse_settings_domain.fieldset_art_ids = Seiten
 warehouse_settings_domain.yrewrite_domain_id = Domain
 warehouse_settings_domain.cart_art_id = Warenkorb
+warehouse_settings_domain.checkout_art_id = Kasse
 warehouse_settings_domain.shippinginfo_art_id = Versandinfo
 warehouse_settings_domain.order_art_id = Bestellung
 warehouse_settings_domain.address_art_id = Adresse
