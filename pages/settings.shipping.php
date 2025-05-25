@@ -6,6 +6,7 @@
  */
 
 use FriendsOfRedaxo\Warehouse\Shipping;
+use FriendsOfRedaxo\Warehouse\Warehouse;
 
 $addon = rex_addon::get('warehouse');
 echo rex_view::title($addon->i18n('warehouse.title'));
@@ -45,6 +46,12 @@ foreach (Shipping::CALCULATION_MODE_OPTIONS as $key => $value) {
     }
     $select->addOption($this->i18n($label), $key);
 }
+
+// Versandkosten und Versandbedingungen Text
+$field = $form->addTextareaField('shipping_conditions_text');
+$field->setLabel($this->i18n('warehouse.settings.shipping_conditions_text'));
+$field->setNotice($this->i18n('warehouse.settings.shipping_conditions_text.notice'));
+$field->setAttribute('class', 'form-control ' . Warehouse::getConfig('editor'));
 
 $content = $form->get();
 
