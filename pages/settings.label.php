@@ -5,8 +5,6 @@
  * @psalm-scope-this rex_addon
  */
 
-use FriendsOfRedaxo\Warehouse\PayPal;
-
 $addon = rex_addon::get('warehouse');
 echo rex_view::title($addon->i18n('warehouse.title'));
 
@@ -27,7 +25,26 @@ $field->setLabel(rex_i18n::msg('warehouse.settings.label_shipping_costs_free'));
 $field = $form->addInputField('text', 'label_shipping_costs_weight', null, ['class' => 'form-control']);
 $field->setLabel(rex_i18n::msg('warehouse.settings.label_shipping_costs_weight'));
 
+$field = $form->addInputField('text', 'label_checkout', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_checkout'));
 
+$field = $form->addInputField('text', 'label_checkout_instant', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_checkout_instant'));
+
+$field = $form->addInputField('text', 'label_checkout_address', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_checkout_address'));
+
+$field = $form->addInputField('text', 'label_checkout_payment', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_checkout_payment'));
+
+$field = $form->addInputField('text', 'label_cart_subtotal', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_cart_subtotal'));
+
+$field = $form->addInputField('text', 'label_cart_total', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_cart_total'));
+
+$field = $form->addInputField('text', 'label_cart_total_weight', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.label_cart_total_weight'));
 
 $content = $form->get();
 
