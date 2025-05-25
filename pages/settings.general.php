@@ -19,10 +19,6 @@ $select->addOptions(
     PayPal::CURRENCY_CODES
 );
 
-$field = $form->addTextField('currency_symbol');
-$field->setLabel(rex_i18n::msg('warehouse.settings.currency_symbol'));
-$field->setNotice(rex_i18n::msg('warehouse.settings.currency_symbol.notice'));
-
 $field = $form->addTextField('tax_options');
 $field->setLabel(rex_i18n::msg('warehouse.settings.tax_options'));
 $field->setNotice(rex_i18n::msg('warehouse.settings.tax_options.notice'));
@@ -47,8 +43,26 @@ $select->addOptions([
     'cart'=>rex_i18n::msg('warehouse.settings.cart_mode.cart'),
     'page'=>rex_i18n::msg('warehouse.settings.cart_mode.page')
 ]);
-
 $field->setNotice(rex_i18n::msg('warehouse.settings.cart_mode.notice'));
+
+$field = $form->addSelectField('ycom_mode');
+$field->setLabel(rex_i18n::msg('warehouse.settings.ycom_mode'));
+$select = $field->getSelect();
+
+if(rex_addon::get('ycom')->isAvailable()) {
+    $select->addOptions([
+        'guest_only'=>rex_i18n::msg('warehouse.settings.ycom_mode.guest_only'),
+        'choose'=>rex_i18n::msg('warehouse.settings.ycom_mode.choose'),
+        'enforce_account'=>rex_i18n::msg('warehouse.settings.ycom_mode.enforce_account')
+    ]);
+} else {
+    $select->addOptions([
+        'guest_only'=>rex_i18n::msg('warehouse.settings.ycom_mode.guest_only')
+    ]);
+    $select->setAttribute('readonly', 'readonly');
+}
+
+$field->setNotice(rex_i18n::msg('warehouse.settings.ycom_mode.notice'));
 
 // Gewicht ausblenden / einblenden in Formularen und in Optionen berücksichtigen / nicht berücksichtigen
 
@@ -77,8 +91,16 @@ $field->setNotice(rex_i18n::msg('warehouse.settings.framework.notice'));
 $content = $form->get();
 
 $fragment = new rex_fragment();
-$fragment->setVar('title', rex_i18n::msg('warehouse_settings_general'));
+$fragment->setVar('title', rex_i18n::msg('warehouse.settings.payment'));
 $fragment->setVar('body', $content, false);
 $content = $fragment->parse('core/page/section.php');
 
-echo $content;
+?>
+<div class="row">
+    <div class="col-12 col-md-8">
+        <?php echo $content; ?>
+    </div>
+    <div class="col-12 col-md-4">
+        <?= rex_view::info(rex_i18n::msg('warehouse.settings.general.info')); ?>
+    </div>
+</div>
