@@ -3,6 +3,7 @@
 namespace FriendsOfRedaxo\Warehouse;
 
 use rex_addon;
+use rex_config;
 use rex_extension;
 use rex_extension_point;
 use rex_i18n;
@@ -179,7 +180,7 @@ class Cart
 
     public static function getCartTotalFormatted(): string
     {
-        return rex_config::get('warehouse', 'currency_symbol') . ' ' . number_format(self::getCartTotal(), 2);
+        return Warehouse::getCurrencySign() . ' ' . number_format(self::getCartTotal(), 2, ',', '');
     }
 
 
@@ -189,6 +190,15 @@ class Cart
     public static function getDiscountValue()
     {
         return 0;
+    }
+
+    public static function getDiscountValueFormatted(): string
+    {
+        $discount = self::getDiscountValue();
+        if ($discount > 0) {
+            return Warehouse::getCurrencySign() . ' ' . number_format($discount, 2, ',', '');
+        }
+        return '';
     }
 
     /**
@@ -204,6 +214,11 @@ class Cart
             $sum += (float) $item['total'];
         }
         return $sum;
+    }
+
+    public static function getSubTotalFormatted(): string
+    {
+        return Warehouse::getCurrencySign() . ' ' . number_format(self::getSubTotal(), 2, ',', '');
     }
 
     public static function getSubTotalNetto()
