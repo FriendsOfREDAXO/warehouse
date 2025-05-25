@@ -76,21 +76,13 @@ rex_sql_table::get(rex::getTable('warehouse_order'))
     ->ensureColumn(new rex_sql_column('order_text', 'text'))
     ->ensureColumn(new rex_sql_column('order_json', 'text'))
     ->ensureColumn(new rex_sql_column('order_total', 'decimal(10,2)', true))
-    ->ensureColumn(new rex_sql_column('ycom_userid', 'int(11)'))
+    ->ensureColumn(new rex_sql_column('ycom_user_id', 'int(11)'))
     ->ensureColumn(new rex_sql_column('payment_type', 'varchar(191)', false, ''))
     ->ensureColumn(new rex_sql_column('payed', 'tinyint(1)'))
     ->ensureColumn(new rex_sql_column('imported', 'tinyint(1)', false, '0'))
     ->ensureColumn(new rex_sql_column('updatedate', 'datetime'))
     ->ensureIndex(new rex_sql_index('firstname_lastname_company_email', ['firstname', 'lastname', 'company', 'email'], rex_sql_index::FULLTEXT))
     ->ensure();
-
-rex_sql_table::get(rex::getTable('warehouse_shipping'))
-    ->ensurePrimaryIdColumn()
-    ->ensureColumn(new rex_sql_column('name', 'varchar(191)', false, ''))
-    ->ensureColumn(new rex_sql_column('mode', 'text'))
-    ->ensureColumn(new rex_sql_column('params', 'varchar(191)', false, ''))
-    ->ensure();
-
 
 rex_sql_table::get(rex::getTable('warehouse_settings_domain'))
     ->ensurePrimaryIdColumn()
@@ -104,16 +96,4 @@ rex_sql_table::get(rex::getTable('warehouse_settings_domain'))
     ->ensureColumn(new rex_sql_column('thankyou_art_id', 'int(11)'))
     ->ensureColumn(new rex_sql_column('email_template_seller', 'varchar(191)'))
     ->ensureColumn(new rex_sql_column('order_email', 'varchar(191)', false, ''))
-    ->ensure();
-
-
-rex_sql_table::get(rex::getTable('warehouse_country'))
-    ->ensurePrimaryIdColumn()
-    ->ensureColumn(new rex_sql_column('code', 'varchar(191)', false, ''))
-    ->ensureColumn(new rex_sql_column('name', 'varchar(191)', false, ''))
-    ->ensureColumn(new rex_sql_column('mode', 'text'))
-    ->ensureColumn(new rex_sql_column('status', 'text'))
-    ->ensureColumn(new rex_sql_column('prio', 'int(11)'))
-    ->ensureColumn(new rex_sql_column('tax', 'tinyint(1)', false, '0'))
-    ->ensureIndex(new rex_sql_index('name', ['name'], rex_sql_index::UNIQUE))
     ->ensure();
