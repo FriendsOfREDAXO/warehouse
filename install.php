@@ -1,6 +1,6 @@
 <?php
 
-use FriendsOfRedaxo\Warehouse\Warehouse;
+use Alexplusde\Tracks\Editor;
 
 // Überprüfe aktuell installierte Version von Warehouse
 /*
@@ -29,16 +29,21 @@ if (rex_addon::get('url')->isAvailable()) {
     $this->includeFile(__DIR__ . '/install/url_profile.php');
 }
 
-if(rex_addon::get('mediapool')->isAvailable()) {
+if (rex_addon::get('mediapool')->isAvailable()) {
     $this->includeFile(__DIR__ . '/install/media.php');
 }
 
-if (rex_config::get('store_name') == '') {
+if (rex_config::get('warehouse', 'store_name') == '') {
     rex_config::set('store_name', rex::getServerName());
 }
 
-if (rex_config::get('order_email') == '') {
+if (rex_config::get('warehouse', 'order_email') == '') {
     rex_config::set('order_email', rex::getErrorEmail());
+}
+
+if (rex_config::get('warehouse', 'editor') == '') {
+    $class = Editor::getFirstEditorProfile();
+    rex_config::set('warehouse', 'editor', $class);
 }
 
 /* Initialisiere Struktur: Artikel, Kategorien, Domain-Profil */
@@ -49,7 +54,7 @@ $this->includeFile(__DIR__ . '/install/structure.php');
 // Sonst funktioniert das Klonen mit UUID nicht
 // https://github.com/yakamara/yform/commit/df79eff090ad0460c655c2f852b17e6aec53987a
 // https://github.com/yakamara/yform/pull/1517
-if(rex_version::compare(rex_addon::get('yform')->getVersion(), '5.0.0', '<=')) {
+if (rex_version::compare(rex_addon::get('yform')->getVersion(), '5.0.0', '<=')) {
     $yform = rex_addon::get('yform');
     $source = __DIR__ . '/install/patch/uuid.php';
     $target = $yform->getPath('lib/yForm/value/uuid.php');
