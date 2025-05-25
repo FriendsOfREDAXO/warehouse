@@ -151,7 +151,7 @@ class Category extends \rex_yform_manager_dataset
             ->find();
     }
 
-    public function getArticles(int $status = 1, int $limit = 24, int $offset = 0)
+    public function getArticles(int $status = 1, int $limit = 48, int $offset = 0)
     {
         return Article::query()
             ->where('category_id', $this->getId())
@@ -160,11 +160,15 @@ class Category extends \rex_yform_manager_dataset
             ->find();
     }
 
-    public static function findRootCategories(int $status = 1)
+    public static function findRootCategories(int $status = 1, int $limit = 48, int $offset = 0)
     {
         $categories = self::query()
             ->where('status', $status, '>=')
+            ->where('parent_id', 0)
+            ->orderBy('prio')
+            ->limit($offset, $limit)
             ->find();
+            
         return $categories;
     }
 
