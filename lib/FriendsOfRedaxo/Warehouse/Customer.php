@@ -2,197 +2,139 @@
 
 namespace FriendsOfRedaxo\Warehouse;
 
-use rex_addon;
+use rex_ycom_auth;
 use rex_ycom_user;
+use FriendsOfRedaxo\Warehouse\CustomerAddress;
 
-class Customer
+class Customer extends rex_ycom_user
 {
-    const CUSTOMER = [
-        'firstname' => '',
-        'lastname' => '',
-        'company' => '',
-        'billing_address' => [
-            'firstname' => '',
-            'lastname' => '',
-            'company' => '',
-            'street' => '',
-            'zip' => '',
-            'city' => '',
-        ],
-        'shipping_address' => [
-            'firstname' => '',
-            'lastname' => '',
-            'company' => '',
-            'street' => '',
-            'zip' => '',
-            'city' => '',
-        ],
-        'phone' => '',
-        'email' => '',
-        'birthdate' => '',
-    ];
+    public static function getCurrent()
+    {
+        $user_id = rex_ycom_auth::getUser()?->getValue('id') ?? null;
+        if (!$user_id) {
+            return null;
+        }
+        $customer = self::get($user_id);
+
+        return $customer;
+    }
+
+    /* Vorname */
+    /** @api */
+    public function getFirstname() : mixed {
+        return $this->getValue("firstname");
+    }
+    /** @api */
+    public function setFirstname(mixed $value) : self {
+        $this->setValue("firstname", $value);
+        return $this;
+    }
     
-    private $customer = [];
+    /* E-Mail */
+    /** @api */
+    public function getEmail() : mixed {
+        return $this->getValue("email");
+    }
+    /** @api */
+    public function setEmail(mixed $value) : self {
+        $this->setValue("email", $value);
+        return $this;
+    }
 
-    // initialisieren des Kunden
-    public static function init()
+    /* [translate:warehouse.ycom_user.lastname] */
+    /** @api */
+    public function getLastname() : ?string {
+        return $this->getValue("lastname");
+    }
+    /** @api */
+    public function setLastname(mixed $value) : self {
+        $this->setValue("lastname", $value);
+        return $this;
+    }
+
+    /* [translate:warehouse.ycom_user.company] */
+    /** @api */
+    public function getCompany() : ?string {
+        return $this->getValue("company");
+    }
+    /** @api */
+    public function setCompany(mixed $value) : self {
+        $this->setValue("company", $value);
+        return $this;
+    }
+
+    /* [translate:warehouse.ycom_user.department] */
+    /** @api */
+    public function getDepartment() : ?string {
+        return $this->getValue("department");
+    }
+    /** @api */
+    public function setDepartment(mixed $value) : self {
+        $this->setValue("department", $value);
+        return $this;
+    }
+
+    /* [translate:warehouse.ycom_user.address] */
+    /** @api */
+    public function getAddress() : ?string {
+        return $this->getValue("address");
+    }
+    /** @api */
+    public function setAddress(mixed $value) : self {
+        $this->setValue("address", $value);
+        return $this;
+    }
+
+    /* [translate:warehouse.ycom_user.phone] */
+    /** @api */
+    public function getPhone() : ?string {
+        return $this->getValue("phone");
+    }
+    /** @api */
+    public function setPhone(mixed $value) : self {
+        $this->setValue("phone", $value);
+        return $this;
+    }
+
+    /* [translate:warehouse.ycom_user.zip] */
+    /** @api */
+    public function getZip() : ?string {
+        return $this->getValue("zip");
+    }
+    /** @api */
+    public function setZip(mixed $value) : self {
+        $this->setValue("zip", $value);
+        return $this;
+    }
+
+    /* [translate:warehouse.ycom_user.city] */
+    /** @api */
+    public function getCity() : ?string {
+        return $this->getValue("city");
+    }
+    /** @api */
+    public function setCity(mixed $value) : self {
+        $this->setValue("city", $value);
+        return $this;
+    }
+
+    public function getShippingAddress() : ?CustomerAddress
     {
-        if (rex_session('warehouse_customer', 'array', null) === null) {
-            rex_set_session('warehouse_customer', self::CUSTOMER);
+        $address = CustomerAddress::query()
+            ->where('ycom_user_id', $this->getValue('id'))
+            ->where('type', 'shipping')
+            ->findOne();
+        if ($address) {
+            return $address;
         }
-    }
-
-    // set und get Methoden für Vorname, Nachname, Firma, Rechnungsadresse (Straße, PLZ, Ort), Lieferadresse (Straße, PLZ, Ort), Telefon, E-Mail
-    /** @api */
-    public function setFirstname(string $firstname): self
-    {
-        $this->customer['firstname'] = $firstname;
-        return $this;
-    }
-    /** @api */
-    public function getFirstname(): string
-    {
-        return $this->customer['firstname'];
-    }
-
-    /** @api */
-    public function setLastname(string $lastname): self
-    {
-        $this->customer['lastname'] = $lastname;
-        return $this;
-    }
-    /** @api */
-    public function getLastname(): string
-    {
-        return $this->customer['lastname'];
-    }
-
-    /** @api */
-    public function setCompany(string $company): self
-    {
-        $this->customer['company'] = $company;
-        return $this;
-    }
-    /** @api */
-    public function getCompany(): string
-    {
-        return $this->customer['company'];
-    }
-
-    /** @api */
-    public function setBillingAddress(string $street, string $zip, string $city): self
-    {
-        $this->customer['billing_address']['firstname'] = $this->customer['firstname'];
-        $this->customer['billing_address']['lastname'] = $this->customer['lastname'];
-        $this->customer['billing_address']['company'] = $this->customer['company'];
-        $this->customer['billing_address']['street'] = $street;
-        $this->customer['billing_address']['zip'] = $zip;
-        $this->customer['billing_address']['city'] = $city;
-        return $this;
-    }
-    /** @api */
-    public function getBillingAddress(): array
-    {
-        return $this->customer['billing_address'];
-    }
-
-    /** @api */
-    public function setShippingAddress(string $street, string $zip, string $city): self
-    {
-        $this->customer['shipping_address']['firstname'] = $this->customer['firstname'];
-        $this->customer['shipping_address']['lastname'] = $this->customer['lastname'];
-        $this->customer['shipping_address']['company'] = $this->customer['company'];
-        $this->customer['shipping_address']['street'] = $street;
-        $this->customer['shipping_address']['zip'] = $zip;
-        $this->customer['shipping_address']['city'] = $city;
-        return $this;
-    }
-
-    /** @api */
-    public function getShippingAddress(): array
-    {
-        return $this->customer['shipping_address'];
-    }
-
-    /** @api */
-    public function setPhone(string $phone): self
-    {
-        $this->customer['phone'] = $phone;
-        return $this;
-    }
-
-    /** @api */
-    public function getPhone(): string
-    {
-        return $this->customer['phone'];
-    }
-
-    /** @api */
-    public function setEmail(string $email): self
-    {
-        $this->customer['email'] = $email;
-        return $this;
-    }
-
-    /** @api */
-    public function getEmail(): string
-    {
-        return $this->customer['email'];
-    }
-
-    /** @api */
-    public function getBirthdate(): string
-    {
-        return $this->customer['birthdate'];
-    }
-
-    /** @api */
-    public function setBirthdate(string $birthdate): self
-    {
-        $this->customer['birthdate'] = $birthdate;
-        return $this;
-    }
-
-
-    // speichern des Kunden in der Session
-    /** @api */
-    public function save()
-    {
-        rex_set_session('warehouse_customer', $this->customer);
-    }
-
-    // laden des Kunden aus der Session
-    /** @api */
-    public function load()
-    {
-        $this->customer = rex_session('warehouse_customer', 'array', []);
-    }
-
-    // löschen des Kunden aus der Session
-    /** @api */
-    public function delete()
-    {
-        rex_set_session('warehouse_customer', []);
-    }
-
-    // Customer aus YCom-User erstellen, wenn YCom installiert ist und der User eingeloggt ist
-    /** @api */
-    public function createFromYComUser()
-    {
-        if (rex_addon::get('ycom')->isAvailable()) {
-            $user = rex_ycom_user::getMe();
-            if($user === null) {
-                return;
-            }
-            $this->setFirstname($user->getValue('firstname'));
-            $this->setLastname($user->getValue('lastname'));
-            $this->setEmail($user->getValue('email'));
-            $this->setPhone($user->getValue('phone'));
-            $this->setCompany($user->getValue('company'));
-            $this->setBillingAddress($user->getValue('address_street'), $user->getValue('address_zip'), $user->getValue('address_city'));
-            $this->setShippingAddress($user->getValue('address_street'), $user->getValue('address_zip'), $user->getValue('address_city'));
-            $this->save();
+        // Fallback to the main address if no shipping address is set
+        $address = CustomerAddress::query()
+            ->where('ycom_user_id', $this->getValue('id'))
+            ->findOne();
+        if ($address) {
+            return $address;
         }
+        return null;
     }
 
 }

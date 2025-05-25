@@ -25,8 +25,8 @@ if (rex_addon::get('yform')->isAvailable() && !rex::isSafeMode()) {
     rex_yform_manager_dataset::setModelClass('rex_warehouse_category', Category::class);
     rex_yform_manager_dataset::setModelClass('rex_warehouse_order', Order::class);
     rex_yform_manager_dataset::setModelClass('rex_warehouse_settings_domain', Domain::class);
-    rex_yform_manager_dataset::setModelClass('rex_warehouse_country', Country::class);
-    rex_yform_manager_dataset::setModelClass('rex_warehouse_shipping', Shipping::class);
+    rex_yform_manager_dataset::setModelClass('rex_ycom_user', Customer::class);
+    rex_yform_manager_dataset::setModelClass('rex_warehouse_customer_address', CustomerAddress::class);
 }
 
 rex_yform::addTemplatePath($this->getPath('ytemplates'));
@@ -42,6 +42,21 @@ if (rex::isBackend() && rex_be_controller::getCurrentPagePart(1) == 'warehouse')
 if (rex::isFrontend()) {
     rex_login::startSession();
 
+    $domain  = Domain::getCurrent();
+    $this->setProperty('warehouse_domain', $domain);
+
+    $action = rex_request('warehouse_deeplink', 'string', '');
+    if($action !== '') {
+        switch ($action) {
+            case 'cart':
+                rex_response::sendRedirect($domain->getCartArtUrl());
+                break;
+            case 'order':
+                rex_response::sendRedirect($domain->getOrderArtUrl());
+                break;
+        }
+    }
+
     rex_extension::register('PACKAGES_INCLUDED', function () {
 
         if (rex_addon::get('url') !== null) {
@@ -53,19 +68,20 @@ if (rex::isFrontend()) {
                 $data_id = (int) $manager->getDatasetId();
                 if ($profile->getTableName() == rex::getTable('warehouse_article')) {
                     $warehouse_prop['sitemode'] = 'article';
+                    $warehouse_prop['seo_title'] = $seo['title'] . "👀👀";
                 } elseif ($profile->getTableName() == rex::getTable('warehouse_category')) {
                     $warehouse_prop['sitemode'] = 'category';
-                    $warehouse_prop['seo_title'] = $seo['title'];
+                    $warehouse_prop['seo_title'] = $seo['title'] . "👀";
                     $warehouse_prop['path'] = Warehouse::getCategoryPath($data_id);
                 }
-                $curl = rtrim(rex_yrewrite::getFullPath(), '/') . $_SERVER['REQUEST_URI'];
+                $curl = Domain::getCurrentUrl() . $_SERVER['REQUEST_URI'];
                 rex_set_session('current_page', $curl);
             }
 
             if (rex_article::getCurrentId() == Warehouse::getConfig('thankyou_page')) {
                 if (rex_get('paymentId')) {
                     PayPal::ExecutePayment();
-                    Warehouse::emptyCart();
+                    Cart::empty();
                 }
             }
         }
@@ -85,23 +101,6 @@ if (rex::isBackend() && rex::getUser()) {
 }
 
 /* quick_navigation Suche */
-if (rex::isBackend() && rex_addon::get('quick_navigation')->isAvailable()) {
+if (rex::isBackend() && rex::getUser() && rex_addon::get('quick_navigation')->isAvailable()) {
     \FriendsOfRedaxo\QuickNavigation\Button\ButtonRegistry::registerButton(new QuickNavigationButton(), 5);
-}
-
-if(rex::isFrontend()) {
-    $domain  = Domain::getCurrent();
-    $this->setProperty('domain', $domain);
-
-    $action = rex_request('warehouse_deeplink', 'string', '');
-    if($action !== '') {
-        switch ($action) {
-            case 'cart':
-                rex_response::sendRedirect($domain->getCartArtUrl());
-                break;
-            case 'order':
-                rex_response::sendRedirect($domain->getOrderArtUrl());
-                break;
-        }
-    }
 }
