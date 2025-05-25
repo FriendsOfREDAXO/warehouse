@@ -47,6 +47,7 @@ warehouse_settings_domain = Domain-Profile
 warehouse_settings_tawarehouse_article_variant.weightx = Steuern
 warehouse_settings_log = Log
 warehouse_settings_discount = Rabatte
+warehouse_settings_label = Text
 warehouse_settings_setup = Setup
 warehouse_docs = Hilfe
 
@@ -352,3 +353,10 @@ warehouse.order.details.error.no_data_id = Bitte zunächst aus der Übresicht od
 
 warehouse.settings.framework = Gewünschtes Ausgabe-Framework
 warehouse.settings.framework.notice = Derzeit wird nur Bootstrap 5 unterstützt. <code>bootstrap5</code> ist der Standard-Wert. Du kannst auch den Ordner <code>src/addons/warehouse/fragments/bootstrap5</code> nach <code>src/addons/project/fragments/bootstrap5</code> kopieren und anpassen. Weitere Informationen dazu in den Docs.
+
+warehouse.settings.shipping_conditions_text = Versandkosten-Bedingungen
+warehouse.settings.shipping_conditions_text.notice = Text, der unter den Versandkosten angezeigt wird. Z.B. "Versandkostenfrei ab 50 Euro Bestellwert." oder "Versandkosten nach Gewicht gestaffelt."
+
+
+warehouse.settings.label_cart = Warenkorb 
+warehouse.settings.label_cart_empty = Der Warenkorb ist leer.
