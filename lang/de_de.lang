@@ -334,8 +334,8 @@ warehouse.settings.payment.store_country_code.notice = z.B. <code>de-DE</code> -
 warehouse.settings.payment.paypal_client_id = Paypal Client Id
 warehouse.settings.payment.paypal_secret = Paypal Secret
 
-warehouse.settings.payment.sandboxmode = Paypal Sandbox ein
-warehouse.settings.payment.sandboxmode.option = Paypal Sandbox ein
+warehouse.settings.payment.sandboxmode = Paypal Sandbox
+warehouse.settings.payment.sandboxmode.option = Paypal Sandbox aktivieren (Testbestellungen)
 
 warehouse.settings.payment.paypal_sandbox_client_id = Paypal Sandbox Client Id
 warehouse.settings.payment.paypal_sandbox_secret = Paypal Sandbox Secret
@@ -347,3 +347,8 @@ warehouse.settings.payment.info = Derzeit wird nur PayPal als Zahlungsanbieter u
 
 warehouse.settings.cart_mode.cart = Warenkorb anzeigen
 warehouse.settings.cart_mode.page = Produktseite anzeigen
+
+warehouse.order.details.error.no_data_id = Bitte zunächst aus der Übresicht oder Suche eine Bestellung auswählen.
+
+warehouse.settings.framework = Gewünschtes Ausgabe-Framework
+warehouse.settings.framework.notice = Derzeit wird nur Bootstrap 5 unterstützt. <code>bootstrap5</code> ist der Standard-Wert. Du kannst auch den Ordner <code>src/addons/warehouse/fragments/bootstrap5</code> nach <code>src/addons/project/fragments/bootstrap5</code> kopieren und anpassen. Weitere Informationen dazu in den Docs.
