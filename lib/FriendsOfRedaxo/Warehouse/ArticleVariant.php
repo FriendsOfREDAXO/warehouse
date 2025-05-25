@@ -193,7 +193,7 @@ class ArticleVariant extends rex_yform_manager_dataset
         return $yform;
     }
 
-    public function getUrl(string $profile = 'article-variant-id'): string
+    public function getUrl(string $profile = 'warehouse-article-variant-id'): string
     {
         return rex_getUrl(null, null, [$profile => $this->getId()]);
     }

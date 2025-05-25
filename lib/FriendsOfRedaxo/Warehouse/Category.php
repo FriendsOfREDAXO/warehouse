@@ -151,20 +151,21 @@ class Category extends \rex_yform_manager_dataset
             ->find();
     }
 
-    public function getArticles(int $status = 1)
+    public function getArticles(int $status = 1, int $limit = 24, int $offset = 0)
     {
         return Article::query()
             ->where('category_id', $this->getId())
             ->where('status', $status, '>=')
+            ->limit($offset, $limit)
             ->find();
     }
 
     public static function findRootCategories(int $status = 1)
     {
-        return self::query()
-            ->where('parent_id', 0)
+        $categories = self::query()
             ->where('status', $status, '>=')
             ->find();
+        return $categories;
     }
 
     public static function getStatusOptions() : array
@@ -240,7 +241,7 @@ class Category extends \rex_yform_manager_dataset
     );
 }
 
-    public function getUrl(string $profile = 'category-id'): string
+    public function getUrl(string $profile = 'warehouse-category-id'): string
     {
         return rex_getUrl(null, null, [$profile => $this->getId()]);
     }

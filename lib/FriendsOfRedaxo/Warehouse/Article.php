@@ -386,7 +386,7 @@ class Article extends rex_yform_manager_dataset
         return $yform;
     }
 
-    public function getUrl(string $profile = 'article-id'): string
+    public function getUrl(string $profile = 'warehouse-article-id'): string
     {
         return rex_getUrl(null, null, [$profile => $this->getId()]);
     }
