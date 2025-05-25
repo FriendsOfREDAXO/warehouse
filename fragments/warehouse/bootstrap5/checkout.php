@@ -8,6 +8,12 @@ $customerAddress = $customer?->getAddress();
 $customer_shipping_address = $customer?->getShippingAddress();
 $current_payment_types = Warehouse::getAllowedPaymentOptions();
 
+// in Abhängigkeit von YCom-Mode erst einloggen / registrieren, oder Gast-Bestellung ermöglichen
+
+$ycom_mode = Warehouse::getConfig('ycom_mode', 'guest_only');
+
+
+
 $yform = new rex_yform();
 
 // $yf->setObjectparams('form_action',rex_getUrl($article_id));
