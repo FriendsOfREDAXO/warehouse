@@ -12,6 +12,8 @@ use rex_yform_manager_dataset;
 use rex_extension_point;
 use rex_i18n;
 use rex_formatter;
+use rex_response;
+use rex_yform;
 
 class Order extends rex_yform_manager_dataset
 {
@@ -539,5 +541,27 @@ class Order extends rex_yform_manager_dataset
             return '<i class="rex-icon fa-shopping-cart"></i> ' . rex_i18n::msg('warehouse_order.icon_label');
         }
         return '<i class="rex-icon fa-shopping-cart"></i>';
+    }
+    
+    public function sendEmails(bool $send_redirect = true) :void
+    {
+        $yform = new rex_yform();
+
+        $yform->setObjectparams('csrf_protection', false);
+        $yform->setValueField('hidden', ['order_id', $this->getId()]);
+
+        foreach (explode(',', Warehouse::getConfig('order_email')) as $email) {
+            $yform->setActionField('tpl2email', [Warehouse::getConfig('email_template_seller'), $email]);
+        }
+        $yform->setActionField('tpl2email', [Warehouse::getConfig('email_template_customer'), 'email']);
+        $yform->setActionField('callback', ['Cart::empty']);
+
+        $yform->getForm();
+        $yform->setObjectparams('send', 1);
+        $yform->executeActions();
+
+        if ($send_redirect) {
+            rex_response::sendRedirect(rex_getUrl(Warehouse::getConfig('thankyou_page'), '', json_decode(rex_config::get('warehouse', 'paypal_getparams'), true), '&'));
+        }
     }
 }

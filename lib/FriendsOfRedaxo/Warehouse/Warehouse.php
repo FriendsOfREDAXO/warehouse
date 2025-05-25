@@ -2,20 +2,14 @@
 
 namespace FriendsOfRedaxo\Warehouse;
 
-use InvalidArgumentException;
-use rex_ycom_auth;
 use rex_config;
 use rex_sql;
 use rex;
 use rex_response;
-use rex_addon;
-use rex_clang;
-use rex_exception;
 use rex_logger;
 use rex_yform;
 use rex_fragment;
 use rex_path;
-use rex_yform_email_template;
 
 class Warehouse
 {
@@ -26,13 +20,6 @@ class Warehouse
     public const PATH_ORDER = 'warehouse/order/list';
     public const PATH_ORDER_DETAIL = 'warehouse/order/detail';
     
-
-    public static $fields = [
-        'salutation','firstname', 'lastname', 'birthdate', 'company', 'department', 'address', 'zip', 'city', 'country', 'email', 'phone',
-        'to_salutation','to_firstname', 'to_lastname', 'to_company', 'to_department', 'to_address', 'to_zip', 'to_city', 'to_country',
-        'separate_delivery_address', 'payment_type', 'note', 'iban', 'bic', 'direct_debit_name', 'info_news_ok'
-    ];
-
     public const PAYMENT_OPTIONS = [
         'prepayment' => 'translate:warehouse.payment_options.prepayment',
         'invoice' => 'translate:warehouse.payment_options.invoice',
@@ -277,13 +264,21 @@ class Warehouse
     public static function saveCustomerInSession($params)
     {
         $value_pool = $params->params['value_pool']['email'];
-        foreach (self::$fields as $field) {
-            if (in_array('to_' . $field, self::$fields)) {
-                $value_pool['to_' . $field] = $value_pool['to_' . $field] ?? ($value_pool[$field] ?? '');
+        $customer_session = [];
+        foreach ($value_pool as $field => $value) {
+            // Wenn es ein Feld mit 'to_' startet
+            if (str_starts_with($field, 'to_')) {
+                // Entferne 'to_' vom Feldnamen
+                $new_field = substr($field, 3);
+                // Speichere den Wert im Session-Array
+                $customer_session[$new_field] = $value;
+            } else {
+                // Andernfalls speichere den Wert direkt
+                $customer_session[$field] = $value;
             }
         }
 
-        rex_set_session('user_data', $value_pool);
+        rex_set_session('user_data', $customer_session);
     }
 
     public static function getCategoryPath(int $cat_id)
@@ -302,47 +297,13 @@ class Warehouse
         return array_reverse($path);
     }
 
-    public static function getPaymentOptions()
+    public static function getPaymentOptions() :array
     {
         return self::PAYMENT_OPTIONS;
     }
 
-    public static function sendNotificationEmail($send_redirect = true, $order_id = '')
-    {
-        $cart = Cart::get();
-        $warehouse_userdata = self::getCustomerData();
-
-        $yform = new rex_yform();
-        $fragment = new rex_fragment();
-        $fragment->setVar('cart', $cart);
-        $fragment->setVar('warehouse_userdata', $warehouse_userdata);
-
-        $yform->setObjectparams('csrf_protection', false);
-        $yform->setValueField('hidden', ['order_id', $order_id]);
-        $yform->setValueField('hidden', ['email', $warehouse_userdata['email']]);
-        $yform->setValueField('hidden', ['firstname', $warehouse_userdata['firstname']]);
-        $yform->setValueField('hidden', ['lastname', $warehouse_userdata['lastname']]);
-        $yform->setValueField('hidden', ['iban', $warehouse_userdata['iban']]);
-        $yform->setValueField('hidden', ['bic', $warehouse_userdata['bic']]);
-        $yform->setValueField('hidden', ['direct_debit_name', $warehouse_userdata['direct_debit_name']]);
-        $yform->setValueField('hidden', ['payment_type', $warehouse_userdata['payment_type']]);
-        $yform->setValueField('hidden', ['info_news_ok', $warehouse_userdata['info_news_ok']]);
-
-        foreach (explode(',', Warehouse::getConfig('order_email')) as $email) {
-            $yform->setActionField('tpl2email', [Warehouse::getConfig('email_template_seller'), $email]);
-        }
-        $yform->setActionField('tpl2email', [Warehouse::getConfig('email_template_customer'), 'email']);
-        $yform->setActionField('callback', ['warehouse::clear_cart']);
-
-        $yform->getForm();
-        $yform->setObjectparams('send', 1);
-        $yform->executeActions();
-        if (rex::isDebugMode()) {
-            rex_logger::factory()->log('notice', 'Warehouse Order Email sent', [], __FILE__, __LINE__);
-        }
-        if ($send_redirect) {
-            rex_response::sendRedirect(rex_getUrl(Warehouse::getConfig('thankyou_page'), '', json_decode(rex_config::get('warehouse', 'paypal_getparams'), true), '&'));
-        }
+    public static function getAllowedPaymentOptions() :array {
+        return self::PAYMENT_OPTIONS;
     }
 
     public static function restore_session_from_payment_id($payment_id)
@@ -361,37 +322,6 @@ class Warehouse
             ]), [], __FILE__, __LINE__);
         }
         session_id($result[0]['session_id']);
-    }
-
-    public static function sendMails()
-    {
-        $warehouse_userdata = Warehouse::getCustomerData();
-
-        $yf = new rex_yform();
-
-        $yf->setObjectparams('csrf_protection', false);
-
-        $yf->setValueField('hidden', ['email', $warehouse_userdata['email']]);
-        $yf->setValueField('hidden', ['company', $warehouse_userdata['company']]);
-        $yf->setValueField('hidden', ['salutation', $warehouse_userdata['salutation']]);
-        $yf->setValueField('hidden', ['firstname', $warehouse_userdata['firstname']]);
-        $yf->setValueField('hidden', ['lastname', $warehouse_userdata['lastname']]);
-        $yf->setValueField('hidden', ['payment_type', $warehouse_userdata['payment_type']]);
-
-        foreach (explode(',', Warehouse::getConfig('order_email')) as $email) {
-            $yf->setValueField('html', ['', $email]);
-            $yf->setActionField('tpl2email', [Warehouse::getConfig('email_template_seller'), trim($email)]);
-        }
-
-        $etpl = Warehouse::getConfig('email_template_customer');
-        if (rex_yform_email_template::getTemplate($etpl . '_' . rex_clang::getCurrent()->getCode())) {
-            $etpl = $etpl . '_' . rex_clang::getCurrent()->getCode();
-        }
-        $yf->setActionField('tpl2email', [$etpl, 'email']);
-
-        $yf->executeActions();
-        $yf->setObjectparams('send', 1);
-        $yf->getForm();
     }
 
     /** @api */
