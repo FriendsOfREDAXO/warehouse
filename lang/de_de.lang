@@ -116,8 +116,15 @@ warehouse_settings_domain.thankyou_art_id = Danke
 warehouse_settings_domain.fieldset_email = E-Mail-Einstellungen
 warehouse_settings_domain.email_template_customer = E-Mail-Template an Kunden
 warehouse_settings_domain.email_template_seller = E-Mail-Template an Verkäufer
+warehouse_settings_domain.email_signature = E-Mail-Signatur
 warehouse_settings_domain.order_email = Empfänger E-Mail für Bestellungen
 warehouse_settings_domain.order_email.notice = Mehrere Empfänger durch Komma trennen
+
+warehouse_settings_domain.fieldset_sepa = SEPA-Überweisung
+warehouse_settings_domain.sepa_account_holder_name = Kontoinhaber
+warehouse_settings_domain.sepa_bank_name = Bankname
+warehouse_settings_domain.sepa_bic = BIC
+warehouse_settings_domain.sepa_iban = IBAN
 
 warehouse_settings_domain.fieldset_end = 🔚
 
