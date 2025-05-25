@@ -307,7 +307,7 @@ class Order extends rex_yform_manager_dataset
     {
         if ($ycom_user_id === null) {
             $ycom_user = rex_ycom_auth::getUser();
-            $ycom_user_id = $ycom_user->getId();
+            $ycom_user_id = $ycom_user?->getId();
         }
         $data = self::query()
                 ->alias('orders')
@@ -411,11 +411,11 @@ class Order extends rex_yform_manager_dataset
             },
         );
 
-        $list->setColumnPosition('ycom_userid', 2);
-        $list->setColumnLabel('ycom_userid', '<i class=\'rex-icon rex-icon-user\'></i>');
+        $list->setColumnPosition('ycom_user_id', 2);
+        $list->setColumnLabel('ycom_user_id', '<i class=\'rex-icon rex-icon-user\'></i>');
 
         $list->setColumnFormat(
-            'ycom_userid',
+            'ycom_user_id',
             'custom',
             static function ($a) {
                 if ($a['value'] > 0 && rex_addon::get('ycom')->isAvailable()) {
@@ -459,9 +459,9 @@ class Order extends rex_yform_manager_dataset
                 $return = '';
 
                 if ($order_total > 0) {
-                    $return .= '<span class="">' . rex_formatter::number($order_total) ." " . rex_config::get('warehouse', 'currency') .  '</span><br>';
+                    $return .= '<span class="">' . rex_formatter::number($order_total) ." " . Warehouse::getCurrencySign() .  '</span><br>';
                 } else {
-                    $return .= '<span class="text-danger">' . rex_formatter::number($order_total) ." " . rex_config::get('warehouse', 'currency') . '</span><br>';
+                    $return .= '<span class="text-danger">' . rex_formatter::number($order_total) ." " . Warehouse::getCurrencySign() . '</span><br>';
                 }
 
                 if ($payment_confirm != '') {
