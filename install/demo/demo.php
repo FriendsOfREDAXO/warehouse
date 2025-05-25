@@ -67,6 +67,8 @@ if(rex_addon::get('yform_seeder')->isAvailable()) {
         $sql->setValue('id', $i);
         $sql->setValue('name', $faker->words(2, true));
         $sql->setValue('uuid', $faker->uuid());
+        $sql->setValue('parent_id', $faker->biasedNumberBetween(0, 10));
+        $sql->setValue('status', $faker->randomElement(Category::getStatusOptions()));
         $sql->setValue('createdate', $faker->dateTime()->format('Y-m-d H:i:s'));
         $sql->setValue('updatedate', $faker->dateTime()->format('Y-m-d H:i:s'));
 
