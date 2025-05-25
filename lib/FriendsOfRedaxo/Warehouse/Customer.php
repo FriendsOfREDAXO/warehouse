@@ -3,10 +3,10 @@
 namespace FriendsOfRedaxo\Warehouse;
 
 use rex_ycom_auth;
-use rex_ycom_user;
 use FriendsOfRedaxo\Warehouse\CustomerAddress;
+use rex_yform_manager_dataset;
 
-class Customer extends rex_ycom_user
+class Customer extends rex_yform_manager_dataset
 {
     public static function getCurrent()
     {
@@ -17,17 +17,6 @@ class Customer extends rex_ycom_user
         $customer = self::get($user_id);
 
         return $customer;
-    }
-
-    /* Vorname */
-    /** @api */
-    public function getFirstname() : mixed {
-        return $this->getValue("firstname");
-    }
-    /** @api */
-    public function setFirstname(mixed $value) : self {
-        $this->setValue("firstname", $value);
-        return $this;
     }
     
     /* E-Mail */
@@ -41,6 +30,17 @@ class Customer extends rex_ycom_user
         return $this;
     }
 
+
+    /* Vorname */
+    /** @api */
+    public function getFirstname() : mixed {
+        return $this->getValue("firstname");
+    }
+    /** @api */
+    public function setFirstname(mixed $value) : self {
+        $this->setValue("firstname", $value);
+        return $this;
+    }
     /* [translate:warehouse.ycom_user.lastname] */
     /** @api */
     public function getLastname() : ?string {
@@ -50,6 +50,23 @@ class Customer extends rex_ycom_user
     public function setLastname(mixed $value) : self {
         $this->setValue("lastname", $value);
         return $this;
+    }
+
+    /* [translate:warehouse.ycom_user.salutation] */
+    /** @api */
+    public function getSalutation() : ?string {
+        return $this->getValue("salutation");
+    }
+    /** @api */
+    public function setSalutation(mixed $value) : self {
+        $this->setValue("salutation", $value);
+        return $this;
+    }
+
+    /** @api */
+    public function getFullName() : string {
+        $salutation = $this->getSalutation() ? $this->getSalutation() . ' ' : '';
+        return $salutation . $this->getFirstname() . ' ' . $this->getLastname();
     }
 
     /* [translate:warehouse.ycom_user.company] */

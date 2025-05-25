@@ -31,7 +31,9 @@ warehouse[shipping] = Warehouse: Versand-Einstellungen
 # V2.0.0
 # Backend-Seiten
 
+warehouse_order_dashboard = Übersicht
 warehouse_order = Bestellungen
+warehouse_order_list = Bestellungen
 warehouse_order_details = Bestelldetails
 warehouse_customer = Registrierte Kunden
 warehouse_customer_address = Lieferadressen
@@ -418,3 +420,13 @@ warehouse.settings.label_cart_subtotal = Zwischensumme
 warehouse.settings.label_cart_total = Summe
 warehouse.settings.label_cart_total_weight = Gesamtgewicht
 warehouse.settings.label_next = Weiter
+
+
+warehouse.order.dashboard.recent_orders = Neueste Bestellungen
+warehouse.order.dashboard.orders_by_month = Bestellungen nach Monat
+warehouse.order.dashboard.date = Datum
+warehouse.order.dashboard.month = Monat
+warehouse.order.dashboard.total = Gesamtbetrag
+warehouse.order.dashboard.recent_customers = Neueste Kunden
+warehouse.order.dashboard.customer.name = Name
+warehouse.order.dashboard.customer.email = E-Mail

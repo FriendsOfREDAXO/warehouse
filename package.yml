@@ -16,8 +16,11 @@ page:
             title: translate:warehouse_order
             icon: rex-icon fa-shopping-cart
             subpages:
+                dashboard:
+                    title: translate:warehouse_order_dashboard
+                    icon: rex-icon fa-chart-line
                 list:
-                    title: translate:warehouse_order
+                    title: translate:warehouse_order_list
                     icon: rex-icon fa-list
                 details:
                     title: translate:warehouse_order_details
