@@ -47,7 +47,6 @@ $select->addOptions([
     'cart'=>rex_i18n::msg('warehouse.settings.cart_mode.cart'),
     'page'=>rex_i18n::msg('warehouse.settings.cart_mode.page')
 ]);
-$select->setAttribute('disabled', 'disabled');
 
 $field->setNotice(rex_i18n::msg('warehouse.settings.cart_mode.notice'));
 

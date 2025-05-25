@@ -344,3 +344,6 @@ warehouse.settings.payment.paypal_getparams = Paypal Zusätzliche Get-Parameter 
 warehouse.settings.payment.paypal_getparams.notice = z.B. um Maintenance bei der Entwicklung zu verwenden. Als JSON in der Form <code>{"key1":"value1","key2":"value2"}</code> angeben.
 
 warehouse.settings.payment.info = Derzeit wird nur PayPal als Zahlungsanbieter unterstützt. Beteilige dich an der Weiterentwicklung auf GitHub unter <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a>.
+
+warehouse.settings.cart_mode.cart = Warenkorb anzeigen
+warehouse.settings.cart_mode.page = Produktseite anzeigen
