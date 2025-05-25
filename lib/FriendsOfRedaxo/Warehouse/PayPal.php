@@ -338,11 +338,11 @@ class PayPal
                 'description' => $position['cat_name'],
                 'sku' => $position['whid'],
                 'unit_amount' => [
-                    'currency_code' => rex_config::get('warehouse', 'currency'),
+                    'currency_code' => Warehouse::getCurrencySign(),
                     'value' => number_format($position['price_netto'], 2), // netto
                 ],
                 'tax' => [
-                    'currency_code' => rex_config::get('warehouse', 'currency'),
+                    'currency_code' => Warehouse::getCurrencySign(),
                     'value' => number_format($position['taxsingle'], 2),
                 ],
                 'quantity' => $position['amount'],
@@ -359,31 +359,31 @@ class PayPal
                 'soft_descriptor' => 'Webshop',
                 'amount' =>
                 [
-                    'currency_code' => rex_config::get('warehouse', 'currency'),
+                    'currency_code' => Warehouse::getCurrencySign(),
                     'value' => number_format(Warehouse::getCartTotal(), 2),
                     'breakdown' =>
                     [
                         'item_total' => [
-                            'currency_code' => rex_config::get('warehouse', 'currency'),
+                            'currency_code' => Warehouse::getCurrencySign(),
                             'value' => number_format(Warehouse::getSubTotalNetto(), 2),
                         ],
                         'shipping' => [
-                            'currency_code' => rex_config::get('warehouse', 'currency'),
+                            'currency_code' => Warehouse::getCurrencySign(),
                             'value' => number_format(Shipping::getCost(), 2),
                         ],
                         /*
                         'handling' =>
                         [
-                            'currency_code' => rex_config::get('warehouse', 'currency'),
+                            'currency_code' => Warehouse::getCurrencySign(),
                             'value' => '0.00',
                         ],
                         */
                         'tax_total' => [
-                            'currency_code' => rex_config::get('warehouse', 'currency'),
+                            'currency_code' => Warehouse::getCurrencySign(),
                             'value' => number_format(Warehouse::getTaxTotal(), 2),
                         ],
                         'shipping_discount' => [
-                            'currency_code' => rex_config::get('warehouse', 'currency'),
+                            'currency_code' => Warehouse::getCurrencySign(),
                             'value' => number_format(Warehouse::getDiscountValue(), 2),
                         ],
                     ],
