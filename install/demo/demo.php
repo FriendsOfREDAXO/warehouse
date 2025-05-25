@@ -105,7 +105,7 @@ if(rex_addon::get('yform_seeder')->isAvailable()) {
         $sql->setValue('order_text', $faker->text(100));
         $sql->setValue('order_json', $faker->text(100));
         $sql->setValue('order_total', $faker->randomFloat(2, 1, 1111));
-        $sql->setValue('ycom_userid', $faker->biasedNumberBetween(0, 10));
+        $sql->setValue('ycom_user_id', $faker->biasedNumberBetween(0, 10));
         $sql->setValue('payment_type', $faker->randomElement(['paypal', 'creditcard', 'banktransfer']));
         $sql->setValue('payed', $faker->randomElement([0, 1]));
         $sql->setValue('imported', $faker->randomElement([0, 1]));
