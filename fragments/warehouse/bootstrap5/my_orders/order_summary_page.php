@@ -2,6 +2,9 @@
 
 /** @var rex_fragment $this */
 
+use FriendsOfRedaxo\Warehouse\Cart;
+use FriendsOfRedaxo\Warehouse\Warehouse;
+
 ?>
 <?php
 $user_data = $this->warehouse_userdata;
@@ -38,7 +41,7 @@ $user_data = $this->warehouse_userdata;
     </tr>
     <tr>
         <td>{{ Total }}</td>
-        <td class="uk-text-right"><?= number_format((float) FriendsOfRedaxo\Warehouse\Warehouse::getCartTotal(), 2) ?></td>
+        <td class="uk-text-right"><?= Cart::getCartTotalFormatted() ?></td>
     </tr>
 </table>
 

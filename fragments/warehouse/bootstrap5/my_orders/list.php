@@ -14,7 +14,7 @@
                             <td><?= $order->id ?></td>
                             <td><?= $order->get_date() ?></td>
                             <td><?= $order->firstname ?> <?= $order->lastname ?></td>
-                            <td><a href="<?= rex_getUrl('', '', ['order_id' => $order->id]) ?>">Bestellung ansehen</a></td>
+                            <td><a href="<?= rex_getUrl('', '', ['warehouse-order-id' => $order->id]) ?>">Bestellung ansehen</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
