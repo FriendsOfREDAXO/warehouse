@@ -13,9 +13,11 @@ use rex_yform;
 use rex_addon;
 use rex_request;
 use rex_be_controller;
+use rex_extension_point;
 use rex_response;
 use rex_view;
 use Url\Url;
+use rex_list;
 
 /** @var rex_addon $this */
 
@@ -46,7 +48,7 @@ if (rex::isFrontend()) {
     $this->setProperty('warehouse_domain', $domain);
 
     $action = rex_request('warehouse_deeplink', 'string', '');
-    if($action !== '') {
+    if ($action !== '') {
         switch ($action) {
             case 'cart':
                 rex_response::sendRedirect($domain->getCartArtUrl());
