@@ -1,22 +1,42 @@
 <?php
-$user_data = $this->user_data;
-$cart = $this->cart;
-$shipping = $this->shipping_cost;
-$total = $this->cart_total;
-$with_tax = $this->with_tax;
-$currency = $this->currency;
-$sub_total_netto = $this->sub_total_netto;
-$sub_total = $this->sub_total;
-$cart_total_tax = $this->cart_total_tax;
+$order = $this->getVar('order');
+
+// Kundendaten
+$user_data = [
+    'salutation' => $order->getSalutation(),
+    'firstname' => $order->getFirstname(),
+    'lastname' => $order->getLastname(),
+    'company' => $order->getCompany(),
+    'department' => $order->getDepartment(),
+    'address' => $order->getAddress(),
+    'zip' => $order->getZip(),
+    'city' => $order->getCity(),
+    'country' => $order->getCountry(),
+    'email' => $order->getEmail(),
+    'ust' => $order->getValue('ust'),
+    'user_e_number' => $order->getValue('user_e_number'),
+    'payment_type' => $order->getValue('payment_type'),
+    'payment_type_LABELS' => $order->getValue('payment_type_LABELS'),
+    'note' => $order->getValue('note'),
+    // ggf. weitere Felder
+];
+
+$cart = $order->getOrderJson();
+$shipping = $order->getValue('shipping_cost');
+$total = $order->getValue('order_total');
+$with_tax = $order->getValue('with_tax');
+$currency = $order->getValue('currency');
+$sub_total_netto = $order->getValue('sub_total_netto');
+$sub_total = $order->getValue('sub_total');
+$cart_total_tax = $order->getValue('cart_total_tax');
 $userNumber = $user_data['user_e_number'];
 $ustId = (!empty($user_data['ust'])) ? $user_data['ust'] : '';
 $payment_type = $user_data['payment_type'];
 $paymantTypeLabel = $user_data['payment_type_LABELS'];
 $note = $user_data['note'];
 if (!$with_tax) {
-    $shipping = $this->shipping_cost / 119 * 100;
+    $shipping = $shipping / 119 * 100;
 }
-
 if (empty($userNumber)) {
     $userNumber = 'Gastbestellung';
 }
@@ -248,7 +268,7 @@ if ($user_data['email']) {
 									<tr>
 										<th><?= sprogcard('pdf_order_date') ?>
 										</th>
-										<td><?= $this->orderDate ?>
+										<td><?= $order->getValue('order_date') ?>
 										</td>
 									</tr>
 									<tr>
@@ -259,7 +279,7 @@ if ($user_data['email']) {
 									<tr>
 										<th><?= sprogcard('pdf_shipping_type') ?>
 										</th>
-										<td><?= $this->shippmentType ?>
+										<td><?= $order->getValue('shipping_type') ?>
 										</td>
 									</tr>
 									<tr>
@@ -283,7 +303,7 @@ if ($user_data['email']) {
 			</table>
 
 			<h2 class="invoice">
-				<?= sprintf(sprogcard('pdf_invoice_headline'), $this->orderNumber); ?>
+				<?= sprintf(sprogcard('pdf_invoice_headline'), $order->getValue('order_number')); ?>
 			</h2>
 
 			<?php
@@ -346,12 +366,12 @@ if ($user_data['email']) {
                 echo '<td class="text-right">' . $pos['count'] . '</td>';
                 if ($with_tax) {
                     echo '<td class="text-right">' . $pos['taxpercent'] . '</td>';
-                    echo '<td class="text-right">' . warehouse::number_format($pos['price'], 2) . '</td>';
-                    echo '<td class="text-right">' . warehouse::number_format($pos['price'] * $pos['count'], 2) . '</td>';
+                    echo '<td class="text-right">' . number_format($pos['price'], 2, ',', '.') . '</td>';
+                    echo '<td class="text-right">' . number_format($pos['price'] * $pos['count'], 2, ',', '.') . '</td>';
                 } else {
                     echo '<td></td>';
-                    echo '<td class="text-right">' . warehouse::number_format($pos['price_netto'], 2) . '</td>';
-                    echo '<td class="text-right">' . warehouse::number_format($pos['price_netto'] * $pos['count'], 2) . '</td>';
+                    echo '<td class="text-right">' . number_format($pos['price_netto'], 2, ',', '.') . '</td>';
+                    echo '<td class="text-right">' . number_format($pos['price_netto'] * $pos['count'], 2, ',', '.') . '</td>';
                 }
                 echo '</tr>';
             }
@@ -365,27 +385,30 @@ if ($user_data['email']) {
 										<td><?= sprogcard('pdf_full') ?>
 										</td>
 										<?php if ($with_tax): ?>
-										<td><?= warehouse::number_format($this->sub_total, 2) . ' ' . $currency ?>
+										<td><?= number_format($order->getValue('sub_total'), 2, ',', '.') . ' ' . $currency ?>
 										</td>
 										<?php else: ?>
-										<td><?= warehouse::number_format($this->sub_total_netto, 2) . ' ' . $currency ?>
+										<td><?= number_format($order->getValue('sub_total_netto'), 2, ',', '.') . ' ' . $currency ?>
 										</td>
 										<?php endif; ?>
 									</tr>
 									<tr>
 										<td><?= sprogcard('pdf_shipping_costs') ?>
 										</td>
-										<td><?= warehouse::number_format($shipping, 2) . ' ' . $currency ?>
+										<td><?= number_format($shipping, 2, ',', '.') . ' ' . $currency ?>
 										</td>
 									</tr>
 									<?php if ($with_tax):
-									    $taxItems = warehouse::get_card_tax_by_percent();
+									    $taxItems = [
+									        19 => $order->getValue('cart_total_tax') * 0.19,
+									        7 => $order->getValue('cart_total_tax') * 0.07
+									    ];
 									    foreach ($taxItems as $tax => $taxValue) :
 									        ?>
 									<tr>
 										<td><?= sprintf(sprogcard('pdf_ust'), $tax . '%') ?>
 										</td>
-										<td><?= warehouse::number_format($taxValue, 2) . ' ' . $currency ?>
+										<td><?= number_format($taxValue, 2, ',', '.') . ' ' . $currency ?>
 										</td>
 									</tr>
 									<?php endforeach;
@@ -393,7 +416,7 @@ if ($user_data['email']) {
 									<tr>
 										<td><strong><?= sprogcard('pdf_g_price') ?></strong>
 										</td>
-										<td><strong><?= warehouse::number_format($total, 2) . ' ' . $currency ?></strong>
+										<td><strong><?= number_format($total, 2, ',', '.') . ' ' . $currency ?></strong>
 										</td>
 									</tr>
 								</tbody>
@@ -408,12 +431,12 @@ if ($user_data['email']) {
 			<?php if (!is_null($note)): ?>
 			<p>Bemerkungen: <?php echo $note; ?></p>
 			<?php endif; ?>
-			<?php if ($payment_type == 'paypal' && !is_null($this->paydate)): ?>
-			<p><?= sprintf(sprogcard('pdf_order_msg_paypal'), $this->paydate); ?>
+			<?php if ($payment_type == 'paypal' && !is_null($order->getValue('paydate'))): ?>
+			<p><?= sprintf(sprogcard('pdf_order_msg_paypal'), $order->getValue('paydate')); ?>
 			</p>
-			<?php elseif ($payment_type == 'prepayment' && !is_null($this->paydate)): ?>
+			<?php elseif ($payment_type == 'prepayment' && !is_null($order->getValue('paydate'))): ?>
 			<p style="font-size: 14px;">
-				<?= sprintf(sprogcard('pdf_order_msg_prepayment'), warehouse::number_format($total, 2) . ' ' . $currency, $this->verwendungszweck); ?>
+				<?= sprintf(sprogcard('pdf_order_msg_prepayment'), number_format($total, 2, ',', '.') . ' ' . $currency, $order->getValue('verwendungszweck')); ?>
 			</p>
 			<?php endif; ?>
 		</div>
