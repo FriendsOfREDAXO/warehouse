@@ -82,5 +82,23 @@ $order = FriendsOfRedaxo\Warehouse\Order::get(rex_request('data_id', 'int'));
 			<div class="col-md-12">
 			</div>
 		</div>
+		<div class="row additional-details">
+			<div class="col-md-12">
+				<h2>Zusätzliche Details</h2>
+				<p>
+					<strong>Bestelldatum:</strong>
+					<?= $order->getCreateDate() ?><br />
+					<strong>Bestelltext:</strong>
+					<?= $order->getOrderText() ?><br />
+					<strong>Gesamtbetrag:</strong>
+					<?= $order->getOrderTotal() ?>
+					<?= FriendsOfRedaxo\Warehouse\Warehouse::getCurrencySign() ?><br />
+					<strong>Zahlungs-ID:</strong>
+					<?= $order->getPaymentId() ?><br />
+					<strong>PayPal ID:</strong>
+					<?= $order->getPaypalId() ?><br />
+				</p>
+			</div>
+		</div>
 	</div>
 </div>
