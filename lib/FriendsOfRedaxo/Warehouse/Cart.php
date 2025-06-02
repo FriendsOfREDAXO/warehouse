@@ -423,10 +423,22 @@ class Cart
         $items = $cart->getItems();
         $sum = 0;
         foreach ($items as $item) {
+            if (!isset($item['id'], $item['amount'])) {
+                continue;
+            }
             $article = Article::get($item['id']);
-            $variant = isset($item['variant_id']) ? ArticleVariant::get($item['variant_id']) : null;
-            $net = $variant ? $variant->getPrice('net') : ($article ? $article->getPrice('net') : 0);
-            $gross = $variant ? $variant->getPrice('gross') : ($article ? $article->getPrice('gross') : 0);
+            if (!$article) {
+                continue;
+            }
+            $variant = isset($item['variant_id'])
+                ? ArticleVariant::get($item['variant_id'])
+                : null;
+            $net   = $variant
+                ? $variant->getPrice('net')
+                : $article->getPrice('net');
+            $gross = $variant
+                ? $variant->getPrice('gross')
+                : $article->getPrice('gross');
             $sum += (($gross - $net) * (int)$item['amount']);
         }
         return round($sum, 2);
