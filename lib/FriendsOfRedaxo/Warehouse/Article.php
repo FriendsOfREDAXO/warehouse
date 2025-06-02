@@ -443,7 +443,10 @@ class Article extends rex_yform_manager_dataset
     {
         $bulk_prices = (array) $this->getValue('bulk_prices');
         if (!empty($bulk_prices)) {
-            $bulkPrices = json_decode($this->getValue('bulk_prices'), true);
+            $bulkPrices = @json_decode($this->getValue('bulk_prices'), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return [];
+            }
             if (is_array($bulkPrices)) {
                 return $bulkPrices;
             }
