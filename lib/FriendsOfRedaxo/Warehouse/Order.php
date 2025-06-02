@@ -591,18 +591,13 @@ class Order extends rex_yform_manager_dataset
      * Gibt die Steuer für die Order zurück (Summe aller Einzelsteuern).
      * @return float
      */
+    /**
+     * Gibt die Steuer für die Order zurück (Summe aller Einzelsteuern).
+     * @return float
+     */
     public function getOrderTaxTotal(): float
     {
-        $items = json_decode($this->getOrderJson(), true)['items'] ?? [];
-        $sum = 0;
-        foreach ($items as $item) {
-            $article = Article::get($item['id']);
-            $variant = isset($item['variant_id']) ? ArticleVariant::get($item['variant_id']) : null;
-            $net = $variant ? $variant->getPrice('net') : ($article ? $article->getPrice('net') : 0);
-            $gross = $variant ? $variant->getPrice('gross') : ($article ? $article->getPrice('gross') : 0);
-            $sum += (($gross - $net) * (int)$item['amount']);
-        }
-        return round($sum, 2);
+        return $this->getOrderTaxTotalByMode();
     }
     
     /**
