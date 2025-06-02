@@ -32,14 +32,6 @@ class Article extends rex_yform_manager_dataset
             'SoldOut' => 'translate:warehouse_article.availability.SoldOut',
         ];
 
-    public const AVAILABLE =
-        [
-            'InStock',
-            'LimitedAvailability',
-            'BackOrder',
-            'PreOrder',
-            'PreSale',
-        ];
 
     public const STATUS =
         [
