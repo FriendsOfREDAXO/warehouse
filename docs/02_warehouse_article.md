@@ -2,12 +2,12 @@
 
 Kind-Klasse von `rex_yform_manager_dataset`, damit stehen alle Methoden von YOrm-Datasets zur Verfügung. Greift auf die Tabelle `rex_warehouse_article` zu.
 
-> Es werden nachfolgend zur die durch dieses Addon ergänzte Methoden beschrieben. Lerne mehr über YOrm und den Methoden für Querys, Datasets und Collections in der [YOrm Doku](https://github.com/yakamara/yform/blob/master/docs/04_yorm.md)
+> Es werden nachfolgend nur die durch dieses Addon ergänzten Methoden beschrieben. Lerne mehr über YOrm und den Methoden für Querys, Datasets und Collections in der [YOrm Doku](https://github.com/yakamara/yform/blob/master/docs/04_yorm.md)
 
 ## Alle Einträge erhalten
 
 ```php
-use FriendsOfREDAXO\Warehouse\Article;
+use FriendsOfRedaxo\Warehouse\Article;
 $articles = Article::query()->find(); // YOrm-Standard-Methode zum Finden von Einträgen, lässt sich mit where(), Limit(), etc. einschränken und Filtern.
 ```
 
@@ -16,8 +16,6 @@ $articles = Article::query()->find(); // YOrm-Standard-Methode zum Finden von Ei
 ### `getName()`
 
 Gibt den Wert für das Feld `name` (Name) zurück:
-
-Beispiel:
 
 ```php
 $dataset = Article::get($id);
@@ -34,57 +32,31 @@ $dataset->setName($value);
 $dataset->save();
 ```
 
-### `getAvailability()`
+### `getCategory()`
 
-Gibt den Wert für das Feld `availability` (Verfügbarkeit) zurück:
-
-Beispiel:
+Gibt das zugehörige Kategorie-Datensatz-Objekt zurück:
 
 ```php
 $dataset = Article::get($id);
-echo $dataset->getAvailability();
-```
-
-### `setAvailability(mixed $value)`
-
-Setzt den Wert für das Feld `availability` (Verfügbarkeit).
-
-```php
-$dataset = Article::create();
-$dataset->setAvailability($value);
-$dataset->save();
-```
-
-### `getCategoryId()`
-
-Gibt den Wert für das Feld `category_id` (Kategorie) zurück:
-
-Beispiel:
-
-```php
-$dataset = Article::get($id);
-$beziehung = $dataset->getCategoryId();
-```
-
-### `setCategoryId(mixed $value)`
-
-Setzt den Wert für das Feld `category_id` (Kategorie).
-
-```php
-$dataset = Article::create();
-$dataset->setCategoryId($value);
-$dataset->save();
+$category = $dataset->getCategory();
 ```
 
 ### `getStatus()`
 
 Gibt den Wert für das Feld `status` (Status) zurück:
 
-Beispiel:
+```php
+$dataset = Article::get($id);
+echo $dataset->getStatus();
+```
+
+### `getStatusLabel()`
+
+Gibt das übersetzte Label für den Status zurück:
 
 ```php
 $dataset = Article::get($id);
-$auswahl = $dataset->getStatus();
+echo $dataset->getStatusLabel();
 ```
 
 ### `setStatus(mixed $param)`
@@ -93,7 +65,120 @@ Setzt den Wert für das Feld `status` (Status).
 
 ```php
 $dataset = Article::create();
-$dataset->setStatus($param);
+$dataset->setStatus('active');
+$dataset->save();
+```
+
+### `getWeight()`
+
+Gibt den Wert für das Feld `weight` (Gewicht) zurück:
+
+```php
+$dataset = Article::get($id);
+echo $dataset->getWeight();
+```
+
+### `setWeight(float $value)`
+
+Setzt den Wert für das Feld `weight` (Gewicht).
+
+```php
+$dataset = Article::create();
+$dataset->setWeight(1.5);
+$dataset->save();
+```
+
+### `getImage()`
+
+Gibt den Dateinamen des Bildes zurück (ggf. Fallback):
+
+```php
+$dataset = Article::get($id);
+echo $dataset->getImage();
+```
+
+### `getImageAsMedia()`
+
+Gibt das Bild als rex_media-Objekt zurück:
+
+```php
+$dataset = Article::get($id);
+$media = $dataset->getImageAsMedia();
+```
+
+### `setImage(string $filename)`
+
+Setzt den Wert für das Feld `image` (Bild).
+
+```php
+$dataset = Article::create();
+$dataset->setImage('bild.jpg');
+$dataset->save();
+```
+
+### `getGallery()`
+
+Gibt den Wert für das Feld `gallery` (Galerie) zurück:
+
+```php
+$dataset = Article::get($id);
+echo $dataset->getGallery();
+```
+
+### `getGalleryAsMedia()`
+
+Gibt die Galerie als Array von rex_media-Objekten zurück:
+
+```php
+$dataset = Article::get($id);
+$medien = $dataset->getGalleryAsMedia();
+```
+
+### `setGallery(string $filename)`
+
+Setzt den Wert für das Feld `gallery` (Galerie).
+
+```php
+$dataset = Article::create();
+$dataset->setGallery('bild1.jpg,bild2.jpg');
+$dataset->save();
+```
+
+### `getShortText(bool $asPlaintext = false)`
+
+Gibt den Wert für das Feld `short_text` (Kurztext) zurück. Optional als Plaintext:
+
+```php
+$dataset = Article::get($id);
+echo $dataset->getShortText(true);
+```
+
+### `setShortText(mixed $value)`
+
+Setzt den Wert für das Feld `short_text` (Kurztext).
+
+```php
+$dataset = Article::create();
+$dataset->setShortText('Kurzbeschreibung');
+$dataset->save();
+```
+
+### `getText(bool $asPlaintext = false)`
+
+Gibt den Wert für das Feld `text` (Text) zurück. Optional als Plaintext:
+
+```php
+$dataset = Article::get($id);
+echo $dataset->getText(true);
+```
+
+### `setText(mixed $value)`
+
+Setzt den Wert für das Feld `text` (Text).
+
+```php
+$dataset = Article::create();
+$dataset->setText('Langer Beschreibungstext');
 $dataset->save();
 ```
 
@@ -101,11 +186,9 @@ $dataset->save();
 
 Gibt den Wert für das Feld `price` (Preis) zurück:
 
-Beispiel:
-
 ```php
 $dataset = Article::get($id);
-$nummer = $dataset->getPrice();
+echo $dataset->getPrice();
 ```
 
 ### `setPrice(float $value)`
@@ -114,36 +197,22 @@ Setzt den Wert für das Feld `price` (Preis).
 
 ```php
 $dataset = Article::create();
-$dataset->setPrice($value);
+$dataset->setPrice(9.99);
 $dataset->save();
 ```
 
-### `getTax()`
+### `getPriceFormatted()`
 
-Gibt den Wert für das Feld `tax` (Steuer) zurück:
-
-Beispiel:
+Gibt den Preis formatiert als Währungs-String zurück:
 
 ```php
 $dataset = Article::get($id);
-echo $dataset->getTax();
-```
-
-### `setTax(mixed $value)`
-
-Setzt den Wert für das Feld `tax` (Steuer).
-
-```php
-$dataset = Article::create();
-$dataset->setTax($value);
-$dataset->save();
+echo $dataset->getPriceFormatted();
 ```
 
 ### `getPriceText()`
 
 Gibt den Wert für das Feld `price_text` (Preis-Text) zurück:
-
-Beispiel:
 
 ```php
 $dataset = Article::get($id);
@@ -156,154 +225,26 @@ Setzt den Wert für das Feld `price_text` (Preis-Text).
 
 ```php
 $dataset = Article::create();
-$dataset->setPriceText($value);
+$dataset->setPriceText('ab 9,99 €');
 $dataset->save();
 ```
 
-### `getWeight()`
+### `getTax()`
 
-Gibt den Wert für das Feld `weight` (Gewicht) zurück:
-
-Beispiel:
+Gibt den Wert für das Feld `tax` (Steuer) zurück:
 
 ```php
 $dataset = Article::get($id);
-$nummer = $dataset->getWeight();
+echo $dataset->getTax();
 ```
 
-### `setWeight(float $value)`
+### `setTax(mixed $value)`
 
-Setzt den Wert für das Feld `weight` (Gewicht).
+Setzt den Wert für das Feld `tax` (Steuer).
 
 ```php
 $dataset = Article::create();
-$dataset->setWeight($value);
-$dataset->save();
-```
-
-### `getShortText(bool $asPlaintext = false)`
-
-Gibt den Wert für das Feld `short_text` (Kurztext) zurück:
-
-Beispiel:
-
-```php
-$dataset = Article::get($id);
-$text = $dataset->getShortText(true);
-```
-
-### `setShortText(mixed $value)`
-
-Setzt den Wert für das Feld `short_text` (Kurztext).
-
-```php
-$dataset = Article::create();
-$dataset->setShortText($value);
-$dataset->save();
-```
-
-### `getText(bool $asPlaintext = false)`
-
-Gibt den Wert für das Feld `text` (Text) zurück:
-
-Beispiel:
-
-```php
-$dataset = Article::get($id);
-$text = $dataset->getText(true);
-```
-
-### `setText(mixed $value)`
-
-Setzt den Wert für das Feld `text` (Text).
-
-```php
-$dataset = Article::create();
-$dataset->setText($value);
-$dataset->save();
-```
-
-### `getImage(bool $asMedia = false)`
-
-Gibt den Wert für das Feld `image` (Bild) zurück:
-
-Beispiel:
-
-```php
-$dataset = Article::get($id);
-$media = $dataset->getImage(true);
-```
-
-### `setImage(string $filename)`
-
-Setzt den Wert für das Feld `image` (Bild).
-
-```php
-$dataset = Article::create();
-$dataset->setImage($filename);
-$dataset->save();
-```
-
-### `getGallery(bool $asMedia = false)`
-
-Gibt den Wert für das Feld `gallery` (Galerie) zurück:
-
-Beispiel:
-
-```php
-$dataset = Article::get($id);
-$media = $dataset->getGallery(true);
-```
-
-### `setGallery(string $filename)`
-
-Setzt den Wert für das Feld `gallery` (Galerie).
-
-```php
-$dataset = Article::create();
-$dataset->setGallery($filename);
-$dataset->save();
-```
-
-### `getVariantIds()`
-
-Gibt den Wert für das Feld `variant_ids` (Varianten) zurück:
-
-Beispiel:
-
-```php
-$dataset = Article::get($id);
-$beziehung = $dataset->getVariantIds();
-```
-
-### `setVariantIds(mixed $value)`
-
-Setzt den Wert für das Feld `variant_ids` (Varianten).
-
-```php
-$dataset = Article::create();
-$dataset->setVariantIds($value);
-$dataset->save();
-```
-
-### `getUuid()`
-
-Gibt den Wert für das Feld `uuid` (UUID) zurück:
-
-Beispiel:
-
-```php
-$dataset = Article::get($id);
-echo $dataset->getUuid();
-```
-
-### `setUuid(mixed $value)`
-
-Setzt den Wert für das Feld `uuid` (UUID).
-
-```php
-$dataset = Article::create();
-$dataset->setUuid($value);
+$dataset->setTax('19');
 $dataset->save();
 ```
 
@@ -311,11 +252,9 @@ $dataset->save();
 
 Gibt den Wert für das Feld `updatedate` (Zuletzt geändert) zurück:
 
-Beispiel:
-
 ```php
 $dataset = Article::get($id);
-$datestamp = $dataset->getUpdatedate();
+echo $dataset->getUpdatedate();
 ```
 
 ### `setUpdatedate(string $value)`
@@ -324,6 +263,105 @@ Setzt den Wert für das Feld `updatedate` (Zuletzt geändert).
 
 ```php
 $dataset = Article::create();
-$dataset->setUpdatedate($value);
+$dataset->setUpdatedate('2024-01-01 12:00:00');
 $dataset->save();
+```
+
+### `getVariants()`
+
+Gibt die zugehörigen Varianten als Collection zurück:
+
+```php
+$dataset = Article::get($id);
+$varianten = $dataset->getVariants();
+```
+
+### `getAvailability()`
+
+Gibt den Wert für das Feld `availability` (Verfügbarkeit) zurück:
+
+```php
+$dataset = Article::get($id);
+echo $dataset->getAvailability();
+```
+
+### `getAvailabilityLabel()`
+
+Gibt das übersetzte Label für die Verfügbarkeit zurück:
+
+```php
+$dataset = Article::get($id);
+echo $dataset->getAvailabilityLabel();
+```
+
+### `setAvailability(mixed $value)`
+
+Setzt den Wert für das Feld `availability` (Verfügbarkeit).
+
+```php
+$dataset = Article::create();
+$dataset->setAvailability('InStock');
+$dataset->save();
+```
+
+### `getProjectValue(string $key)`
+
+Gibt den Wert eines projektbezogenen Feldes zurück:
+
+```php
+$dataset = Article::get($id);
+echo $dataset->getProjectValue('foo');
+```
+
+### `setProjectValue(string $key, mixed $value)`
+
+Setzt den Wert eines projektbezogenen Feldes:
+
+```php
+$dataset = Article::get($id);
+$dataset->setProjectValue('foo', 'bar');
+$dataset->save();
+```
+
+### `getUrl(string $profile = 'warehouse-article-id')`
+
+Gibt die URL zum Artikel zurück:
+
+```php
+$dataset = Article::get($id);
+echo $dataset->getUrl();
+```
+
+### `getBackendUrl()`
+
+Gibt die Backend-URL zum Bearbeiten des Artikels zurück:
+
+```php
+$dataset = Article::get($id);
+echo $dataset->getBackendUrl();
+```
+
+### `getBackendIcon(bool $label = false)`
+
+Gibt das Backend-Icon (optional mit Label) zurück:
+
+```php
+$icon = Article::getBackendIcon();
+$iconMitLabel = Article::getBackendIcon(true);
+```
+
+### `getBulkPrices()`
+
+Gibt die Staffelpreise zurück (derzeit leer):
+
+```php
+$preise = Article::getBulkPrices();
+```
+
+### `getByUuid(string $uuid)`
+
+Findet einen Artikel anhand der UUID:
+
+```php
+$article = Article::getByUuid('deine-uuid');
 ```

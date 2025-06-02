@@ -2,12 +2,12 @@
 
 Kind-Klasse von `rex_yform_manager_dataset`, damit stehen alle Methoden von YOrm-Datasets zur Verfügung. Greift auf die Tabelle `rex_warehouse_article_variant` zu.
 
-> Es werden nachfolgend zur die durch dieses Addon ergänzte Methoden beschrieben. Lerne mehr über YOrm und den Methoden für Querys, Datasets und Collections in der [YOrm Doku](https://github.com/yakamara/yform/blob/master/docs/04_yorm.md)
+> Es werden nachfolgend nur die durch dieses Addon ergänzten Methoden beschrieben. Lerne mehr über YOrm und den Methoden für Querys, Datasets und Collections in der [YOrm Doku](https://github.com/yakamara/yform/blob/master/docs/04_yorm.md)
 
 ## Alle Einträge erhalten
 
 ```php
-use FriendsOfREDAXO\Warehouse\ArticleVariant;
+use FriendsOfRedaxo\Warehouse\ArticleVariant;
 $variants = ArticleVariant::query()->find(); // YOrm-Standard-Methode zum Finden von Einträgen, lässt sich mit where(), Limit(), etc. einschränken und Filtern.
 ```
 
@@ -15,30 +15,16 @@ $variants = ArticleVariant::query()->find(); // YOrm-Standard-Methode zum Finden
 
 ### `getArticle()`
 
-Gibt den Wert für das Feld `article_id` (Haupt-Artikel) zurück:
-
-Beispiel:
+Gibt das zugehörige Haupt-Artikel-Objekt zurück:
 
 ```php
 $dataset = ArticleVariant::get($id);
-$beziehung = $dataset->getArticleId();
-```
-
-### `setArticleId(mixed $value)`
-
-Setzt den Wert für das Feld `article_id` (Haupt-Artikel).
-
-```php
-$dataset = ArticleVariant::create();
-$dataset->setArticleId($value);
-$dataset->save();
+$article = $dataset->getArticle();
 ```
 
 ### `getName()`
 
 Gibt den Wert für das Feld `name` (Name) zurück:
-
-Beispiel:
 
 ```php
 $dataset = ArticleVariant::get($id);
@@ -51,7 +37,7 @@ Setzt den Wert für das Feld `name` (Name).
 
 ```php
 $dataset = ArticleVariant::create();
-$dataset->setName($value);
+$dataset->setName('Größe L');
 $dataset->save();
 ```
 
@@ -59,11 +45,9 @@ $dataset->save();
 
 Gibt den Wert für das Feld `price` (Preis) zurück:
 
-Beispiel:
-
 ```php
 $dataset = ArticleVariant::get($id);
-$nummer = $dataset->getPrice();
+echo $dataset->getPrice();
 ```
 
 ### `setPrice(float $value)`
@@ -72,40 +56,26 @@ Setzt den Wert für das Feld `price` (Preis).
 
 ```php
 $dataset = ArticleVariant::create();
-$dataset->setPrice($value);
+$dataset->setPrice(19.99);
 $dataset->save();
 ```
 
 ### `getBulkPrices()`
 
-Gibt den Wert für das Feld `bulk_prices` (Staffelpreise) zurück:
-
-Beispiel:
+Gibt die Staffelpreise als Array zurück (ggf. Fallback auf Hauptartikel):
 
 ```php
 $dataset = ArticleVariant::get($id);
-$tabelle = $dataset->getBulkPrices();
-```
-
-### `setBulkPrices(array|string $value)`
-
-Setzt den Wert für das Feld `bulk_prices` (Staffelpreise).
-
-```php
-$dataset = ArticleVariant::create();
-$dataset->setBulkPrices($value);
-$dataset->save();
+$preise = $dataset->getBulkPrices();
 ```
 
 ### `getWeight()`
 
 Gibt den Wert für das Feld `weight` (Gewicht) zurück:
 
-Beispiel:
-
 ```php
 $dataset = ArticleVariant::get($id);
-$nummer = $dataset->getWeight();
+echo $dataset->getWeight();
 ```
 
 ### `setWeight(float $value)`
@@ -114,7 +84,7 @@ Setzt den Wert für das Feld `weight` (Gewicht).
 
 ```php
 $dataset = ArticleVariant::create();
-$dataset->setWeight($value);
+$dataset->setWeight(0.5);
 $dataset->save();
 ```
 
@@ -122,11 +92,18 @@ $dataset->save();
 
 Gibt den Wert für das Feld `availability` (Verfügbarkeit) zurück:
 
-Beispiel:
+```php
+$dataset = ArticleVariant::get($id);
+echo $dataset->getAvailability();
+```
+
+### `getAvailabilityLabel()`
+
+Gibt das übersetzte Label für die Verfügbarkeit zurück:
 
 ```php
 $dataset = ArticleVariant::get($id);
-$auswahl = $dataset->getAvailability();
+echo $dataset->getAvailabilityLabel();
 ```
 
 ### `setAvailability(mixed $param)`
@@ -135,19 +112,26 @@ Setzt den Wert für das Feld `availability` (Verfügbarkeit).
 
 ```php
 $dataset = ArticleVariant::create();
-$dataset->setAvailability($param);
+$dataset->setAvailability('InStock');
 $dataset->save();
 ```
 
-### `getImage(bool $asMedia = false)`
+### `getImage()`
 
-Gibt den Wert für das Feld `image` (Bild) zurück:
-
-Beispiel:
+Gibt den Dateinamen des Bildes zurück (ggf. Fallback):
 
 ```php
 $dataset = ArticleVariant::get($id);
-$media = $dataset->getImage(true);
+echo $dataset->getImage();
+```
+
+### `getImageAsMedia()`
+
+Gibt das Bild als rex_media-Objekt zurück:
+
+```php
+$dataset = ArticleVariant::get($id);
+$media = $dataset->getImageAsMedia();
 ```
 
 ### `setImage(string $filename)`
@@ -156,48 +140,68 @@ Setzt den Wert für das Feld `image` (Bild).
 
 ```php
 $dataset = ArticleVariant::create();
-$dataset->setImage($filename);
+$dataset->setImage('bild.jpg');
 $dataset->save();
 ```
 
-### `getStatus()`
+### `getProjectValue(string $key)`
 
-Gibt den Wert für das Feld `status` (Status) zurück:
-
-Beispiel:
+Gibt den Wert eines projektbezogenen Feldes zurück:
 
 ```php
 $dataset = ArticleVariant::get($id);
-$auswahl = $dataset->getStatus();
+echo $dataset->getProjectValue('foo');
 ```
 
-### `setStatus(mixed $param)`
+### `setProjectValue(string $key, mixed $value)`
 
-Setzt den Wert für das Feld `status` (Status).
-
-```php
-$dataset = ArticleVariant::create();
-$dataset->setStatus($param);
-$dataset->save();
-```
-
-### `getUuid()`
-
-Gibt den Wert für das Feld `uuid` (UUID) zurück:
-
-Beispiel:
+Setzt den Wert eines projektbezogenen Feldes:
 
 ```php
 $dataset = ArticleVariant::get($id);
-echo $dataset->getUuid();
+$dataset->setProjectValue('foo', 'bar');
+$dataset->save();
 ```
 
-### `setUuid(mixed $value)`
+### `getBackendUrl()`
 
-Setzt den Wert für das Feld `uuid` (UUID).
+Gibt die Backend-URL zum Bearbeiten der Variante zurück:
 
 ```php
-$dataset = ArticleVariant::create();
-$dataset->setUuid($value);
-$dataset->save();
+$dataset = ArticleVariant::get($id);
+echo $dataset->getBackendUrl();
+```
+
+### `getBackendIcon(bool $label = false)`
+
+Gibt das Backend-Icon (optional mit Label) zurück:
+
+```php
+$icon = ArticleVariant::getBackendIcon();
+$iconMitLabel = ArticleVariant::getBackendIcon(true);
+```
+
+### `getUrl(string $profile = 'warehouse-article-variant-id')`
+
+Gibt die URL zur Variante zurück:
+
+```php
+$dataset = ArticleVariant::get($id);
+echo $dataset->getUrl();
+```
+
+### `getAvailabilityOptions()`
+
+Gibt die verfügbaren Verfügbarkeitsoptionen zurück:
+
+```php
+$options = ArticleVariant::getAvailabilityOptions();
+```
+
+### `getStatusOptions()`
+
+Gibt die verfügbaren Statusoptionen zurück:
+
+```php
+$options = ArticleVariant::getStatusOptions();
 ```
