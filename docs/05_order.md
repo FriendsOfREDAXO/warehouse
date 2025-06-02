@@ -1,13 +1,12 @@
 # Die Klasse `Order`
 
-Kind-Klasse von `rex_yform_manager_dataset`, damit stehen alle Methoden von YOrm-Datasets zur Verfügung. Greift auf die Tabelle `rex_Order` zu.
+Kind-Klasse von `rex_yform_manager_dataset`, damit stehen alle Methoden von YOrm-Datasets zur Verfügung. Greift auf die Tabelle `MeineTabelle` zu.
 
 > Es werden nachfolgend zur die durch dieses Addon ergänzte Methoden beschrieben. Lerne mehr über YOrm und den Methoden für Querys, Datasets und Collections in der [YOrm Doku](https://github.com/yakamara/yform/blob/master/docs/04_yorm.md)
 
 ## Alle Einträge erhalten
 
 ```php
-use FriendsOfREDAXO\Warehouse\Order;
 $entries = Order::query()->find(); // YOrm-Standard-Methode zum Finden von Einträgen, lässt sich mit where(), Limit(), etc. einschränken und Filtern.
 ```
 
@@ -204,7 +203,7 @@ $dataset->save();
 
 ### `getCreatedate()`
 
-Gibt den Wert für das Feld `createdate` (Erstellungsdatum) zurück:
+Gibt den Wert für das Feld `createdate` (Bestelldatum) zurück:
 
 Beispiel:
 
@@ -215,7 +214,7 @@ $datestamp = $dataset->getCreatedate();
 
 ### `setCreatedate(string $value)`
 
-Setzt den Wert für das Feld `createdate` (Erstellungsdatum).
+Setzt den Wert für das Feld `createdate` (Bestelldatum).
 
 ```php
 $dataset = Order::create();
@@ -370,7 +369,7 @@ $dataset->setOrderTotal($value);
 $dataset->save();
 ```
 
-### `getYcomUserid()`
+### `getYcomUserId()`
 
 Gibt den Wert für das Feld `ycom_user_id` (YCom-Benutzer-ID) zurück:
 
@@ -378,16 +377,16 @@ Beispiel:
 
 ```php
 $dataset = Order::get($id);
-$beziehung = $dataset->getYcomUserid();
+$beziehung = $dataset->getYcomUserId();
 ```
 
-### `setYcomUserid(mixed $value)`
+### `setYcomUserId(mixed $value)`
 
 Setzt den Wert für das Feld `ycom_user_id` (YCom-Benutzer-ID).
 
 ```php
 $dataset = Order::create();
-$dataset->setYcomUserid($value);
+$dataset->setYcomUserId($value);
 $dataset->save();
 ```
 
@@ -433,23 +432,65 @@ $dataset->setPayed($value);
 $dataset->save();
 ```
 
-### `getImported(bool $asBool = false)`
+### `getUpdatedate()`
 
-Gibt den Wert für das Feld `imported` (Importiert) zurück: Wird extern verwaltet - bitte nicht über REDAXO anpassen!
+Gibt den Wert für das Feld `updatedate` ([translate:Order.updatedate]) zurück:
 
 Beispiel:
 
 ```php
 $dataset = Order::get($id);
-$wert = $dataset->getImported(true);
+$datestamp = $dataset->getUpdatedate();
 ```
 
-### `setImported(int $value = 1)`
+### `setUpdatedate(string $value)`
 
-Setzt den Wert für das Feld `imported` (Importiert).
+Setzt den Wert für das Feld `updatedate` ([translate:Order.updatedate]).
 
 ```php
 $dataset = Order::create();
-$dataset->setImported(1);
+$dataset->setUpdatedate($value);
+$dataset->save();
+```
+
+### `getHash()`
+
+Gibt den Wert für das Feld `hash` (Order.hash) zurück:
+
+Beispiel:
+
+```php
+$dataset = Order::get($id);
+echo $dataset->getHash();
+```
+
+### `setHash(mixed $value)`
+
+Setzt den Wert für das Feld `hash` (Order.hash).
+
+```php
+$dataset = Order::create();
+$dataset->setHash($value);
+$dataset->save();
+```
+
+### `getCustomOrderId()`
+
+Gibt den Wert für das Feld `custom_order_id` ([translate:Order.custom_order_id]) zurück:
+
+Beispiel:
+
+```php
+$dataset = Order::get($id);
+echo $dataset->getCustomOrderId();
+```
+
+### `setCustomOrderId(mixed $value)`
+
+Setzt den Wert für das Feld `custom_order_id` ([translate:Order.custom_order_id]).
+
+```php
+$dataset = Order::create();
+$dataset->setCustomOrderId($value);
 $dataset->save();
 ```
