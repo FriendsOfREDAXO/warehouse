@@ -400,11 +400,16 @@ class Cart
     /**
      * Gibt die Gesamtsumme (inkl. Versand, Rabatt) im gewünschten Modus zurück.
      */
-    public static function getCartTotalByMode(string $mode = null): float
+    public static function getCartTotalByMode(?string $mode = null): float
     {
         $sum = (float) self::getSubTotalByMode($mode);
-        $sum += (float) Shipping::getCost();
-        $sum -= (float) self::getDiscountValue();
+        $shippingCost = (float) Shipping::getCost();
+        $discount = (float) self::getDiscountValue();
+        
+        // Ensure values are non-negative
+        $sum += max(0, $shippingCost);
+        $sum -= max(0, $discount);
+        
         return $sum;
     }
 
