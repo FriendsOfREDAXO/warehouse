@@ -129,6 +129,9 @@ default_config:
     tax_options: '19,7,0'
     ycom_mode: 'guest_only'
     price_input_mode: 'net' # 'net' oder 'gross' – legt fest, ob Preiseingabe netto oder brutto ist
+    delivery_note_number: 1
+    invoice_number: 1
+    order_number: 1
 
     fallback_category_image: 'warehouse_placeholder_category.jpeg'
     fallback_article_image: 'warehouse_placeholder_article.jpeg'

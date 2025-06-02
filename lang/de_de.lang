@@ -95,6 +95,13 @@ warehouse.settings.fallback_category_image.notice = Wird verwendet, wenn kein Bi
 warehouse.settings.fallback_article_image = Fallback-Artikelbild
 warehouse.settings.fallback_article_image.notice = Wird verwendet, wenn kein Bild für den Artikel oder die Variante vorhanden ist.
 
+warehouse.settings.invoice_number = Rechnungsnummer
+warehouse.settings.invoice_number.notice = Laufende Nummer für die nächste Rechnung. Wird beim Erstellen einer Rechnung automatisch erhöht.
+warehouse.settings.delivery_note_number = Lieferscheinnummer
+warehouse.settings.delivery_note_number.notice = Laufende Nummer für den nächsten Lieferschein. Wird beim Erstellen eines Lieferscheins automatisch erhöht.
+warehouse.settings.order_number = Bestellnummer
+warehouse.settings.order_number.notice = Laufende Nummer für die nächste Bestellung. Wird beim Erstellen einer Bestellung automatisch erhöht.
+
 # Warehouse Einstellungen: Versandkosten
 
 warehouse.settings.shipping = Versandkosten

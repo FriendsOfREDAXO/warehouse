@@ -34,6 +34,48 @@ Warehouse 2 bietet viele Extension Points, die genutzt werden können, um eigene
 
 Momentan gibt es folgende Extension Points:
 
+### `WAREHOUSE_ORDER_NUMBER`
+
+Ermöglicht das Modifizieren der nächsten Bestellnummer vor der Vergabe. Rückgabewert ist ein Integer.
+
+**Beispiel:**
+
+```php
+rex_extension::register('WAREHOUSE_ORDER_NUMBER', function(rex_extension_point $ep) {
+    $nummer = $ep->getSubject();
+    // Beispiel: Präfix und Jahr hinzufügen
+    return (int) (date('Y') . sprintf('%05d', $nummer));
+});
+```
+
+### `WAREHOUSE_DELIVERY_NOTE_NUMBER`
+
+Ermöglicht das Modifizieren der nächsten Lieferscheinnummer vor der Vergabe. Rückgabewert ist ein Integer.
+
+**Beispiel:**
+
+```php
+rex_extension::register('WAREHOUSE_DELIVERY_NOTE_NUMBER', function(rex_extension_point $ep) {
+    $nummer = $ep->getSubject();
+    // Beispiel: 10000er-Offset für Lieferscheine
+    return $nummer + 10000;
+});
+```
+
+### `WAREHOUSE_INVOICE_NUMBER`
+
+Ermöglicht das Modifizieren der nächsten Rechnungsnummer vor der Vergabe. Rückgabewert ist ein Integer.
+
+**Beispiel:**
+
+```php
+rex_extension::register('WAREHOUSE_INVOICE_NUMBER', function(rex_extension_point $ep) {
+    $nummer = $ep->getSubject();
+    // Beispiel: Rechnungsnummer mit führenden Nullen
+    return str_pad($nummer, 8, '0', STR_PAD_LEFT);
+});
+```
+
 ### `WAREHOUSE_*`
 
 TODO: Hier alle EPs beschreiben, die es am Ende in v2 geschafft haben.
