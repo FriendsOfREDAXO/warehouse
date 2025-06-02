@@ -240,4 +240,46 @@ class ArticleVariant extends rex_yform_manager_dataset
         }
         return [];
     }
+
+    /**
+     * Gibt den Gesamtpreis für eine bestimmte Menge zurück, unter Berücksichtigung von Staffelpreisen und Fallbacks.
+     *
+     * @param int $quantity
+     * @return float
+     */
+    public function getPriceForQuantity(int $quantity): float
+    {
+        // 1. Eigene Staffelpreise prüfen
+        $bulkPrices = $this->getBulkPrices();
+        if (!empty($bulkPrices)) {
+            foreach ($bulkPrices as $bulk) {
+                if (
+                    isset($bulk['min'], $bulk['max'], $bulk['price']) &&
+                    $quantity >= (int)$bulk['min'] &&
+                    ($quantity <= (int)$bulk['max'] || (int)$bulk['max'] === 0)
+                ) {
+                    return (float)$bulk['price'] * $quantity;
+                }
+            }
+        }
+        // 2. Einzelpreis der Variante
+        $price = $this->getPrice();
+        if ($price !== null && $price !== '') {
+            return (float)$price * $quantity;
+        }
+        // 3. Fallback: Preis des Artikels (inkl. dessen Staffelpreise)
+        $article = $this->getArticle();
+        if ($article) {
+            if (method_exists($article, 'getPriceForQuantity')) {
+                return $article->getPriceForQuantity($quantity);
+            } else {
+                $articlePrice = $article->getPrice();
+                if ($articlePrice !== null && $articlePrice !== '') {
+                    return (float)$articlePrice * $quantity;
+                }
+            }
+        }
+        // 4. Kein Preis gefunden
+        return 0.0;
+    }
 }

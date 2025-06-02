@@ -402,4 +402,14 @@ class Warehouse
         return true;
     }
 
+    public static function getConfigTax()
+    {
+        $tax = rex_config::get('warehouse', 'tax');
+        if (is_numeric($tax)) {
+            return (float) $tax;
+        }
+        // Fallback auf 19% wenn keine gültige Steuer konfiguriert ist
+        return 19.0;
+    }
+
 }

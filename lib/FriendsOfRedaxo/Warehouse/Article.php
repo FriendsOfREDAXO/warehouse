@@ -419,9 +419,52 @@ class Article extends rex_yform_manager_dataset
         return '<i class="rex-icon fa-cube"></i>';
     }
 
-    public static function getBulkPrices() {
+    /**
+     * Gibt die Staffelpreise (Bulk Prices) dieses Artikels zurück.
+     * @return array
+     */
+    public function getBulkPrices(): array
+    {
+        $bulk_prices = (array) $this->getValue('bulk_prices');
+        if (!empty($bulk_prices)) {
+            $bulkPrices = json_decode($this->getValue('bulk_prices'), true);
+            if (is_array($bulkPrices)) {
+                return $bulkPrices;
+            }
+        }
         return [];
     }
+
+    /**
+     * Gibt den Gesamtpreis für eine bestimmte Menge zurück, unter Berücksichtigung von Staffelpreisen.
+     *
+     * @param int $quantity
+     * @return float
+     */
+    public function getPriceForQuantity(int $quantity): float
+    {
+        // 1. Staffelpreise prüfen
+        $bulkPrices = $this->getBulkPrices();
+        if (!empty($bulkPrices)) {
+            foreach ($bulkPrices as $bulk) {
+                if (
+                    isset($bulk['min'], $bulk['max'], $bulk['price']) &&
+                    $quantity >= (int)$bulk['min'] &&
+                    ($quantity <= (int)$bulk['max'] || (int)$bulk['max'] === 0)
+                ) {
+                    return (float)$bulk['price'] * $quantity;
+                }
+            }
+        }
+        // 2. Einzelpreis
+        $price = $this->getPrice();
+        if ($price !== null && $price !== '') {
+            return (float)$price * $quantity;
+        }
+        // 3. Kein Preis gefunden
+        return 0.0;
+    }
+
     public static function getByUuid(string $uuid) : ?self
     {
         $query = self::query();
