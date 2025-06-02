@@ -564,4 +564,90 @@ class Order extends rex_yform_manager_dataset
             rex_response::sendRedirect(rex_getUrl(Warehouse::getConfig('thankyou_page'), '', json_decode(rex_config::get('warehouse', 'paypal_getparams'), true), '&'));
         }
     }
+
+    /**
+     * Gibt die Zwischensumme (Summe aller Artikel) im gewünschten Modus zurück.
+     * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
+     * @return float
+     */
+    public function getOrderSubTotal(?string $mode = null): float
+    {
+        $items = json_decode($this->getOrderJson(), true)['items'] ?? [];
+        $sum = 0;
+        foreach ($items as $item) {
+            $article = Article::get($item['id']);
+            $variant = isset($item['variant_id']) ? ArticleVariant::get($item['variant_id']) : null;
+            if ($variant) {
+                $price = $variant->getPrice($mode);
+            } else {
+                $price = $article ? $article->getPrice($mode) : 0;
+            }
+            $sum += (float)$price * (int)$item['amount'];
+        }
+        return $sum;
+    }
+
+    /**
+     * Gibt die Steuer für die Order zurück (Summe aller Einzelsteuern).
+     * @return float
+     */
+    /**
+     * Gibt die Steuer für die Order zurück (Summe aller Einzelsteuern).
+     * @return float
+     */
+    public function getOrderTaxTotal(): float
+    {
+        return $this->getOrderTaxTotalByMode();
+    }
+    
+    /**
+     * Gibt die Zwischensumme (Summe aller Artikel) im gewünschten Modus zurück.
+     * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
+     * @return float
+     */
+    public function getOrderSubTotalByMode(?string $mode = null): float
+    {
+        $items = json_decode($this->getOrderJson(), true)['items'] ?? [];
+        $sum = 0;
+        foreach ($items as $item) {
+            $article = Article::get($item['id']);
+            $variant = isset($item['variant_id']) ? ArticleVariant::get($item['variant_id']) : null;
+            if ($variant) {
+                $price = $variant->getPrice($mode);
+            } else {
+                $price = $article ? $article->getPrice($mode) : 0;
+            }
+            $sum += (float)$price * (int)$item['amount'];
+        }
+        return $sum;
+    }
+
+    /**
+     * Gibt die Steuer für die Order zurück (Summe aller Einzelsteuern).
+     * @return float
+     */
+    public function getOrderTaxTotalByMode(): float
+    {
+        $items = json_decode($this->getOrderJson(), true)['items'] ?? [];
+        $sum = 0;
+        foreach ($items as $item) {
+            $article = Article::get($item['id']);
+            $variant = isset($item['variant_id']) ? ArticleVariant::get($item['variant_id']) : null;
+            $net = $variant ? $variant->getPrice('net') : ($article ? $article->getPrice('net') : 0);
+            $gross = $variant ? $variant->getPrice('gross') : ($article ? $article->getPrice('gross') : 0);
+            $sum += (($gross - $net) * (int)$item['amount']);
+        }
+        return round($sum, 2);
+    }
+
+    /**
+     * Gibt die Gesamtsumme (inkl. Versand, Rabatt) im gewünschten Modus zurück.
+     */
+    public function getOrderTotalByMode(?string $mode = null): float
+    {
+        $sum = (float) $this->getOrderSubTotalByMode($mode);
+        $sum += (float) $this->getValue('shipping_cost');
+        $sum -= (float) $this->getValue('discount');
+        return $sum;
+    }
 }

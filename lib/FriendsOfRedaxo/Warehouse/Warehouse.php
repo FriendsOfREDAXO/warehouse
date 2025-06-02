@@ -306,7 +306,8 @@ class Warehouse
         return self::PAYMENT_OPTIONS;
     }
 
-    public static function getAllowedPaymentOptions() :array {
+    public static function getAllowedPaymentOptions() :array
+    {
         return self::PAYMENT_OPTIONS;
     }
 
@@ -390,7 +391,7 @@ class Warehouse
         if (file_exists($fragment_path)) {
             $fragment->setVar('title', $title);
             $fragment->setVar('description', $description, false);
-            foreach($values as $key => $value) {
+            foreach ($values as $key => $value) {
                 $fragment->setVar($key, $value, false);
             }
             return $fragment->parse('warehouse' .\DIRECTORY_SEPARATOR. $framework  . \DIRECTORY_SEPARATOR . $file);
@@ -400,6 +401,14 @@ class Warehouse
     public static function isDemoMode() :bool
     {
         return true;
+    }
+
+    /**
+     * Gibt den globalen Modus für die Preiseingabe zurück ('net' oder 'gross').
+     */
+    public static function getPriceInputMode(): string
+    {
+        return rex_config::get('warehouse', 'price_input_mode', 'net');
     }
 
 }

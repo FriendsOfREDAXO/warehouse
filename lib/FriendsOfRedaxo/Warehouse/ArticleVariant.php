@@ -35,14 +35,14 @@ class ArticleVariant extends rex_yform_manager_dataset
             'SoldOut' => 'translate:warehouse_article_variant.availability.SoldOut',
         ];
 
-    public const AVAILABLE = 
-    [
-        'InStock',
-        'LimitedAvailability',
-        'BackOrder',
-        'PreOrder',
-        'PreSale',
-    ];
+    public const AVAILABLE =
+        [
+            'InStock',
+            'LimitedAvailability',
+            'BackOrder',
+            'PreOrder',
+            'PreSale',
+        ];
 
     public const STATUS =
         [
@@ -71,11 +71,42 @@ class ArticleVariant extends rex_yform_manager_dataset
         return $this;
     }
 
-    /* Preis */
-    /** @api */
-    public function getPrice() : ?float
+    public function getTax() : ?float
     {
-        return $this->getValue("price");
+        $article = $this->getArticle();
+        if ($article) {
+            return $article->getTax();
+        }
+        return 0.0;
+    }
+
+    /* Preis */
+    /** @api */    /**
+     * Gibt den Preis zurück, netto oder brutto je nach Modus.
+     * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
+     * @return float|null
+     */
+    public function getPrice(?string $mode = null): ?float
+    {
+        $price = $this->getValue("price");
+        if ($price === null) {
+            return null;
+        }
+        $tax = (float)($this->getTax() ?? 0);
+        if ($mode === null) {
+            $mode = Warehouse::getPriceInputMode();
+        }
+        if ($mode === 'gross') {
+            if (Warehouse::getPriceInputMode() === 'net') {
+                return $price * (1 + $tax / 100);
+            }
+            return $price;
+        } else {
+            if (Warehouse::getPriceInputMode() === 'gross') {
+                return $price / (1 + $tax / 100);
+            }
+            return $price;
+        }
     }
     /** @api */
     public function setPrice(float $value) : self
@@ -226,18 +257,68 @@ class ArticleVariant extends rex_yform_manager_dataset
         return '<i class="rex-icon fa-cubes"></i>';
     }
 
-    public function getBulkPrices() :array {
+    public function getBulkPrices() :array
+    {
         $bulk_prices = (array) $this->getValue('bulk_prices');
-        if(!empty($bulk_prices)) {
+        if (!empty($bulk_prices)) {
             $bulkPrices = json_decode($this->getValue('bulk_prices'), true);
             if (is_array($bulkPrices)) {
                 return $bulkPrices;
             }
-        }
-        else if ($this->getArticle() && !empty($this->getArticle()->getBulkPrices())) {
+        } elseif ($this->getArticle() && !empty($this->getArticle()->getBulkPrices())) {
             // Fallback auf die Bulkpreise des Hauptartikels
             return $this->getArticle()->getBulkPrices();
         }
         return [];
+    }
+
+    /**
+     * Gibt den Gesamtpreis für eine bestimmte Menge zurück, unter Berücksichtigung von Staffelpreisen, Modus und Fallbacks.
+     * @param int $quantity
+     * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
+     * @return float
+     */
+    public function getPriceForQuantity(int $quantity, ?string $mode = null): float
+    {
+        // 1. Eigene Staffelpreise prüfen
+        $bulkPrices = $this->getBulkPrices();
+        $tax = (float)($this->getTax() ?? 0);
+        if (!empty($bulkPrices)) {
+            foreach ($bulkPrices as $bulk) {
+                if (
+                    isset($bulk['min'], $bulk['max'], $bulk['price']) &&
+                    $quantity >= (int)$bulk['min'] &&
+                    ($quantity <= (int)$bulk['max'] || (int)$bulk['max'] === 0)
+                ) {
+                    $price = (float)$bulk['price'];
+                    if ($mode === null) {
+                        $mode = Warehouse::getPriceInputMode();
+                    }
+                    if ($mode === 'gross' && Warehouse::getPriceInputMode() === 'net') {
+                        $price = $price * (1 + $tax / 100);
+                    } elseif ($mode === 'net' && Warehouse::getPriceInputMode() === 'gross') {
+                        $price = $price / (1 + $tax / 100);
+                    }
+                    return $price * $quantity;
+                }
+            }
+        }
+        $price = $this->getPrice($mode);
+        if ($price !== null && $price !== '') {
+            return (float)$price * $quantity;
+        }
+        $article = $this->getArticle();
+        if ($article) {
+            if (method_exists($article, 'getPriceForQuantity')) {
+                return $article->getPriceForQuantity($quantity, $mode);
+            } else {
+                $articlePrice = $article->getPrice($mode);
+                if ($articlePrice !== null && $articlePrice !== '') {
+                    return (float)$articlePrice * $quantity;
+                }
+            }
+        }
+        // 4. Kein Preis gefunden
+        return 0.0;
     }
 }

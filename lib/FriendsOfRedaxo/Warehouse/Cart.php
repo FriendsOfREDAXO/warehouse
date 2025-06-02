@@ -12,7 +12,7 @@ use rex_ycom_auth;
 class Cart
 {
     public $cart = [
-        'items' => [], 
+        'items' => [],
         'address' => [],
         'last_update' => 0
     ];
@@ -25,7 +25,7 @@ class Cart
 
     public function init()
     {
-        if(Warehouse::isDemoMode()) {
+        if (Warehouse::isDemoMode()) {
             // Setze Demo-Warenkorb
             $this->setDemoCart();
             return;
@@ -42,7 +42,8 @@ class Cart
         return new self();
     }
 
-    public function getItems() :array {
+    public function getItems() :array
+    {
         return $this->cart['items'] ?? [];
     }
 
@@ -363,5 +364,88 @@ class Cart
             ],
         ];
         self::update($demo_items);
+    }
+
+    /**
+     * Gibt die Zwischensumme (Summe aller Artikel) im gewünschten Modus zurück.
+     * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
+     * @return float
+     */
+    public static function getSubTotalByMode(string $mode = null): float
+    {
+        $cart = self::get();
+        $items = $cart->getItems();
+        $sum = 0;
+        foreach ($items as $item) {
+            $article = Article::get($item['id']);
+            $variant = isset($item['variant_id']) ? ArticleVariant::get($item['variant_id']) : null;
+            if ($variant) {
+                $price = $variant->getPrice($mode);
+            } else {
+                $price = $article ? $article->getPrice($mode) : 0;
+            }
+            $sum += (float)$price * (int)$item['amount'];
+        }
+        return $sum;
+    }
+
+    /**
+     * Gibt die Zwischensumme formatiert zurück.
+     */
+    public static function getSubTotalByModeFormatted(string $mode = null): string
+    {
+        return Warehouse::getCurrencySign() . ' ' . number_format(self::getSubTotalByMode($mode), 2, ',', '');
+    }
+
+    /**
+     * Gibt die Gesamtsumme (inkl. Versand, Rabatt) im gewünschten Modus zurück.
+     */
+    public static function getCartTotalByMode(?string $mode = null): float
+    {
+        $sum = (float) self::getSubTotalByMode($mode);
+        $shippingCost = (float) Shipping::getCost();
+        $discount = (float) self::getDiscountValue();
+        
+        // Ensure values are non-negative
+        $sum += max(0, $shippingCost);
+        $sum -= max(0, $discount);
+        
+        return $sum;
+    }
+
+    public static function getCartTotalByModeFormatted(string $mode = null): string
+    {
+        return Warehouse::getCurrencySign() . ' ' . number_format(self::getCartTotalByMode($mode), 2, ',', '');
+    }
+
+    /**
+     * Gibt die gesamte Steuer im Warenkorb zurück (Summe aller Einzelsteuern).
+     * @return float
+     */
+    public static function getTaxTotalByMode(): float
+    {
+        $cart = self::get();
+        $items = $cart->getItems();
+        $sum = 0;
+        foreach ($items as $item) {
+            if (!isset($item['id'], $item['amount'])) {
+                continue;
+            }
+            $article = Article::get($item['id']);
+            if (!$article) {
+                continue;
+            }
+            $variant = isset($item['variant_id'])
+                ? ArticleVariant::get($item['variant_id'])
+                : null;
+            $net   = $variant
+                ? $variant->getPrice('net')
+                : $article->getPrice('net');
+            $gross = $variant
+                ? $variant->getPrice('gross')
+                : $article->getPrice('gross');
+            $sum += (($gross - $net) * (int)$item['amount']);
+        }
+        return round($sum, 2);
     }
 }
