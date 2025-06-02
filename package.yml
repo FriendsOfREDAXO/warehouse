@@ -128,6 +128,7 @@ default_config:
     framework: 'bootstrap5'
     tax_options: '19,7,0'
     ycom_mode: 'guest_only'
+    price_input_mode: 'net' # 'net' oder 'gross' – legt fest, ob Preiseingabe netto oder brutto ist
 
     fallback_category_image: 'warehouse_placeholder_category.jpeg'
     fallback_article_image: 'warehouse_placeholder_article.jpeg'

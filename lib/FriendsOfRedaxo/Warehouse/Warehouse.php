@@ -403,14 +403,12 @@ class Warehouse
         return true;
     }
 
-    public static function getConfigTax()
+    /**
+     * Gibt den globalen Modus für die Preiseingabe zurück ('net' oder 'gross').
+     */
+    public static function getPriceInputMode(): string
     {
-        $tax = rex_config::get('warehouse', 'tax');
-        if (is_numeric($tax)) {
-            return (float) $tax;
-        }
-        // Fallback auf 0% wenn keine gültige Steuer konfiguriert ist
-        return 0.0;
+        return rex_config::get('warehouse', 'price_input_mode', 'net');
     }
 
 }
