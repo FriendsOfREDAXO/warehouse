@@ -306,7 +306,8 @@ class Warehouse
         return self::PAYMENT_OPTIONS;
     }
 
-    public static function getAllowedPaymentOptions() :array {
+    public static function getAllowedPaymentOptions() :array
+    {
         return self::PAYMENT_OPTIONS;
     }
 
@@ -390,7 +391,7 @@ class Warehouse
         if (file_exists($fragment_path)) {
             $fragment->setVar('title', $title);
             $fragment->setVar('description', $description, false);
-            foreach($values as $key => $value) {
+            foreach ($values as $key => $value) {
                 $fragment->setVar($key, $value, false);
             }
             return $fragment->parse('warehouse' .\DIRECTORY_SEPARATOR. $framework  . \DIRECTORY_SEPARATOR . $file);
@@ -408,8 +409,8 @@ class Warehouse
         if (is_numeric($tax)) {
             return (float) $tax;
         }
-        // Fallback auf 19% wenn keine gültige Steuer konfiguriert ist
-        return 19.0;
+        // Fallback auf 0% wenn keine gültige Steuer konfiguriert ist
+        return 0.0;
     }
 
 }
