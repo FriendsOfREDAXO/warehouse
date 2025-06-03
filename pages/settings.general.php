@@ -50,7 +50,7 @@ $field = $form->addSelectField('ycom_mode');
 $field->setLabel(rex_i18n::msg('warehouse.settings.ycom_mode'));
 $select = $field->getSelect();
 
-if(rex_addon::get('ycom')->isAvailable()) {
+if (rex_addon::get('ycom')->isAvailable()) {
     $select->addOptions(Warehouse::YCOM_MODES);
 } else {
     $select->addOptions([
@@ -85,6 +85,18 @@ $field = $form->addInputField('text', 'framework', null, ['class' => 'form-contr
 $field->setLabel(rex_i18n::msg('warehouse.settings.framework'));
 $field->setNotice(rex_i18n::msg('warehouse.settings.framework.notice'));
 
+$field = $form->addInputField('number', 'invoice_number', null, ['class' => 'form-control', 'min' => '1', 'step' => '1']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.invoice_number'));
+$field->setNotice(rex_i18n::msg('warehouse.settings.invoice_number.notice'));
+
+$field = $form->addInputField('number', 'delivery_note_number', null, ['class' => 'form-control', 'min' => '1', 'step' => '1']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.delivery_note_number'));
+$field->setNotice(rex_i18n::msg('warehouse.settings.delivery_note_number.notice'));
+
+$field = $form->addInputField('number', 'order_number', null, ['class' => 'form-control', 'min' => '1', 'step' => '1']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.order_number'));
+$field->setNotice(rex_i18n::msg('warehouse.settings.order_number.notice'));
+
 $content = $form->get();
 
 $fragment = new rex_fragment();
@@ -94,10 +106,10 @@ $content = $fragment->parse('core/page/section.php');
 
 ?>
 <div class="row">
-    <div class="col-12 col-md-8">
-        <?php echo $content; ?>
-    </div>
-    <div class="col-12 col-md-4">
-        <?= rex_view::info(rex_i18n::msg('warehouse.settings.general.info')); ?>
-    </div>
+	<div class="col-12 col-md-8">
+		<?php echo $content; ?>
+	</div>
+	<div class="col-12 col-md-4">
+		<?= rex_view::info(rex_i18n::msg('warehouse.settings.general.info')); ?>
+	</div>
 </div>

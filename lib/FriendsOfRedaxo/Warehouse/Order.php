@@ -650,4 +650,48 @@ class Order extends rex_yform_manager_dataset
         $sum -= (float) $this->getValue('discount');
         return $sum;
     }
+
+    /**
+     * Erstellt eine PDF-Rechnung zur Bestellung und legt sie im Addon-Data-Ordner ab.
+     * Gibt den Pfad zur erzeugten PDF-Datei zurück oder null bei Fehler.
+     */
+    public function createInvoicePdf(): ?string
+    {
+        if (!\rex_addon::get('pdfout')->isAvailable()) {
+            return null;
+        }
+        $addonDataPath = \rex_path::addonData('warehouse', 'invoice_' . $this->getId() . '.pdf');
+        $fragment = new \rex_fragment(['order' => $this]);
+        $html = $fragment->parse('warehouse/backend/invoice.php');
+        $pdf = new \FriendsOfRedaxo\PdfOut\PdfOut();
+        $pdf->setName('Rechnung_' . $this->getId())
+            ->setHtml($html)
+            ->setSaveToPath($addonDataPath)
+            ->setAttachment(false)
+            ->setSaveAndSend(true)
+            ->run();
+        return $addonDataPath;
+    }
+
+    /**
+     * Erstellt einen PDF-Lieferschein zur Bestellung und legt ihn im Addon-Data-Ordner ab.
+     * Gibt den Pfad zur erzeugten PDF-Datei zurück oder null bei Fehler.
+     */
+    public function createDeliveryNotePdf(): ?string
+    {
+        if (!\rex_addon::get('pdfout')->isAvailable()) {
+            return null;
+        }
+        $addonDataPath = \rex_path::addonData('warehouse', 'delivery_note_' . $this->getId() . '.pdf');
+        $fragment = new \rex_fragment(['order' => $this]);
+        $html = $fragment->parse('warehouse/backend/delivery_note.php');
+        $pdf = new \FriendsOfRedaxo\PdfOut\PdfOut();
+        $pdf->setName('Lieferschein_' . $this->getId())
+            ->setHtml($html)
+            ->setSaveToPath($addonDataPath)
+            ->setAttachment(false)
+            ->setSaveAndSend(true)
+            ->run();
+        return $addonDataPath;
+    }
 }
