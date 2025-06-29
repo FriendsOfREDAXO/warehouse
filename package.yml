@@ -1,12 +1,12 @@
 package: warehouse
-version: '2.0.0-dev-2025-05-25'
+version: '2.0.0-dev-2025-06-29'
 author: FriendsOfREDAXO
 supportpage: https://github.com/FriendsOfREDAXO/warehouse
 
 page:
     title: translate:warehouse_settings
     perm: warehouse
-    pjax: true
+    pjax: false
     block: warehouse
     prio: 0
     icon: rex-icon fa-shopping-cart
@@ -101,13 +101,13 @@ pages:
         itemclass: pull-right
 
 requires:
-    redaxo: '^5.17.3'
+    redaxo: '^5.18.3'
     php:
         version: '>=8.3,<9'
     packages:
         structure: '^2.0'
-        yform: '^4.1'
-        yform_field: '^2.9.1'
+        yform: '>=4.1,<6'
+        yform_field: '^2.11.1'
 
 # Wenn Warehouse 1.x installiert ist, dann abbrechen - es ist keine Migration vorgesehen.
 conflicts:
