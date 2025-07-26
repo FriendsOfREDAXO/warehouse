@@ -82,6 +82,10 @@ pages:
                 title: translate:warehouse_settings_discount
                 perm: warehouse[settings]
                 icon: rex-icon fa-tag
+            documents:
+                title: translate:warehouse_settings_documents
+                perm: warehouse[docs]
+                icon: rex-icon fa-file-alt
             label:
                 title: translate:warehouse_settings_label
                 perm: warehouse[settings]
@@ -141,6 +145,7 @@ default_config:
     order_email: 
 
     # Paypal Einstellungen
+    allowed_payment_options: "|prepayment|invoice|direct_debit|"
     paypal_client_id:
     paypal_secret:
     sandboxmode: 0
@@ -160,4 +165,25 @@ default_config:
     # Labels
     label_cart: 'Warenkorb'
     labeL_cart_empty: 'Der Warenkorb ist leer'
+    label_article: 'Artikel'
+    label_back_to_cart: 'Zurück zum Warenkorb'
+    label_cart_empty: 'Der Warenkorb ist leer.'
+    label_cart_empty_confirm: 'Sind Sie sicher, dass Sie den Warenkorb leeren möchten?'
+    label_cart_remove_item_confirm: 'Sind Sie sicher, dass Sie den gewählten Artikel entfernen möchten?'
+    label_cart_subtotal: 'Zwischensumme'
+    label_cart_total: 'Summe'
+    label_cart_total_weight: 'Gesamtgewicht'
+    label_checkout: 'Kasse'
+    label_checkout_address: 'Adresse'
+    label_checkout_instant: 'Sofort kaufen'
+    label_checkout_payment: 'Bezahlmethode'
+    label_next: ''
+    label_payment_type: 'Bezahloptionen'
+    label_price: 'Einzelpreis'
+    label_quantity: 'Anzahl'
+    label_remove_from_cart: 'Entfernen'
     label_shipping_costs: 'Versandkosten'
+    label_shipping_costs_free: 'Ohne Versandkosten'
+    label_shipping_costs_weight: 'Versandkosten nach Gewicht'
+    label_total: 'Gesamtpreis'
+    label_order_number: 'Bestellnummer'
