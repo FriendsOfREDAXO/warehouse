@@ -52,11 +52,15 @@ Für Artikel und Varianten können zusätzlich Staffelpreise (Mengenrabatt) hint
 
 Artikel können ein Gewicht haben, das für die Versandkostenberechnung genutzt wird. Die Versandkosten können nach Warenwert, Stückzahl oder Gewicht berechnet werden.
 
-> Hinweis: In Version 2 gibt es ein Feld, um Gewicht zu hinterlegen - die Versandkostenberechnung muss jedoch vom Entwickler über den Extension Point `WAREHOUSE_` implementiert werden.
+> Hinweis: In Version 2 gibt es ein Feld, um Gewicht zu hinterlegen - die Versandkostenberechnung muss jedoch vom Entwickler über den Extension Point `WAREHOUSE_*` implementiert werden.
 
 ### Steuern
 
 Artikel können mit einem Steuersatz versehen werden. Standardmäßig stehen `0%`, `7%` und `19%` zur Auswahl.
+
+Über den Extension Point `WAREHOUSE_TAX` können weitere Steuersätze hinzugefügt werden.
+
+Es gibt eine Einstellung, die festlegt, ob die Eingabe der Preise inkl. oder exkl. Steuern erfolgt.
 
 ### Lagerbestand
 

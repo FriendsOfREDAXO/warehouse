@@ -11,6 +11,7 @@ use rex_yform_manager_dataset;
 use rex_url;
 use rex_extension_point;
 use rex_csrf_token;
+use rex_extension;
 use Url\Url;
 
 class Article extends rex_yform_manager_dataset
@@ -185,7 +186,7 @@ class Article extends rex_yform_manager_dataset
     /* Preis */
     /** @api
      * Gibt den Preis zurück, netto oder brutto je nach Modus.
-     * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
+     * @param 'net'|'gross'|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
      * @return float|null
      */
     public function getPrice(?string $mode = null): ?float
@@ -317,11 +318,18 @@ class Article extends rex_yform_manager_dataset
 
     public static function getTaxOptions() : array
     {
-        return [
+        $defaultTaxOptions = [
             '19' => '19%',
             '7' => '7%',
             '0' => '0%',
         ];
+
+        // Statt statischer Werte können zusätzlich über einen Extension Point weitere Steuersätze hinzugefügt werden.
+        $taxOptions = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_TAX', null, $defaultTaxOptions));
+        if (!is_array($taxOptions)) {
+            $taxOptions = $defaultTaxOptions;
+        }
+        return $taxOptions;
     }
 
     public function getProjectValue(string $key)
