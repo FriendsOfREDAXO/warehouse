@@ -63,6 +63,7 @@ $field->setLabel(rex_i18n::msg('warehouse.settings.enable_features'));
 $field->addOption(rex_i18n::msg('warehouse.settings.enable_features.bulk_prices'), "bulk_prices");
 $field->addOption(rex_i18n::msg('warehouse.settings.enable_features.weight'), "weight");
 $field->addOption(rex_i18n::msg('warehouse.settings.enable_features.variants'), "variants");
+$field->addOption(rex_i18n::msg('warehouse.settings.enable_features.stock'), "stock");
 
 $field = $form->addInputField('text', 'editor', null, ['class' => 'form-control']);
 $field->setLabel(rex_i18n::msg('warehouse.settings.editor'));
@@ -79,18 +80,6 @@ $field->setNotice(rex_i18n::msg('warehouse.settings.fallback_article_image.notic
 $field = $form->addInputField('text', 'framework', null, ['class' => 'form-control']);
 $field->setLabel(rex_i18n::msg('warehouse.settings.framework'));
 $field->setNotice(rex_i18n::msg('warehouse.settings.framework.notice'));
-
-$field = $form->addInputField('number', 'invoice_number', null, ['class' => 'form-control', 'min' => '1', 'step' => '1']);
-$field->setLabel(rex_i18n::msg('warehouse.settings.invoice_number'));
-$field->setNotice(rex_i18n::msg('warehouse.settings.invoice_number.notice'));
-
-$field = $form->addInputField('number', 'delivery_note_number', null, ['class' => 'form-control', 'min' => '1', 'step' => '1']);
-$field->setLabel(rex_i18n::msg('warehouse.settings.delivery_note_number'));
-$field->setNotice(rex_i18n::msg('warehouse.settings.delivery_note_number.notice'));
-
-$field = $form->addInputField('number', 'order_number', null, ['class' => 'form-control', 'min' => '1', 'step' => '1']);
-$field->setLabel(rex_i18n::msg('warehouse.settings.order_number'));
-$field->setNotice(rex_i18n::msg('warehouse.settings.order_number.notice'));
 
 $content = $form->get();
 
