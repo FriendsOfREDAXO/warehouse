@@ -44,10 +44,10 @@ warehouse_search = Suche
 warehouse_country = Länder
 warehouse_shipping = Versand
 warehouse_settings = Verwaltung
-warehouse_settings_shop = Shop
+warehouse_settings_shop = Einstellungen
 warehouse_settings_payment = Zahlung
 warehouse_settings_general = Grundeinstellungen
-warehouse_settings_domain = 📦 Domain-Profile
+warehouse_settings_domain = Domain-Profile
 warehouse_settings_tawarehouse_article_variant.weightx = Steuern
 warehouse_settings_log = Log
 warehouse_settings_discount = Rabatte
@@ -69,6 +69,8 @@ warehouse_docs.settings.discount = Rabatte
 
 # Warehouse Einstellungen: Grundeinstellungen
 
+warehouse.settings.general.info = Willkommen in Warehouse 2.0 - bei der Installation wurden einige Grundeinstellungen bereits gesetzt. Mache dich mit den Änderungen gegenüber Warehouse 1.0 in der Hilfe vertraut.
+
 warehouse.settings.editor = WYSIWYG-Editor
 warehouse.settings.editor.notice = z.B. <code>class="form-control redactor-editor--default"</code>
 
@@ -77,12 +79,16 @@ warehouse.settings.currency_symbol = Währungssymbol (z.B. €)
 warehouse.settings.currency_symbol.notice = <code>rex_config::get("warehouse","currency_symbol")</code>
 
 warehouse.settings.tax_options = Steuersätze
-warehouse.settings.tax_options.notice = Mögliche Steuersätze zur Auswahl in Artikeln und Varianten. Standard: <code>19,7,0</code> für 19%, 7% und 0% Steuersatz
+warehouse.settings.tax_options.notice = Mögliche Steuersätze zur Auswahl in Artikeln und Varianten. Standard: <code>19,7,0</code> für 19%, 7% und 0% Steuersatz. Verwende den Extension Point <code>WAREHOUSE_TAX_OPTIONS</code>, um die Steuersätze zu verändern.
 
 warehouse.settings.shipping_allowed = Erlaubte Länder für die Lieferung
 
 warehouse.settings.cart_mode = Nach Warenkorb-Aktion
 warehouse.settings.cart_mode.notice = Es kann entweder die Warenkorbseite aufgerufen werden oder die vorherige Artikelseite. Wenn die Artikelseite aufgerufen wird, so wird showcart=1 als Get-Parameter angehängt.
+
+warehouse.ycom_modes.enforce = Bestellung nur mit Kundenkonto
+warehouse.ycom_modes.choose = Kunde wählt aus
+warehouse.ycom_modes.guest_only = Gastmodus (Es wird kein Kundenkonto benötigt)
 
 warehouse.settings.enable_features = Zusätzliche Optionen für Artikel und Varianten
 warehouse.settings.enable_features.bulk_prices = Staffelpreise abfragen
