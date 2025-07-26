@@ -5,6 +5,7 @@
  * @psalm-scope-this rex_addon
  */
 
+use FriendsOfRedaxo\Warehouse\Article;
 use FriendsOfRedaxo\Warehouse\PayPal;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
@@ -111,5 +112,30 @@ $content = $fragment->parse('core/page/section.php');
 	</div>
 	<div class="col-12 col-md-4">
 		<?= rex_view::info(rex_i18n::msg('warehouse.settings.general.info')); ?>
+		<?php
+
+$content = '';
+$content = '<p>' . rex_i18n::msg('warehouse.settings.tax_options.notice') . '</p>';
+// Steuersätze als Tabelle ausgeben
+$taxOptions = Article::getTaxOptions();
+if (!empty($taxOptions)) {
+    $table = '<table class="table table-striped">';
+    $table .= '<thead><tr><th>' . rex_i18n::msg('warehouse.settings.tax_options') . '</th></tr></thead>';
+    $table .= '<tbody>';
+    foreach ($taxOptions as $tax) {
+        $table .= '<tr><td>' . htmlspecialchars($tax) . '</td></tr>';
+    }
+    $table .= '</tbody></table>';
+    $content .= $table;
+} else {
+    $content .= rex_i18n::msg('warehouse.settings.tax_options.empty');
+}
+
+$fragment = new rex_fragment();
+$fragment->setVar('title', rex_i18n::msg('warehouse.settings.tax_options'));
+$fragment->setVar('body', $content, false);
+$content = $fragment->parse('core/page/section.php');
+?>
+		<?= $content; ?>
 	</div>
 </div>
