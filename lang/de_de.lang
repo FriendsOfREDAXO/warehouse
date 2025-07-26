@@ -51,6 +51,7 @@ warehouse_settings_domain = Domain-Profile
 warehouse_settings_tawarehouse_article_variant.weightx = Steuern
 warehouse_settings_log = Log
 warehouse_settings_discount = Rabatte
+warehouse_settings_documents = Dokumente
 warehouse_settings_label = Text
 warehouse_settings_setup = Setup
 warehouse_docs = Hilfe
@@ -94,6 +95,7 @@ warehouse.settings.enable_features = Zusätzliche Optionen für Artikel und Vari
 warehouse.settings.enable_features.bulk_prices = Staffelpreise abfragen
 warehouse.settings.enable_features.weight = Artikelgewicht abfragen
 warehouse.settings.enable_features.variants = Varianten zulassen
+warehouse.settings.enable_features.stock = Lagerbestand verwalten
 
 warehouse.settings.fallback_category_image = Fallback-Kategorie-Bild
 warehouse.settings.fallback_category_image.notice = Wird verwendet, wenn kein Bild für die Kategorie vorhanden ist.
@@ -211,6 +213,7 @@ warehouse_article_variant.weight = Gewicht
 warehouse_article_variant.bulk_prices.amount = Menge
 warehouse_article_variant.bulk_prices.price = Preis
 warehouse_article_variant.bulk_prices.weight = Gewicht
+warehouse_article_varaint.stock = Lagerbestand
 warehouse_article_variant.prio = Reihenfolge
 warehouse_article_variant.availability = Verfügbarkeit
 warehouse_article_variant.status = Status
@@ -219,6 +222,9 @@ warehouse_article_variant.status.draft = 🟡 Entwurf
 warehouse_article_variant.status.hidden = 🔴 Versteckt
 warehouse_article_variant.image = Bild
 warehouse_article_variant.uuid = UUID
+warehouse_article_variant.createdate = Erstellt am
+warehouse_article_variant.updatedate = Zuletzt geändert
+
 
 # YForm-Tabelle "Länder": Labels
 
@@ -443,3 +449,11 @@ warehouse.order.dashboard.total = Gesamtbetrag
 warehouse.order.dashboard.recent_customers = Neueste Kunden
 warehouse.order.dashboard.customer.name = Name
 warehouse.order.dashboard.customer.email = E-Mail
+
+warehouse.settings.payment.allowed_payment_types = Erlaubte Zahlungsarten
+warehouse.payment_options.prepayment = Vorkasse
+warehouse.payment_options.invoice = Rechnung
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Lastschrift
+
+warehouse.settings.documents.info = Dokumente werden derzeit nicht unterstützt. Beteilige dich an der Entwicklung von <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> für die Entwicklung einer Dokumenten-Erstellung, bestehend aus Nummernkreisen, Bestell-Bestätigungs-PDF, Rechnungs-PDF, Lieferschein-PDF und E-Rechnung.
