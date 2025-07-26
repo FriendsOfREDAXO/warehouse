@@ -25,4 +25,8 @@ $_REQUEST['table_name'] = $table_name;
 
 echo rex_view::title($addon->i18n('warehouse.title'));
 
-include rex_path::plugin('yform', 'manager', 'pages/data_edit.php');
+if (rex_addon::get('yform')->isAvailable() && rex_version::compare(rex_addon::get('yform')->getVersion(), '5.0.0', '>=')) {
+    include rex_path::addon('yform', 'pages/manager.data_edit.php');
+} else {
+    include rex_path::plugin('yform', 'manager', 'pages/data_edit.php');
+}
