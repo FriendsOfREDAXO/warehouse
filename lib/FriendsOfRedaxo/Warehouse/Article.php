@@ -298,14 +298,14 @@ class Article extends rex_yform_manager_dataset
         return $this;
     }
 
-    public static function findArticle(int|array $category_ids = null, string $status = 'active', bool $available = true) : ?rex_yform_manager_collection
+    public static function findArticle(int|array $category_ids = null, string $status = 'active', bool $availableOnly = true) : ?rex_yform_manager_collection
     {
         $query = self::query();
         if ($category_ids !== null) {
             $query->where('category_id', $category_ids);
         }
         $query->where('status', $status);
-        if ($available) {
+        if ($availableOnly) {
             $query->where('availability', 'InStock');
         }
         return $query->find();
@@ -407,6 +407,9 @@ class Article extends rex_yform_manager_dataset
         }
         if (!Warehouse::isVariantsEnabled()) {
             $removeFields[] = 'variant_ids';
+        }
+        if (!Warehouse::isVariantsEnabled()) {
+            $removeFields[] = 'stock';
         }
 
         foreach ($removeFields as $field) {
