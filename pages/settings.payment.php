@@ -6,10 +6,20 @@
  */
 
 use FriendsOfRedaxo\Warehouse\PayPal;
+use FriendsOfRedaxo\Warehouse\Warehouse;
 
 echo rex_view::title($this->i18n('warehouse.title'));
 
 $form = rex_config_form::factory('warehouse');
+
+$field = $form->addCheckboxField('allowed_payment_options');
+$field->setLabel(rex_i18n::msg('warehouse.settings.payment.allowed_payment_options'));
+$field->setAttribute('multiple', 'multiple');
+
+$translatedOptions = [];
+foreach (Warehouse::getPaymentOptions() as $value => $label) {
+	$field->addOption(rex_i18n::translate($label), $value);
+}
 
 // ==== Paypal
 $field = $form->addTextField('store_name');

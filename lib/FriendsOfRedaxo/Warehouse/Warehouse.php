@@ -5,6 +5,8 @@ namespace FriendsOfRedaxo\Warehouse;
 use rex_config;
 use rex_sql;
 use rex;
+use rex_extension;
+use rex_extension_point;
 use rex_logger;
 use rex_fragment;
 use rex_path;
@@ -303,12 +305,24 @@ class Warehouse
 
     public static function getPaymentOptions() :array
     {
-        return self::PAYMENT_OPTIONS;
+        $payment_options = self::PAYMENT_OPTIONS;
+        // Via Extension Point eigene Zahlungsarten hinzufügen
+        $payment_options = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_PAYMENT_OPTIONS', $payment_options));
+        return $payment_options;
     }
 
     public static function getAllowedPaymentOptions() :array
     {
-        return self::PAYMENT_OPTIONS;
+        $payment_options = self::getPaymentOptions();
+        $allowed_payment_options = rex_config::get('warehouse', 'allowed_payment_options', '|prepayment|invoice|direct_debit|');
+        // Nur die Optionen zurückgeben, die in der Konfiguration aktiviert sind
+        $available_options = [];
+        foreach ($payment_options as $key => $label) {
+            if (strpos($allowed_payment_options, '|' . $key . '|') !== false) {
+                $available_options[$key] = $label;
+            }
+        }
+        return $available_options;
     }
 
     public static function restore_session_from_payment_id($payment_id)
@@ -377,6 +391,12 @@ class Warehouse
     {
         // Überprüfe, ob 'variants' im Config-Wert vorhanden ist
         return in_array('variants', self::getEnabledFeatures());
+    }
+
+    public static function isStockEnabled() :bool
+    {
+        // Überprüfe, ob 'stock' im Config-Wert vorhanden ist
+        return in_array('stock', self::getEnabledFeatures());
     }
     /** @api */
     public static function parse(string $file, array $values = [])
