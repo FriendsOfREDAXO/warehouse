@@ -402,9 +402,14 @@ class Warehouse
     {
         return true;
     }
-
     /**
-     * Gibt den globalen Modus für die Preiseingabe zurück ('net' oder 'gross').
+     * Gibt den globalen Modus für die Preiseingabe zurück.
+     *
+     * Mögliche Rückgabewerte:
+     * - 'net'   für Netto-Preiseingabe
+     * - 'gross' für Brutto-Preiseingabe
+     *
+     * @return 'net'|'gross' Modus der Preiseingabe
      */
     public static function getPriceInputMode(): string
     {
