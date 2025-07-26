@@ -6,6 +6,38 @@ use rex_ycom_auth;
 use FriendsOfRedaxo\Warehouse\CustomerAddress;
 use rex_yform_manager_dataset;
 
+const SALUTATION_FIELD = 'salutation';
+const FIRSTNAME_FIELD = 'firstname';
+const LASTNAME_FIELD = 'lastname';
+const COMPANY_FIELD = 'company';
+const DEPARTMENT_FIELD = 'department';
+const ADDRESS_FIELD = 'address';
+const PHONE_FIELD = 'phone';
+const ZIP_FIELD = 'zip';
+const CITY_FIELD = 'city';
+
+const EMAIL_FIELD = 'email';
+
+const ALL_FIELDS = [
+    SALUTATION_FIELD,
+    FIRSTNAME_FIELD,
+    LASTNAME_FIELD,
+    COMPANY_FIELD,
+    DEPARTMENT_FIELD,
+    ADDRESS_FIELD,
+    PHONE_FIELD,
+    ZIP_FIELD,
+    CITY_FIELD,
+    EMAIL_FIELD
+];
+
+/**
+ * Class Customer
+ *
+ * Represents a customer in the warehouse system.
+ * Extends the YForm manager dataset for customer data management.
+ */
+
 class Customer extends rex_yform_manager_dataset
 {
     public static function getCurrent()
@@ -21,11 +53,13 @@ class Customer extends rex_yform_manager_dataset
     
     /* E-Mail */
     /** @api */
-    public function getEmail() : mixed {
+    public function getEmail() : mixed
+    {
         return $this->getValue("email");
     }
     /** @api */
-    public function setEmail(mixed $value) : self {
+    public function setEmail(mixed $value) : self
+    {
         $this->setValue("email", $value);
         return $this;
     }
@@ -33,104 +67,123 @@ class Customer extends rex_yform_manager_dataset
 
     /* Vorname */
     /** @api */
-    public function getFirstname() : mixed {
+    public function getFirstname() : mixed
+    {
         return $this->getValue("firstname");
     }
     /** @api */
-    public function setFirstname(mixed $value) : self {
+    public function setFirstname(mixed $value) : self
+    {
         $this->setValue("firstname", $value);
         return $this;
     }
     /* [translate:warehouse.ycom_user.lastname] */
     /** @api */
-    public function getLastname() : ?string {
+    public function getLastname() : ?string
+    {
         return $this->getValue("lastname");
     }
     /** @api */
-    public function setLastname(mixed $value) : self {
+    public function setLastname(mixed $value) : self
+    {
         $this->setValue("lastname", $value);
         return $this;
     }
 
     /* [translate:warehouse.ycom_user.salutation] */
     /** @api */
-    public function getSalutation() : ?string {
+    public function getSalutation() : ?string
+    {
         return $this->getValue("salutation");
     }
     /** @api */
-    public function setSalutation(mixed $value) : self {
+    public function setSalutation(mixed $value) : self
+    {
         $this->setValue("salutation", $value);
         return $this;
     }
 
     /** @api */
-    public function getFullName() : string {
+    public function getFullName() : string
+    {
         $salutation = $this->getSalutation() ? $this->getSalutation() . ' ' : '';
         return $salutation . $this->getFirstname() . ' ' . $this->getLastname();
     }
 
     /* [translate:warehouse.ycom_user.company] */
     /** @api */
-    public function getCompany() : ?string {
+    public function getCompany() : ?string
+    {
         return $this->getValue("company");
     }
     /** @api */
-    public function setCompany(mixed $value) : self {
+    public function setCompany(mixed $value) : self
+    {
         $this->setValue("company", $value);
         return $this;
     }
 
     /* [translate:warehouse.ycom_user.department] */
     /** @api */
-    public function getDepartment() : ?string {
+    public function getDepartment() : ?string
+    {
         return $this->getValue("department");
     }
     /** @api */
-    public function setDepartment(mixed $value) : self {
+    public function setDepartment(mixed $value) : self
+    {
         $this->setValue("department", $value);
         return $this;
     }
 
     /* [translate:warehouse.ycom_user.address] */
     /** @api */
-    public function getAddress() : ?string {
+    public function getAddress() : ?string
+    {
         return $this->getValue("address");
     }
     /** @api */
-    public function setAddress(mixed $value) : self {
+    public function setAddress(mixed $value) : self
+    {
         $this->setValue("address", $value);
         return $this;
     }
 
     /* [translate:warehouse.ycom_user.phone] */
     /** @api */
-    public function getPhone() : ?string {
+    public function getPhone() : ?string
+    {
         return $this->getValue("phone");
     }
     /** @api */
-    public function setPhone(mixed $value) : self {
+    public function setPhone(mixed $value) : self
+    {
         $this->setValue("phone", $value);
         return $this;
     }
 
     /* [translate:warehouse.ycom_user.zip] */
     /** @api */
-    public function getZip() : ?string {
+    public function getZip() : ?string
+    {
         return $this->getValue("zip");
     }
     /** @api */
-    public function setZip(mixed $value) : self {
+    public function setZip(mixed $value) : self
+    {
         $this->setValue("zip", $value);
         return $this;
     }
 
     /* [translate:warehouse.ycom_user.city] */
     /** @api */
-    public function getCity() : ?string {
+    public function getCity() : ?string
+    {
         return $this->getValue("city");
     }
     /** @api */
-    public function setCity(mixed $value) : self {
+    public function setCity(mixed $value) : self
+    {
         $this->setValue("city", $value);
         return $this;
     }
