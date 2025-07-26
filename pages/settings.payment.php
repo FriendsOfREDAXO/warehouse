@@ -55,10 +55,10 @@ $content = $fragment->parse('core/page/section.php');
 
 ?>
 <div class="row">
-    <div class="col-12 col-md-8">
-        <?php echo $content; ?>
-    </div>
-    <div class="col-12 col-md-4">
-        <?= rex_view::info(rex_i18n::msg('warehouse.settings.payment.info')); ?>
-    </div>
+	<div class="col-12 col-md-8">
+		<?php echo $content; ?>
+	</div>
+	<div class="col-12 col-md-4">
+		<?= rex_view::info(rex_i18n::rawMsg('warehouse.settings.payment.info')); ?>
+	</div>
 </div>
