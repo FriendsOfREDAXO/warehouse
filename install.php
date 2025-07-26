@@ -21,19 +21,20 @@ if (rex_addon::get('yform')->isAvailable()) {
     rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_category.json'));
     rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_order.json'));
     rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_customer_address.json'));
-//    rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_ycom_user.json'));
+    //    rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_ycom_user.json'));
     rex_yform_manager_table::deleteCache();
 }
 
 if (rex_addon::get('url')->isAvailable()) {
-    $this->includeFile(__DIR__ . '/install/url_profile.php');
+    // $this->includeFile(__DIR__ . '/install/url/url_profile_article.php');
+    // $this->includeFile(__DIR__ . '/install/url/url_profile_category.php');
 }
 
 if (rex_addon::get('mediapool')->isAvailable()) {
     $this->includeFile(__DIR__ . '/install/media.php');
 }
 
-if(rex_addon::get('ycom')->isAvailable() && rex_config::get('warehouse', 'ycom_mode') == '') {
+if (rex_addon::get('ycom')->isAvailable() && rex_config::get('warehouse', 'ycom_mode') == '') {
     rex_config::set('warehouse', 'ycom_mode', 'choose');
 }
 
