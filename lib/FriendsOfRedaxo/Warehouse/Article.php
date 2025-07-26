@@ -325,7 +325,7 @@ class Article extends rex_yform_manager_dataset
         ];
 
         // Statt statischer Werte können zusätzlich über einen Extension Point weitere Steuersätze hinzugefügt werden.
-        $taxOptions = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_TAX', null, $defaultTaxOptions));
+        $taxOptions = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_TAX_OPTIONS', $defaultTaxOptions));
         if (!is_array($taxOptions)) {
             $taxOptions = $defaultTaxOptions;
         }
