@@ -41,6 +41,12 @@ class Article extends rex_yform_manager_dataset
             'hidden' => 'translate:warehouse_article.status.hidden',
         ];
 
+    public const DEFAULT_TAX_OPTIONS = [
+        '19' => '19%',
+        '7' => '7%',
+        '0' => '0%',
+    ];
+
     /* Name */
     /** @api */
     public function getName() : ?string
@@ -318,16 +324,11 @@ class Article extends rex_yform_manager_dataset
 
     public static function getTaxOptions() : array
     {
-        $defaultTaxOptions = [
-            '19' => '19%',
-            '7' => '7%',
-            '0' => '0%',
-        ];
 
         // Statt statischer Werte können zusätzlich über einen Extension Point weitere Steuersätze hinzugefügt werden.
-        $taxOptions = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_TAX_OPTIONS', $defaultTaxOptions));
+        $taxOptions = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_TAX_OPTIONS', self::DEFAULT_TAX_OPTIONS));
         if (!is_array($taxOptions)) {
-            $taxOptions = $defaultTaxOptions;
+            $taxOptions = self::DEFAULT_TAX_OPTIONS;
         }
         return $taxOptions;
     }
