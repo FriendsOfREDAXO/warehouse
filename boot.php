@@ -113,16 +113,16 @@ if (rex::isBackend() && rex::getUser() && rex_addon::get('quick_navigation')->is
 if (rex::isFrontend()) {
     rex_extension::register('OUTPUT_FILTER', function (rex_extension_point $ep) {
         $domain = Domain::getCurrent();
-        $checkoutArtId = $domain ? $domain->getCheckoutArtId() : null;
+        $cartArtId = $domain ? $domain->getCartArtId() : null;
 
-        if ($checkoutArtId) {
+        if ($cartArtId) {
             // Dynamischer Text für den Link
             $fragment = new rex_fragment();
             $checkout_button = $fragment->parse('/warehouse/bootstrap5/navigation/cart.php');
 
             // Pattern sucht das <li> mit der passenden Klasse und ersetzt den gesamten <a>...</a> Inhalt
             // Verwende ein nicht-lazy Pattern, damit nur der <a> innerhalb des passenden <li> ersetzt wird
-            $pattern = '/(<li\s+class="rex-article-' . preg_quote($checkoutArtId, '/') . '[^"]*".*?>\s*)<a\b[^>]*>.*?<\/a>(\s*<\/li>)/s';
+            $pattern = '/(<li\s+class="rex-article-' . preg_quote($cartArtId, '/') . '[^"]*".*?>\s*)<a\b[^>]*>.*?<\/a>(\s*<\/li>)/s';
 
             // Ersetze den kompletten <a>...</a> durch den Button-Fragment
             $replacement = '$1' . $checkout_button . '$2';
@@ -133,3 +133,12 @@ if (rex::isFrontend()) {
         return $ep->getSubject();
     });
 }
+
+// EP für WAREHOUSE_TAX verwenden und weitere Steuersätze hinzufügen
+rex_extension::register('WAREHOUSE_TAX_OTIONS', function (rex_extension_point $ep) {
+    /** @var array $taxes */
+    $taxes = $ep->getSubject();
+    $taxes[42] = '42%';
+    krsort($taxes);
+    return $taxes;
+});
