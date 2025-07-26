@@ -21,12 +21,6 @@ $select->addOptions(
     PayPal::CURRENCY_CODES
 );
 
-$field = $form->addTextField('tax_options');
-$field->setLabel(rex_i18n::msg('warehouse.settings.tax_options'));
-$field->setNotice(rex_i18n::msg('warehouse.settings.tax_options.notice'));
-$field->setAttribute('placeholder', '19,7,0');
-$field->setAttribute('pattern', '^[0-9\.,]+$');
-
 $field = $form->addSelectField('shipping_allowed');
 $field->setLabel(rex_i18n::msg('warehouse.settings.shipping_allowed'));
 $select = $field->getSelect();
