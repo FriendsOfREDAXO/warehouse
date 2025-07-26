@@ -8,6 +8,7 @@ use FriendsOfRedaxo\Warehouse\Logger;
 
 if (rex_addon::get('yform')->isAvailable() && rex_addon::get('tracks')->isAvailable()) {
     // Überprüfe, ob schon ein Domain-Profil existiert
+    rex_yform_manager_dataset::setModelClass('rex_warehouse_settings_domain', Domain::class);
     if (Domain::query()->findOne() === null) {
 
         // Shop
