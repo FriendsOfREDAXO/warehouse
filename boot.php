@@ -14,10 +14,12 @@ use rex_addon;
 use rex_request;
 use rex_be_controller;
 use rex_extension_point;
+use rex_fragment;
 use rex_response;
 use rex_view;
 use Url\Url;
 use rex_list;
+use rex_navigation;
 
 /** @var rex_addon $this */
 
@@ -105,4 +107,29 @@ if (rex::isBackend() && rex::getUser()) {
 /* quick_navigation Suche */
 if (rex::isBackend() && rex::getUser() && rex_addon::get('quick_navigation')->isAvailable()) {
     \FriendsOfRedaxo\QuickNavigation\Button\ButtonRegistry::registerButton(new QuickNavigationButton(), 5);
+}
+
+/* in der Factory-Klasse rex_navigation den EP nutzen, um den Warenkorb-Button zu registrieren */
+if (rex::isFrontend()) {
+    rex_extension::register('OUTPUT_FILTER', function (rex_extension_point $ep) {
+        $domain = Domain::getCurrent();
+        $checkoutArtId = $domain ? $domain->getCheckoutArtId() : null;
+
+        if ($checkoutArtId) {
+            // Dynamischer Text für den Link
+            $fragment = new rex_fragment();
+            $checkout_button = $fragment->parse('/warehouse/bootstrap5/navigation/cart.php');
+
+            // Pattern sucht das <li> mit der passenden Klasse und ersetzt den gesamten <a>...</a> Inhalt
+            // Verwende ein nicht-lazy Pattern, damit nur der <a> innerhalb des passenden <li> ersetzt wird
+            $pattern = '/(<li\s+class="rex-article-' . preg_quote($checkoutArtId, '/') . '[^"]*".*?>\s*)<a\b[^>]*>.*?<\/a>(\s*<\/li>)/s';
+
+            // Ersetze den kompletten <a>...</a> durch den Button-Fragment
+            $replacement = '$1' . $checkout_button . '$2';
+            $subject = $ep->getSubject();
+            $subject = preg_replace($pattern, $replacement, $subject);
+            return $subject;
+        }
+        return $ep->getSubject();
+    });
 }
