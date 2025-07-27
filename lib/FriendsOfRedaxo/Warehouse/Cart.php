@@ -36,6 +36,20 @@ class Cart
         $this->cart = rex_session('warehouse_cart', 'array');
     }
 
+    public static function loadCartFromSession(): self
+    {
+        $cart = new self();
+        $cart->cart = rex_session('warehouse_cart', 'array', []);
+        if (empty($cart->cart)) {
+            // Wenn der Warenkorb leer ist, initialisiere ihn
+            $cart->init();
+        }
+        return $cart;
+    }
+    public function saveCartToSession(): void
+    {
+        rex_set_session('warehouse_cart', $this->cart);
+    }
 
     public static function get(): Cart
     {
