@@ -53,10 +53,10 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("checkout_art_id");
     }
-    public function getCheckoutUrl() : string
+    public function getCheckoutUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== ($article = $this->getCheckoutArt())) {
-            return $article->getUrl();
+            return $article->getUrl($params, $divider);
         }
         return '';
     }
@@ -71,10 +71,10 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("cart_art_id");
     }
-    public function getCartArtUrl() : string
+    public function getCartArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== ($article = $this->getCartArt())) {
-            return $article->getUrl();
+            return $article->getUrl($params, $divider);
         }
         return '';
     }
@@ -97,10 +97,10 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("shippinginfo_art_id");
     }
-    public function getShippinginfoArtUrl() : string
+    public function getShippinginfoArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if ($article = $this->getShippinginfoArt()) {
-            return $article->getUrl();
+            return $article->getUrl($params, $divider);
         }
         return '';
     }
@@ -123,10 +123,10 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("address_art_id");
     }
-    public function getAddressArtUrl() : string
+    public function getAddressArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== ($article = $this->getAddressArt())) {
-            return $article->getUrl();
+            return $article->getUrl($params, $divider);
         }
         return '';
     }
@@ -149,10 +149,10 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("order_art_id");
     }
-    public function getOrderArtUrl() : string
+    public function getOrderArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== $article = $this->getOrderArt()) {
-            return $article->getUrl();
+            return $article->getUrl($params, $divider);
         }
         return '';
     }
@@ -175,10 +175,10 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("payment_error_art_id");
     }
-    public function getPaymentErrorArtUrl() : string
+    public function getPaymentErrorArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== ($article = $this->getPaymentErrorArt())) {
-            return $article->getUrl();
+            return $article->getUrl($params, $divider);
         }
         return '';
     }
@@ -201,10 +201,10 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("thankyou_art_id");
     }
-    public function getThankyouArtUrl() : string
+    public function getThankyouArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== ($article = $this->getThankyouArt())) {
-            return $article->getUrl();
+            return $article->getUrl($params, $divider);
         }
         return '';
     }
