@@ -10,14 +10,6 @@ use FriendsOfRedaxo\Warehouse\Payment as WarehousePayment;
 use FriendsOfRedaxo\Warehouse\PayPal as WarehousePayPal;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
-// Check if PayPal classes are available (should be loaded in boot.php)
-if (!class_exists('PayPal\Rest\ApiContext')) {
-    Logger::log('paypal_error', 'PayPal SDK classes not available - make sure composer install was run in the warehouse addon');
-    echo "<h2>Fehler bei der PayPal-Zahlung</h2>";
-    echo "<p>Die PayPal SDK ist nicht korrekt installiert. Bitte führen Sie 'composer install' im warehouse-Addon Verzeichnis aus.</p>";
-    return;
-}
-
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Api\Payer;

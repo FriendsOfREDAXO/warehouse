@@ -29,7 +29,12 @@ class Warehouse
 
     public static function getCurrencySign() :string
     {
-        return PayPal::CURRENCY_SIGNS[Warehouse::getConfig('currency')];
+        return PayPal::CURRENCY_SIGNS[self::getCurrency()];
+    }
+
+    public static function getCurrency() :string
+    {
+        return rex_config::get('warehouse', 'currency', 'EUR');
     }
     
     public static function getOrderAsText()

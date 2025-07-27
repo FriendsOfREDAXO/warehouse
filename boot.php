@@ -6,20 +6,15 @@ use FriendsOfRedaxo\Warehouse\QuickNavigation\QuickNavigationButton;
 use rex;
 use rex_login;
 use rex_extension;
-use rex_yrewrite;
-use rex_article;
 use rex_yform_manager_dataset;
 use rex_yform;
 use rex_addon;
-use rex_request;
 use rex_be_controller;
 use rex_extension_point;
 use rex_fragment;
 use rex_response;
 use rex_view;
 use Url\Url;
-use rex_list;
-use rex_navigation;
 
 /** @var rex_addon $this */
 
@@ -86,13 +81,6 @@ if (rex::isFrontend()) {
                 }
                 $curl = Domain::getCurrentUrl() . $_SERVER['REQUEST_URI'];
                 rex_set_session('current_page', $curl);
-            }
-
-            if (rex_article::getCurrentId() == Warehouse::getConfig('thankyou_page')) {
-                if (rex_get('paymentId')) {
-                    PayPal::ExecutePayment();
-                    Cart::empty();
-                }
             }
         }
     });
