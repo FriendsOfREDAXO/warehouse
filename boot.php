@@ -18,7 +18,6 @@ use Url\Url;
 
 /** @var rex_addon $this */
 
-
 if (rex_addon::get('yform')->isAvailable() && !rex::isSafeMode()) {
     rex_yform_manager_dataset::setModelClass('rex_warehouse_article', Article::class);
     rex_yform_manager_dataset::setModelClass('rex_warehouse_article_variant', ArticleVariant::class);
