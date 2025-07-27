@@ -142,3 +142,33 @@ rex_extension::register('WAREHOUSE_CART_SHIPPING_COST', function(rex_extension_p
     return $cost;
 });
 ```
+
+### `WAREHOUSE_DASHBOARD`
+
+Ermöglicht die Modifikation des Dashboard-Layouts im Backend. Das Layout ist als mehrdimensionales Array strukturiert und kann erweitert, modifiziert oder reduziert werden. Rückgabewert ist das modifizierte Layout-Array.
+
+**Beispiel:**
+
+```php
+rex_extension::register('WAREHOUSE_DASHBOARD', function(rex_extension_point $ep) {
+    $layout = $ep->getSubject();
+    $dashboard = $ep->getParam('dashboard');
+    
+    // Beispiel: Neue Sektion hinzufügen
+    $layout['custom_row'] = [
+        'custom_section' => [
+            'col' => 12,
+            'content' => '<div class="alert alert-success">Eigene Dashboard-Sektion</div>'
+        ]
+    ];
+    
+    // Beispiel: Bestehende Sektion entfernen
+    unset($layout['statistics_row']['recent_customers']);
+    
+    // Beispiel: Sektion modifizieren
+    $layout['status_row']['unpaid_orders']['col'] = 12;
+    unset($layout['status_row']['shipping_orders']);
+    
+    return $layout;
+});
+```
