@@ -34,16 +34,6 @@ class Order extends rex_yform_manager_dataset
         self::SHIPPING_STATUS_CANCELLED => 'warehouse.order.shipping_status.cancelled',
     ];
 
-    public const PAYMENT_STATUS_PAID = 'paid';
-    public const PAYMENT_STATUS_NOT_PAID = 'not_paid';
-    public const PAYMENT_STATUS_PARTIALLY_PAID = 'partially_paid';
-
-    public const PAYMENT_STATUS_OPTIONS = [
-        self::PAYMENT_STATUS_PAID => 'warehouse.order.payment_status.paid',
-        self::PAYMENT_STATUS_NOT_PAID => 'warehouse.order.payment_status.not_paid',
-        self::PAYMENT_STATUS_PARTIALLY_PAID => 'warehouse.order.payment_status.partially_paid',
-    ];
-
     /* Anrede */
     /** @api */
     public function getSalutation() : ?string
@@ -733,7 +723,7 @@ class Order extends rex_yform_manager_dataset
     public static function getPaymentStatusOptions(): array
     {
         $options = [];
-        foreach (self::PAYMENT_STATUS_OPTIONS as $key => $label) {
+        foreach (Payment::getPaymentStatusOptions() as $key => $label) {
             $options[$key] = rex_i18n::msg($label);
         }
         return $options;
