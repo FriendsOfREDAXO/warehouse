@@ -76,6 +76,69 @@ rex_extension::register('WAREHOUSE_INVOICE_NUMBER', function(rex_extension_point
 });
 ```
 
-### `WAREHOUSE_*`
+### `WAREHOUSE_PAYMENT_OPTIONS`
 
-TODO: Hier alle EPs beschreiben, die es am Ende in v2 geschafft haben.
+Ermöglicht das Hinzufügen oder Modifizieren der verfügbaren Zahlungsarten im Shop. Rückgabewert ist ein Array mit Zahlungsoptionen.
+
+**Beispiel:**
+
+```php
+rex_extension::register('WAREHOUSE_PAYMENT_OPTIONS', function(rex_extension_point $ep) {
+    $options = $ep->getSubject();
+    // Beispiel: Stripe ergänzen
+    $options['stripe'] = 'Stripe';
+    return $options;
+});
+```
+
+### `WAREHOUSE_TAX_OPTIONS`
+
+Ermöglicht das Hinzufügen oder Modifizieren der verfügbaren Steuersätze für Artikel. Rückgabewert ist ein Array mit Steuersätzen.
+
+**Beispiel:**
+
+```php
+rex_extension::register('WAREHOUSE_TAX_OPTIONS', function(rex_extension_point $ep) {
+    $taxOptions = $ep->getSubject();
+    // Beispiel: 5% ergänzen
+    $taxOptions['5'] = '5%';
+    return $taxOptions;
+});
+```
+
+### `WAREHOUSE_CART_VALIDATE`
+
+Ermöglicht eigene Validierungen des Warenkorbs, z. B. Mindestbestellwert, Verfügbarkeit, etc. Rückgabewert kann ein Fehler-String oder ein modifizierter Warenkorb sein.
+
+**Beispiel:**
+
+```php
+rex_extension::register('WAREHOUSE_CART_VALIDATE', function(rex_extension_point $ep) {
+    $cart = $ep->getParam('cart');
+    // Beispiel: Nur Artikel mit Lagerbestand zulassen
+    foreach ($cart as $item) {
+        if ($item['stock'] <= 0) {
+            return 'Ein Artikel ist nicht mehr verfügbar.';
+        }
+    }
+    return $cart;
+});
+```
+
+### `WAREHOUSE_CART_SHIPPING_COST`
+
+Ermöglicht die Anpassung der Versandkostenberechnung. Rückgabewert ist der finale Versandkostenbetrag.
+
+**Beispiel:**
+
+```php
+rex_extension::register('WAREHOUSE_CART_SHIPPING_COST', function(rex_extension_point $ep) {
+    $cost = $ep->getSubject();
+    $cart = $ep->getParam('cart');
+    // Beispiel: Versandkostenfrei ab 100 Euro
+    if ($ep->getParam('total_price') >= 100) {
+        return 0;
+    }
+    return $cost;
+});
+```
