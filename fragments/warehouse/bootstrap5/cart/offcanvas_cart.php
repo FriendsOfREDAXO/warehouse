@@ -12,7 +12,7 @@ $cart_items = $cart->getItems();
 $domain = Domain::getCurrent();
 ?>
 <!-- cart/offcanvas_cart.php -->
-<div class="offcanvas offcanvas-end show" tabindex="-1" id="cart-offcanvas">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cart-offcanvas">
 	<div class="offcanvas-header">
 		<h5 class="offcanvas-title">
 			<?= Warehouse::getLabel('cart') ?>

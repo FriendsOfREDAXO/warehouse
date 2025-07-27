@@ -2,36 +2,38 @@
 
 namespace FriendsOfRedaxo\Warehouse;
 
-use rex_clang;
-use rex_article;
-use rex_user;
 use rex_media;
-use yrewrite_domain;
-use rex_yform_manager_collection;
 use rex_yform_manager_dataset;
 use rex_url;
 use rex_extension_point;
 use rex_csrf_token;
 use rex_i18n;
+use rex_yform_manager_collection;
 
 class Category extends \rex_yform_manager_dataset
 {
 
-    public const STATUS =
-        [
-            'active' => 'translate:warehouse_article_variant.status.active',
-            'draft' => 'translate:warehouse_article_variant.status.draft',
-            'hidden' => 'translate:warehouse_article_variant.status.hidden',
-        ];
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_HIDDEN = 'hidden';
+    
+    public const STATUS_OPTIONS = [
+        self::STATUS_ACTIVE => 'translate:warehouse_category.status.active',
+        self::STATUS_DRAFT => 'translate:warehouse_category.status.draft',
+        self::STATUS_HIDDEN => 'translate:warehouse_category.status.hidden',
+    ];
+
+    public const TABLE_NAME = 'warehouse_category';
     
     /* Status */
     /** @api */
-    public function getStatus() : mixed
+    public function getStatus() : ?string
     {
-        return $this->getValue("status");
+        // Rückgabe des Status, falls gesetzt, sonst Standardwert
+        return $this->getValue("status") ? $this->getValue("status") : self::STATUS_DRAFT;
     }
     /** @api */
-    public function setStatus(mixed $param) : mixed
+    public function setStatus(string $param) : mixed
     {
         $this->setValue("status", $param);
         return $this;
@@ -143,27 +145,27 @@ class Category extends \rex_yform_manager_dataset
         return $this;
     }
 
-    public function findChildren(int $status = 1)
+    public function findChildren(string $status = self::STATUS_ACTIVE) : rex_yform_manager_collection
     {
         return self::query()
             ->where('parent_id', $this->getId())
-            ->where('status', $status, '>=')
+            ->where('status', $status, '=')
             ->find();
     }
 
-    public function getArticles(int $status = 1, int $limit = 48, int $offset = 0)
+    public function getArticles(string|array $status = self::STATUS_ACTIVE, int $limit = 48, int $offset = 0)
     {
         return Article::query()
             ->where('category_id', $this->getId())
-            ->where('status', $status, '>=')
+            ->where('status', $status, '=')
             ->limit($offset, $limit)
             ->find();
     }
 
-    public static function findRootCategories(int $status = 1, int $limit = 48, int $offset = 0)
+    public static function findRootCategories(string|array $status = self::STATUS_ACTIVE, int $limit = 48, int $offset = 0)
     {
         $categories = self::query()
-            ->where('status', $status, '>=')
+            ->where('status', $status, '=')
             ->where('parent_id', 0)
             ->orderBy('prio')
             ->limit($offset, $limit)
@@ -174,7 +176,7 @@ class Category extends \rex_yform_manager_dataset
 
     public static function getStatusOptions() : array
     {
-        return self::STATUS;
+        return self::STATUS_OPTIONS;
     }
 
     public function getProjectValue(string $key)
@@ -210,40 +212,40 @@ class Category extends \rex_yform_manager_dataset
 
     public static function epYformDataList(rex_extension_point $ep)
     {
-    /** @var rex_yform_manager_table $table */
-    $table = $ep->getParam('table');
-    if ($table->getTableName() !== self::table()->getTableName()) {
-        return;
+        /** @var rex_yform_manager_table $table */
+        $table = $ep->getParam('table');
+        if ($table->getTableName() !== self::table()->getTableName()) {
+            return;
+        }
+
+        /** @var rex_yform_list $list */
+        $list = $ep->getSubject();
+
+        $list->setColumnFormat(
+            'name',
+            'custom',
+            static function ($a) {
+                $_csrf_key = self::table()->getCSRFKey();
+                $token = rex_csrf_token::factory($_csrf_key)->getUrlParams();
+
+                $params = [];
+                $params['table_name'] = self::table()->getTableName();
+                $params['rex_yform_manager_popup'] = '0';
+                $params['_csrf_token'] = $token['_csrf_token'];
+                $params['data_id'] = $a['list']->getValue('id');
+                $params['func'] = 'edit';
+
+                return '<a href="' . rex_url::backendPage('warehouse/category', $params) . '">' . $a['value'] . '</a>';
+            },
+        );
+        $list->setColumnFormat(
+            'id',
+            'custom',
+            static function ($a) {
+                return $a['value'];
+            },
+        );
     }
-
-    /** @var rex_yform_list $list */
-    $list = $ep->getSubject();
-
-    $list->setColumnFormat(
-        'name',
-        'custom',
-        static function ($a) {
-            $_csrf_key = self::table()->getCSRFKey();
-            $token = rex_csrf_token::factory($_csrf_key)->getUrlParams();
-
-            $params = [];
-            $params['table_name'] = self::table()->getTableName();
-            $params['rex_yform_manager_popup'] = '0';
-            $params['_csrf_token'] = $token['_csrf_token'];
-            $params['data_id'] = $a['list']->getValue('id');
-            $params['func'] = 'edit';
-
-            return '<a href="' . rex_url::backendPage('warehouse/category', $params) . '">' . $a['value'] . '</a>';
-        },
-    );
-    $list->setColumnFormat(
-        'id',
-        'custom',
-        static function ($a) {
-            return $a['value'];
-        },
-    );
-}
 
     public function getUrl(string $profile = 'warehouse-category-id'): string
     {

@@ -3,17 +3,17 @@
 use FriendsOfRedaxo\Warehouse\Category;
 use FriendsOfRedaxo\Warehouse\Article;
 
-$categories = Category::findRootCategories(1);
+$categories = Category::findRootCategories('active');
 ?>
 
 <section class="container">
 	<?php
 
-    foreach ($categories as $category) {
-        /* @var $category product_category */
-        $articles = $category->getArticles(1, 8);
-        if (count($articles) > 0) {
-            ?>
+foreach ($categories as $category) {
+    /* @var $category product_category */
+    $articles = $category->getArticles('active', 8);
+    if (count($articles) > 0) {
+        ?>
 	<div class="row">
 		<div class="col-12">
 			<h2 class="mt-5 mb-2 fw-bold">
@@ -25,13 +25,14 @@ $categories = Category::findRootCategories(1);
 	</div>
 	<div class="row">
 		<?php foreach ($articles as $article) {
-			/** @var Article $article */
+		    /** @var Article $article */
 		    ?>
 		<div class="col-sm-6 col-md-4 col-lg-3">
 			<div class="card">
 				<a href="<?= $article->getUrl() ?>">
 					<?php if ($article->getImageAsMedia()) { ?>
-					<img class="img-fluid card-img-top" src="<?= $article->getImageAsMedia()->getUrl(); ?>">
+					<img class="img-fluid card-img-top"
+						src="<?= $article->getImageAsMedia()->getUrl(); ?>">
 					<?php } ?>
 				</a>
 				<div class="card-body">
@@ -49,7 +50,7 @@ $categories = Category::findRootCategories(1);
 		<?php } ?>
 	</div>
 	<?php
-        }
     }
+}
 ?>
 </section>

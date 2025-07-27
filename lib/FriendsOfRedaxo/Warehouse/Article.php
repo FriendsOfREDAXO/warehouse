@@ -12,7 +12,6 @@ use rex_url;
 use rex_extension_point;
 use rex_csrf_token;
 use rex_extension;
-use Url\Url;
 
 class Article extends rex_yform_manager_dataset
 {
@@ -33,8 +32,11 @@ class Article extends rex_yform_manager_dataset
             'SoldOut' => 'translate:warehouse_article.availability.SoldOut',
         ];
 
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_HIDDEN = 'hidden';
 
-    public const STATUS =
+    public const STATUS_OPTIONS =
         [
             'active' => 'translate:warehouse_article.status.active',
             'draft' => 'translate:warehouse_article.status.draft',
@@ -69,18 +71,18 @@ class Article extends rex_yform_manager_dataset
 
     /* Status */
     /** @api */
-    public function getStatus() : mixed
+    public function getStatus() : ?string
     {
         return $this->getValue("status");
     }
 
     public function getStatusLabel() : ?string
     {
-        return rex_i18n::rawMsg(self::STATUS[$this->getStatus()] ?? '');
+        return rex_i18n::rawMsg(self::STATUS_OPTIONS[$this->getStatus()] ?? '');
     }
 
     /** @api */
-    public function setStatus(mixed $param) : mixed
+    public function setStatus(string $param) : mixed
     {
         $this->setValue("status", $param);
         return $this;
@@ -319,7 +321,7 @@ class Article extends rex_yform_manager_dataset
 
     public static function getStatusOptions() : array
     {
-        return self::STATUS;
+        return self::STATUS_OPTIONS;
     }
 
     public static function getTaxOptions() : array
