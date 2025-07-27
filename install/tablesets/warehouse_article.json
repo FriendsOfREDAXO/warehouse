@@ -341,7 +341,7 @@
             },
             {
                 "db_type": "none",
-                "html": "<\/div>\r\n<div class=\"row\">",
+                "html": "<div class=\"row\">",
                 "label": "",
                 "list_hidden": 0,
                 "name": "html_row_2",
