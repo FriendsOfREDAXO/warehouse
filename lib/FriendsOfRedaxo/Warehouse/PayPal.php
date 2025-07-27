@@ -287,6 +287,22 @@ class PayPal
             'USD' => '$'
         ];
 
+    public static function getPaypalClientId() :string
+    {
+        if (rex_config::get('warehouse', 'sandboxmode')) {
+            return rex_config::get('warehouse', 'paypal_sandbox_client_id');
+        }
+        return rex_config::get('warehouse', 'paypal_client_id');
+    }
+
+    public static function getPaypalSecret() :string
+    {
+        if (rex_config::get('warehouse', 'sandboxmode')) {
+            return rex_config::get('warehouse', 'paypal_sandbox_secret');
+        }
+        return rex_config::get('warehouse', 'paypal_secret');
+    }
+
     /**
      * Returns PayPal HTTP client instance with environment which has access
      * credentials context. This can be used invoke PayPal API's provided the
@@ -456,4 +472,28 @@ class PayPal
         }
         return;
     }
+    /**
+     * execute_payment wird aufgerufen, wenn die Zahlung abgeschlossen ist.
+     */
+    public static function PaypalPaymentApproved($payment) :bool
+    {
+        // TODO: Stattdessen response auswerten, PayPalHttp\HttpResponse, dort id, status auswerten. Ansatz war in warehouse v1
+        $order = Order::query()->where('payment_id', $payment->id)->where('payment_confirm', '')->findOne();
+        if ($order) {
+            $order->setPaymentConfirm(date('Y-m-d H:i:s'));
+            return $order->save();
+        }
+        return false;
+    }
+
+    public static function PaypalPaymentApprovedViaResponse($response)
+    {
+        $order = Order::query()->where('payment_id', $response->result->id)->where('payment_confirm', '')->findOne();
+        if ($order) {
+            $order->setPaypalConfirmToken(json_encode($response));
+            $order->setPaymentConfirm(date('Y-m-d H:i:s'));
+            return $order->save();
+        }
+    }
+
 }
