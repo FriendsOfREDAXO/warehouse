@@ -65,6 +65,12 @@ warehouse_docs.settings.shipping = Versand
 warehouse_docs.settings.payment = Zahlung
 warehouse_docs.settings.domain = Domain
 warehouse_docs.settings.discount = Rabatte
+warehouse_docs.customer = Kunden (YCom)
+warehouse_docs.domain = Domain
+warehouse_docs.search = Suche
+warehouse_docs.shipping = Versand
+warehouse_docs.warehouse_extend = Warehouse erweitern
+ 
 
 # Warehouse Einstellungen: Grundeinstellungen
 
@@ -257,7 +263,11 @@ warehouse_order.payment_type = Zahlungsart
 warehouse_order.payed = Bezahlt
 warehouse_order.not_payed = Nicht bezahlt
 warehouse_order.imported = Importiert
-
+warehouse_order.updatedate = Bestellung gestartet am...
+warehouse_order.payment_status = Zahlungsstatus
+warehouse_order.payment_status.select = Zahlungsstatus auswählen
+warehouse_order.shipping_status = Versandstatus
+warehouse_order.shipping_status.select = Versandstatus auswählen
 warehouse_order.buyer = Käufer*in
 
 # YForm-Tabelle "Versand": Labels
@@ -448,7 +458,7 @@ warehouse.order.dashboard.recent_customers = Neueste Kunden
 warehouse.order.dashboard.customer.name = Name
 warehouse.order.dashboard.customer.email = E-Mail
 
-warehouse.settings.payment.allowed_payment_types = Erlaubte Zahlungsarten
+warehouse.settings.payment.allowed_payment_options = Erlaubte Zahlungsarten
 warehouse.payment_options.prepayment = Vorkasse
 warehouse.payment_options.invoice = Rechnung
 warehouse.payment_options.paypal = PayPal
