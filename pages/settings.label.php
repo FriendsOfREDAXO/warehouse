@@ -52,6 +52,7 @@ $allFields = [
     ['label_checkout_login_password', rex_i18n::msg('warehouse.settings.label_checkout_login_password'), 'text'],
     ['label_checkout_login_submit', rex_i18n::msg('warehouse.settings.label_checkout_login_submit'), 'text'],
     ['label_checkout_register_text', rex_i18n::msg('warehouse.settings.label_checkout_register_text'), 'text'],
+    ['label_checkout_submit_order', rex_i18n::msg('warehouse.settings.label_checkout_submit_order'), 'text'],
     // payment options (text)
     ['label_payment_options', rex_i18n::msg('warehouse.settings.label_payment_options'), 'text'],
     // shipping (text)
