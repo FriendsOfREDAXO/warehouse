@@ -1,5 +1,8 @@
 {
     "require": {
         "paypal/paypal-server-sdk": "1.0.0"
+    },
+    "config": {
+        "vendor-dir": "lib/vendor"
     }
 }
