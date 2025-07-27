@@ -28,9 +28,9 @@ class Warehouse
     ];
 
     public const YCOM_MODES = [
-        'enforce_account' => 'translate:warehouse.ycom_modes.enforce_account',
-        'choose' => 'translate:warehouse.ycom_modes.choose',
-        'guest_only' => 'translate:warehouse.ycom_modes.guest_only',
+        'enforce_account' => 'translate:warehouse.ycom_mode.enforce_account',
+        'choose' => 'translate:warehouse.ycom_mode.choose',
+        'guest_only' => 'translate:warehouse.ycom_mode.guest_only',
     ];
 
     public static function getCurrencySign() :string
