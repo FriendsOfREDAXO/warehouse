@@ -2,21 +2,29 @@
 
 use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Domain;
+use FriendsOfRedaxo\Warehouse\Payment;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 $customer = Customer::getCurrent() ?? Customer::get(1);
 $customerAddress = $customer?->getAddress();
 $customer_shipping_address = $customer?->getShippingAddress();
-$allowedPaymentOptions = Warehouse::getAllowedPaymentOptions();
+$allowedPaymentOptions = Payment::getAllowedPaymentOptions();
 
 // in Abhängigkeit von YCom-Mode erst einloggen / registrieren, oder Gast-Bestellung ermöglichen
-
+// Möglichkeit 1: YCom-Mode "enforce_account" -> Login erforderlich, prüfen ob eingeloggt ist
+// Möglichkeit 2: YCom-Mode "choose" -> Login erforderlich, prüfen ob bereits eingeloggt ist - sonst erst Auswahl treffen
+// Möglichkeit 3: YCom-Mode "guest_only" -> Gast-Bestellung möglich, Login nicht erforderlich
 $ycom_mode = Warehouse::getConfig('ycom_mode', 'guest_only');
+
+$fragment = new rex_fragment();
+echo $fragment->parse('warehouse/bootstrap5/checkout/ycom_choose.php');
+
+
 
 $yform = new rex_yform();
 
-$yform->setObjectparams('form_action',rex_article::getCurrent()->getUrl());
-$yform->setObjectparams('form_wrap_class', 'yform-wrap');
+$yform->setObjectparams('form_action', rex_article::getCurrent()->getUrl());
+$yform->setObjectparams('form_wrap_class', 'warehouse_checkout_form');
 // $yf->setObjectparams('debug',0);
 $yform->setObjectparams('form_ytemplate', 'bootstrap5,bootstrap');
 $yform->setObjectparams('form_class', 'rex-yform warehouse_checkout');
@@ -60,7 +68,7 @@ if (count($allowedPaymentOptions) > 1) {
 } else {
     $yform->setValueField('warehouse_payment_options', ["payment_type", Warehouse::getLabel('payment_type')]);
     $yform->setValueField('html', ['', Warehouse::getLabel('payment_type')]);
-    $yform->setValueField('hidden', ['payment_type', array_values($allowedPaymentOptions)[0]]);
+    // $yform->setValueField('text', ['payment_type', array_values($allowedPaymentOptions)]);
 }
 
 if (count($allowedPaymentOptions) > 1) {
@@ -76,6 +84,7 @@ $yform->setValueField('submit_once', ['send',Warehouse::getLabel('next'),'','','
 $yform->setValueField('html', ['','</section>']);
 
 $yform->setActionField('callback', ['FriendsOfRedaxo\Warehouse\Warehouse::saveCustomerInSession']);
+
 $yform->setActionField('redirect', [Domain::getCurrent()->getCheckoutArtId()]);
 
 $form = $yform->getForm();

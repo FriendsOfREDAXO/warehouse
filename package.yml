@@ -99,7 +99,7 @@ pages:
         itemclass: pull-right
 
 requires:
-    redaxo: '^5.18.3'
+    redaxo: '^5.19.0'
     php:
         version: '>=8.3,<9'
     packages:
@@ -107,10 +107,10 @@ requires:
         yform: '>=4.1,<6'
         yform_field: '^2.11.1'
 
-# Wenn Warehouse 1.x installiert ist, dann abbrechen - es ist keine Migration vorgesehen.
 conflicts:
     packages:
-        warehouse: '<1.99.999'
+        pdfout: '<=9.9.9,>=12.0.0'
+        url: '^1'
 
 default_config:
 
@@ -156,7 +156,8 @@ default_config:
     free_shipping_from: 0
     shipping_calculation_mode: ''
     
-    # Labels
+    ### Labels
+    # Cart
     label_cart: 'Warenkorb'
     labeL_cart_empty: 'Der Warenkorb ist leer'
     label_article: 'Artikel'
@@ -167,10 +168,22 @@ default_config:
     label_cart_subtotal: 'Zwischensumme'
     label_cart_total: 'Summe'
     label_cart_total_weight: 'Gesamtgewicht'
+
+    # Checkout
     label_checkout: 'Kasse'
     label_checkout_address: 'Adresse'
     label_checkout_instant: 'Sofort kaufen'
     label_checkout_payment: 'Bezahlmethode'
+    label_checkout_choose: 'Wählen Sie, wie Sie fortfahren möchten:'
+    label_checkout_guest: 'Als Gast fortfahren'
+    label_checkout_guest_text: 'Kaufen Sie ohne Registrierung. Sie müssen Ihre Daten bei jeder Bestellung erneut eingeben.'
+    label_checkout_guest_continue: 'Als Gast bestellen'
+    label_checkout_login: 'Mit Kundenkonto fortfahren'
+    label_checkout_login_text: 'Loggen Sie sich ein oder erstellen Sie ein Kundenkonto für schnellere zukünftige Bestellungen.'
+    label_checkout_login_email: 'E-Mail-Adresse'
+    label_checkout_login_password: 'Passwort'
+    label_checkout_login_submit: 'Anmelden'
+    label_checkout_register_text: 'Sie haben noch kein Kundenkonto? Dann registrieren Sie sich jetzt.'
     label_next: 'Weiter'
     label_payment_options: 'Bezahloptionen'
     label_price: 'Einzelpreis'
@@ -181,6 +194,7 @@ default_config:
     label_shipping_costs_weight: 'Versandkosten nach Gewicht'
     label_total: 'Gesamtpreis'
     label_order_number: 'Bestellnummer'
+
     # Zahlungsoptionen 
     label_paymentoptions_direct_debit: 'Lastschrift'
     label_paymentoptions_direct_debit_image: ''

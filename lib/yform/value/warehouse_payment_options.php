@@ -1,12 +1,13 @@
 <?php
 
+use FriendsOfRedaxo\Warehouse\Payment;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 class rex_yform_value_warehouse_payment_options extends rex_yform_value_abstract
 {
     public function enterObject()
     {
-        $options = Warehouse::getPaymentOptions();
+        $options = Payment::getPaymentOptions();
 
         if (!array_key_exists($this->getValue(), $options)) {
             $this->setValue('');

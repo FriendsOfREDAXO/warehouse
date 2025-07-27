@@ -20,12 +20,6 @@ class Warehouse
     public const PATH_ORDER = 'warehouse/order/list';
     public const PATH_ORDER_DETAIL = 'warehouse/order/detail';
     
-    public const PAYMENT_OPTIONS = [
-        'prepayment' => 'warehouse.payment_options.prepayment',
-        'invoice' => 'warehouse.payment_options.invoice',
-        'paypal' => 'warehouse.payment_options.paypal',
-        'direct_debit' => 'warehouse.payment_options.direct_debit'
-    ];
 
     public const YCOM_MODES = [
         'enforce_account' => 'warehouse.ycom_mode.enforce_account',
@@ -38,21 +32,6 @@ class Warehouse
         return PayPal::CURRENCY_SIGNS[Warehouse::getConfig('currency')];
     }
 
-    public static function getPaypalClientId() :string
-    {
-        if (rex_config::get('warehouse', 'sandboxmode')) {
-            return rex_config::get('warehouse', 'paypal_sandbox_client_id');
-        }
-        return rex_config::get('warehouse', 'paypal_client_id');
-    }
-
-    public static function getPaypalSecret() :string
-    {
-        if (rex_config::get('warehouse', 'sandboxmode')) {
-            return rex_config::get('warehouse', 'paypal_sandbox_secret');
-        }
-        return rex_config::get('warehouse', 'paypal_secret');
-    }
 
     public static function getCustomerData()
     {
@@ -224,7 +203,7 @@ class Warehouse
         $return .= PHP_EOL;
         $return .= ($user_data['note'] ?? '') ? 'Bemerkung:' . PHP_EOL . $user_data['note'] . PHP_EOL : '';
         $return .= PHP_EOL;
-        $return .= 'Zahlungsweise: ' . (self::PAYMENT_OPTIONS[$user_data['payment_type']] ?? $user_data['payment_type']) . PHP_EOL;
+        $return .= 'Zahlungsweise: ' . (Payment::PAYMENT_OPTIONS[$user_data['payment_type']] ?? $user_data['payment_type']) . PHP_EOL;
         $return .= PHP_EOL;
         if ($user_data['payment_type'] == 'direct_debit') {
             $return .= 'IBAN: ' . $user_data['iban'] . PHP_EOL;
@@ -237,30 +216,6 @@ class Warehouse
         }
 
         return $return;
-    }
-
-    /**
-     * execute_payment wird aufgerufen, wenn die Zahlung abgeschlossen ist.
-     */
-    public static function PaypalPaymentApproved($payment) :bool
-    {
-        // TODO: Stattdessen response auswerten, PayPalHttp\HttpResponse, dort id, status auswerten. Ansatz war in warehouse v1
-        $order = Order::query()->where('payment_id', $payment->id)->where('payment_confirm', '')->findOne();
-        if ($order) {
-            $order->setPaymentConfirm(date('Y-m-d H:i:s'));
-            return $order->save();
-        }
-        return false;
-    }
-
-    public static function PaypalPaymentApprovedViaResponse($response)
-    {
-        $order = Order::query()->where('payment_id', $response->result->id)->where('payment_confirm', '')->findOne();
-        if ($order) {
-            $order->setPaypalConfirmToken(json_encode($response));
-            $order->setPaymentConfirm(date('Y-m-d H:i:s'));
-            return $order->save();
-        }
     }
 
     /**
@@ -287,6 +242,17 @@ class Warehouse
         rex_set_session('user_data', $customer_session);
     }
 
+    public static function callbackCheckoutRedirect($params)
+    {
+        // Je nachdem, welche Bezahlung im Formular ausgewählt wurde, wird der Nutzer weitergeleitet
+        $payment_type = $params->getValue('payment_type');
+        $domain = Domain::getCurrent();
+        if ($payment_type == 'paypal') {
+
+        }
+
+    }
+
     public static function getCategoryPath(int $cat_id)
     {
         $category = Category::get($cat_id);
@@ -301,28 +267,6 @@ class Warehouse
             $current_category = $current_category->getParent();
         }
         return array_reverse($path);
-    }
-
-    public static function getPaymentOptions() :array
-    {
-        $payment_options = self::PAYMENT_OPTIONS;
-        // Via Extension Point eigene Zahlungsarten hinzufügen
-        $payment_options = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_PAYMENT_OPTIONS', $payment_options));
-        return $payment_options;
-    }
-
-    public static function getAllowedPaymentOptions() :array
-    {
-        $payment_options = self::getPaymentOptions();
-        $allowed_payment_options = rex_config::get('warehouse', 'allowed_payment_options', '|prepayment|invoice|direct_debit|');
-        // Nur die Optionen zurückgeben, die in der Konfiguration aktiviert sind
-        $available_options = [];
-        foreach ($payment_options as $key => $label) {
-            if (strpos($allowed_payment_options, '|' . $key . '|') !== false) {
-                $available_options[$key] = $label;
-            }
-        }
-        return $available_options;
     }
 
     public static function restore_session_from_payment_id($payment_id)
@@ -434,39 +378,6 @@ class Warehouse
     public static function getPriceInputMode(): string
     {
         return rex_config::get('warehouse', 'price_input_mode', 'net');
-    }
-
-    /**
-     * Gibt die aktuelle Bestellnummer zurück (per Extension Point modifizierbar).
-     *
-     * @return int
-     */
-    public static function getOrderNumber(): int
-    {
-        $number = (int)self::getConfig('order_number', 1);
-        return (int)\rex_extension::registerPoint(new \rex_extension_point('WAREHOUSE_ORDER_NUMBER', $number));
-    }
-
-    /**
-     * Gibt die aktuelle Lieferscheinnummer zurück (per Extension Point modifizierbar).
-     *
-     * @return int
-     */
-    public static function getDeliveryNoteNumber(): int
-    {
-        $number = (int)self::getConfig('delivery_note_number', 1);
-        return (int)\rex_extension::registerPoint(new \rex_extension_point('WAREHOUSE_DELIVERY_NOTE_NUMBER', $number));
-    }
-
-    /**
-     * Gibt die aktuelle Rechnungsnummer zurück (per Extension Point modifizierbar).
-     *
-     * @return int
-     */
-    public static function getInvoiceNumber(): int
-    {
-        $number = (int)self::getConfig('invoice_number', 1);
-        return (int)\rex_extension::registerPoint(new \rex_extension_point('WAREHOUSE_INVOICE_NUMBER', $number));
     }
 
 }

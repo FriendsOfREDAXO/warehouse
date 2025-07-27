@@ -43,7 +43,7 @@ class Order extends rex_yform_manager_dataset
         self::PAYMENT_STATUS_NOT_PAID => 'warehouse.order.payment_status.not_paid',
         self::PAYMENT_STATUS_PARTIALLY_PAID => 'warehouse.order.payment_status.partially_paid',
     ];
-        
+
     /* Anrede */
     /** @api */
     public function getSalutation() : ?string

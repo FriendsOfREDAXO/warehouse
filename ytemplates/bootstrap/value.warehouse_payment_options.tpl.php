@@ -1,8 +1,9 @@
 <?php
 
+use FriendsOfRedaxo\Warehouse\Payment;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
-$options = Warehouse::getPaymentOptions();
+$options = Payment::getPaymentOptions();
 
 $notices = [];
 if ('' != $this->getElement('notice')) {

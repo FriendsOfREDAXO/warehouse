@@ -5,6 +5,7 @@
  * @psalm-scope-this rex_addon
  */
 
+use FriendsOfRedaxo\Warehouse\Payment;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 $addon = rex_addon::get('warehouse');
@@ -41,6 +42,16 @@ $allFields = [
     ['label_checkout_instant', rex_i18n::msg('warehouse.settings.label_checkout_instant'), 'text'],
     ['label_checkout_address', rex_i18n::msg('warehouse.settings.label_checkout_address'), 'text'],
     ['label_checkout_payment', rex_i18n::msg('warehouse.settings.label_checkout_payment'), 'text'],
+    ['label_checkout_choose', rex_i18n::msg('warehouse.settings.label_checkout_choose'), 'text'],
+    ['label_checkout_guest', rex_i18n::msg('warehouse.settings.label_checkout_guest'), 'text'],
+    ['label_checkout_guest_text', rex_i18n::msg('warehouse.settings.label_checkout_guest_text'), 'text'],
+    ['label_checkout_guest_continue', rex_i18n::msg('warehouse.settings.label_checkout_guest_continue'), 'text'],
+    ['label_checkout_login', rex_i18n::msg('warehouse.settings.label_checkout_login'), 'text'],
+    ['label_checkout_login_text', rex_i18n::msg('warehouse.settings.label_checkout_login_text'), 'text'],
+    ['label_checkout_login_email', rex_i18n::msg('warehouse.settings.label_checkout_login_email'), 'text'],
+    ['label_checkout_login_password', rex_i18n::msg('warehouse.settings.label_checkout_login_password'), 'text'],
+    ['label_checkout_login_submit', rex_i18n::msg('warehouse.settings.label_checkout_login_submit'), 'text'],
+    ['label_checkout_register_text', rex_i18n::msg('warehouse.settings.label_checkout_register_text'), 'text'],
     // payment options (text)
     ['label_payment_options', rex_i18n::msg('warehouse.settings.label_payment_options'), 'text'],
     // shipping (text)
@@ -49,7 +60,7 @@ $allFields = [
     ['label_shipping_costs_weight', rex_i18n::msg('warehouse.settings.label_shipping_costs_weight'), 'text'],
 ];
 
-$paymentOptions = Warehouse::getAllowedPaymentOptions();
+$paymentOptions = Payment::getAllowedPaymentOptions();
 
 if (count($paymentOptions) > 0) {
     foreach ($paymentOptions as $key => $option) {

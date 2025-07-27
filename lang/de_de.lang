@@ -108,11 +108,11 @@ warehouse.settings.fallback_article_image = Fallback-Artikelbild
 warehouse.settings.fallback_article_image.notice = Wird verwendet, wenn kein Bild für den Artikel oder die Variante vorhanden ist.
 
 warehouse.settings.invoice_number = Rechnungsnummer
-warehouse.settings.invoice_number.notice = Laufende Nummer für die nächste Rechnung. Wird beim Erstellen einer Rechnung automatisch erhöht.
+warehouse.settings.invoice_number.notice = Laufende Nummer für die nächste Rechnung. Wird beim Erstellen einer Rechnung automatisch erhöht. Verwende den Extension Point <code>WAREHOUSE_INVOICE_NUMBER</code>, um die Nummernvergabe zu verändern.
 warehouse.settings.delivery_note_number = Lieferscheinnummer
-warehouse.settings.delivery_note_number.notice = Laufende Nummer für den nächsten Lieferschein. Wird beim Erstellen eines Lieferscheins automatisch erhöht.
+warehouse.settings.delivery_note_number.notice = Laufende Nummer für den nächsten Lieferschein. Wird beim Erstellen eines Lieferscheins automatisch erhöht. Verwende den Extension Point <code>WAREHOUSE_DELIVERY_NOTE_NUMBER</code>, um die Nummernvergabe zu verändern.
 warehouse.settings.order_number = Bestellnummer
-warehouse.settings.order_number.notice = Laufende Nummer für die nächste Bestellung. Wird beim Erstellen einer Bestellung automatisch erhöht.
+warehouse.settings.order_number.notice = Laufende Nummer für die nächste Bestellung. Wird beim Erstellen einer Bestellung automatisch erhöht. Verwende den Extension Point <code>WAREHOUSE_ORDER_NUMBER</code>, um die Nummernvergabe zu verändern.
 
 # Warehouse Einstellungen: Versandkosten
 
@@ -448,6 +448,16 @@ warehouse.settings.label_checkout = Kasse
 warehouse.settings.label_checkout_instant = Sofort kaufen
 warehouse.settings.label_checkout_address = Adresse
 warehouse.settings.label_checkout_payment = Bezahlmethode
+warehouse.settings.label_checkout_choose = Wählen Sie, wie Sie fortfahren möchten:
+warehouse.settings.label_checkout_guest = Als Gast fortfahren
+warehouse.settings.label_checkout_guest_text = Kaufen Sie ohne Registrierung. Sie müssen Ihre Daten bei jeder Bestellung erneut eingeben.
+warehouse.settings.label_checkout_guest_continue = Als Gast bestellen
+warehouse.settings.label_checkout_login = Mit Kundenkonto fortfahren
+warehouse.settings.label_checkout_login_text = Loggen Sie sich ein oder erstellen Sie ein Kundenkonto für schnellere zukünftige Bestellungen.
+warehouse.settings.label_checkout_login_email = E-Mail-Adresse
+warehouse.settings.label_checkout_login_password = Passwort
+warehouse.settings.label_checkout_login_submit = Anmelden
+warehouse.settings.label_checkout_register_text = Sie haben noch kein Kundenkonto? Dann registrieren Sie sich jetzt.
 warehouse.settings.label_cart_subtotal = Zwischensumme
 warehouse.settings.label_cart_total = Summe
 warehouse.settings.label_cart_total_weight = Gesamtgewicht
@@ -479,3 +489,4 @@ warehouse.payment_options.paypal = PayPal
 warehouse.payment_options.direct_debit = Lastschrift
 
 warehouse.settings.documents.info = Dokumente werden derzeit nicht unterstützt. Beteilige dich an der Entwicklung von <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> für die Entwicklung einer Dokumenten-Erstellung, bestehend aus Nummernkreisen, Bestell-Bestätigungs-PDF, Rechnungs-PDF, Lieferschein-PDF und E-Rechnung.
+warehouse.settings.documents.pdfout_version = Bitte installiere PDFout in Version 10.x oder höher, um Dokumente zu erstellen. Die Version 9.x wird nicht mehr unterstützt.
