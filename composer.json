@@ -1,8 +1,21 @@
 {
     "require": {
         "paypal/paypal-server-sdk": "1.0.0"
+    },    
+    "replace": {
+        "psr/container": "*",
+        "psr/http-message": "*",
+        "psr/log": "*",
+        "symfony/http-foundation": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/deprecation-contracts": "*"
     },
-    "config": {
-        "vendor-dir": "lib/vendor"
+    "scripts": {
+        "post-install-cmd": [
+            "rm -rf vendor/composer && rm -f vendor/autoload.php"
+        ],
+        "post-update-cmd": [
+            "rm -rf vendor/composer && rm -f vendor/autoload.php"
+        ]
     }
 }
