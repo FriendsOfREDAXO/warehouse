@@ -40,5 +40,14 @@ $content = $fragment->parse('core/page/section.php');
 	</div>
 	<div class="col-12 col-md-4">
 		<?= rex_view::error(rex_i18n::rawMsg('warehouse.settings.documents.info')); ?>
+		<?= rex_view::info('Tipp: Die Nummernkreise können über Extension Points angepasst werden: <code>WAREHOUSE_ORDER_NUMBER</code>, <code>WAREHOUSE_DELIVERY_NOTE_NUMBER</code> und <code>WAREHOUSE_INVOICE_NUMBER</code>. Weitere Informationen findest du in der Hilfe unter "Warehouse erweitern".'); ?>
+		<?php
+
+		
+// Überprüfe, ob PDFout in Version 10.x vorliegt - wenn <=9 oder >=11, dann zeige Hinweis an
+if (rex_addon::get('pdfout')->isAvailable() && rex_version::compare(rex_addon::get('pdfout')->getVersion(), '10.0.0', '<') || rex_version::compare(rex_addon::get('pdfout')->getVersion(), '11.0.0', '>=') ) {
+	echo rex_view::error(rex_i18n::msg('warehouse.settings.documents.pdfout_version'));
+}
+?>
 	</div>
 </div>
