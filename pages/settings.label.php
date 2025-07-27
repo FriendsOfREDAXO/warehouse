@@ -98,24 +98,26 @@ foreach ([
 
 // Buttons und Controls extrahieren
 $formHtml = $form->get();
-$dom = new DOMDocument();
-libxml_use_internal_errors(true);
-$dom->loadHTML('<?xml encoding="utf-8" ?>' . $formHtml);
-libxml_clear_errors();
-$body = $dom->getElementsByTagName('body')->item(0);
-$otherHtml = '';
-foreach ($body->childNodes as $node) {
-    if ($node->nodeType === XML_ELEMENT_NODE && $node->nodeName === 'div') {
-        if ($node instanceof DOMElement && $node->getAttribute('class') === 'form-actions') {
-            $otherHtml .= $dom->saveHTML($node);
-        }
-    }
-    if ($node->nodeType === XML_ELEMENT_NODE && $node->nodeName === 'button') {
-        $otherHtml .= $dom->saveHTML($node);
-    }
-}
 
-$content .= $otherHtml;
+// Extrahiere das Formular-Tag und die Felder
+$formTagStart = strpos($formHtml, '<form');
+$formTagEnd = strpos($formHtml, '>', $formTagStart);
+$formOpenTag = substr($formHtml, $formTagStart, $formTagEnd - $formTagStart + 1);
+$formCloseTag = '</form>';
+
+// Extrahiere alles innerhalb des <form>...</form>
+$formInner = substr($formHtml, $formTagEnd + 1, strrpos($formHtml, '</form>') - ($formTagEnd + 1));
+
+// Extrahiere die Panel-Footer (Buttons) und Hidden-Fields
+$matches = [];
+preg_match('/(<div class="rex-form-panel-footer".*?<\/div>)/s', $formInner, $matches);
+$panelFooter = $matches[1] ?? '';
+
+preg_match_all('/<input[^>]+type="hidden"[^>]*>/i', $formInner, $hiddenFields);
+$hiddenFieldsHtml = implode('', $hiddenFields[0]);
+
+// Setze das neue Formular zusammen
+$content = $formOpenTag . $content . $panelFooter . $hiddenFieldsHtml . $formCloseTag;
 
 $fragment = new rex_fragment();
 $fragment->setVar('title', rex_i18n::msg('warehouse_settings_general'));
