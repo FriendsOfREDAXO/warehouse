@@ -27,6 +27,11 @@ class Checkout {
             '',
             ['ycom_mode' => 'guest_only']
         ]);
+
+        // Wenn abgesendet, dann Redirect zur Gäste-Bestellseite
+        $yform->setActionField('redirect', [
+            Domain::getCurrent()->getCheckoutUrl() . '?continue_as=guest'
+        ]);
         return $yform;
     }
 
