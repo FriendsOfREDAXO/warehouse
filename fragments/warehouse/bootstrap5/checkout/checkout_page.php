@@ -9,12 +9,11 @@ $domain = Domain::getCurrent();
 
 ?>
 <div class="row">
-    <section class="col-12 text-center">
+    <section class="col-12 my-3">
         <a class="text-muted small" href="<?= $domain->getCartArtUrl() ?>">
             <i class="bi bi-arrow-left small"></i>
             <?= Warehouse::getLabel('back_to_cart'); ?>
         </a>
-        <h1 class="mt-sm-2 mb-0"><?= Warehouse::getLabel('checkout'); ?></h1>
     </section>
     <section class="col-12">
         <div class="row">
