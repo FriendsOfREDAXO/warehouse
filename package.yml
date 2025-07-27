@@ -1,18 +1,17 @@
 package: warehouse
-version: '2.0.0-dev-2025-07-27'
+version: '2.0.0-dev-2025-07-28'
 author: FriendsOfREDAXO
 supportpage: https://github.com/FriendsOfREDAXO/warehouse
 
 page:
-    title: translate:warehouse_settings
+    title: translate:warehouse.title
     perm: warehouse
-    pjax: false
-    block: warehouse
-    prio: 0
+    main: true
+    block: system
+    prio: 2
     icon: rex-icon fa-shopping-cart
     subpages:
         order:
-            block: warehouse
             title: translate:warehouse_order
             icon: rex-icon fa-shopping-cart
             subpages:
@@ -36,24 +35,19 @@ pages:
     system/log/warehouse:
         title: translate:warehouse_log
         perm: admin
-        
     article:
-        block: warehouse
         title: translate:warehouse_article
         icon: rex-icon fa-cube
         pjax: false
     article_variant:
-        block: warehouse
         title: translate:warehouse_article_variant
         icon: rex-icon fa-cubes
         pjax: false
     category:
-        block: warehouse
         title: translate:warehouse_category
         icon: rex-icon fa-tag
         pjax: false
     search:
-        block: warehouse
         title: translate:warehouse_search
         icon: rex-icon fa-search
     settings:

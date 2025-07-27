@@ -1,6 +1,3 @@
-navigation_warehouse = Warehouse 2.0
-warehouse.title = Warehouse 2.0
-
 # V1
 warehouse_iso_code = ISO Code
 warehouse_iso2 = ISO Code2
@@ -16,6 +13,7 @@ warehouse_tax = Steuer
 warehouse_tax_tax_disable = Steuer entfällt generell
 
 # v2.0.0
+warehouse.title = Shop
 warehouse_module = Warehouse - Shop
 
 warehouse.module.title = Überschrift
