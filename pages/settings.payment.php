@@ -18,7 +18,7 @@ $field->setAttribute('multiple', 'multiple');
 
 $translatedOptions = [];
 foreach (Warehouse::getPaymentOptions() as $value => $label) {
-	$field->addOption(rex_i18n::translate($label), $value);
+    $field->addOption(rex_i18n::msg($label), $value);
 }
 
 // ==== Paypal

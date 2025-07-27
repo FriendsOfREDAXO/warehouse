@@ -21,16 +21,16 @@ class Warehouse
     public const PATH_ORDER_DETAIL = 'warehouse/order/detail';
     
     public const PAYMENT_OPTIONS = [
-        'prepayment' => 'translate:warehouse.payment_options.prepayment',
-        'invoice' => 'translate:warehouse.payment_options.invoice',
-        'paypal' => 'translate:warehouse.payment_options.paypal',
-        'direct_debit' => 'translate:warehouse.payment_options.direct_debit'
+        'prepayment' => 'warehouse.payment_options.prepayment',
+        'invoice' => 'warehouse.payment_options.invoice',
+        'paypal' => 'warehouse.payment_options.paypal',
+        'direct_debit' => 'warehouse.payment_options.direct_debit'
     ];
 
     public const YCOM_MODES = [
-        'enforce_account' => 'translate:warehouse.ycom_mode.enforce_account',
-        'choose' => 'translate:warehouse.ycom_mode.choose',
-        'guest_only' => 'translate:warehouse.ycom_mode.guest_only',
+        'enforce_account' => 'warehouse.ycom_mode.enforce_account',
+        'choose' => 'warehouse.ycom_mode.choose',
+        'guest_only' => 'warehouse.ycom_mode.guest_only',
     ];
 
     public static function getCurrencySign() :string

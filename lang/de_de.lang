@@ -453,6 +453,15 @@ warehouse.settings.label_cart_total = Summe
 warehouse.settings.label_cart_total_weight = Gesamtgewicht
 warehouse.settings.label_next = Weiter
 
+warehouse.settings.label_payment_options = Bezahloptionen
+warehouse.settings.label_paymentoptions = {0}
+warehouse.settings.label_paymentoptions_notice = Hinweistext für {0}
+warehouse.settings.label_paymentoptions_image = Logo {0}
+warehouse.payment_options.invoice = Rechnung
+warehouse.payment_options.prepayment = Vorkasse
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Lastschrift
+
 
 warehouse.order.dashboard.recent_orders = Neueste Bestellungen
 warehouse.order.dashboard.orders_by_month = Bestellungen nach Monat

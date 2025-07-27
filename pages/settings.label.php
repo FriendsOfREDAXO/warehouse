@@ -5,6 +5,8 @@
  * @psalm-scope-this rex_addon
  */
 
+use FriendsOfRedaxo\Warehouse\Warehouse;
+
 $addon = rex_addon::get('warehouse');
 echo rex_view::title($addon->i18n('warehouse.title'));
 
@@ -14,48 +16,71 @@ $formFields = [
     'cart' => [],
     'checkout' => [],
     'shipping' => [],
+    'payment' => [],
+    'paymentoptions' => [],
     'other' => []
 ];
-
 $allFields = [
-    ['label_cart', 'warehouse.settings.label_cart'],
-    ['label_cart_empty', 'warehouse.settings.label_cart_empty'],
-    ['label_cart_subtotal', 'warehouse.settings.label_cart_subtotal'],
-    ['label_cart_total', 'warehouse.settings.label_cart_total'],
-    ['label_cart_total_weight', 'warehouse.settings.label_cart_total_weight'],
-    ['label_remove_from_cart', 'warehouse.settings.label_remove_from_cart'],
-    ['label_back_to_cart', 'warehouse.settings.label_back_to_cart'],
-    ['label_cart_remove_item_confirm', 'warehouse.settings.label_cart_remove_item_confirm'],
-    ['label_cart_empty_confirm', 'warehouse.settings.label_cart_empty_confirm'],
-    ['label_next', 'warehouse.settings.label_next'],
-    ['label_article', 'warehouse.settings.label_article'],
-    ['label_price', 'warehouse.settings.label_price'],
-    ['label_quantity', 'warehouse.settings.label_quantity'],
-    ['label_total', 'warehouse.settings.label_total'],
-    ['label_checkout', 'warehouse.settings.label_checkout'],
-    ['label_checkout_instant', 'warehouse.settings.label_checkout_instant'],
-    ['label_checkout_address', 'warehouse.settings.label_checkout_address'],
-    ['label_checkout_payment', 'warehouse.settings.label_checkout_payment'],
-    ['label_payment_type', 'warehouse.settings.label_payment_type'],
-    ['label_shipping_costs', 'warehouse.settings.label_shipping_costs'],
-    ['label_shipping_costs_free', 'warehouse.settings.label_shipping_costs_free'],
-    ['label_shipping_costs_weight', 'warehouse.settings.label_shipping_costs_weight'],
+    // cart fields (text)
+    ['label_cart', rex_i18n::msg('warehouse.settings.label_cart'), 'text'],
+    ['label_cart_empty', rex_i18n::msg('warehouse.settings.label_cart_empty'), 'text'],
+    ['label_cart_subtotal', rex_i18n::msg('warehouse.settings.label_cart_subtotal'), 'text'],
+    ['label_cart_total', rex_i18n::msg('warehouse.settings.label_cart_total'), 'text'],
+    ['label_cart_total_weight', rex_i18n::msg('warehouse.settings.label_cart_total_weight'), 'text'],
+    ['label_remove_from_cart', rex_i18n::msg('warehouse.settings.label_remove_from_cart'), 'text'],
+    ['label_back_to_cart', rex_i18n::msg('warehouse.settings.label_back_to_cart'), 'text'],
+    ['label_cart_remove_item_confirm', rex_i18n::msg('warehouse.settings.label_cart_remove_item_confirm'), 'text'],
+    ['label_cart_empty_confirm', rex_i18n::msg('warehouse.settings.label_cart_empty_confirm'), 'text'],
+    ['label_next', rex_i18n::msg('warehouse.settings.label_next'), 'text'],
+    ['label_article', rex_i18n::msg('warehouse.settings.label_article'), 'text'],
+    ['label_price', rex_i18n::msg('warehouse.settings.label_price'), 'text'],
+    ['label_quantity', rex_i18n::msg('warehouse.settings.label_quantity'), 'text'],
+    ['label_total', rex_i18n::msg('warehouse.settings.label_total'), 'text'],
+    // checkout fields (text)
+    ['label_checkout', rex_i18n::msg('warehouse.settings.label_checkout'), 'text'],
+    ['label_checkout_instant', rex_i18n::msg('warehouse.settings.label_checkout_instant'), 'text'],
+    ['label_checkout_address', rex_i18n::msg('warehouse.settings.label_checkout_address'), 'text'],
+    ['label_checkout_payment', rex_i18n::msg('warehouse.settings.label_checkout_payment'), 'text'],
+    // payment options (text)
+    ['label_payment_options', rex_i18n::msg('warehouse.settings.label_payment_options'), 'text'],
+    // shipping (text)
+    ['label_shipping_costs', rex_i18n::msg('warehouse.settings.label_shipping_costs'), 'text'],
+    ['label_shipping_costs_free', rex_i18n::msg('warehouse.settings.label_shipping_costs_free'), 'text'],
+    ['label_shipping_costs_weight', rex_i18n::msg('warehouse.settings.label_shipping_costs_weight'), 'text'],
 ];
 
+$paymentOptions = Warehouse::getAllowedPaymentOptions();
+
+if (count($paymentOptions) > 0) {
+    foreach ($paymentOptions as $key => $option) {
+        $allFields[] = ['label_paymentoptions_' . $key, rex_i18n::msg('warehouse.settings.label_paymentoptions', rex_i18n::msg($option)), 'text'];
+        $allFields[] = ['label_paymentoptions_' . $key .'_notice', rex_i18n::msg('warehouse.settings.label_paymentoptions_notice', rex_i18n::msg($option)), 'text'];
+        $allFields[] = ['label_paymentoptions_' . $key . '_image', rex_i18n::msg('warehouse.settings.label_paymentoptions_image', rex_i18n::msg($option)), 'media'];
+    }
+}
 $used = [];
-foreach ($allFields as [$name, $labelKey]) {
+foreach ($allFields as [$name, $label, $type]) {
     if (in_array($name, $used)) {
         continue;
     }
     $used[] = $name;
-    $field = $form->addInputField('text', $name, null, ['class' => 'form-control']);
-    $field->setLabel(rex_i18n::msg($labelKey));
-    if (strpos($name, 'cart') !== false) {
+    if ($type === 'media') {
+        $field = $form->addMediaField($name, null, ['class' => 'form-control']);
+        $field->setLabel($label);
+    } else {
+        $field = $form->addInputField('text', $name, null, ['class' => 'form-control']);
+        $field->setLabel($label);
+    }
+    if (strpos($name, 'cart_') !== false) {
         $formFields['cart'][] = $field;
-    } elseif (strpos($name, 'checkout') !== false) {
+    } elseif (strpos($name, 'checkout_') !== false) {
         $formFields['checkout'][] = $field;
-    } elseif (strpos($name, 'shipping') !== false) {
+    } elseif (strpos($name, 'shipping_') !== false) {
         $formFields['shipping'][] = $field;
+    } elseif (strpos($name, 'paymentoptions_') !== false) {
+        $formFields['paymentoptions'][] = $field;
+    } elseif (strpos($name, 'payment_') !== false) {
+        $formFields['payment'][] = $field;
     } else {
         $formFields['other'][] = $field;
     }
@@ -67,6 +92,8 @@ foreach ([
     'cart' => 'Warenkorb',
     'checkout' => 'Checkout',
     'shipping' => 'Versand',
+    'paymentoptions' => 'Verfügbare Bezahloptionen',
+    'payment' => 'Zahlung',
     'other' => 'Sonstiges'
 ] as $group => $legend) {
     if (count($formFields[$group]) === 0) {
