@@ -6,14 +6,18 @@ use rex;
 use rex_config;
 use rex_response;
 
-use PayPalCheckoutSdk\Core\PayPalHttpClient;
-use PayPalCheckoutSdk\Core\HttpException;
-use PayPalCheckoutSdk\Core\PayPalEnvironment;
-use PayPalCheckoutSdk\Core\SandboxEnvironment;
-use PayPalCheckoutSdk\Core\ProductionEnvironment;
-use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
-use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
-use PayPalHttp\HttpException as PayPalHttpHttpException;
+use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Api\Payer;
+use PayPal\Api\PayerInfo;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\Transaction;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Payment;
+use PayPal\Api\ShippingAddress;
 
 class PayPal
 {
@@ -287,7 +291,7 @@ class PayPal
             'USD' => '$'
         ];
 
-    public static function getPaypalClientId() :string
+    public static function getClientId() :string
     {
         if (rex_config::get('warehouse', 'sandboxmode')) {
             return rex_config::get('warehouse', 'paypal_sandbox_client_id');
@@ -295,7 +299,7 @@ class PayPal
         return rex_config::get('warehouse', 'paypal_client_id');
     }
 
-    public static function getPaypalSecret() :string
+    public static function getClientSecret() :string
     {
         if (rex_config::get('warehouse', 'sandboxmode')) {
             return rex_config::get('warehouse', 'paypal_sandbox_secret');
@@ -303,197 +307,8 @@ class PayPal
         return rex_config::get('warehouse', 'paypal_secret');
     }
 
-    /**
-     * Returns PayPal HTTP client instance with environment which has access
-     * credentials context. This can be used invoke PayPal API's provided the
-     * credentials have the access to do so.
-     */
-    public static function getClient() : PayPalHttpClient
-    {
-        return new PayPalHttpClient(self::initEnviroment());
-    }
-    /**
-     * Setting up and Returns PayPal SDK environment with PayPal Access credentials.
-     * For demo purpose, we are using SandboxEnvironment. In production this will be
-     * ProductionEnvironment.
-     */
-    public static function initEnviroment() :PayPalEnvironment
-    {
-        $clientId = getenv("CLIENT_ID") ?: Warehouse::getPaypalClientId();
-        $clientSecret = getenv("CLIENT_SECRET") ?: Warehouse::getPaypalSecret();
-
-        if (rex_config::get('warehouse', 'sandboxmode')) {
-            return new SandboxEnvironment($clientId, $clientSecret);
-        } else {
-            return new ProductionEnvironment($clientId, $clientSecret);
-        }
-    }
-
     public static function createOrder()
     {
-        $client = self::getClient();
-        $request = new OrdersCreateRequest();
-        $params = json_decode(rex_config::get('warehouse', 'paypal_getparams'), true);
-        $return_url = trim(rex::getServer(), '/') . rex_getUrl(rex_config::get('warehouse', 'paypal_page_success'), '', $params ?? [], '&');
-        $cancel_url = trim(rex::getServer(), '/') . rex_getUrl(rex_config::get('warehouse', 'paypal_page_error'));
-        $cart = Warehouse::getCart();
-        $user_data = Warehouse::getCustomerData();
 
-        $user_data['to_firstname'] = $user_data['to_firstname'] ?: $user_data['firstname'] ?? '';
-        $user_data['to_lastname'] = $user_data['to_lastname'] ?: $user_data['lastname'] ?? '';
-        $user_data['to_address'] = $user_data['to_address'] ?: $user_data['address'] ?? '';
-        $user_data['to_department'] = $user_data['to_department'] ?: $user_data['department'] ?? '';
-        $user_data['to_country'] = $user_data['to_country'] ?: $user_data['country'] ?? '';
-        $user_data['to_zip'] = $user_data['to_zip'] ?: $user_data['zip'] ?? '';
-        $user_data['to_city'] = $user_data['to_city'] ?: $user_data['city'] ?? '';
-
-        $items = [];
-        foreach ($cart as $position) {
-            $items[] = [
-                'name' => $position['name'],
-                'description' => $position['cat_name'],
-                'sku' => $position['whid'],
-                'unit_amount' => [
-                    'currency_code' => Warehouse::getCurrencySign(),
-                    'value' => number_format($position['price_netto'], 2), // netto
-                ],
-                'tax' => [
-                    'currency_code' => Warehouse::getCurrencySign(),
-                    'value' => number_format($position['taxsingle'], 2),
-                ],
-                'quantity' => $position['amount'],
-                'category' => 'PHYSICAL_GOODS', // DIGITAL_GOODS oder PHYSICAL_GOODS
-            ];
-        }
-
-        // https://developer.paypal.com/docs/checkout/reference/server-integration/set-up-transaction/
-        $purchase_units = [
-            [
-                'reference_id' => 'none',
-                'description' => rex_config::get("warehouse", "store_name"),
-                'custom_id' => $user_data['to_firstname'].' '.$user_data['to_lastname'],
-                'soft_descriptor' => 'Webshop',
-                'amount' =>
-                [
-                    'currency_code' => Warehouse::getCurrencySign(),
-                    'value' => number_format(Warehouse::getCartTotal(), 2),
-                    'breakdown' =>
-                    [
-                        'item_total' => [
-                            'currency_code' => Warehouse::getCurrencySign(),
-                            'value' => number_format(Warehouse::getSubTotalNetto(), 2),
-                        ],
-                        'shipping' => [
-                            'currency_code' => Warehouse::getCurrencySign(),
-                            'value' => number_format(Shipping::getCost(), 2),
-                        ],
-                        /*
-                        'handling' =>
-                        [
-                            'currency_code' => Warehouse::getCurrencySign(),
-                            'value' => '0.00',
-                        ],
-                        */
-                        'tax_total' => [
-                            'currency_code' => Warehouse::getCurrencySign(),
-                            'value' => number_format(Warehouse::getTaxTotal(), 2),
-                        ],
-                        'shipping_discount' => [
-                            'currency_code' => Warehouse::getCurrencySign(),
-                            'value' => number_format(Warehouse::getDiscountValue(), 2),
-                        ],
-                    ],
-                ],
-                'items' => $items,
-                'shipping' => [
-                    'method' => 'Versandweg',
-                    'address' =>
-                    [
-                        'address_line_1' => $user_data['to_address'] ,
-                        'address_line_2' => $user_data['to_department'],
-                        'admin_area_2' => $user_data['to_city'],
-                        'admin_area_1' => '',
-                        'postal_code' => $user_data['to_zip'],
-                        'country_code' => $user_data['to_country'],
-                    ],
-                ],
-            ],
-        ];
-
-        //        dump($purchase_units); exit;
-
-        $request->prefer('return=representation');
-        $request->body = [
-            "intent" => "CAPTURE",
-
-            "purchase_units" => $purchase_units,
-            "application_context" => [
-                'brand_name' => rex_config::get("warehouse", "store_name"),
-                'locale' => rex_config::get("warehouse", "store_country_code"),
-                'landing_page' => 'BILLING',
-                'shipping_preference' => 'SET_PROVIDED_ADDRESS',
-                'user_action' => 'PAY_NOW',
-                "cancel_url" => $cancel_url,
-                "return_url" => $return_url
-            ]
-        ];
-        try {
-            $response = $client->execute($request);
-            Warehouse::saveCartAsOrder($response['result']->id);
-            rex_set_session('pp_order_id', $response['result']->id);
-            foreach ($response['result']->links as $link) {
-                if ($link->rel == 'approve') {
-                    rex_response::sendRedirect($link->href);
-                }
-            }
-        } catch (PayPalHttpHttpException $ex) {
-        }
-        return $response;
     }
-    public static function ExecutePayment()
-    {
-        $env = rex_config::get('warehouse', 'sandboxmode') ? self::MODE_SANDBOX : self::MODE_LIVE;
-        $client_id = Warehouse::getPaypalClientId();
-        $paypal_secret = Warehouse::getPaypalSecret();
-        $client = self::getClient();
-        // $response->result->id gives the orderId of the order created above
-        $order_id = rex_session('pp_order_id');
-        $request = new OrdersCaptureRequest($order_id);
-        $request->prefer('return=representation');
-        try {
-            // Call API with your client and get a response for your call
-            $response = $client->execute($request);
-            return $response;
-            // If call returns body in response, you can get the deserialized version from the result attribute of the response
-            //            print_r($response);
-        } catch (PayPalHttpHttpException $ex) {
-            echo $ex->statusCode;
-            print_r($ex->getMessage());
-        }
-        return;
-    }
-    /**
-     * execute_payment wird aufgerufen, wenn die Zahlung abgeschlossen ist.
-     */
-    public static function PaypalPaymentApproved($payment) :bool
-    {
-        // TODO: Stattdessen response auswerten, PayPalHttp\HttpResponse, dort id, status auswerten. Ansatz war in warehouse v1
-        $order = Order::query()->where('payment_id', $payment->id)->where('payment_confirm', '')->findOne();
-        if ($order) {
-            $order->setPaymentConfirm(date('Y-m-d H:i:s'));
-            return $order->save();
-        }
-        return false;
-    }
-
-    public static function PaypalPaymentApprovedViaResponse($response)
-    {
-        $order = Order::query()->where('payment_id', $response->result->id)->where('payment_confirm', '')->findOne();
-        if ($order) {
-            $order->setPaypalConfirmToken(json_encode($response));
-            $order->setPaymentConfirm(date('Y-m-d H:i:s'));
-            return $order->save();
-        }
-    }
-
 }
