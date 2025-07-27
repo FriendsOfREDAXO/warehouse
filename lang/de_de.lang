@@ -181,16 +181,19 @@ warehouse_article.weight = Gewicht
 warehouse_article.image = Bild
 warehouse_article.gallery = Galerie
 warehouse_article.short_text = Kurztext
+warehouse_article.short_text.notice = Dieser Text wird als Teaser und auch für SEO verwendt und sollte daher nicht länger als 160 Zeichen sein.
 warehouse_article.text = Text
 warehouse_article.price = Preis
 warehouse_article.price_text = Preis-Text
 warehouse_article.tax = Steuer
 warehouse_article.tax.none = Standard
+warehouse_article.createdate = Erstellt am
 warehouse_article.updatedate = Zuletzt geändert
 warehouse_article.variant_ids = Varianten
 warehouse_article.availability = Verfügbarkeit
 warehouse_article.uuid = UUID
 warehouse_article.bulk_prices = Staffelpreise
+warehouse_article.stock = Lagerbestand
 
 # YForm-Tabelle "Kategorien": Labels
 
@@ -203,6 +206,7 @@ warehouse_category.link_intern = Link intern
 warehouse_category.prio = Reihenfolge
 warehouse_category.image = Bild
 warehouse_category.text = Text
+warehouse_category.createdate = Erstellt am
 warehouse_category.updatedate = Zuletzt geändert
 warehouse_category.parent_id = Übergeordente Kategorie
 warehouse_category.uuid = UUID
@@ -269,6 +273,7 @@ warehouse_order.payment_status.select = Zahlungsstatus auswählen
 warehouse_order.shipping_status = Versandstatus
 warehouse_order.shipping_status.select = Versandstatus auswählen
 warehouse_order.buyer = Käufer*in
+warehouse_order.custom_order_id = Eigene Bestell-ID
 
 # YForm-Tabelle "Versand": Labels
 
