@@ -15,6 +15,7 @@ Die Search-Klasse bietet eine einheitliche Suchschnittstelle über alle wichtige
 Führt eine übergreifende Suche über Artikel, Varianten, Bestellungen und Kategorien durch.
 
 **Parameter:**
+
 - `$query` (string): Der Suchbegriff
 - `$limit` (int): Maximale Anzahl der Ergebnisse (Standard: 50)
 
@@ -35,6 +36,7 @@ $results = Search::query('123');
 
 **Suchergebnis-Struktur:**
 Jedes Ergebnis enthält folgende Felder:
+
 - `source`: Typ der Quelle ('article', 'article_variant', 'order', 'category')
 - `id`: ID des Datensatzes
 - `uuid`: UUID (falls vorhanden)
@@ -61,23 +63,27 @@ echo Search::getForm();
 Die Suche durchsucht folgende Bereiche:
 
 ### Artikel (`rex_warehouse_article`)
+
 - Name
 - Kurzbeschreibung (short_text)
 - UUID
 - ID
 
 ### Artikel-Varianten (`rex_warehouse_article_variant`)
+
 - Name
 - UUID
 - ID
 
 ### Bestellungen (`rex_warehouse_order`)
+
 - Vorname und Nachname
 - Firma
 - E-Mail-Adresse
 - ID
 
 ### Kategorien (`rex_warehouse_category`)
+
 - Name
 - UUID
 - ID

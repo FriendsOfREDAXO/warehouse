@@ -89,6 +89,7 @@ $beispiel = KlassenName::methode($parameter);
 ### Parameter-Dokumentation
 
 **Parameter:**
+
 - `$parameter` (typ): Beschreibung des Parameters
 
 **Rückgabe:** `typ` - Beschreibung des Rückgabewerts
@@ -153,17 +154,20 @@ Die Dokumentation sollte bei folgenden Änderungen aktualisiert werden:
 ## Nächste Schritte
 
 ### Priorität 1: Bestehende Dokumentationen vervollständigen
+
 - Article-Klasse: Alle Methoden und Eigenschaften dokumentieren
 - ArticleVariant-Klasse: Staffelpreise und Verfügbarkeit
 - Category-Klasse: Hierarchie und Artikel-Zuordnung
 - Order-Klasse: Bestellstatus und Zahlungsabwicklung
 
 ### Priorität 2: Fehlende Dokumentationen erstellen
+
 - Dashboard-Klasse für Backend-Funktionen
 - PayPal-Klasse für Zahlungsintegration
 - Frontend-Klasse für Shop-Frontend
 
 ### Priorität 3: Dokumentations-Qualität verbessern
+
 - Mehr praktische Beispiele hinzufügen
 - Template-Integration vertiefen
 - Performance-Tipps ergänzen

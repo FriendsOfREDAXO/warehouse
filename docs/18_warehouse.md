@@ -44,6 +44,7 @@ public const YCOM_MODES = [
 Liest einen Konfigurationswert aus der Warehouse-Konfiguration.
 
 **Parameter:**
+
 - `$key` (string): Konfigurationsschlüssel
 - `$default` (mixed): Standardwert falls Schlüssel nicht existiert
 
@@ -67,6 +68,7 @@ $taxRate = Warehouse::getConfig('default_tax_rate', 19);
 Setzt einen Konfigurationswert in der Warehouse-Konfiguration.
 
 **Parameter:**
+
 - `$key` (string): Konfigurationsschlüssel
 - `$value` (mixed): Zu setzender Wert
 
@@ -88,6 +90,7 @@ Warehouse::setConfig('demo_mode', true);
 Gibt ein übersetztes Label aus der Warehouse-Konfiguration zurück.
 
 **Parameter:**
+
 - `$key` (string): Label-Schlüssel (ohne 'label_' Präfix)
 
 **Rückgabe:** String - Übersetztes Label
@@ -173,6 +176,7 @@ echo '<pre>' . $orderText . '</pre>';
 ```
 
 **Ausgabe-Beispiel:**
+
 ```
 Art. Nr.            Artikel                              Anzahl   €        €
 ------------------------------------------------------------------------------------
@@ -233,6 +237,7 @@ echo '<pre>' . $customerText . '</pre>';
 Speichert Kundendaten in der Session (wird aus YForm-Actions aufgerufen).
 
 **Parameter:**
+
 - `$params` (object): YForm-Parameter-Objekt
 
 ```php
@@ -247,6 +252,7 @@ Speichert Kundendaten in der Session (wird aus YForm-Actions aufgerufen).
 Rendert ein Warehouse-Template mit den übergebenen Variablen.
 
 **Parameter:**
+
 - `$file` (string): Template-Pfad relativ zum Framework-Ordner
 - `$values` (array): Variablen für das Template
 
@@ -309,6 +315,7 @@ if ($priceMode === 'gross') {
 Gibt den Kategoriepfad als Array zurück.
 
 **Parameter:**
+
 - `$cat_id` (int): Kategorie-ID
 
 **Rückgabe:** Array - Kategoriepfad von Root bis zur angegebenen Kategorie
@@ -341,6 +348,7 @@ if (Warehouse::isDemoMode()) {
 Stellt eine Session basierend auf einer Payment-ID wieder her.
 
 **Parameter:**
+
 - `$payment_id` (string): Payment-ID
 
 ```php
@@ -357,6 +365,7 @@ Warehouse::restore_session_from_payment_id($payment_id);
 Callback-Funktion für Checkout-Weiterleitungen basierend auf der Zahlungsart.
 
 **Parameter:**
+
 - `$params` (object): YForm-Parameter-Objekt
 
 ```php

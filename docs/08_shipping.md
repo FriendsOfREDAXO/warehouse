@@ -103,6 +103,7 @@ Erweiterte Logik für die Berechnung nach Bestellwert (aktuell identisch mit Sta
 Ermöglicht die individuelle Anpassung der Versandkostenberechnung.
 
 **Parameter:**
+
 - `cart`: Aktueller Warenkorb
 - `total_weight`: Gesamtgewicht
 - `total_pieces`: Anzahl Artikel

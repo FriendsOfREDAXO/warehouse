@@ -87,6 +87,7 @@ echo "Adresstyp: " . $type; // z.B. "shipping"
 Setzt den Adresstyp.
 
 **Parameter:**
+
 - `$value` (mixed): Adresstyp
 
 ```php
@@ -131,6 +132,7 @@ if ($company) {
 Setzt den Firmennamen.
 
 **Parameter:**
+
 - `$value` (mixed): Firmenname
 
 ```php
@@ -157,6 +159,7 @@ echo "Name: " . $address->getName();
 Setzt den Namen.
 
 **Parameter:**
+
 - `$value` (mixed): Name
 
 ```php
@@ -183,6 +186,7 @@ echo "Straße: " . $address->getStreet();
 Setzt die Straße mit Hausnummer.
 
 **Parameter:**
+
 - `$value` (mixed): Straße
 
 ```php
@@ -209,6 +213,7 @@ echo "PLZ: " . $address->getZip();
 Setzt die Postleitzahl.
 
 **Parameter:**
+
 - `$value` (mixed): PLZ
 
 ```php
@@ -235,6 +240,7 @@ echo "Stadt: " . $address->getCity();
 Setzt den Stadtnamen.
 
 **Parameter:**
+
 - `$value` (mixed): Stadt
 
 ```php
@@ -261,6 +267,7 @@ echo "Land: " . $address->getCountry();
 Setzt das Land.
 
 **Parameter:**
+
 - `$value` (mixed): Land
 
 ```php

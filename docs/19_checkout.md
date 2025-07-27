@@ -32,6 +32,7 @@ echo $guestForm->getForm();
 ```
 
 **Formular-Eigenschaften:**
+
 - **Action:** Automatische Weiterleitung zur Checkout-URL der aktuellen Domain
 - **CSS-Klassen:** `warehouse_checkout_guest`, Bootstrap 5-kompatibel
 - **Template:** `bootstrap5,bootstrap`
@@ -54,12 +55,14 @@ echo $loginForm->getForm();
 ```
 
 **Formular-Felder:**
+
 - **Login-Feld:** E-Mail oder Benutzername (mit Autocomplete)
 - **Passwort-Feld:** Passwort-Eingabe (mit Autocomplete)
 - **Return-To:** Weiterleitung nach erfolgreichem Login
 - **Submit-Button:** "Anmelden" mit Bootstrap-Styling
 
 **Validierungen:**
+
 - YCom-Authentifizierung mit konfigurierbaren Fehlermeldungen
 - Pflichtfeld-Validierung für Login und Passwort
 - Automatische Fehlerbehandlung bei falschen Anmeldedaten
@@ -166,16 +169,19 @@ echo '</div>';
 Die Checkout-Klasse arbeitet eng mit den verschiedenen YCom-Modi zusammen:
 
 ### `enforce_account`
+
 - Bestellung nur mit Kundenkonto möglich
 - Nur Login-Formular wird angezeigt
 - Registrierung erforderlich für neue Kunden
 
 ### `choose`
+
 - Kunde kann zwischen Gast-Bestellung und Login wählen
 - Beide Formulare werden nebeneinander angezeigt
 - Flexible Checkout-Optionen
 
 ### `guest_only`
+
 - Nur Gast-Bestellungen möglich
 - Kein Login erforderlich
 - Vereinfachter Checkout-Prozess
@@ -236,11 +242,13 @@ rex_extension::register('WAREHOUSE_CHECKOUT_LOGIN_FORM', function(rex_extension_
 Die Formulare enthalten automatische Fehlerbehandlung:
 
 ### Login-Fehler
+
 - Falsche Anmeldedaten werden automatisch abgefangen
 - Benutzerfreundliche Fehlermeldungen
 - Validierung von Pflichtfeldern
 
 ### Gast-Checkout-Fehler
+
 - Formular-Validierung über YForm
 - Automatische Weiterleitung bei Erfolg
 - Session-Management für Gastdaten
@@ -271,16 +279,19 @@ $('#warehouse_checkout_login').on('submit', function(e) {
 ## Best Practices
 
 ### Sicherheit
+
 - Alle Formulare verwenden CSRF-Schutz
 - Passwort-Felder haben entsprechende Autocomplete-Attribute
 - Validierung erfolgt server- und clientseitig
 
 ### Benutzerfreundlichkeit
+
 - Bootstrap 5-Styling für konsistente UI
 - Responsive Design für mobile Geräte
 - Klare Labels und Hilftexte
 
 ### Performance
+
 - Formulare werden nur bei Bedarf generiert
 - Minimale DOM-Manipulation
 - Effiziente Session-Verwaltung

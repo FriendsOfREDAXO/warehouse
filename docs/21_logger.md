@@ -71,6 +71,7 @@ public const EVENTS = [
 Protokolliert ein Ereignis mit allen relevanten Daten.
 
 **Parameter:**
+
 - `$event` (string): Event-Typ (verwende Konstanten)
 - `$message` (string): Beschreibende Nachricht
 - `$order_id` (int|null): Optional - Bestell-ID
@@ -332,6 +333,7 @@ Datum,Zeit,Event,Message,Order-ID,Artikel-ID,Varianten-ID,Parameter-JSON
 ```
 
 **Beispiel-Log-Eintrag:**
+
 ```csv
 2024-01-15,14:30:25,add_cart,"Artikel T-Shirt Größe L zum Warenkorb hinzugefügt",,"123","456","{""quantity"":2,""price"":19.95,""user_session"":""abc123""}"
 ```

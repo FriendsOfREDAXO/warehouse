@@ -82,6 +82,7 @@ echo "Artikel im Warenkorb: " . $cart->count();
 Fügt einen Artikel zum Warenkorb hinzu.
 
 **Parameter:**
+
 - `$article_id` (int): ID des Artikels
 - `$article_variant_id` (int|null): ID der Variante (optional)
 - `$quantity` (int): Anzahl (Standard: 1)
@@ -103,6 +104,7 @@ $success = $cart->add(123, 456, 1);
 Modifiziert die Anzahl eines Artikels im Warenkorb.
 
 **Parameter:**
+
 - `$article_id` (int): ID des Artikels
 - `$article_variant_id` (int): ID der Variante
 - `$quantity` (int|false): Neue Anzahl oder false zum Entfernen
@@ -126,6 +128,7 @@ $cart->modify(123, 456, 1, '-');
 Entfernt einen Artikel vollständig aus dem Warenkorb.
 
 **Parameter:**
+
 - `$article_id` (int): ID des Artikels
 - `$variant_id` (int): ID der Variante
 
@@ -139,6 +142,7 @@ $cart->remove(123, 456);
 Aktualisiert den gesamten Warenkorb mit neuen Daten.
 
 **Parameter:**
+
 - `$items` (array): Neue Warenkorb-Daten
 
 ```php
@@ -278,6 +282,7 @@ $cart->setDemoCart(); // Füllt den Warenkorb mit Testdaten
 Erstellt eine Bestellung aus dem aktuellen Warenkorb.
 
 **Parameter:**
+
 - `$user_data` (array): Kundendaten für die Bestellung
 
 **Rückgabe:** Boolean (Erfolg)

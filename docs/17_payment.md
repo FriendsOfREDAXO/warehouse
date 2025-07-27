@@ -76,6 +76,7 @@ foreach ($allowedOptions as $key => $label) {
 Ermöglicht das Hinzufügen eigener Zahlungsarten.
 
 **Parameter:**
+
 - Subject: Array der verfügbaren Zahlungsarten
 
 **Beispiele:**

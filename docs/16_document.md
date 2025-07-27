@@ -104,6 +104,7 @@ Die Dokumentnummern werden in der REDAXO-Konfiguration gespeichert:
 Ermöglicht die Anpassung der Bestellnummern-Generierung.
 
 **Parameter:**
+
 - Subject: Aktuelle Bestellnummer (Integer)
 
 **Beispiele:**
@@ -133,6 +134,7 @@ rex_extension::register('WAREHOUSE_ORDER_NUMBER', function(rex_extension_point $
 Ermöglicht die Anpassung der Lieferscheinnummern-Generierung.
 
 **Parameter:**
+
 - Subject: Aktuelle Lieferscheinnummer (Integer)
 
 **Beispiele:**
@@ -149,6 +151,7 @@ rex_extension::register('WAREHOUSE_DELIVERY_NOTE_NUMBER', function(rex_extension
 Ermöglicht die Anpassung der Rechnungsnummern-Generierung.
 
 **Parameter:**
+
 - Subject: Aktuelle Rechnungsnummer (Integer)
 
 **Beispiele:**
