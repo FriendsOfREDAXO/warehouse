@@ -17,6 +17,32 @@ use rex_yform;
 
 class Order extends rex_yform_manager_dataset
 {
+
+    public const SHIPPING_STATUS_SHIPPED = 'shipped';
+    public const SHIPPING_STATUS_NOT_SHIPPED = 'not_shipped';
+    public const SHIPPING_STATUS_PARTIALLY_SHIPPED = 'partially_shipped';
+    public const SHIPPING_STATUS_RETURNED = 'returned';
+    public const SHIPPING_STATUS_LOST = 'lost';
+    public const SHIPPING_STATUS_CANCELLED = 'cancelled';
+
+    public const SHIPPING_STATUS_OPTIONS = [
+        self::SHIPPING_STATUS_SHIPPED => 'warehouse.order.shipping_status.shipped',
+        self::SHIPPING_STATUS_NOT_SHIPPED => 'warehouse.order.shipping_status.not_shipped',
+        self::SHIPPING_STATUS_PARTIALLY_SHIPPED => 'warehouse.order.shipping_status.partially_shipped',
+        self::SHIPPING_STATUS_RETURNED => 'warehouse.order.shipping_status.returned',
+        self::SHIPPING_STATUS_LOST => 'warehouse.order.shipping_status.lost',
+        self::SHIPPING_STATUS_CANCELLED => 'warehouse.order.shipping_status.cancelled',
+    ];
+
+    public const PAYMENT_STATUS_PAID = 'paid';
+    public const PAYMENT_STATUS_NOT_PAID = 'not_paid';
+    public const PAYMENT_STATUS_PARTIALLY_PAID = 'partially_paid';
+
+    public const PAYMENT_STATUS_OPTIONS = [
+        self::PAYMENT_STATUS_PAID => 'warehouse.order.payment_status.paid',
+        self::PAYMENT_STATUS_NOT_PAID => 'warehouse.order.payment_status.not_paid',
+        self::PAYMENT_STATUS_PARTIALLY_PAID => 'warehouse.order.payment_status.partially_paid',
+    ];
         
     /* Anrede */
     /** @api */
@@ -693,5 +719,23 @@ class Order extends rex_yform_manager_dataset
             ->setSaveAndSend(true)
             ->run();
         return $addonDataPath;
+    }
+
+    public static function getShippingStatusOptions(): array
+    {
+        $options = [];
+        foreach (self::SHIPPING_STATUS_OPTIONS as $key => $label) {
+            $options[$key] = rex_i18n::msg($label);
+        }
+        return $options;
+    }
+
+    public static function getPaymentStatusOptions(): array
+    {
+        $options = [];
+        foreach (self::PAYMENT_STATUS_OPTIONS as $key => $label) {
+            $options[$key] = rex_i18n::msg($label);
+        }
+        return $options;
     }
 }
