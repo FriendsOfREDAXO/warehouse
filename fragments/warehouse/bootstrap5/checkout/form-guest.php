@@ -93,7 +93,7 @@ $yform->setValueField('html', ['', '</div></div>']); // close row and col
 $yform->setValueField('submit_once', ['send',Warehouse::getLabel('next'),'','','','button']);
 $yform->setValueField('html', ['','</section>']);
 
-$yform->setActionField('callback', ['FriendsOfRedaxo\Warehouse\Warehouse::saveCustomerInSession']);
+$yform->setActionField('callback', ['FriendsOfRedaxo\Warehouse\Checkout::saveCustomerInSession']);
 
 $yform->setActionField('redirect', [$domain->getCheckoutUrl(['continue_with' => 'payment'])]);
 
