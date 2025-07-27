@@ -31,13 +31,7 @@ class Warehouse
     {
         return PayPal::CURRENCY_SIGNS[Warehouse::getConfig('currency')];
     }
-
-
-    public static function getCustomerData()
-    {
-        return rex_session('user_data', 'array');
-    }
-
+    
     public static function getOrderAsText()
     {
         $cart = Cart::get();
@@ -168,7 +162,7 @@ class Warehouse
     public static function getCustomerDataAsText()
     {
 
-        $user_data = self::getCustomerData();
+        $user_data = Customer::getCustomerData();
 
         $return = '';
 
@@ -216,30 +210,6 @@ class Warehouse
         }
 
         return $return;
-    }
-
-    /**
-     * Aufruf aus Action der Adresseingabe
-     * @param type $params
-     */
-    public static function saveCustomerInSession($params)
-    {
-        $value_pool = $params->params['value_pool']['email'];
-        $customer_session = [];
-        foreach ($value_pool as $field => $value) {
-            // Wenn es ein Feld mit 'to_' startet
-            if (str_starts_with($field, 'to_')) {
-                // Entferne 'to_' vom Feldnamen
-                $new_field = substr($field, 3);
-                // Speichere den Wert im Session-Array
-                $customer_session[$new_field] = $value;
-            } else {
-                // Andernfalls speichere den Wert direkt
-                $customer_session[$field] = $value;
-            }
-        }
-
-        rex_set_session('user_data', $customer_session);
     }
 
     public static function callbackCheckoutRedirect($params)
