@@ -65,3 +65,9 @@ if (rex_version::compare(rex_addon::get('yform')->getVersion(), '5.0.0', '<=')) 
     $target = $yform->getPath('lib/yForm/value/uuid.php');
     rex_file::copy($source, $target);
 }
+
+// Wenn Warehouse 1.x installiert ist, dann abbrechen - es ist keine Migration vorgesehen.
+if (rex_addon::get('warehouse')->isAvailable() && rex_version::compare(rex_addon::get('warehouse')->getVersion(), '2.0.0', '<')) {
+    rex_view::error('Warehouse ' . rex_addon::get('warehouse')->getVersion() .' ist bereits installiert. Ein Upgrade ist nicht vorgesehen und kann zu unvorhersehbaren Fehlern führen. Bitte deinstalliere Warehouse und installiere die aktuelle Version.');
+    return;
+}
