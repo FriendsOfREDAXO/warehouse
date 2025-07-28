@@ -5,6 +5,7 @@
  * @psalm-scope-this rex_addon
  */
 
+use FriendsOfRedaxo\Warehouse\Payment;
 use FriendsOfRedaxo\Warehouse\PayPal;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
@@ -17,7 +18,7 @@ $field->setLabel(rex_i18n::msg('warehouse.settings.payment.allowed_payment_optio
 $field->setAttribute('multiple', 'multiple');
 
 $translatedOptions = [];
-foreach (Warehouse::getPaymentOptions() as $value => $label) {
+foreach (Payment::getPaymentOptions() as $value => $label) {
     $field->addOption(rex_i18n::msg($label), $value);
 }
 
