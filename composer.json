@@ -1,6 +1,6 @@
 {
     "require": {
-        "paypal/paypal-server-sdk": "1.0.0"
+        "paypal/paypal-server-sdk": "1.1.0"
     },    
     "replace": {
         "psr/container": "*",

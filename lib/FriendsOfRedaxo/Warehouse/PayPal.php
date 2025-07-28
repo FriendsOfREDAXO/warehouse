@@ -18,6 +18,13 @@ use PayPal\Api\Transaction;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Payment;
 use PayPal\Api\ShippingAddress;
+use PaypalServerSdkLib\Authentication\ClientCredentialsAuthCredentialsBuilder;
+use PaypalServerSdkLib\Environment;
+use PaypalServerSdkLib\Logging\LoggingConfigurationBuilder;
+use PaypalServerSdkLib\Logging\RequestLoggingConfigurationBuilder;
+use PaypalServerSdkLib\Logging\ResponseLoggingConfigurationBuilder;
+use PaypalServerSdkLib\PaypalServerSdkClientBuilder;
+use Psr\Log\LogLevel;
 
 class PayPal
 {
@@ -28,31 +35,31 @@ class PayPal
     // https://developer.paypal.com/api/rest/reference/currency-codes/
     const CURRENCY_CODES =
         [
-        "AUD" => "Australian dollar",
-        "BRL" => "Brazilian real 2",
-        "CAD" => "Canadian dollar",
-        "CNY" => "Chinese Renmenbi 3",
-        "CZK" => "Czech koruna",
-        "DKK" => "Danish krone",
-        "EUR" => "Euro",
-        "HKD" => "Hong Kong dollar",
-        "HUF" => "Hungarian forint 1",
-        "ILS" => "Israeli new shekel",
-        "JPY" => "Japanese yen 1",
-        "MYR" => "Malaysian ringgit 3",
-        "MXN" => "Mexican peso",
-        "TWD" => "New Taiwan dollar 1",
-        "NZD" => "New Zealand dollar",
-        "NOK" => "Norwegian krone",
-        "PHP" => "Philippine peso",
-        "PLN" => "Polish złoty",
-        "GBP" => "Pound sterling",
-        "RUB" => "Russian ruble",
-        "SGD" => "Singapore dollar",
-        "SEK" => "Swedish krona",
-        "CHF" => "Swiss franc",
-        "THB" => "Thai baht",
-        "USD" => "United States dollar"
+            "AUD" => "Australian dollar",
+            "BRL" => "Brazilian real 2",
+            "CAD" => "Canadian dollar",
+            "CNY" => "Chinese Renmenbi 3",
+            "CZK" => "Czech koruna",
+            "DKK" => "Danish krone",
+            "EUR" => "Euro",
+            "HKD" => "Hong Kong dollar",
+            "HUF" => "Hungarian forint 1",
+            "ILS" => "Israeli new shekel",
+            "JPY" => "Japanese yen 1",
+            "MYR" => "Malaysian ringgit 3",
+            "MXN" => "Mexican peso",
+            "TWD" => "New Taiwan dollar 1",
+            "NZD" => "New Zealand dollar",
+            "NOK" => "Norwegian krone",
+            "PHP" => "Philippine peso",
+            "PLN" => "Polish złoty",
+            "GBP" => "Pound sterling",
+            "RUB" => "Russian ruble",
+            "SGD" => "Singapore dollar",
+            "SEK" => "Swedish krona",
+            "CHF" => "Swiss franc",
+            "THB" => "Thai baht",
+            "USD" => "United States dollar"
         ];
 
 
@@ -291,7 +298,7 @@ class PayPal
             'USD' => '$'
         ];
 
-    public static function getClientId() :string
+    public static function getClientId(): string
     {
         if (rex_config::get('warehouse', 'sandboxmode')) {
             return rex_config::get('warehouse', 'paypal_sandbox_client_id');
@@ -299,7 +306,7 @@ class PayPal
         return rex_config::get('warehouse', 'paypal_client_id');
     }
 
-    public static function getClientSecret() :string
+    public static function getClientSecret(): string
     {
         if (rex_config::get('warehouse', 'sandboxmode')) {
             return rex_config::get('warehouse', 'paypal_sandbox_secret');
@@ -307,8 +314,28 @@ class PayPal
         return rex_config::get('warehouse', 'paypal_secret');
     }
 
+    public static function createClient()
+    {
+        $client = PaypalServerSdkClientBuilder::init()
+            ->clientCredentialsAuthCredentials(
+                ClientCredentialsAuthCredentialsBuilder::init(
+                    self::getClientId(),
+                    self::getClientSecret()
+                )
+            )
+            ->environment(Environment::SANDBOX)
+            ->loggingConfiguration(
+                LoggingConfigurationBuilder::init()
+                    ->level(LogLevel::INFO)
+                    ->requestConfiguration(RequestLoggingConfigurationBuilder::init()->body(true))
+                    ->responseConfiguration(ResponseLoggingConfigurationBuilder::init()->headers(true))
+            )
+            ->build();
+
+        return $client;
+    }
+
     public static function createOrder()
     {
-
     }
 }

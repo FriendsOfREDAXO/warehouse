@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eda8f7bd60495490c6bf8c5d0f3121e1",
+    "content-hash": "cac7bcba9ea53e603eeafe5a5f6caec5",
     "packages": [
         {
             "name": "apimatic/core",
@@ -224,22 +224,23 @@
         },
         {
             "name": "paypal/paypal-server-sdk",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paypal/PayPal-PHP-Server-SDK.git",
-                "reference": "66fd3341bbffafe7d650fe7d9d2699fabf355e67"
+                "reference": "3964c1732b1815fa8cf8aee37069ccc4e95d9572"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paypal/PayPal-PHP-Server-SDK/zipball/66fd3341bbffafe7d650fe7d9d2699fabf355e67",
-                "reference": "66fd3341bbffafe7d650fe7d9d2699fabf355e67",
+                "url": "https://api.github.com/repos/paypal/PayPal-PHP-Server-SDK/zipball/3964c1732b1815fa8cf8aee37069ccc4e95d9572",
+                "reference": "3964c1732b1815fa8cf8aee37069ccc4e95d9572",
                 "shasum": ""
             },
             "require": {
                 "apimatic/core": "~0.3.13",
                 "apimatic/core-interfaces": "~0.1.5",
-                "apimatic/unirest-php": "^4.0.0",
+                "apimatic/unirest-php": "^4.0.6",
+                "ext-curl": "*",
                 "ext-json": "*",
                 "php": "^7.2 || ^8.0"
             },
@@ -261,9 +262,9 @@
             "homepage": "https://github.com/paypal/PayPal-PHP-Server-SDK",
             "support": {
                 "issues": "https://github.com/paypal/PayPal-PHP-Server-SDK/issues",
-                "source": "https://github.com/paypal/PayPal-PHP-Server-SDK/tree/1.0.0"
+                "source": "https://github.com/paypal/PayPal-PHP-Server-SDK/tree/1.1.0"
             },
-            "time": "2025-03-24T18:44:18+00:00"
+            "time": "2025-05-27T17:46:31+00:00"
         },
         {
             "name": "php-jsonpointer/php-jsonpointer",
