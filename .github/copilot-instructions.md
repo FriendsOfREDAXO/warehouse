@@ -24,7 +24,7 @@ Struktur:
 
 Die Funktionalitäten lassen sich anhand der Klassen grob unterteilen in:
 
-* Verwaltung, Filterung von Artikeln, Varianten und dessen Informationen und Metadaten (Preise, Beschreibung, Verfügbarkeit, Kategorien): Die Klassen `Article`, `ArticleVariant`und `Category`
+* Verwaltung, Filterung von Artikeln, Varianten und dessen Informationen und Metadaten (Preise, Beschreibung, Verfügbarkeit, Kategorien): Die Klassen `Article`, `ArticleVariant` und `Category`
 * Die Warenkorb-Funktionalitäten: `Cart`
 * Die Bestellung und Bezahlung: `Checkout` und `Payment`
 
