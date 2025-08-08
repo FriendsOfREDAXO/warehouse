@@ -1,4 +1,4 @@
-Dieses Repository ist eine Erweiterung (Add-on) für das REDAXO CMS https://github.com/redaxo/redaxo, das Shop-Funktionalitäten zur Verfügung stellt:
+Dieses Repository ist eine Erweiterung (Add-on) für das REDAXO CMS https://github.com/redaxo/redaxo, das Shop-Funktionalitäten zu Verfügung stellt:
 
 1. Eine Produktverwaltung ("Artikel" und "Varianten") mit Kategorien und Eigenschaften wie Preis, Lagerbestand, Beschreibung, Verfügbarkeit
 2. Ausgabe-Templates ("Fragmente"), die den Shop im Frontend anzeigen
