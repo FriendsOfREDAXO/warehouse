@@ -20,7 +20,7 @@ Struktur:
 * `/docs/`: der Ordner, der Markdown-Dokumente zur technischen Dokumentation enthält und bei Code- und Funktionsanpassungen auf Korrektheit zu überprüfen ist
 * `/install/`: der Ordner, der zusätzliche Dateien zur Installation enthält und für die Funktionalität erforderlich ist, bspw. Tabellenschema-Definitionen für die Datenbanktabellen von `warehouse`
 * `/pages/`: der Ordner, der die Backend-Ansicht mit Oberfläche enthält, um Daten zu verwalten und Konfigurationen vorzunehmen.
-* /fragments/`: der Ordner, der Ausgabe-Templates (in REDAXO: "Fragmente") enthält und in Bootstrap 5 geschrieben wird - möglichst ohne eigenes zusätzliches JS und CSS.
+* `/fragments/`: der Ordner, der Ausgabe-Templates (in REDAXO: "Fragmente") enthält und in Bootstrap 5 geschrieben wird - möglichst ohne eigenes zusätzliches JS und CSS.
 
 Die Funktionalitäten lassen sich anhand der Klassen grob unterteilen in:
 
