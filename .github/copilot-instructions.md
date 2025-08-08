@@ -38,6 +38,6 @@ Achte auf folgende Regeln:
 2. Verwende Best Practices in der PHP-Entwicklung wie Typisierung / Type Hinting.
 3. Achte auf Rückwärtskompatibilität, wenn es sich um eine zentrale Funktion oder Funktionsänderung handelt und nicht nur um einen Bugfix.
 4. Vermeide überkomplexe Lösungen und bevorzuge kurze prägnante, der Aufgabenstellung angemessene Lösungen - arbeite nur komplexer, wenn du dazu aufgefordert wirst oder nach Rückfrage, wenn du nach 3-4 Minuten Laufzeit nicht zu einer guten Lösung gekommen bist.
-5. In einem PR wird die Versionsnummer `version` gemäß Semantic Versioning in der `package.yml` erhöht - je nachdem, ob es ein Bugfix/Patch, Minor Update mit neuen Funktionen oder Major Update ohne Rückwärtskompatibliität handelt. Mache in deinem PR einen Vorschlag, was ausgehen vom main-Repository die nächste Versionsnummer wäre.
+5. In einem PR wird die Versionsnummer `version` gemäß Semantic Versioning in der `package.yml` erhöht - je nachdem, ob es ein Bugfix/Patch, Minor Update mit neuen Funktionen oder Major Update ohne Rückwärtskompatibilität handelt. Mache in deinem PR einen Vorschlag, was ausgehend vom main-Repository die nächste Versionsnummer wäre.
 
 Es gibt keinen Build-Prozess, sodass du den Code selbst testen kannst. Es ist nicht über composer, yarn oder einen anderen Pakete-Manager verfügbar.
