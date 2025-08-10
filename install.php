@@ -44,7 +44,7 @@ if (rex_config::get('warehouse', 'order_email') == '') {
     rex_config::set('order_email', rex::getErrorEmail());
 }
 
-if (rex_config::get('warehouse', 'editor') == '' && rex_addon::get('tracks')->isAvailable()) {
+if (rex_config::get('warehouse', 'editor') == '' && rex_addon::get('tracks')?->isAvailable()) {
     $class = Alexplusde\Tracks\Editor::getFirstEditorProfile();
     rex_config::set('warehouse', 'editor', $class);
 }
