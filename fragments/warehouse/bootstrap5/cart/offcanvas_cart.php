@@ -22,16 +22,16 @@ $domain = Domain::getCurrent();
 	<div class="offcanvas-body">
 		<?php if ($cart) { ?>
 		<ul class="list-group list-group-flush">
-			<?php foreach ($cart_items as $uuid => $article) { ?>
+			<?php foreach ($cart_items as $item_key => $item) { ?>
 			<li class="list-group-item">
 				<div class="row g-3 align-items-center">
 					<div class="col-auto">
 						<div class="ratio ratio-4x3">
-							<?php if ($article['image']) { ?>
+							<?php if (isset($item['image']) && $item['image']) { ?>
 							<a
-								href="<?= rex_getUrl('', '', ['warehouse-article-id' => $article['id']]) ?>">
-								<img src="<?= $article['image'] ?>"
-									alt="<?= $article['name'] ?>"
+								href="<?= rex_getUrl('', '', ['warehouse-article-id' => $item['article_id']]) ?>">
+								<img src="<?= $item['image'] ?>"
+									alt="<?= $item['name'] ?>"
 									class="img-fluid">
 							</a>
 							<?php } ?>
@@ -39,24 +39,27 @@ $domain = Domain::getCurrent();
 					</div>
 					<div class="col">
 						<a class="link-heading stretched-link text-decoration-none small"
-							href="<?= rex_getUrl('', '', ['warehouse-article-id' => $article['id']]) ?>"><?= trim($article['name'], '- ') ?>
+							href="<?= rex_getUrl('', '', ['warehouse-article-id' => $item['article_id']]) ?>"><?= trim($item['name'], '- ') ?>
 							<span class="text-muted small">
-								(<?= $article['id'] ?>)</span>
+								(<?= $item['article_id'] ?><?= $item['type'] === 'variant' ? '-' . $item['variant_id'] : '' ?>)</span>
 						</a>
+						<?php if ($item['type'] === 'variant'): ?>
+							<small class="text-muted d-block">Variante</small>
+						<?php endif; ?>
 						<div class="mt-1 row g-2 align-items-center">
 							<div class="col-auto fw-bolder small">
-								<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($article['total'], 2) ?>
+								<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($item['total'], 2) ?>
 							</div>
 							<div class="col-auto text-muted small">
-								<?= $article['amount'] ?>
+								<?= $item['amount'] ?>
 								&times;
-								<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($article['price'], 2) ?>
+								<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($item['price'], 2) ?>
 							</div>
 						</div>
 					</div>
 					<div class="col-auto">
 						<a class="text-danger"
-							href="/?showcart=1&action=modify_cart&art_uid=<?= $uuid ?>&mod=del"
+							href="?rex_api_call=warehouse_cart_api&action=delete&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>"
 							title="Remove">
 							<i class="bi bi-x-circle-fill"></i>
 						</a>

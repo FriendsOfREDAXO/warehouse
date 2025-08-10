@@ -22,7 +22,13 @@ class Cart
     // initialisieren des Warenkorbs
     public function __construct()
     {
-        self::init();
+        $this->init();
+        
+        // Auto-detect customer from YCom if available and not already set
+        if ((!isset($this->cart['customer']) || !$this->cart['customer']) && 
+            (!isset($this->cart['customer_data']) || empty($this->cart['customer_data']))) {
+            $this->autoSetCustomerFromYCom();
+        }
     }
 
     public function init()
@@ -235,7 +241,7 @@ class Cart
      */
     public function autoSetCustomerFromYCom(): void
     {
-        if (rex_addon::get('ycom')->isAvailable()) {
+        if (class_exists('rex_addon') && rex_addon::get('ycom')->isAvailable()) {
             $ycom_user = rex_ycom_auth::getUser();
             if ($ycom_user) {
                 // Try to find corresponding customer
@@ -415,22 +421,12 @@ class Cart
 
     public static function getSubTotalNetto()
     {
-        $cart = self::get();
-        $sum = 0;
-        foreach ($cart as $item) {
-            $sum += $item['price_netto'] * $item['amount'];
-        }
-        return round($sum, 2);
+        return self::getSubTotalByMode('net');
     }
 
     public static function getTaxTotal()
     {
-        $cart = self::get();
-        $sum = 0;
-        foreach ($cart as $item) {
-            $sum += $item['taxval'];
-        }
-        return round($sum, 2);
+        return self::getTaxTotalByMode();
     }
 
 
@@ -444,30 +440,46 @@ class Cart
         $cart = self::get();
 
         $shipping = Shipping::getCost();
-        $user_data = rex_session('user_data', 'array');
+        $user_data = rex_session('user_data', 'array', []);
 
-        $order->setOrderTotal(self::getTotal());
+        // Get customer data from cart
+        $customer_data = $cart->getCustomerData();
+        $customer = $cart->getCustomer();
+        $billing_address = $cart->getBillingAddress();
+        $delivery_address = $cart->getDeliveryAddress();
+
+        $order->setOrderTotal(self::getCartTotal());
         $order->setPaymentId($payment_id);
-        $order->setPaymentType($user_data['payment_type']);
-        $order->setPaymentConfirm($user_data['payment_confirm']);
+        $order->setPaymentType($user_data['payment_type'] ?? '');
+        $order->setPaymentConfirm($user_data['payment_confirm'] ?? '');
         $order->setOrderJson(json_encode([
-            'cart' => $cart,
-            'user_data' => $user_data
+            'cart' => $cart->cart,
+            'user_data' => $user_data,
+            'customer_data' => $customer_data,
+            'billing_address' => $billing_address?->getData(),
+            'delivery_address' => $delivery_address?->getData()
         ]));
 
         $order->setCreateDate(date('Y-m-d H:i:s'));
         $order->setOrderText(Warehouse::getOrderAsText());
-        $order->setFirstname($user_data['firstname']);
-        $order->setLastname($user_data['lastname']);
-        $order->setAddress($user_data['address'] ?? '');
-        $order->setZip($user_data['zip'] ?? '');
-        $order->setCity($user_data['city'] ?? '');
-        $order->setEmail($user_data['email']);
+        
+        // Use customer data from cart or fallback to user_data
+        $order->setFirstname($customer_data['firstname'] ?? $user_data['firstname'] ?? '');
+        $order->setLastname($customer_data['lastname'] ?? $user_data['lastname'] ?? '');
+        $order->setAddress($customer_data['address'] ?? $user_data['address'] ?? '');
+        $order->setZip($customer_data['zip'] ?? $user_data['zip'] ?? '');
+        $order->setCity($customer_data['city'] ?? $user_data['city'] ?? '');
+        $order->setEmail($customer_data['email'] ?? $user_data['email'] ?? '');
 
-        if (rex_addon::get('ycom')->isAvailable()) {
+        // Set customer reference if available
+        if ($customer) {
+            $order->setValue('customer_id', $customer->getId());
+        }
+
+        if (class_exists('rex_addon') && rex_addon::get('ycom')->isAvailable()) {
             $ycom_user = rex_ycom_auth::getUser();
             if ($ycom_user) {
-                $values['ycom_user_id'] = $ycom_user->getId();
+                $order->setValue('ycom_user_id', $ycom_user->getId());
             }
         }
 
