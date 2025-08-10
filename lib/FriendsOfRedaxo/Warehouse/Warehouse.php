@@ -350,9 +350,47 @@ class Warehouse
      *
      * @return 'net'|'gross' Modus der Preiseingabe
      */
-    public static function getPriceInputMode(): string
+    /**
+     * Get global cart instance
+     */
+    public static function getCart(): Cart
     {
-        return rex_config::get('warehouse', 'price_input_mode', 'net');
+        return Cart::get();
+    }
+
+    /**
+     * Add item to cart
+     */
+    public static function addToCart(int $article_id, ?int $variant_id = null, int $amount = 1): bool
+    {
+        $cart = Cart::get();
+        return $cart->add($article_id, $variant_id, $amount);
+    }
+
+    /**
+     * Modify cart item
+     */
+    public static function modifyCart(int $article_id, ?int $variant_id = null, int $amount = 1, string $mode = '='): void
+    {
+        $cart = Cart::get();
+        $cart->modify($article_id, $variant_id, $amount, $mode);
+    }
+
+    /**
+     * Delete article from cart
+     */
+    public static function deleteArticleFromCart(int $article_id, ?int $variant_id = null): void
+    {
+        $cart = Cart::get();
+        $cart->remove($article_id, $variant_id);
+    }
+
+    /**
+     * Empty the cart
+     */
+    public static function emptyCart(): void
+    {
+        Cart::empty();
     }
 
 }
