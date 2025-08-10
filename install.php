@@ -1,7 +1,5 @@
 <?php
 
-use Alexplusde\Tracks\Editor;
-
 // Überprüfe aktuell installierte Version von Warehouse
 /*
 if (rex_version::compare($this->getVersion(), '2.0.0', '<')) {
@@ -46,8 +44,8 @@ if (rex_config::get('warehouse', 'order_email') == '') {
     rex_config::set('order_email', rex::getErrorEmail());
 }
 
-if (rex_config::get('warehouse', 'editor') == '') {
-    $class = Editor::getFirstEditorProfile();
+if (rex_config::get('warehouse', 'editor') == '' && rex_addon::get('tracks')?->isAvailable()) {
+    $class = Alexplusde\Tracks\Editor::getFirstEditorProfile();
     rex_config::set('warehouse', 'editor', $class);
 }
 
