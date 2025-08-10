@@ -500,23 +500,61 @@ class Cart
 
     public static function validateCart(): bool|string
     {
-        // Überprüfe, ob Mindestbestellwert erreicht ist
         $cart = self::get();
+        
+        // Überprüfe, ob Warenkorb leer ist
+        if ($cart->isEmpty()) {
+            return rex_i18n::msg('warehouse.cart_empty');
+        }
+        
+        // Überprüfe, ob Mindestbestellwert erreicht ist
         $minimum_order_value = (float) Warehouse::getConfig('minimum_order_value');
         if (self::getTotal() < $minimum_order_value) {
             return rex_i18n::msg('warehouse.cart_minimum_order_value', $minimum_order_value);
         }
+        
         // Überprüfe, ob alle Artikel noch bestellbar sind
+        $items = $cart->getItems();
+        foreach ($items as $item_key => $item) {
+            if ($item['type'] === 'variant' && $item['variant_id']) {
+                $variant = ArticleVariant::get($item['variant_id']);
+                if (!$variant) {
+                    return rex_i18n::msg('warehouse.cart_item_not_available', $item['name']);
+                }
+                
+                $article = $variant->getArticle();
+                if (!$article) {
+                    return rex_i18n::msg('warehouse.cart_item_not_available', $item['name']);
+                }
+                
+                // Check if variant is still available
+                if (!in_array($variant->getValue('availability'), ArticleVariant::AVAILABLE)) {
+                    return rex_i18n::msg('warehouse.cart_item_no_longer_available', $item['name']);
+                }
+            } else {
+                $article = Article::get($item['article_id']);
+                if (!$article) {
+                    return rex_i18n::msg('warehouse.cart_item_not_available', $item['name']);
+                }
+                
+                // Check if article is still available
+                if (!in_array($article->getValue('availability'), Article::AVAILABLE)) {
+                    return rex_i18n::msg('warehouse.cart_item_no_longer_available', $item['name']);
+                }
+            }
+        }
 
         // Extension Point für weitere Validierungen
-        $cart = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_CART_VALIDATE', '', [
-            'cart' => $cart
+        $validation_result = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_CART_VALIDATE', true, [
+            'cart' => $cart,
+            'items' => $items
         ]));
 
-        if (is_string($cart)) {
+        if (is_string($validation_result)) {
             // Wenn ein String zurückgegeben wird, ist eine Fehlermeldung vorhanden
-            return $cart;
+            return $validation_result;
         }
+        
         // Wenn keine Validierungsfehler gefunden wurden, gib true zurück
         return true;
     }

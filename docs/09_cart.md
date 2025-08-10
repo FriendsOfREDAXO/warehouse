@@ -1,6 +1,6 @@
 # Die Klasse `Cart`
 
-Die Cart-Klasse verwaltet den Warenkorb im Warehouse-Addon. Sie ermöglicht das Hinzufügen, Entfernen und Modifizieren von Artikeln sowie die Berechnung von Gesamtpreisen und Gewichten.
+Die Cart-Klasse verwaltet den Warenkorb im Warehouse-Addon. Sie ermöglicht das Hinzufügen, Entfernen und Modifizieren von Artikeln sowie die Berechnung von Gesamtpreisen und Gewichten. Mit der neuen Version unterstützt sie auch Kundendaten und Adressverwaltung.
 
 > Die Cart-Klasse ist als Singleton konzipiert und speichert die Warenkorb-Daten in der PHP-Session.
 
@@ -8,9 +8,31 @@ Die Cart-Klasse verwaltet den Warenkorb im Warehouse-Addon. Sie ermöglicht das 
 
 Der Warenkorb enthält folgende Hauptbereiche:
 
-- `items`: Array mit den Warenkorb-Artikeln
-- `address`: Adressdaten (optional)
+- `items`: Array mit den Warenkorb-Artikeln (mit eindeutigen Schlüsseln)
+- `customer`: Referenz auf den Kunden (falls angemeldet)
+- `customer_data`: Kundendaten für Gastkäufe
+- `billing_address`: Referenz auf die Rechnungsadresse
+- `delivery_address`: Referenz auf die Lieferadresse (falls abweichend)
 - `last_update`: Zeitstempel der letzten Aktualisierung
+
+### Artikel-Struktur im Warenkorb
+
+Jeder Artikel im Warenkorb wird mit folgendem Schema gespeichert:
+
+```php
+[
+    'type' => 'article|variant',      // Typ: Artikel oder Variante
+    'article_id' => 123,              // ID des Hauptartikels
+    'variant_id' => null|456,         // ID der Variante (falls vorhanden)
+    'name' => 'Produktname',          // Name zum Zeitpunkt des Hinzufügens
+    'price' => 19.99,                 // Preis zum Zeitpunkt des Hinzufügens
+    'amount' => 2,                    // Anzahl
+    'total' => 39.98,                 // Gesamtpreis (price * amount)
+    'added_at' => 1640995200          // Zeitstempel des Hinzufügens
+]
+```
+
+**Wichtig:** Preise werden zum Zeitpunkt des Hinzufügens zum Warenkorb gespeichert, um historische Preise zu bewahren.
 
 ## Instanziierung
 
@@ -156,6 +178,115 @@ $newItems = [
     ]
 ];
 $cart->update($newItems);
+```
+
+## Kundendaten und Adressen
+
+### `setCustomer(?Customer $customer)`
+
+Verknüpft einen registrierten Kunden mit dem Warenkorb.
+
+**Parameter:**
+
+- `$customer` (Customer|null): Kunden-Objekt oder null zum Entfernen
+
+```php
+$cart = Cart::get();
+$customer = Customer::get(123);
+$cart->setCustomer($customer);
+```
+
+### `getCustomer(): ?Customer`
+
+Gibt den mit dem Warenkorb verknüpften Kunden zurück.
+
+```php
+$cart = Cart::get();
+$customer = $cart->getCustomer();
+if ($customer) {
+    echo "Kunde: " . $customer->getName();
+}
+```
+
+### `setCustomerData(array $customer_data)`
+
+Setzt Kundendaten für Gastkäufe (ohne Registrierung).
+
+**Parameter:**
+
+- `$customer_data` (array): Array mit Kundendaten
+
+```php
+$cart = Cart::get();
+$cart->setCustomerData([
+    'firstname' => 'Max',
+    'lastname' => 'Mustermann',
+    'email' => 'max@example.com',
+    'phone' => '+49 123 456789',
+    'address' => 'Musterstraße 1',
+    'zip' => '12345',
+    'city' => 'Musterstadt'
+]);
+```
+
+### `getCustomerData(): array`
+
+Gibt die Gastkunden-Daten zurück.
+
+```php
+$cart = Cart::get();
+$data = $cart->getCustomerData();
+echo $data['firstname'] . ' ' . $data['lastname'];
+```
+
+### `setBillingAddress(?CustomerAddress $address)`
+
+Setzt die Rechnungsadresse für den Warenkorb.
+
+```php
+$cart = Cart::get();
+$address = CustomerAddress::get(456);
+$cart->setBillingAddress($address);
+```
+
+### `getBillingAddress(): ?CustomerAddress`
+
+Gibt die Rechnungsadresse zurück.
+
+### `setDeliveryAddress(?CustomerAddress $address)`
+
+Setzt eine abweichende Lieferadresse.
+
+**Hinweis:** Falls keine Lieferadresse gesetzt ist, wird die Rechnungsadresse verwendet.
+
+### `getDeliveryAddress(): ?CustomerAddress`
+
+Gibt die Lieferadresse zurück (oder die Rechnungsadresse als Fallback).
+
+### `hasSeperateDeliveryAddress(): bool`
+
+Prüft, ob eine separate Lieferadresse gesetzt ist.
+
+```php
+$cart = Cart::get();
+if ($cart->hasSeperateDeliveryAddress()) {
+    echo "Lieferung an andere Adresse";
+}
+```
+
+### `autoSetCustomerFromYCom()`
+
+Erkennt automatisch angemeldete YCom-Benutzer und verknüpft entsprechende Kundendaten.
+
+**Hinweis:** Diese Methode wird automatisch beim Erstellen des Warenkorbs aufgerufen.
+
+### `clearCustomerData()`
+
+Löscht alle Kundendaten und Adressen aus dem Warenkorb.
+
+```php
+$cart = Cart::get();
+$cart->clearCustomerData();
 ```
 
 ## Statische Methoden
@@ -318,11 +449,21 @@ $cart = Cart::get();
         <p>Ihr Warenkorb ist leer.</p>
     <?php else: ?>
         <table>
-            <?php foreach ($cart->getItems() as $uuid => $item): ?>
+            <?php foreach ($cart->getItems() as $item_key => $item): ?>
             <tr>
-                <td><?= htmlspecialchars($item['name']) ?></td>
+                <td>
+                    <?= htmlspecialchars($item['name']) ?>
+                    <?php if ($item['type'] === 'variant'): ?>
+                        <small class="text-muted">(Variante)</small>
+                    <?php endif; ?>
+                </td>
                 <td><?= $item['amount'] ?>x</td>
                 <td><?= number_format($item['total'], 2) ?>€</td>
+                <td>
+                    <a href="?rex_api_call=warehouse_cart_api&action=delete&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>">
+                        Entfernen
+                    </a>
+                </td>
             </tr>
             <?php endforeach; ?>
         </table>
@@ -332,4 +473,100 @@ $cart = Cart::get();
         </div>
     <?php endif; ?>
 </div>
+```
+
+## Vollständiges Beispiel: Checkout-Prozess
+
+```php
+<?php
+use FriendsOfRedaxo\Warehouse\Cart;
+use FriendsOfRedaxo\Warehouse\Customer;
+use FriendsOfRedaxo\Warehouse\CustomerAddress;
+
+// Warenkorb laden
+$cart = Cart::get();
+
+// Überprüfung ob Warenkorb nicht leer ist
+if ($cart->isEmpty()) {
+    echo "Warenkorb ist leer";
+    return;
+}
+
+// Kundendaten setzen (für Gast-Checkout)
+if (!$cart->getCustomer()) {
+    $cart->setCustomerData([
+        'firstname' => $_POST['firstname'],
+        'lastname' => $_POST['lastname'],
+        'email' => $_POST['email'],
+        'phone' => $_POST['phone'],
+        'address' => $_POST['address'],
+        'zip' => $_POST['zip'],
+        'city' => $_POST['city']
+    ]);
+}
+
+// Warenkorb validieren
+$validation = Cart::validateCart();
+if ($validation !== true) {
+    echo "Validierungsfehler: " . $validation;
+    return;
+}
+
+// Bestellung erstellen
+$order_saved = Cart::saveAsOrder('paypal_payment_123');
+
+if ($order_saved) {
+    // Warenkorb leeren nach erfolgreicher Bestellung
+    Cart::empty();
+    echo "Bestellung erfolgreich erstellt!";
+} else {
+    echo "Fehler beim Erstellen der Bestellung";
+}
+```
+
+## API-Endpunkt
+
+Der Warenkorb kann über AJAX-Aufrufe verwaltet werden:
+
+```javascript
+// Artikel hinzufügen
+fetch('?rex_api_call=warehouse_cart_api&action=add&article_id=123&variant_id=456&amount=2')
+    .then(response => response.json())
+    .then(cart => console.log('Warenkorb aktualisiert', cart));
+
+// Artikel entfernen
+fetch('?rex_api_call=warehouse_cart_api&action=delete&article_id=123&variant_id=456')
+    .then(response => response.json())
+    .then(cart => console.log('Artikel entfernt', cart));
+
+// Menge ändern
+fetch('?rex_api_call=warehouse_cart_api&action=modify&article_id=123&variant_id=456&amount=1&mode=+')
+    .then(response => response.json())
+    .then(cart => console.log('Menge erhöht', cart));
+```
+
+## Migration von älteren Versionen
+
+Falls Sie von einer älteren Cart-Version migrieren, beachten Sie folgende Änderungen:
+
+1. **Neue Artikelschlüssel**: Statt UUIDs werden jetzt `article_id` (+ `_variant_id`) als Schlüssel verwendet
+2. **Preisspeicherung**: Preise werden beim Hinzufügen gespeichert, nicht mehr dynamisch berechnet
+3. **Kundendaten**: Neue Methoden für Customer- und Address-Management
+4. **Variantensupport**: Verbesserte Unterstützung für Artikel mit Varianten
+
+### Beispiel-Migration
+
+```php
+// Alt (vor Version 2.1)
+foreach ($cart_items as $uuid => $item) {
+    echo $item['id'] . ': ' . $item['name'];
+}
+
+// Neu (ab Version 2.1)
+foreach ($cart_items as $item_key => $item) {
+    echo $item['article_id'] . ': ' . $item['name'];
+    if ($item['type'] === 'variant') {
+        echo ' (Variante: ' . $item['variant_id'] . ')';
+    }
+}
 ```
