@@ -106,7 +106,7 @@ class Order extends rex_api_function
         
     /**
      * @param mixed $response
-     * @return array{jsonResponse: mixed, httpStatusCode: mixed}
+     * @return array{jsonResponse: array|null, httpStatusCode: int|string}
      */
      * @param ResponseInterface $response
      * @return array{jsonResponse: mixed, httpStatusCode: mixed}
