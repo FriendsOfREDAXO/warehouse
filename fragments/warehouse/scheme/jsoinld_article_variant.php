@@ -14,15 +14,20 @@ if(Warehouse::isVariantsEnabled()) {
 }
 $variants = $article->getVariants();
 
-foreach ($variants as $variant) {
-    /** @var ArticleVariant $variant */
-    $output = [
-        '@context' => 'https://schema.org/',
-        '@type' => 'Product',
-        'name' => $variant->getName(),
-        'image' => [Domain::getCurrentUrl() . $variant->getImageAsMedia()->getUrl()],
-        'description' => strip_tags($variant->getArticle()->getShortText(true)),
-        'sku' => $variant->getValue('sku'),
+if ($variants) {
+    foreach ($variants as $variant) {
+        /** @var ArticleVariant $variant */
+        $imageMedia = $variant->getImageAsMedia();
+        $variantArticle = $variant->getArticle();
+        $shortText = $variantArticle ? $variantArticle->getShortText(true) : null;
+        
+        $output = [
+            '@context' => 'https://schema.org/',
+            '@type' => 'Product',
+            'name' => $variant->getName(),
+            'image' => $imageMedia ? [Domain::getCurrentUrl() . $imageMedia->getUrl()] : [],
+            'description' => $shortText ? strip_tags($shortText) : '',
+            'sku' => $variant->getValue('sku'),
         'offers' => [
             '@type' => 'Offer',
             'url' => Domain::getCurrentUrl() . $variant->getUrl(),
@@ -61,4 +66,7 @@ foreach ($variants as $variant) {
 <script type="application/ld+json" nonce="<?= rex_response::getNonce() ?>">
 <?= json_encode($output, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT) ?>
 </script>
-<?php } ?>
+<?php 
+    } 
+} 
+?>
