@@ -367,6 +367,6 @@ class PayPal
     public static function getSuccessPageUrl(): string
     {
         $domain = Domain::getCurrent();
-        return$domain->getThankyouArtUrl();
+        return $domain->getThankyouArtUrl();
     }
 }
