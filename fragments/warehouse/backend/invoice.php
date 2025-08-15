@@ -1,6 +1,9 @@
 <?php
 
+use FriendsOfRedaxo\Warehouse\Order;
+
 /** @var rex_fragment $this */
+/** @var Order $order */
 $order = $this->getVar('order');
 
 // Kundendaten

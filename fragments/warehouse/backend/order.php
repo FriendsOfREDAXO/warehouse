@@ -1,6 +1,11 @@
 <?php
+
+use FriendsOfRedaxo\Warehouse\Order;
+
 /** @var rex_fragment $this */
+/** @var Order $order */
 $order = $this->getVar('order');
+
 
 // Kundendaten
 $user_data = [
@@ -8,7 +13,7 @@ $user_data = [
     'firstname' => $order->getFirstname(),
     'lastname' => $order->getLastname(),
     'company' => $order->getCompany(),
-    'department' => $order->getDepartment(),
+    // 'department' => $order->getDepartment(),
     'address' => $order->getAddress(),
     'zip' => $order->getZip(),
     'city' => $order->getCity(),
