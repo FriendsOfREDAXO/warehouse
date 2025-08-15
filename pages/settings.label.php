@@ -140,6 +140,9 @@ $formHtml = $form->get();
 
 // Extrahiere das Formular-Tag und die Felder
 $formTagStart = strpos($formHtml, '<form');
+if ($formTagStart === false) {
+    $formTagStart = 0;
+}
 $formTagEnd = strpos($formHtml, '>', $formTagStart);
 $formOpenTag = substr($formHtml, $formTagStart, $formTagEnd - $formTagStart + 1);
 $formCloseTag = '</form>';

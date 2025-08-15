@@ -387,6 +387,7 @@ warehouse.settings.cart_mode.cart = Warenkorb anzeigen
 warehouse.settings.cart_mode.page = Produktseite anzeigen
 
 warehouse.order.details.error.no_data_id = Bitte zunächst aus der Übresicht oder Suche eine Bestellung auswählen.
+warehouse.order.details.error.order_not_found = Die angeforderte Bestellung wurde nicht gefunden.
 
 warehouse.settings.framework = Gewünschtes Ausgabe-Framework
 warehouse.settings.framework.notice = Derzeit wird nur Bootstrap 5 unterstützt. <code>bootstrap5</code> ist der Standard-Wert. Du kannst auch den Ordner <code>src/addons/warehouse/fragments/bootstrap5</code> nach <code>src/addons/project/fragments/bootstrap5</code> kopieren und anpassen. Weitere Informationen dazu in den Docs.

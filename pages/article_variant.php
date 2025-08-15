@@ -14,7 +14,9 @@ $table_name = 'rex_warehouse_article_variant';
 rex_extension::register(
     'YFORM_MANAGER_DATA_PAGE_HEADER',
     static function (rex_extension_point $ep) {
-        if ($ep->getParam('yform')->table->getTableName() === $ep->getParam('table_name')) {
+        /** @var rex_yform_manager_dataset $yform */
+        $yform = $ep->getParam('yform');
+        if ($yform->table->getTableName() === $ep->getParam('table_name')) {
             return '';
         }
     },

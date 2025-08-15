@@ -37,7 +37,7 @@ class Warehouse
         return rex_config::get('warehouse', 'currency', 'EUR');
     }
     
-    public static function getOrderAsText()
+    public static function getOrderAsText(): string
     {
         $cart = Cart::get();
         $shipping = Shipping::getCost();
@@ -118,7 +118,7 @@ class Warehouse
 
 
 
-    public static function getOrderAsHtml()
+    public static function getOrderAsHtml(): string
     {
         $cart = Cart::get();
         $shipping = Shipping::getCost();
@@ -133,7 +133,7 @@ class Warehouse
         $return .= Warehouse::getCurrencySign() . '</th></tr></head><tbody>';
 
 
-        foreach ($cart as $pos) {
+        foreach ($cart->getItems() as $pos) {
             $return .= '<tr><td>';
             if ($pos['var_whvarid']) {
                 $return .= mb_substr(html_entity_decode($pos['var_whvarid']), 0, 20) . '</td><td>';
@@ -178,10 +178,10 @@ class Warehouse
     }
 
 
-    public static function getCustomerDataAsText()
+    public static function getCustomerDataAsText(): string
     {
 
-        $user_data = Customer::getCustomerData();
+        $user_data = Cart::get()->getCustomerData();
 
         $return = '';
 
@@ -231,7 +231,7 @@ class Warehouse
         return $return;
     }
 
-    public static function callbackCheckoutRedirect($params)
+    public static function callbackCheckoutRedirect(object $params): void
     {
         // Je nachdem, welche Bezahlung im Formular ausgewählt wurde, wird der Nutzer weitergeleitet
         $payment_type = $params->getValue('payment_type');
@@ -242,7 +242,7 @@ class Warehouse
 
     }
 
-    public static function getCategoryPath(int $cat_id)
+    public static function getCategoryPath(int $cat_id): array
     {
         $category = Category::get($cat_id);
         if (!$category) {
@@ -258,7 +258,7 @@ class Warehouse
         return array_reverse($path);
     }
 
-    public static function restore_session_from_payment_id($payment_id)
+    public static function restore_session_from_payment_id(string $payment_id): void
     {
         $sql = rex_sql::factory()->setTable(rex::getTable('warehouse_orders'));
         $sql->setWhere('payment_id = :payment_id', ['payment_id' => $payment_id]);
@@ -271,9 +271,9 @@ class Warehouse
             rex_logger::factory()->log('notice', json_encode([
                 'payment_id' => $payment_id,
                 'session_id' => $result[0]['session_id']
-            ]), [], __FILE__, __LINE__);
+            ]) ?: '', [], __FILE__, __LINE__);
         }
-        session_id($result[0]['session_id']);
+        session_id((string) $result[0]['session_id']);
     }
 
     /** @api */
@@ -299,7 +299,10 @@ class Warehouse
         rex_config::set('warehouse', $key, $value);
     }
 
-    public static function getEnabledFeatures() :array
+    /**
+     * @return array<string>
+     */
+    public static function getEnabledFeatures(): array
     {
         $value = rex_config::get('warehouse', 'enable_features');
         if (is_string($value)) {
@@ -331,8 +334,11 @@ class Warehouse
         // Überprüfe, ob 'stock' im Config-Wert vorhanden ist
         return in_array('stock', self::getEnabledFeatures());
     }
-    /** @api */
-    public static function parse(string $file, array $values = [])
+    /**
+     * @api
+     * @param array<string, mixed> $values
+     */
+    public static function parse(string $file, array $values = []): ?string
     {
         $fragment = new rex_fragment();
         $framework = Warehouse::getConfig('framework') ?: 'bootstrap5';
@@ -364,6 +370,12 @@ class Warehouse
      *
      * @return 'net'|'gross' Modus der Preiseingabe
      */
+    public static function getPriceInputMode(): string
+    {
+        $mode = rex_config::get('warehouse', 'price_input_mode', 'net');
+        return $mode === 'gross' ? 'gross' : 'net';
+    }
+
     /**
      * Get global cart instance
      */
