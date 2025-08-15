@@ -490,6 +490,8 @@ class Cart
     public static function empty()
     {
         rex_unset_session('warehouse_cart');
+        rex_unset_session('user_data');
+        rex_unset_session('warehouse_payment');
     }
 
     public static function getTax()
