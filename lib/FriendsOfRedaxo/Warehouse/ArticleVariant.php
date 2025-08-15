@@ -270,7 +270,7 @@ class ArticleVariant extends rex_yform_manager_dataset
     }
 
     /**
-     * @return array<mixed>
+     * @return array<int, array{min: int, max: int, price: float}>
      */
     public function getBulkPrices() :array
     {
