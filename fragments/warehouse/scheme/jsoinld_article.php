@@ -9,12 +9,15 @@ use FriendsOfRedaxo\Warehouse\Domain;
 /** @var Article $article */
 $article = $this->getVar('article');
 
+$imageMedia = $article->getImageAsMedia();
+$shortText = $article->getShortText(true);
+
 $output = [
     '@context' => 'https://schema.org/',
     '@type' => 'Product',
     'name' => $article->getName(),
-    'image' => [Domain::getCurrentUrl() . ($article->getImageAsMedia()?->getUrl() ?? '')],
-    'description' => strip_tags($article->getShortText(true) ?? ''),
+    'image' => $imageMedia ? [Domain::getCurrentUrl() . $imageMedia->getUrl()] : [],
+    'description' => $shortText ? strip_tags($shortText) : '',
     'sku' => $article->getValue('sku'),
     'offers' => [
         '@type' => 'Offer',

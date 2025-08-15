@@ -2,10 +2,22 @@
 
 namespace FriendsOfRedaxo\Warehouse;
 
+use PDOException;
 use rex_fragment;
+use rex_sql_exception;
 
-class Search extends \rex_sql {
-    public static function query(string $query, int $limit = 50) :array{
+class Search extends \rex_sql
+{
+    /**
+     *
+     * @param string $query
+     * @param int $limit
+     * @return array<list, array<string, bool|float|int|string|null>>
+     * @throws rex_sql_exception
+     * @throws PDOException
+     */
+    public static function query(string $query, int $limit = 50) :array
+    {
         $sql = self::factory();
         // Es ist möglich, jedem inneren SELECT ein eigenes LIMIT zu geben.
         // Das beeinflusst, wie viele Zeilen pro Teilabfrage maximal zurückgegeben werden.
@@ -83,7 +95,8 @@ class Search extends \rex_sql {
 
     }
 
-    public static function getForm() {
+    public static function getForm() : string
+    {
         $fragment = new rex_fragment();
         return $fragment->parse('warehouse/backend/search.php');
     }

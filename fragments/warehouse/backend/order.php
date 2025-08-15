@@ -1,5 +1,11 @@
 <?php
+
+use FriendsOfRedaxo\Warehouse\Order;
+
+/** @var rex_fragment $this */
+/** @var Order $order */
 $order = $this->getVar('order');
+
 
 // Kundendaten
 $user_data = [
@@ -7,7 +13,7 @@ $user_data = [
     'firstname' => $order->getFirstname(),
     'lastname' => $order->getLastname(),
     'company' => $order->getCompany(),
-    'department' => $order->getDepartment(),
+    // 'department' => $order->getDepartment(),
     'address' => $order->getAddress(),
     'zip' => $order->getZip(),
     'city' => $order->getCity(),
@@ -45,7 +51,8 @@ if (empty($userNumber)) {
 <html>
 
 <head>
-	<link rel="stylesheet" href="<?= rex_path::addonAssets('warehouse', 'vendor\fontawesome-free\webfonts\fa-regular-400.ttf'); ?>">
+	<link rel="stylesheet"
+		href="<?= rex_path::addonAssets('warehouse', 'vendor\fontawesome-free\webfonts\fa-regular-400.ttf'); ?>">
 	<style>
 		@page {
 			margin: 0cm 0cm;
@@ -187,40 +194,32 @@ $data = file_get_contents(rex_path::media('logo_shop.png'));
 echo 'data:image/' . $type . ';base64,' . base64_encode($data);
 ?>" alt=""><br><br>
 						<p><i style="display:inline-block;position:relative;width:0.42cm"><img
-									style="position:absolute;width:0.40cm;top:-0.31cm;"
-									src="<?php
+									style="position:absolute;width:0.40cm;top:-0.31cm;" src="<?php
                                                                                                         $type = pathinfo(rex_path::media('phone.png'), PATHINFO_EXTENSION);
 $data = file_get_contents(rex_path::media('phone.png'));
 echo 'data:image/' . $type . ';base64,' . base64_encode($data);
-?>"
-									alt=""></i>
+?>" alt=""></i>
 							<?= sprogcard('pdf_phone') ?><br>
 							<i style="display:inline-block;position:relative;width:0.42cm"><img
-									style="position:absolute;width:0.40cm;top:-0.28cm;"
-									src="<?php
+									style="position:absolute;width:0.40cm;top:-0.28cm;" src="<?php
     $type = pathinfo(rex_path::media('www.png'), PATHINFO_EXTENSION);
 $data = file_get_contents(rex_path::media('www.png'));
 echo 'data:image/' . $type . ';base64,' . base64_encode($data);
-?>"
-									alt=""></i>
+?>" alt=""></i>
 							<?= sprogcard('pdf_shop_url') ?><br>
 							<i style="display:inline-block;position:relative;width:0.42cm"><img
-									style="position:absolute;width:0.40cm;top:-0.28cm;"
-									src="<?php
+									style="position:absolute;width:0.40cm;top:-0.28cm;" src="<?php
 $type = pathinfo(rex_path::media('mail.png'), PATHINFO_EXTENSION);
 $data = file_get_contents(rex_path::media('mail.png'));
 echo 'data:image/' . $type . ';base64,' . base64_encode($data);
-?>"
-									alt=""></i>
+?>" alt=""></i>
 							<?= sprogcard('pdf_email') ?><br>
 							<i style="display:inline-block;position:relative;width:0.42cm"><img
-									style="position:absolute;width:0.40cm;top:-0.28cm;"
-									src="<?php
+									style="position:absolute;width:0.40cm;top:-0.28cm;" src="<?php
 $type = pathinfo(rex_path::media('mail.png'), PATHINFO_EXTENSION);
 $data = file_get_contents(rex_path::media('mail.png'));
 echo 'data:image/' . $type . ';base64,' . base64_encode($data);
-?>"
-									alt=""></i> USt.-ID: 146 788 484<br>
+?>" alt=""></i> USt.-ID: 146 788 484<br>
 						</p>
 					</td>
 				</tr>

@@ -16,6 +16,7 @@ use rex_yform_manager_table;
 use rex_csrf_token;
 use rex_formatter;
 use rex_i18n;
+use ycom_user;
 
 class Dashboard
 {
