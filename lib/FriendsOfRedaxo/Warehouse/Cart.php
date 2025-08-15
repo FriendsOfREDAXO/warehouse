@@ -213,7 +213,7 @@ class Cart
     /**
      * Check if delivery address is different from billing address
      */
-    public function hasSeperateDeliveryAddress(): bool
+    public function hasSeparateDeliveryAddress(): bool
     {
         return $this->cart['delivery_address'] !== null && 
                $this->cart['delivery_address'] !== $this->cart['billing_address'];
