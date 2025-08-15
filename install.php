@@ -84,7 +84,7 @@ if (rex_config::get('warehouse', 'store_name') == '') {
 }
 
 if (rex_config::get('warehouse', 'order_email') == '') {
-    rex_config::set('order_email', rex::getErrorEmail());
+    rex_config::set('warehouse', 'order_email', rex::getErrorEmail());
 }
 
 if (rex_config::get('warehouse', 'editor') == '') {
