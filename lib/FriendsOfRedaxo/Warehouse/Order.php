@@ -370,7 +370,7 @@ class Order extends rex_yform_manager_dataset
 
         if(rex_addon::get('ycom')->isAvailable()) {
             $list->setColumnLabel('ycom_user_id', rex_i18n::msg('warehouse_order.ycom_user'));
-            $list->setColumnSortable('ycom_user_id', 'asc');
+            $list->setColumnSortable('ycom_user_id', true);
                 
             $list->setColumnFormat(
                 'ycom_user_id',
