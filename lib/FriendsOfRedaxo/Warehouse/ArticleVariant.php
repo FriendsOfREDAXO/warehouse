@@ -319,7 +319,7 @@ class ArticleVariant extends rex_yform_manager_dataset
             }
         }
         $price = $this->getPrice($mode);
-        if ($price !== null && $price !== 0.0) {
+        if ($price !== null) {
             return (float)$price * $quantity;
         }
         $article = $this->getArticle();
