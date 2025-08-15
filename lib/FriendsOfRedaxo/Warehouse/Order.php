@@ -9,6 +9,8 @@ use rex_ycom_auth;
 use rex_url;
 use rex_yform_manager_collection;
 use rex_yform_manager_dataset;
+use rex_yform_manager_table;
+use rex_yform_list;
 use rex_extension_point;
 use rex_i18n;
 use rex_formatter;
@@ -250,6 +252,9 @@ class Order extends rex_yform_manager_dataset
         return $this;
     }
     
+    /**
+     * @return rex_yform_manager_collection<self>|null
+     */
     public static function findByYComUserId(int $ycom_user_id = null) : ?rex_yform_manager_collection
     {
         if ($ycom_user_id === null) {
@@ -264,13 +269,17 @@ class Order extends rex_yform_manager_dataset
         return $data->find();
     }
     
-    public static function findByUuid($uuid) : ?self
+    public static function findByUuid(string $uuid) : ?self
     {
         return self::query()->where('uuid', $uuid)->findOne();
        
     }
 
-    public static function epYformDataList(rex_extension_point $ep)
+    /**
+     * @param rex_extension_point<mixed> $ep
+     * @return void
+     */
+    public static function epYformDataList(rex_extension_point $ep): void
     {
         /** @var rex_yform_manager_table $table */
         $table = $ep->getParam('table');
@@ -307,11 +316,12 @@ class Order extends rex_yform_manager_dataset
                 $params = [];
                 $params['table_name'] = self::table()->getTableName();
                 $params['rex_yform_manager_popup'] = '0';
-                $params['_csrf_token'] = $token['_csrf_token'];
+                $params['_csrf_token'] = $token['_csrf_token'] ?? '';
                 $params['data_id'] = $a['list']->getValue('id');
                 $params['func'] = 'edit';
 
                 $return = '';
+                /** @var rex_yform_manager_dataset $values */
                 $values = $a['list'];
                 // Anrede, Name, Adresse in einer Zelle
                 if ($values->getValue('company') != '') {
@@ -385,7 +395,7 @@ class Order extends rex_yform_manager_dataset
                         }
 
                         // index.php?page=yform/manager/data_edit&table_name=rex_ycom_user&list=45e18d03&sort=&sorttype=&start=0&_csrf_token=Qk3DRM8nOTKy8pFY9H7jA8qL7PQAORVL0hYGfUmEtw8&rex_yform_manager_popup=0&data_id=1&func=edit&45e18d03_start=0
-                        return '<a href="' . rex_url::backendController(['page' => 'yform/manager/data_edit', 'table_name' => 'rex_ycom_user', '_csrf_token' => \rex_csrf_token::factory('ycom_user')->getUrlParams()['_csrf_token'], 'rex_yform_manager_popup' => 0, 'data_id' => $user->getId(), 'func' => 'edit']) . '"><i class="rex-icon rex-icon-user '.$user_status_class.'"></i></a>';
+                        return '<a href="' . rex_url::backendController(['page' => 'yform/manager/data_edit', 'table_name' => 'rex_ycom_user', '_csrf_token' => \rex_csrf_token::factory('ycom_user')->getUrlParams()['_csrf_token'] ?? '', 'rex_yform_manager_popup' => 0, 'data_id' => $user->getId(), 'func' => 'edit']) . '"><i class="rex-icon rex-icon-user '.$user_status_class.'"></i></a>';
                     }
                     return '<i class="rex-icon rex-icon-user text-muted" style="opacity: 0.3"></i>';
                 }
@@ -401,10 +411,12 @@ class Order extends rex_yform_manager_dataset
             'order_total',
             'custom',
             static function ($a) {
-                $order_total = $a['list']->getValue('order_total');
-                $payment_confirm = $a['list']->getValue('payment_confirm');
-                $payment_type = $a['list']->getValue('payment_type');
-                $payed = $a['list']->getValue('payed');
+                /** @var rex_yform_manager_dataset $list */
+                $list = $a['list'];
+                $order_total = $list->getValue('order_total');
+                $payment_confirm = $list->getValue('payment_confirm');
+                $payment_type = $list->getValue('payment_type');
+                $payed = $list->getValue('payed');
 
                 $return = '';
 
@@ -430,12 +442,16 @@ class Order extends rex_yform_manager_dataset
             }
         );
     }
-    public static function epYformDataListActionButtons(rex_extension_point $ep)
+    /**
+     * @param rex_extension_point<mixed> $ep
+     * @return array<string, array<string, mixed>>
+     */
+    public static function epYformDataListActionButtons(rex_extension_point $ep): array
     {
         /** @var rex_yform_manager_table $table */
         $table = $ep->getParam('table');
         if ($table->getTableName() !== self::table()->getTableName()) {
-            return;
+            return $ep->getSubject();
         }
 
         $buttons = $ep->getSubject();
@@ -464,7 +480,7 @@ class Order extends rex_yform_manager_dataset
         $params = [];
         $params['table_name'] = self::table()->getTableName();
         $params['rex_yform_manager_popup'] = '0';
-        $params['_csrf_token'] = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams()['_csrf_token'];
+        $params['_csrf_token'] = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams()['_csrf_token'] ?? '';
         $params['data_id'] = $this->getId();
         $params['func'] = 'edit';
 
@@ -476,7 +492,7 @@ class Order extends rex_yform_manager_dataset
         $params = [];
         $params['table_name'] = self::table()->getTableName();
         $params['rex_yform_manager_popup'] = '0';
-        $params['_csrf_token'] = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams()['_csrf_token'];
+        $params['_csrf_token'] = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams()['_csrf_token'] ?? '';
         $params['data_id'] = $this->getId();
         $params['func'] = 'details';
 
@@ -515,10 +531,10 @@ class Order extends rex_yform_manager_dataset
 
     /**
      * Gibt die Zwischensumme (Summe aller Artikel) im gewünschten Modus zurück.
-     * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
+     * @param 'net'|'gross'|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
      * @return float
      */
-    public function getOrderSubTotal(?string $mode = null): float
+    public function getOrderSubTotal($mode = null): float
     {
         $items = json_decode($this->getOrderJson(), true)['items'] ?? [];
         $sum = 0;
@@ -550,10 +566,10 @@ class Order extends rex_yform_manager_dataset
     
     /**
      * Gibt die Zwischensumme (Summe aller Artikel) im gewünschten Modus zurück.
-     * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
+     * @param 'net'|'gross'|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
      * @return float
      */
-    public function getOrderSubTotalByMode(?string $mode = null): float
+    public function getOrderSubTotalByMode($mode = null): float
     {
         $items = json_decode($this->getOrderJson(), true)['items'] ?? [];
         $sum = 0;
@@ -590,8 +606,9 @@ class Order extends rex_yform_manager_dataset
 
     /**
      * Gibt die Gesamtsumme (inkl. Versand, Rabatt) im gewünschten Modus zurück.
+     * @param 'net'|'gross'|null $mode
      */
-    public function getOrderTotalByMode(?string $mode = null): float
+    public function getOrderTotalByMode($mode = null): float
     {
         $sum = (float) $this->getOrderSubTotalByMode($mode);
         $sum += (float) $this->getValue('shipping_cost');
@@ -643,6 +660,9 @@ class Order extends rex_yform_manager_dataset
         return $addonDataPath;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getPaymentStatusOptions(): array
     {
         $options = [];
