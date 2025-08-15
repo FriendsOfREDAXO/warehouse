@@ -13,6 +13,7 @@ use rex_api_function;
 use rex_be_controller;
 use rex_extension_point;
 use rex_fragment;
+use rex_request;
 use rex_response;
 use rex_view;
 use Url\Url;
@@ -52,35 +53,32 @@ if (rex::isFrontend()) {
     $this->setProperty('warehouse_domain', $domain);
 
     $action = rex_request('warehouse_deeplink', 'string', '');
-    if ($action !== '') {
-        switch ($action) {
-            case 'cart':
-                rex_response::sendRedirect($domain->getCartArtUrl());
-                break;
-            case 'order':
-                rex_response::sendRedirect($domain->getOrderArtUrl());
-                break;
+    if ($action !== '' && $domain) {
+        if ($action === 'cart') {
+            rex_response::sendRedirect($domain->getCartArtUrl());
+        } elseif ($action === 'order') {
+            rex_response::sendRedirect($domain->getOrderArtUrl());
         }
     }
 
     rex_extension::register('PACKAGES_INCLUDED', function () {
 
-        if (rex_addon::get('url') !== null) {
+        if (rex_addon::get('url')->isAvailable()) {
             $manager = Url::resolveCurrent();
             if ($manager) {
                 $profile = $manager->getProfile();
                 $seo = $manager->getSeo();
 
                 $data_id = (int) $manager->getDatasetId();
-                if ($profile->getTableName() == rex::getTable('warehouse_article')) {
+                if ($profile && $profile->getTableName() == rex::getTable('warehouse_article')) {
                     $warehouse_prop['sitemode'] = 'article';
                     $warehouse_prop['seo_title'] = $seo['title'] . "👀👀";
-                } elseif ($profile->getTableName() == rex::getTable('warehouse_category')) {
+                } elseif ($profile && $profile->getTableName() == rex::getTable('warehouse_category')) {
                     $warehouse_prop['sitemode'] = 'category';
                     $warehouse_prop['seo_title'] = $seo['title'] . "👀";
                     $warehouse_prop['path'] = Warehouse::getCategoryPath($data_id);
                 }
-                $curl = Domain::getCurrentUrl() . $_SERVER['REQUEST_URI'];
+                $curl = Domain::getCurrentUrl() . rex_request::server('REQUEST_URI');
                 rex_set_session('current_page', $curl);
             }
         }
@@ -117,7 +115,7 @@ if (rex::isFrontend()) {
 
             // Pattern sucht das <li> mit der passenden Klasse und ersetzt den gesamten <a>...</a> Inhalt
             // Verwende ein nicht-lazy Pattern, damit nur der <a> innerhalb des passenden <li> ersetzt wird
-            $pattern = '/(<li\s+class="rex-article-' . preg_quote($cartArtId, '/') . '[^"]*".*?>\s*)<a\b[^>]*>.*?<\/a>(\s*<\/li>)/s';
+            $pattern = '/(<li\s+class="rex-article-' . preg_quote((string) $cartArtId, '/') . '[^"]*".*?>\s*)<a\b[^>]*>.*?<\/a>(\s*<\/li>)/s';
 
             // Ersetze den kompletten <a>...</a> durch den Button-Fragment
             $replacement = '$1' . $checkout_button . '$2';
