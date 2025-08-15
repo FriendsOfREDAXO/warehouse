@@ -7,11 +7,11 @@ use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Payment;
 use FriendsOfRedaxo\Warehouse\Shipping;
 
-/** @var Customer $customer */
+/** @var array $customer */
 $customer = $this->getVar('customer', []);
 /** @var Cart $cart */
 $cart = Cart::loadCartFromSession();
-/** @var Payment $payment */
+/** @var array $payment */
 $payment = Payment::loadPaymentFromSession();
 /** @var Domain $domain */
 $domain = Domain::getCurrent();

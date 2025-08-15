@@ -8,7 +8,7 @@ use FriendsOfRedaxo\Warehouse\Order;
 <?php
 if ($order_id = rex_get('order_id', 'int')) {
     // Detailseite
-    $order = Order::findByUuid($order_id);
+    $order = Order::findByUuid((string) $order_id);
     if ($order) {
         $fragment = new rex_fragment();
         $fragment->setVar('order', $order);

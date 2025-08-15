@@ -2,7 +2,7 @@
 
 namespace FriendsOfRedaxo\Warehouse;
 
-/** @var rex_fragment $this */
+/** @var \rex_fragment $this */
 
 $order_id = $this->getVar('order_id', null);
 $order = Order::get($order_id);
@@ -29,11 +29,11 @@ if (!$order) {
         <b>E-Mail:</b> <a href="mailto:info@demo-firma.de">info@demo-firma.de</a>
     </p>
 
-    <?php if ("REX_YFORM_DATA[field=payment_type]" == "paypal") : ?>
+    <?php if ($order->getPaymentId() == "paypal") : ?>
         <p>Ihre Zahlung ist auf unserem PayPal-Konto eingegangen; wir werden nun Ihre Bestellung schnellstens auf den Weg zu Ihnen bringen.</p>
     <?php endif ?>
 
-    <?php if ("REX_YFORM_DATA[field=payment_type]" == "prepayment") : ?>
+    <?php if ($order->getPaymentId() == "prepayment") : ?>
         <p>Sobald wir Ihren Zahlungseingang auf unserem Konto feststellen, werden wir Ihre Bestellung schnellstens auf den Weg zu Ihnen bringen.</p>
     <?php endif ?>
 
@@ -42,14 +42,14 @@ if (!$order) {
     <p>Wir bestätigen Ihre Bestellung wie folgt:</p>
 
     <div style="margin: 20px 0; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
-        <?php echo warehouse::getOrderAsHtml(); ?>
+        <?php echo Warehouse::getOrderAsHtml(); ?>
     </div>
 
     <div style="margin: 20px 0; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
-        <?php echo warehouse::getCustomerData(); ?>
+        <?php echo Warehouse::getCustomerDataAsText(); ?>
     </div>
 
-    <?php if ("REX_YFORM_DATA[field=payment_type]" == "prepayment") : ?>
+    <?php if ($order->getPaymentId() == "prepayment") : ?>
         <p><b>Ihre gewünschte Zahlungsweise:</b> Vorkasse</p>
         <p style="font-size: 14px;">
             <b>Verwendungszweck:</b><br>

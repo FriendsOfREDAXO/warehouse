@@ -30,15 +30,23 @@ class Payment
         self::PAYMENT_STATUS_REFUNDED => 'warehouse.payment_status.refunded'
     ];
 
-    // In Properties soll sowohl die gewählte Zahlungsart als auch die Parameter für die Zahlungsart gespeichert werden
-    public $payment_type = '';
-    public $payment_direct_debit = [
+    public string $payment_type = '';
+    
+    /**
+     *
+     * @var array<string, string>
+     */
+    public array $payment_direct_debit = [
         'iban' => '',
         'bic' => '',
         'direct_debit_name' => ''
     ];
 
-    public $payment_paypal = [
+    /**
+     *
+     * @var array<string, string>
+     */
+    public array $payment_paypal = [
         'paypal_email' => ''
     ];
 
@@ -125,7 +133,8 @@ class Payment
         return $payment_options;
     }
 
-    public static function getPaymentOptionsChoice() {
+    public static function getPaymentOptionsChoice()
+    {
         $payment_options = self::getPaymentOptions();
         $options = [];
         foreach ($payment_options as $key => $label) {
