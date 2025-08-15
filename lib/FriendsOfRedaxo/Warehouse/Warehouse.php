@@ -10,6 +10,7 @@ use rex_extension_point;
 use rex_logger;
 use rex_fragment;
 use rex_path;
+use rex_yform_manager_dataset;
 
 class Warehouse
 {
@@ -231,7 +232,7 @@ class Warehouse
         return $return;
     }
 
-    public static function callbackCheckoutRedirect(object $params): void
+    public static function callbackCheckoutRedirect(rex_yform_manager_dataset $params): void
     {
         // Je nachdem, welche Bezahlung im Formular ausgewählt wurde, wird der Nutzer weitergeleitet
         $payment_type = $params->getValue('payment_type');
@@ -242,6 +243,9 @@ class Warehouse
 
     }
 
+    /**
+     * @return array<Category>
+     */
     public static function getCategoryPath(int $cat_id): array
     {
         $category = Category::get($cat_id);
@@ -355,6 +359,7 @@ class Warehouse
             }
             return $fragment->parse('warehouse' .\DIRECTORY_SEPARATOR. $framework  . \DIRECTORY_SEPARATOR . $file);
         }
+        return null;
     }
 
     public static function isDemoMode() :bool

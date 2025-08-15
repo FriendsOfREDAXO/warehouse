@@ -314,7 +314,7 @@ class PayPal
         return rex_config::get('warehouse', 'paypal_secret');
     }
 
-    public static function createClient()
+    public static function createClient(): \PaypalServerSdkLib\PaypalServerSdkClient
     {
         $client = PaypalServerSdkClientBuilder::init()
             ->clientCredentialsAuthCredentials(
@@ -335,7 +335,7 @@ class PayPal
         return $client;
     }
 
-    public static function createOrder()
+    public static function createOrder(): void
     {
     }
 
@@ -344,7 +344,7 @@ class PayPal
         return rex_config::get('warehouse', 'sandboxmode', self::MODE_SANDBOX) ? self::MODE_SANDBOX : self::MODE_LIVE;
     }
 
-    public static function getEnvironment()
+    public static function getEnvironment(): Environment
     {
         return self::getMode() === self::MODE_LIVE ? Environment::PRODUCTION : Environment::SANDBOX;
     }
@@ -370,18 +370,18 @@ class PayPal
             'height' => rex_config::get('warehouse', 'paypal_button_height', ''),
             'fundingSource' => rex_config::get('warehouse', 'paypal_button_funding_source', 'paypal')
         ]);
-        return $style;
+        return $style !== false ? $style : '{}';
     }
 
     public static function getErrorPageUrl(): string
     {
         $domain = Domain::getCurrent();
-        return $domain->getThankyouArtUrl();
+        return $domain ? $domain->getThankyouArtUrl() : '';
     }
 
     public static function getSuccessPageUrl(): string
     {
         $domain = Domain::getCurrent();
-        return $domain->getThankyouArtUrl();
+        return $domain ? $domain->getThankyouArtUrl() : '';
     }
 }
