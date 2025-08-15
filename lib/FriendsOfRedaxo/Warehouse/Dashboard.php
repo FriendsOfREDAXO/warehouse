@@ -9,6 +9,7 @@
 namespace FriendsOfRedaxo\Warehouse;
 
 use rex_addon;
+use rex_addon_interface;
 use rex_fragment;
 use rex_url;
 use rex_yform_manager_table;
@@ -18,7 +19,7 @@ use rex_i18n;
 
 class Dashboard
 {
-    private rex_addon $addon;
+    private rex_addon_interface $addon;
 
     public function __construct()
     {
