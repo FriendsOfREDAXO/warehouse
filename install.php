@@ -43,7 +43,26 @@ if (rex_addon::get('yform')->isAvailable()) {
     if ($tableset6 !== null) {
         rex_yform_manager_table_api::importTablesets($tableset6);
     }
-    //    rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_ycom_user.json'));
+    /**
+     * Helper function to load and import a tableset file.
+     *
+     * @param string $filename
+     * @return void
+     */
+    function warehouse_import_tableset($filename) {
+        $tableset = rex_file::get($filename);
+        if ($tableset !== null) {
+            rex_yform_manager_table_api::importTablesets($tableset);
+        }
+    }
+
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_settings_domain.json');
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_article.json');
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_article_variant.json');
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_category.json');
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_order.json');
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_customer_address.json');
+    //    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_ycom_user.json');
     rex_yform_manager_table::deleteCache();
 }
 
