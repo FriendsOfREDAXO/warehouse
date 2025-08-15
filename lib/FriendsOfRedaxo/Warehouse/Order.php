@@ -370,7 +370,7 @@ class Order extends rex_yform_manager_dataset
 
         if(rex_addon::get('ycom')->isAvailable()) {
             $list->setColumnLabel('ycom_user_id', rex_i18n::msg('warehouse_order.ycom_user'));
-            $list->setColumnSortable('ycom_user_id', false);
+            $list->setColumnSortable('ycom_user_id', 'asc');
                 
             $list->setColumnFormat(
                 'ycom_user_id',
@@ -381,6 +381,10 @@ class Order extends rex_yform_manager_dataset
                         
                         if ($user === null && $a['value'] > 0) {
                             return '<i class="rex-icon rex-icon-user text-warning"></i>';
+                        }
+
+                        if ($user === null) {
+                            return '<i class="rex-icon rex-icon-user text-muted" style="opacity: 0.3"></i>';
                         }
 
                         $user_status = $user->getValue('status');

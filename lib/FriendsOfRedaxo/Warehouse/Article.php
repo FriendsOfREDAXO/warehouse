@@ -321,7 +321,7 @@ class Article extends rex_yform_manager_dataset
      * @param int|array<int>|null $category_ids
      * @return rex_yform_manager_collection<Article>|null
      */
-    public static function findArticle(int|array $category_ids = null, string $status = 'active', bool $availableOnly = true) : ?rex_yform_manager_collection
+    public static function findArticle(int|array $category_ids = null, string $status = 'active', bool $availableOnly = true) : rex_yform_manager_collection
     {
         $query = self::query();
         if ($category_ids !== null) {
@@ -516,7 +516,6 @@ class Article extends rex_yform_manager_dataset
         if (!empty($bulkPrices)) {
             foreach ($bulkPrices as $bulk) {
                 if (
-                    isset($bulk['min'], $bulk['max'], $bulk['price']) &&
                     $quantity >= (int)$bulk['min'] &&
                     ($quantity <= (int)$bulk['max'] || (int)$bulk['max'] === 0)
                 ) {

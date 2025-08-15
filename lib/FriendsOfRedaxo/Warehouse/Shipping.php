@@ -85,6 +85,9 @@ class Shipping {
         return Warehouse::getCurrencySign() . ' ' . number_format(self::getCost(), 2, ',', '.');
     }
     
+    /**
+     * @return array<string, string>
+     */
     public static function getShippingStatusOptions(): array
     {
         $options = [];
