@@ -569,7 +569,7 @@ class Order extends rex_yform_manager_dataset
      * @param 'net'|'gross'|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
      * @return float
      */
-    public function getOrderSubTotalByMode($mode = null): float
+    public function getOrderSubTotalByMode(?string $mode = null): float
     {
         $items = json_decode($this->getOrderJson(), true)['items'] ?? [];
         $sum = 0;
