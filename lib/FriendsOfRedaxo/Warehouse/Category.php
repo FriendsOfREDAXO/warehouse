@@ -145,6 +145,9 @@ class Category extends \rex_yform_manager_dataset
         return $this;
     }
 
+    /**
+     * @return rex_yform_manager_collection<self>
+     */
     public function findChildren(string $status = self::STATUS_ACTIVE) : rex_yform_manager_collection
     {
         return self::query()
@@ -153,7 +156,7 @@ class Category extends \rex_yform_manager_dataset
             ->find();
     }
 
-    public function getArticles(string|array $status = self::STATUS_ACTIVE, int $limit = 48, int $offset = 0)
+    public function getArticles(string|array $status = self::STATUS_ACTIVE, int $limit = 48, int $offset = 0): rex_yform_manager_collection
     {
         return Article::query()
             ->where('category_id', $this->getId())
@@ -162,7 +165,7 @@ class Category extends \rex_yform_manager_dataset
             ->find();
     }
 
-    public static function findRootCategories(string|array $status = self::STATUS_ACTIVE, int $limit = 48, int $offset = 0)
+    public static function findRootCategories(string|array $status = self::STATUS_ACTIVE, int $limit = 48, int $offset = 0): rex_yform_manager_collection
     {
         $categories = self::query()
             ->where('status', $status, '=')
@@ -174,12 +177,15 @@ class Category extends \rex_yform_manager_dataset
         return $categories;
     }
 
-    public static function getStatusOptions() : array
+    /**
+     * @return array<string, string>
+     */
+    public static function getStatusOptions(): array
     {
         return self::STATUS_OPTIONS;
     }
 
-    public function getProjectValue(string $key)
+    public function getProjectValue(string $key): mixed
     {
         return $this->getValue('project_' . $key);
     }
@@ -210,29 +216,34 @@ class Category extends \rex_yform_manager_dataset
         return $yform;
     }
 
-    public static function epYformDataList(rex_extension_point $ep)
+    /**
+     * @param rex_extension_point<mixed> $ep
+     */
+    public static function epYformDataList(rex_extension_point $ep): void
     {
-        /** @var rex_yform_manager_table $table */
+        /** @var \rex_yform_manager_table $table */
         $table = $ep->getParam('table');
         if ($table->getTableName() !== self::table()->getTableName()) {
             return;
         }
 
-        /** @var rex_yform_list $list */
+        /** @var \rex_yform_list $list */
         $list = $ep->getSubject();
 
         $list->setColumnFormat(
             'name',
             'custom',
-            static function ($a) {
+            static function (array $a) {
                 $_csrf_key = self::table()->getCSRFKey();
                 $token = rex_csrf_token::factory($_csrf_key)->getUrlParams();
 
                 $params = [];
                 $params['table_name'] = self::table()->getTableName();
                 $params['rex_yform_manager_popup'] = '0';
-                $params['_csrf_token'] = $token['_csrf_token'];
-                $params['data_id'] = $a['list']->getValue('id');
+                $params['_csrf_token'] = $token['_csrf_token'] ?? '';
+                /** @var rex_yform_manager_dataset $list */
+                $list = $a['list'];
+                $params['data_id'] = $list->getValue('id');
                 $params['func'] = 'edit';
 
                 return '<a href="' . rex_url::backendPage('warehouse/category', $params) . '">' . $a['value'] . '</a>';
@@ -241,7 +252,7 @@ class Category extends \rex_yform_manager_dataset
         $list->setColumnFormat(
             'id',
             'custom',
-            static function ($a) {
+            static function (array $a) {
                 return $a['value'];
             },
         );
@@ -252,18 +263,19 @@ class Category extends \rex_yform_manager_dataset
         return rex_getUrl(null, null, [$profile => $this->getId()]);
     }
 
-    public function getBackendUrl() :string
+    public function getBackendUrl(): string
     {
         $params = [];
         $params['table_name'] = self::table()->getTableName();
         $params['rex_yform_manager_popup'] = '0';
-        $params['_csrf_token'] = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams()['_csrf_token'];
+        $urlParams = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams();
+        $params['_csrf_token'] = $urlParams['_csrf_token'] ?? '';
         $params['data_id'] = $this->getId();
         $params['func'] = 'edit';
 
         return rex_url::backendPage('warehouse/category', $params);
     }
-    public static function getBackendIcon(bool $label = false) :string
+    public static function getBackendIcon(bool $label = false): string
     {
         if ($label) {
             return '<i class="rex-icon fa-folder"></i> ' . rex_i18n::msg('warehouse_category.icon_label');
