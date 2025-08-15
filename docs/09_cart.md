@@ -269,7 +269,13 @@ Prüft, ob eine separate Lieferadresse gesetzt ist.
 
 ```php
 $cart = Cart::get();
-if ($cart->hasSeperateDeliveryAddress()) {
+### `hasSeparateDeliveryAddress(): bool`
+
+Prüft, ob eine separate Lieferadresse gesetzt ist.
+
+```php
+$cart = Cart::get();
+if ($cart->hasSeparateDeliveryAddress()) {
     echo "Lieferung an andere Adresse";
 }
 ```
