@@ -259,6 +259,7 @@ warehouse_order.paypal_id = PayPal-ID
 warehouse_order.payment_id = Zahlungs-ID
 warehouse_order.paypal_confirm_token = PayPal-Bestätigungstoken
 warehouse_order.payment_confirm = Zahlungsbestätigung
+warehouse_order.order_no = Bestellnummer
 warehouse_order.order_text = Bestelltext
 warehouse_order.order_json = Bestell-JSON
 warehouse_order.order_total = Bestellsumme

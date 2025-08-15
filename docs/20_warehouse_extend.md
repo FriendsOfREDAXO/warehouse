@@ -48,6 +48,33 @@ rex_extension::register('WAREHOUSE_ORDER_NUMBER', function(rex_extension_point $
 });
 ```
 
+### `WAREHOUSE_ORDER_NO_GENERATE`
+
+Ermöglicht das Modifizieren der automatisch generierten Bestellnummern vor der Vergabe. Rückgabewert ist ein String. Standardformat: `YYYY-MM-####` mit monatlicher Zurücksetzung.
+
+**Parameter:**
+- Subject: Generierte Bestellnummer (String)
+- Params: Array mit `year`, `month`, `counter`, `period`
+
+**Beispiele:**
+
+```php
+rex_extension::register('WAREHOUSE_ORDER_NO_GENERATE', function(rex_extension_point $ep) {
+    $orderNo = $ep->getSubject();
+    // Beispiel: Präfix hinzufügen
+    return 'B-' . $orderNo;
+});
+
+// Beispiel: Komplett eigenes Format mit Jahres-Counter
+rex_extension::register('WAREHOUSE_ORDER_NO_GENERATE', function(rex_extension_point $ep) {
+    $params = $ep->getParams();
+    $year = $params['year'];
+    $counter = $params['counter'];
+    
+    return $year . sprintf('%06d', $counter);
+});
+```
+
 ### `WAREHOUSE_DELIVERY_NOTE_NUMBER`
 
 Ermöglicht das Modifizieren der nächsten Lieferscheinnummer vor der Vergabe. Rückgabewert ist ein Integer.

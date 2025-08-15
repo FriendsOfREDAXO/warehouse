@@ -483,6 +483,9 @@ class Cart
             }
         }
 
+        // Auto-assign order number before saving
+        Document::assignOrderNo($order);
+
         return $order->save();
     }
 

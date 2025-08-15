@@ -1,5 +1,5 @@
 package: warehouse
-version: '2.2.2-dev'
+version: '2.3.0-dev'
 author: FriendsOfREDAXO
 supportpage: https://github.com/FriendsOfREDAXO/warehouse
 
@@ -129,6 +129,8 @@ default_config:
     delivery_note_number: 1
     invoice_number: 1
     order_number: 1
+    order_no_counter: 1
+    order_no_last_period: ''
 
     fallback_category_image: 'warehouse_placeholder_category.jpeg'
     fallback_article_image: 'warehouse_placeholder_article.jpeg'
