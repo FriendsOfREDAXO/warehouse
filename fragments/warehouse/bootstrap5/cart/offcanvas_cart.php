@@ -20,7 +20,7 @@ $domain = Domain::getCurrent();
 		<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	</div>
 	<div class="offcanvas-body">
-		<?php if ($cart) { ?>
+		<?php if ($cart_items && count($cart_items) > 0) { ?>
 		<ul class="list-group list-group-flush">
 			<?php foreach ($cart_items as $item_key => $item) { ?>
 			<li class="list-group-item">
@@ -133,7 +133,7 @@ $domain = Domain::getCurrent();
 					<?= Warehouse::getLabel('cart_empty') ?>
 				</a>
 				<a class="btn btn-primary ms-auto"
-					href="<?= $domain->getCheckoutUrl() ?>">
+					href="<?= $domain?->getCheckoutUrl() ?? '' ?>">>
 					<?= Warehouse::getLabel('next') ?>
 				</a>
 			</div>

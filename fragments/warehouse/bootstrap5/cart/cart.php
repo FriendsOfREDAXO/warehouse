@@ -12,7 +12,7 @@ $cart_items = $cart->getItems();
 
 $domain = Domain::getCurrent();
 
-if (!$cart) {
+if (!$cart_items || count($cart_items) === 0) {
 
     echo '<p class="text-center">' . rex_i18n::msg('warehouse.cart_empty') . '</p>';
     return;
@@ -138,7 +138,7 @@ if (!$cart) {
 			<?= Cart::getSubTotalFormatted() ?>
 		</div>
 		<p><a data-warehouse-cart-action="next" class="btn btn-primary"
-				href="<?= $domain->getCheckoutUrl() ?>"
+				href="<?= $domain?->getCheckoutUrl() ?? '' ?>"
 				class="white_big_circle"><?= Warehouse::getLabel('next'); ?></a>
 		</p>
 	</div>
