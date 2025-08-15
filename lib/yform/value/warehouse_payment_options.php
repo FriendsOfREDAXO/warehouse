@@ -5,7 +5,7 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
 
 class rex_yform_value_warehouse_payment_options extends rex_yform_value_abstract
 {
-    public function enterObject()
+    public function enterObject(): void
     {
         $options = Payment::getPaymentOptions();
 
@@ -30,6 +30,9 @@ class rex_yform_value_warehouse_payment_options extends rex_yform_value_abstract
         return 'radio|name|label|[notice]|[no_db]';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDefinitions(): array
     {
         return [
@@ -47,7 +50,10 @@ class rex_yform_value_warehouse_payment_options extends rex_yform_value_abstract
         ];
     }
 
-    public static function getListValue($params)
+    /**
+     * @param array<string, mixed> $params
+     */
+    public static function getListValue(array $params): string
     {
         $return = [];
 
@@ -63,7 +69,10 @@ class rex_yform_value_warehouse_payment_options extends rex_yform_value_abstract
         return implode('<br />', $return);
     }
 
-    public static function getSearchField($params)
+    /**
+     * @param array<string, mixed> $params
+     */
+    public static function getSearchField(array $params): void
     {
         $options = [];
         $options['(empty)'] = '(empty)';
@@ -84,7 +93,10 @@ class rex_yform_value_warehouse_payment_options extends rex_yform_value_abstract
         );
     }
 
-    public static function getSearchFilter($params)
+    /**
+     * @param array<string, mixed> $params
+     */
+    public static function getSearchFilter(array $params): ?string
     {
         $sql = rex_sql::factory();
 
@@ -111,7 +123,10 @@ class rex_yform_value_warehouse_payment_options extends rex_yform_value_abstract
         }
     }
 
-    public function getLabelForValue(array $options = [], string $selected = null): string
+    /**
+     * @param array<string, string> $options
+     */
+    public function getLabelForValue(array $options = [], ?string $selected = null): string
     {
         if (is_null($selected)) {
             $selected = $this->getValue();

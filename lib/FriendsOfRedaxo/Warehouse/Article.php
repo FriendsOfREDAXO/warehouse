@@ -240,7 +240,12 @@ class Article extends rex_yform_manager_dataset
     public function getPriceFormatted() : string
     {
         $formatter = new NumberFormatter('de_de', NumberFormatter::CURRENCY);
-        return $formatter->formatCurrency($this->getPrice(), Warehouse::getCurrencySign());
+        $price = $this->getPrice();
+        if ($price === null) {
+            return '';
+        }
+        $formatted = $formatter->formatCurrency($price, Warehouse::getCurrencySign());
+        return $formatted !== false ? $formatted : '';
     }
 
     /* Preis-Text */
@@ -283,7 +288,10 @@ class Article extends rex_yform_manager_dataset
     }
 
     /* Varianten */
-    /** @api */
+    /** 
+     * @api 
+     * @return rex_yform_manager_collection<ArticleVariant>|null
+     */
     public function getVariants() : ?rex_yform_manager_collection
     {
         return $this->getRelatedCollection("variant_ids");
@@ -309,6 +317,10 @@ class Article extends rex_yform_manager_dataset
         return $this;
     }
 
+    /**
+     * @param int|array<int>|null $category_ids
+     * @return rex_yform_manager_collection<Article>|null
+     */
     public static function findArticle(int|array $category_ids = null, string $status = 'active', bool $availableOnly = true) : ?rex_yform_manager_collection
     {
         $query = self::query();
@@ -322,17 +334,26 @@ class Article extends rex_yform_manager_dataset
         return $query->find();
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getAvailabilityOptions() : array
     {
         
         return self::AVAILABILITY;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getStatusOptions() : array
     {
         return self::STATUS_OPTIONS;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getTaxOptions() : array
     {
 
@@ -344,7 +365,7 @@ class Article extends rex_yform_manager_dataset
         return $taxOptions;
     }
 
-    public function getProjectValue(string $key)
+    public function getProjectValue(string $key): mixed
     {
         return $this->getValue('project_' . $key);
     }
@@ -355,15 +376,19 @@ class Article extends rex_yform_manager_dataset
         return $this;
     }
     
-    public static function epYformDataList(rex_extension_point $ep)
+    /**
+     * @param rex_extension_point<mixed> $ep
+     * @return void
+     */
+    public static function epYformDataList(rex_extension_point $ep): void
     {
-        /** @var rex_yform_manager_table $table */
+        /** @var \rex_yform_manager_table $table */
         $table = $ep->getParam('table');
         if ($table->getTableName() !== self::table()->getTableName()) {
             return;
         }
 
-        /** @var rex_yform_list $list */
+        /** @var \rex_yform_list $list */
         $list = $ep->getSubject();
 
         $list->setColumnFormat(
@@ -376,7 +401,7 @@ class Article extends rex_yform_manager_dataset
                 $params = [];
                 $params['table_name'] = self::table()->getTableName();
                 $params['rex_yform_manager_popup'] = '0';
-                $params['_csrf_token'] = $token['_csrf_token'];
+                $params['_csrf_token'] = $token['_csrf_token'] ?? '';
                 $params['data_id'] = $a['list']->getValue('id');
                 $params['func'] = 'edit';
 
@@ -444,7 +469,8 @@ class Article extends rex_yform_manager_dataset
         $params = [];
         $params['table_name'] = self::table()->getTableName();
         $params['rex_yform_manager_popup'] = '0';
-        $params['_csrf_token'] = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams()['_csrf_token'];
+        $tokenParams = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams();
+        $params['_csrf_token'] = $tokenParams['_csrf_token'] ?? '';
         $params['data_id'] = $this->getId();
         $params['func'] = 'edit';
 
@@ -460,7 +486,7 @@ class Article extends rex_yform_manager_dataset
 
     /**
      * Gibt die Staffelpreise (Bulk Prices) dieses Artikels zurück.
-     * @return array
+     * @return array<array{min: string|int, max: string|int, price: string|float}>
      */
     public function getBulkPrices(): array
     {
@@ -480,7 +506,7 @@ class Article extends rex_yform_manager_dataset
     /**
      * Gibt den Gesamtpreis für eine bestimmte Menge zurück, unter Berücksichtigung von Staffelpreisen und Modus.
      * @param int $quantity
-     * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
+     * @param 'net'|'gross'|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
      * @return float
      */
     public function getPriceForQuantity(int $quantity, ?string $mode = null): float
@@ -508,7 +534,7 @@ class Article extends rex_yform_manager_dataset
             }
         }
         $price = $this->getPrice($mode);
-        if ($price !== null && $price !== '') {
+        if ($price !== null && (float)$price !== 0.0) {
             return (float)$price * $quantity;
         }
         // 3. Kein Preis gefunden
