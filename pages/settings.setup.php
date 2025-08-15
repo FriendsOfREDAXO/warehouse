@@ -51,7 +51,7 @@ if ('' !== $func) {
                         echo rex_view::success($addon->i18n('warehouse.setup.success_structure_installed'));
                     }
                 } catch (Exception $e) {
-                    echo rex_view::error('Fehler beim Anlegen der Struktur: ' . $e->getMessage());
+                    echo rex_view::error($addon->i18n('warehouse.setup.error_install_structure', $e->getMessage()));
                 }
                 break;
 
