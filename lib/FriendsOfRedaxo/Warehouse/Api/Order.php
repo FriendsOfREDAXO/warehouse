@@ -131,35 +131,53 @@ class Order extends rex_api_function
                     $PAYPAL_CLIENT_SECRET
                 )
             )
-            ->environment(Environment::SANDBOX) // Use Environment::live() for production
+            ->environment(PayPal::getEnvironment())
             ->build();
 
+        
+        // Get dynamic currency and cart totals
+        $currency = Warehouse::getCurrency();
+        $cart_data = Cart::loadCartFromSession();
+        $cart_total = Cart::getCartTotal(); // Total including shipping
+        $cart_subtotal = Cart::getSubTotal(); // Items only, excluding shipping
+        $shipping_cost = Shipping::getCost(); // Shipping costs
+        $cart_items = $cart_data->getItems();
+        
+        // Build PayPal items from cart
+        $paypal_items = [];
+        foreach ($cart_items as $item) {
+            $paypal_items[] = ItemBuilder::init(
+                $item['name'],
+                MoneyBuilder::init($currency, number_format($item['price'], 2, '.', ''))->build(),
+                (string) $item['amount']
+            )
+                ->description($item['name'])
+                ->sku($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : ''))
+                ->build();
+        }
+        
+        $breakdown = AmountBreakdownBuilder::init()
+            ->itemTotal(
+                MoneyBuilder::init($currency, number_format($cart_subtotal, 2, '.', ''))->build()
+            );
+        
+        // Add shipping if there are shipping costs
+        if ($shipping_cost > 0) {
+            $breakdown->shipping(
+                MoneyBuilder::init($currency, number_format($shipping_cost, 2, '.', ''))->build()
+            );
+        }
         
         $collect =[
             "body" => OrderRequestBuilder::init("CAPTURE", [
                 PurchaseUnitRequestBuilder::init(
-                    AmountWithBreakdownBuilder::init("EUR", "100")
-                        ->breakdown(
-                            AmountBreakdownBuilder::init()
-                                ->itemTotal(
-                                    MoneyBuilder::init("EUR", "100")->build()
-                                )
-                                ->build()
-                        )
+                    AmountWithBreakdownBuilder::init($currency, number_format($cart_total, 2, '.', ''))
+                        ->breakdown($breakdown->build())
                         ->build()
                 )
-                    // lookup item details in `cart` from database
-                    ->items([
-                        ItemBuilder::init(
-                            "T-Shirt",
-                            MoneyBuilder::init("EUR", "100")->build(),
-                            "1"
-                        )
-                            ->description("Super Fresh Shirt")
-                            ->sku("sku01")
-                            ->build(),
-                    ])
-
+                    ->items($paypal_items)
+                    ->customId(PayPal::getStoreName() . '-' . date('Y-m-d-H-i-s'))
+                    ->description('Order from ' . PayPal::getStoreName())
                     ->build(),
             ])
             ->build(),
@@ -190,7 +208,7 @@ class Order extends rex_api_function
                     $PAYPAL_CLIENT_SECRET
                 )
             )
-            ->environment(Environment::SANDBOX) // Use Environment::live() for production
+            ->environment(PayPal::getEnvironment())
             ->build();
 
 

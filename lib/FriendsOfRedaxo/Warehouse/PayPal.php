@@ -344,6 +344,21 @@ class PayPal
         return rex_config::get('warehouse', 'sandboxmode', self::MODE_SANDBOX) ? self::MODE_SANDBOX : self::MODE_LIVE;
     }
 
+    public static function getEnvironment()
+    {
+        return self::getMode() === self::MODE_LIVE ? Environment::PRODUCTION : Environment::SANDBOX;
+    }
+
+    public static function getStoreName(): string
+    {
+        return rex_config::get('warehouse', 'store_name', '');
+    }
+
+    public static function getStoreCountryCode(): string
+    {
+        return rex_config::get('warehouse', 'store_country_code', 'DE');
+    }
+
     public static function getStyleConfig(): string
     {
         $style = json_encode([
