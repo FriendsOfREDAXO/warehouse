@@ -1,3 +1,8 @@
+<?php
+
+/** @var rex_fragment $this */
+
+?>
 <div class="btn-group dropdown">
     <form action="/" method="get" id="warehouse_search">
         <input type="hidden" name="rex-api-call" value="warehouse_search">

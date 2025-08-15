@@ -1,5 +1,7 @@
 <?php
 
+/** @var rex_fragment $this */
+
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 if (rex::isBackend()) {

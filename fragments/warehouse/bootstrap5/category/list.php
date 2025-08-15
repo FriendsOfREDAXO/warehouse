@@ -1,5 +1,7 @@
 <?php
 
+/** @var rex_fragment $this */
+
 use FriendsOfRedaxo\Warehouse\Category;
 use FriendsOfRedaxo\Warehouse\Article;
 use FriendsOfRedaxo\Warehouse\ArticleVariant;

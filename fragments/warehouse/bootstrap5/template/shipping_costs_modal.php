@@ -1,4 +1,7 @@
 <?php
+
+/** @var rex_fragment $this */
+
 use FriendsOfRedaxo\Warehouse\Warehouse;
 ?>
 <!-- template/shipping_costs_modal.php -->
