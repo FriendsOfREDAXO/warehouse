@@ -102,7 +102,7 @@ if ('' !== $func) {
                     
                     echo rex_view::success($addon->i18n('warehouse.setup.success_shop_reset'));
                 } catch (Exception $e) {
-                    echo rex_view::error('Fehler beim Zurücksetzen des Shops: ' . $e->getMessage());
+                    echo rex_view::error($addon->i18n('warehouse.setup.error_reset_shop', $e->getMessage()));
                 }
                 break;
         }
