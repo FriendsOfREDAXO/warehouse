@@ -390,6 +390,29 @@ $dataset->setYcomUserId($value);
 $dataset->save();
 ```
 
+### `getIsRead()`
+
+Gibt den Wert für das Feld `is_read` (Gelesen-Status) zurück. Standardmäßig sind neue Bestellungen ungelesen (false).
+
+Beispiel:
+
+```php
+$dataset = Order::get($id);
+$isRead = $dataset->getIsRead(); // true oder false
+```
+
+### `setIsRead(bool $value)`
+
+Setzt den Wert für das Feld `is_read` (Gelesen-Status).
+
+```php
+$dataset = Order::get($id);
+$dataset->setIsRead(true); // als gelesen markieren
+$dataset->save();
+```
+
+**Hinweis:** Bestellungen werden automatisch als gelesen markiert, wenn die Detailseite im Backend aufgerufen wird.
+
 ### `getPaymentType()`
 
 Gibt den Wert für das Feld `payment_type` (Zahlungsart) zurück:
