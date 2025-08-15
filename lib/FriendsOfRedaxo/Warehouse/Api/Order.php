@@ -131,18 +131,24 @@ class Order extends rex_api_function
                     $PAYPAL_CLIENT_SECRET
                 )
             )
-            ->environment(Environment::SANDBOX) // Use Environment::live() for production
+            ->environment(PayPal::getEnvironment())
             ->build();
 
+        
+        // Get dynamic currency and cart totals
+        $currency = Warehouse::getCurrency();
+        $cart_data = Cart::loadCartFromSession();
+        $cart_total = Cart::getCartTotal();
+        $cart_items = $cart_data->cart->getItems();
         
         $collect =[
             "body" => OrderRequestBuilder::init("CAPTURE", [
                 PurchaseUnitRequestBuilder::init(
-                    AmountWithBreakdownBuilder::init("EUR", "100")
+                    AmountWithBreakdownBuilder::init($currency, number_format($cart_total, 2, '.', ''))
                         ->breakdown(
                             AmountBreakdownBuilder::init()
                                 ->itemTotal(
-                                    MoneyBuilder::init("EUR", "100")->build()
+                                    MoneyBuilder::init($currency, number_format($cart_total, 2, '.', ''))->build()
                                 )
                                 ->build()
                         )
@@ -152,7 +158,7 @@ class Order extends rex_api_function
                     ->items([
                         ItemBuilder::init(
                             "T-Shirt",
-                            MoneyBuilder::init("EUR", "100")->build(),
+                            MoneyBuilder::init($currency, number_format($cart_total, 2, '.', ''))->build(),
                             "1"
                         )
                             ->description("Super Fresh Shirt")
@@ -190,7 +196,7 @@ class Order extends rex_api_function
                     $PAYPAL_CLIENT_SECRET
                 )
             )
-            ->environment(Environment::SANDBOX) // Use Environment::live() for production
+            ->environment(PayPal::getEnvironment())
             ->build();
 
 

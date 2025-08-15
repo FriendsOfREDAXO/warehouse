@@ -1,1 +1,0 @@
-This test file is created to test CoreFileWrapper functionality
