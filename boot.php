@@ -129,7 +129,7 @@ if (rex::isFrontend()) {
 
 // EP für WAREHOUSE_TAX verwenden und weitere Steuersätze hinzufügen
 rex_extension::register('WAREHOUSE_TAX_OTIONS', function (rex_extension_point $ep) {
-    /** @var array $taxes */
+    /** @var array<int,string> $taxes */
     $taxes = $ep->getSubject();
     $taxes[42] = '42%';
     krsort($taxes);
