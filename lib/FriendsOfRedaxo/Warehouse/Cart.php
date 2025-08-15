@@ -13,14 +13,22 @@ class Cart
 {
     public $cart = [
         'items' => [],
-        'address' => [],
+        'customer' => null,
+        'billing_address' => null,
+        'delivery_address' => null,
         'last_update' => 0
     ];
 
     // initialisieren des Warenkorbs
     public function __construct()
     {
-        self::init();
+        $this->init();
+        
+        // Auto-detect customer from YCom if available and not already set
+        if ((!isset($this->cart['customer']) || !$this->cart['customer']) && 
+            (!isset($this->cart['customer_data']) || empty($this->cart['customer_data']))) {
+            $this->autoSetCustomerFromYCom();
+        }
     }
 
     public function init()
@@ -30,19 +38,26 @@ class Cart
             $this->setDemoCart();
             return;
         }
-        if (rex_session('warehouse_cart', 'array', null) === null) {
-            rex_set_session('warehouse_cart', []);
+        
+        $session_cart = rex_session('warehouse_cart', 'array', null);
+        if ($session_cart === null) {
+            rex_set_session('warehouse_cart', $this->cart);
+        } else {
+            // Merge with default structure to ensure all fields exist
+            $this->cart = array_merge($this->cart, $session_cart);
         }
-        $this->cart = rex_session('warehouse_cart', 'array');
     }
 
     public static function loadCartFromSession(): self
     {
         $cart = new self();
-        $cart->cart = rex_session('warehouse_cart', 'array', []);
-        if (empty($cart->cart)) {
+        $session_cart = rex_session('warehouse_cart', 'array', []);
+        if (empty($session_cart)) {
             // Wenn der Warenkorb leer ist, initialisiere ihn
             $cart->init();
+        } else {
+            // Merge with default structure
+            $cart->cart = array_merge($cart->cart, $session_cart);
         }
         return $cart;
     }
@@ -84,10 +99,20 @@ class Cart
         }
 
         $cart = Cart::get();
-        foreach ($cart->getItems() as $uuid => $item) {
-            $article = Article::getByUuid($uuid);
-            if ($article) {
-                $weight += $article->getWeight() * $item['amount'];
+        foreach ($cart->getItems() as $item) {
+            if ($item['type'] === 'variant' && $item['variant_id']) {
+                $variant = ArticleVariant::get($item['variant_id']);
+                if ($variant) {
+                    $article = $variant->getArticle();
+                    if ($article) {
+                        $weight += $article->getWeight() * $item['amount'];
+                    }
+                }
+            } else {
+                $article = Article::get($item['article_id']);
+                if ($article) {
+                    $weight += $article->getWeight() * $item['amount'];
+                }
             }
         }
 
@@ -109,7 +134,7 @@ class Cart
         $cart = self::get();
         $total = 0;
         foreach ($cart->getItems() as $item) {
-            $total += $item['price'] * $item['amount'];
+            $total += $item['total'];
         }
         return $total;
     }
@@ -125,61 +150,219 @@ class Cart
         rex_set_session('warehouse_cart', $this->cart);
     }
 
-
-    public function modify(int $article_id, int $article_variant_id, int|false $quantity, string $mode = '='): void
+    /**
+     * Set customer data for the cart
+     */
+    public function setCustomer(?Customer $customer): void
     {
-        $items = $this->getItems();
-        if ($quantity === false) {
-            unset($items[$article_id]);
-        }
-        // mode = "=" => "set", "+" => "add", "-" => "remove"
-        if (($mode == '=' || $mode == 'set') && $quantity > 0) {
-            $items[$article_id][$article_variant_id]['amount'] = $quantity;
-        } elseif ($mode == '+' || $mode == 'add') {
-            $items[$article_id][$article_variant_id]['amount'] += $quantity;
-        } elseif ($mode == '-' || $mode == 'remove') {
-            $items[$article_id][$article_variant_id]['amount'] -= $quantity;
-        }
-        // Check if quantity is valid, no empty quantity - remove article from cart
-        if ($items[$article_id][$article_variant_id]['amount'] <= 0) {
-            unset($items[$article_id][$article_variant_id]);
-        }
-        rex_set_session('warehouse_cart', $items);
-        self::update($items);
+        $this->cart['customer'] = $customer ? $customer->getId() : null;
+        rex_set_session('warehouse_cart', $this->cart);
     }
 
-    public function remove(int $article_id, int $variant_id): void
+    /**
+     * Get customer from cart
+     */
+    public function getCustomer(): ?Customer
     {
-        self::modify($article_id, $variant_id, false);
+        if (!$this->cart['customer']) {
+            return null;
+        }
+        return Customer::get($this->cart['customer']);
+    }
+
+    /**
+     * Set billing address for the cart
+     */
+    public function setBillingAddress(?CustomerAddress $address): void
+    {
+        $this->cart['billing_address'] = $address ? $address->getId() : null;
+        rex_set_session('warehouse_cart', $this->cart);
+    }
+
+    /**
+     * Get billing address from cart
+     */
+    public function getBillingAddress(): ?CustomerAddress
+    {
+        if (!$this->cart['billing_address']) {
+            return null;
+        }
+        return CustomerAddress::get($this->cart['billing_address']);
+    }
+
+    /**
+     * Set delivery address for the cart (if different from billing)
+     */
+    public function setDeliveryAddress(?CustomerAddress $address): void
+    {
+        $this->cart['delivery_address'] = $address ? $address->getId() : null;
+        rex_set_session('warehouse_cart', $this->cart);
+    }
+
+    /**
+     * Get delivery address from cart
+     */
+    public function getDeliveryAddress(): ?CustomerAddress
+    {
+        if (!$this->cart['delivery_address']) {
+            return $this->getBillingAddress(); // Fall back to billing address
+        }
+        return CustomerAddress::get($this->cart['delivery_address']);
+    }
+
+    /**
+     * Check if delivery address is different from billing address
+     */
+    public function hasSeparateDeliveryAddress(): bool
+    {
+        return $this->cart['delivery_address'] !== null && 
+               $this->cart['delivery_address'] !== $this->cart['billing_address'];
+    }
+
+    /**
+     * Set customer data from array (for guest checkout)
+     */
+    public function setCustomerData(array $customer_data): void
+    {
+        $this->cart['customer_data'] = $customer_data;
+        rex_set_session('warehouse_cart', $this->cart);
+    }
+
+    /**
+     * Get customer data array (for guest checkout)
+     */
+    public function getCustomerData(): array
+    {
+        return $this->cart['customer_data'] ?? [];
+    }
+
+    /**
+     * Auto-set customer from YCom if available
+     */
+    public function autoSetCustomerFromYCom(): void
+    {
+        if (class_exists('rex_addon') && rex_addon::get('ycom')->isAvailable()) {
+            $ycom_user = rex_ycom_auth::getUser();
+            if ($ycom_user) {
+                // Try to find corresponding customer
+                $customer = Customer::query()->where('email', $ycom_user->getValue('email'))->findOne();
+                if ($customer) {
+                    $this->setCustomer($customer);
+                    
+                    // Also set billing address if available
+                    $billing_address = CustomerAddress::query()
+                        ->where('ycom_user_id', $ycom_user->getId())
+                        ->where('type', 'billing')
+                        ->findOne();
+                    if ($billing_address) {
+                        $this->setBillingAddress($billing_address);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Clear customer and address data
+     */
+    public function clearCustomerData(): void
+    {
+        $this->cart['customer'] = null;
+        $this->cart['customer_data'] = [];
+        $this->cart['billing_address'] = null;
+        $this->cart['delivery_address'] = null;
+        rex_set_session('warehouse_cart', $this->cart);
+    }
+
+
+    public function modify(int $article_id, int $article_variant_id = null, int|false $quantity = false, string $mode = '='): void
+    {
+        $item_key = $article_id . ($article_variant_id ? '_' . $article_variant_id : '');
+        $items = $this->getItems();
+        
+        if (!isset($items[$item_key])) {
+            return; // Item not in cart
+        }
+
+        if ($quantity === false) {
+            // Remove item completely
+            unset($items[$item_key]);
+        } else {
+            // mode = "=" => "set", "+" => "add", "-" => "remove"
+            if ($mode === '=' || $mode === 'set') {
+                $items[$item_key]['amount'] = $quantity;
+            } elseif ($mode === '+' || $mode === 'add') {
+                $items[$item_key]['amount'] += $quantity;
+            } elseif ($mode === '-' || $mode === 'remove') {
+                $items[$item_key]['amount'] -= $quantity;
+            }
+            
+            // Check if quantity is valid, no empty quantity - remove article from cart
+            if ($items[$item_key]['amount'] <= 0) {
+                unset($items[$item_key]);
+            } else {
+                // Recalculate total
+                $items[$item_key]['total'] = $items[$item_key]['price'] * $items[$item_key]['amount'];
+            }
+        }
+        
+        $this->update($items);
+    }
+
+    public function remove(int $article_id, int $variant_id = null): void
+    {
+        $this->modify($article_id, $variant_id, false);
     }
     public function add(int $article_id, int $article_variant_id = null, int $quantity = 1): bool
     {
-        $added = false;
+        if ($quantity <= 0) {
+            return false;
+        }
+
+        $article = Article::get($article_id);
+        if (!$article) {
+            return false;
+        }
+
+        $article_variant = null;
         if ($article_variant_id > 0) {
             $article_variant = ArticleVariant::get($article_variant_id);
-            $article = $article_variant->getArticle();
-        } else {
-            $article = Article::get($article_id);
+            if (!$article_variant || $article_variant->getArticle()->getId() !== $article_id) {
+                return false;
+            }
         }
 
+        // Create unique key for this cart item
+        $item_key = $article_id . ($article_variant_id ? '_' . $article_variant_id : '');
+        
         $items = $this->getItems();
-        if ($quantity >= 1) {
-            $items[$article->getId()]['amount'] += $quantity;
-            $added = true;
-        }
-
-        rex_set_session('warehouse_cart', $items);
-        self::update($items);
-
-        // TODO: Aktion nach hinzufügen zum Warenkorb - entweder direkt zum Checkout, zum Warekorb oder auf der Artikelseite bleiben
-        /*
-        if (rex_request('art_type', 'string') == 'warehouse_single' || (rex_config::get('warehouse', 'cart_mode') == 'page' && rex_request('article_id', 'int'))) {
-            rex_redirect(rex_request('article_id'), '', ['showcart' => 1]);
+        
+        // Check if item already exists in cart
+        if (isset($items[$item_key])) {
+            // Update quantity
+            $items[$item_key]['amount'] += $quantity;
         } else {
-            self::redirect_from_cart($added, 1);
+            // Add new item with current price
+            $price = $article_variant ? $article_variant->getPrice() : $article->getPrice();
+            $name = $article_variant ? $article_variant->getName() : $article->getName();
+            
+            $items[$item_key] = [
+                'type' => $article_variant ? 'variant' : 'article',
+                'article_id' => $article_id,
+                'variant_id' => $article_variant_id,
+                'name' => $name,
+                'price' => $price,
+                'amount' => $quantity,
+                'total' => $price * $quantity,
+                'added_at' => time()
+            ];
         }
-        */
-        return $added;
+
+        // Recalculate total for existing items
+        $items[$item_key]['total'] = $items[$item_key]['price'] * $items[$item_key]['amount'];
+
+        $this->update($items);
+        return true;
     }
     /**
      * Total (Warenkorb mit Shipping)
@@ -238,22 +421,12 @@ class Cart
 
     public static function getSubTotalNetto()
     {
-        $cart = self::get();
-        $sum = 0;
-        foreach ($cart as $item) {
-            $sum += $item['price_netto'] * $item['amount'];
-        }
-        return round($sum, 2);
+        return self::getSubTotalByMode('net');
     }
 
     public static function getTaxTotal()
     {
-        $cart = self::get();
-        $sum = 0;
-        foreach ($cart as $item) {
-            $sum += $item['taxval'];
-        }
-        return round($sum, 2);
+        return self::getTaxTotalByMode();
     }
 
 
@@ -267,30 +440,46 @@ class Cart
         $cart = self::get();
 
         $shipping = Shipping::getCost();
-        $user_data = rex_session('user_data', 'array');
+        $user_data = rex_session('user_data', 'array', []);
 
-        $order->setOrderTotal(self::getTotal());
+        // Get customer data from cart
+        $customer_data = $cart->getCustomerData();
+        $customer = $cart->getCustomer();
+        $billing_address = $cart->getBillingAddress();
+        $delivery_address = $cart->getDeliveryAddress();
+
+        $order->setOrderTotal(self::getCartTotal());
         $order->setPaymentId($payment_id);
-        $order->setPaymentType($user_data['payment_type']);
-        $order->setPaymentConfirm($user_data['payment_confirm']);
+        $order->setPaymentType($user_data['payment_type'] ?? '');
+        $order->setPaymentConfirm($user_data['payment_confirm'] ?? '');
         $order->setOrderJson(json_encode([
-            'cart' => $cart,
-            'user_data' => $user_data
+            'cart' => $cart->cart,
+            'user_data' => $user_data,
+            'customer_data' => $customer_data,
+            'billing_address' => $billing_address?->getData(),
+            'delivery_address' => $delivery_address?->getData()
         ]));
 
         $order->setCreateDate(date('Y-m-d H:i:s'));
         $order->setOrderText(Warehouse::getOrderAsText());
-        $order->setFirstname($user_data['firstname']);
-        $order->setLastname($user_data['lastname']);
-        $order->setAddress($user_data['address'] ?? '');
-        $order->setZip($user_data['zip'] ?? '');
-        $order->setCity($user_data['city'] ?? '');
-        $order->setEmail($user_data['email']);
+        
+        // Use customer data from cart or fallback to user_data
+        $order->setFirstname($customer_data['firstname'] ?? $user_data['firstname'] ?? '');
+        $order->setLastname($customer_data['lastname'] ?? $user_data['lastname'] ?? '');
+        $order->setAddress($customer_data['address'] ?? $user_data['address'] ?? '');
+        $order->setZip($customer_data['zip'] ?? $user_data['zip'] ?? '');
+        $order->setCity($customer_data['city'] ?? $user_data['city'] ?? '');
+        $order->setEmail($customer_data['email'] ?? $user_data['email'] ?? '');
 
-        if (rex_addon::get('ycom')->isAvailable()) {
+        // Set customer reference if available
+        if ($customer) {
+            $order->setValue('customer_id', $customer->getId());
+        }
+
+        if (class_exists('rex_addon') && rex_addon::get('ycom')->isAvailable()) {
             $ycom_user = rex_ycom_auth::getUser();
             if ($ycom_user) {
-                $values['ycom_user_id'] = $ycom_user->getId();
+                $order->setValue('ycom_user_id', $ycom_user->getId());
             }
         }
 
@@ -311,73 +500,100 @@ class Cart
 
     public static function validateCart(): bool|string
     {
-        // Überprüfe, ob Mindestbestellwert erreicht ist
         $cart = self::get();
+        
+        // Überprüfe, ob Warenkorb leer ist
+        if ($cart->isEmpty()) {
+            return rex_i18n::msg('warehouse.cart_empty');
+        }
+        
+        // Überprüfe, ob Mindestbestellwert erreicht ist
         $minimum_order_value = (float) Warehouse::getConfig('minimum_order_value');
         if (self::getTotal() < $minimum_order_value) {
             return rex_i18n::msg('warehouse.cart_minimum_order_value', $minimum_order_value);
         }
+        
         // Überprüfe, ob alle Artikel noch bestellbar sind
+        $items = $cart->getItems();
+        foreach ($items as $item_key => $item) {
+            if ($item['type'] === 'variant' && $item['variant_id']) {
+                $variant = ArticleVariant::get($item['variant_id']);
+                if (!$variant) {
+                    return rex_i18n::msg('warehouse.cart_item_not_available', $item['name']);
+                }
+                
+                $article = $variant->getArticle();
+                if (!$article) {
+                    return rex_i18n::msg('warehouse.cart_item_not_available', $item['name']);
+                }
+                
+                // Check if variant is still available
+                if (!in_array($variant->getValue('availability'), ArticleVariant::AVAILABLE)) {
+                    return rex_i18n::msg('warehouse.cart_item_no_longer_available', $item['name']);
+                }
+            } else {
+                $article = Article::get($item['article_id']);
+                if (!$article) {
+                    return rex_i18n::msg('warehouse.cart_item_not_available', $item['name']);
+                }
+                
+                // Check if article is still available
+                if (!in_array($article->getValue('availability'), Article::AVAILABLE)) {
+                    return rex_i18n::msg('warehouse.cart_item_no_longer_available', $item['name']);
+                }
+            }
+        }
 
         // Extension Point für weitere Validierungen
-        $cart = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_CART_VALIDATE', '', [
-            'cart' => $cart
+        $validation_result = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_CART_VALIDATE', true, [
+            'cart' => $cart,
+            'items' => $items
         ]));
 
-        if (is_string($cart)) {
+        if (is_string($validation_result)) {
             // Wenn ein String zurückgegeben wird, ist eine Fehlermeldung vorhanden
-            return $cart;
+            return $validation_result;
         }
+        
         // Wenn keine Validierungsfehler gefunden wurden, gib true zurück
         return true;
     }
 
     public function setDemoCart()
     {
-
         $demo_items = [
-            'uuid1' => [
+            '123' => [
                 'type' => 'article',
-                'id' => '123',
+                'article_id' => 123,
+                'variant_id' => null,
                 'name' => 'Artikelname',
                 'price' => 19.99,
                 'amount' => 2,
                 'total' => 39.98,
-                'image' => 'image.jpg',
-                'cat_name' => 'Kategorie'
+                'added_at' => time()
             ],
-            'uuid2' => [
-                'type' => 'article',
-                'id' => '456',
-                'name' => 'Anderer Artikel mit Varianten',
-                'total' => 64.98,
-                'price' => 19.99,
-                'amount' => 2,
-                'image' => 'image2.jpg',
-                'cat_name' => 'Andere Kategorie',
-                'variants' => [
-                    'variant1' => [
-                        'type' => 'variant',
-                        'id' => '456-1',
-                        'name' => 'Variante 1',
-                        'price' => 29.99,
-                        'amount' => 1,
-                        'total' => 29.99,
-                        'image' => 'variant1.jpg',
-                    ],
-                    'variant2' => [
-                        'type' => 'variant',
-                        'id' => '456-2',
-                        'name' => 'Variante 2',
-                        'price' => 34.99,
-                        'amount' => 1,
-                        'total' => 34.99,
-                        'image' => 'variant2.jpg',
-                    ]
-                ]
+            '456_1' => [
+                'type' => 'variant',
+                'article_id' => 456,
+                'variant_id' => 1,
+                'name' => 'Anderer Artikel - Variante 1',
+                'price' => 29.99,
+                'amount' => 1,
+                'total' => 29.99,
+                'added_at' => time()
             ],
+            '456_2' => [
+                'type' => 'variant',
+                'article_id' => 456,
+                'variant_id' => 2,
+                'name' => 'Anderer Artikel - Variante 2',
+                'price' => 34.99,
+                'amount' => 1,
+                'total' => 34.99,
+                'added_at' => time()
+            ]
         ];
-        self::update($demo_items);
+        $this->update($demo_items);
     }
 
     /**
@@ -390,15 +606,21 @@ class Cart
         $cart = self::get();
         $items = $cart->getItems();
         $sum = 0;
+        
         foreach ($items as $item) {
-            $article = Article::get($item['id']);
-            $variant = isset($item['variant_id']) ? ArticleVariant::get($item['variant_id']) : null;
-            if ($variant) {
-                $price = $variant->getPrice($mode);
+            if ($item['type'] === 'variant' && $item['variant_id']) {
+                $variant = ArticleVariant::get($item['variant_id']);
+                if ($variant) {
+                    $price = $variant->getPrice($mode);
+                    $sum += (float)$price * (int)$item['amount'];
+                }
             } else {
-                $price = $article ? $article->getPrice($mode) : 0;
+                $article = Article::get($item['article_id']);
+                if ($article) {
+                    $price = $article->getPrice($mode);
+                    $sum += (float)$price * (int)$item['amount'];
+                }
             }
-            $sum += (float)$price * (int)$item['amount'];
         }
         return $sum;
     }
@@ -441,24 +663,29 @@ class Cart
         $cart = self::get();
         $items = $cart->getItems();
         $sum = 0;
+        
         foreach ($items as $item) {
-            if (!isset($item['id'], $item['amount'])) {
+            if (!isset($item['article_id'], $item['amount'])) {
                 continue;
             }
-            $article = Article::get($item['id']);
-            if (!$article) {
-                continue;
+            
+            if ($item['type'] === 'variant' && $item['variant_id']) {
+                $variant = ArticleVariant::get($item['variant_id']);
+                if (!$variant) {
+                    continue;
+                }
+                $net = $variant->getPrice('net');
+                $gross = $variant->getPrice('gross');
+                $sum += (($gross - $net) * (int)$item['amount']);
+            } else {
+                $article = Article::get($item['article_id']);
+                if (!$article) {
+                    continue;
+                }
+                $net = $article->getPrice('net');
+                $gross = $article->getPrice('gross');
+                $sum += (($gross - $net) * (int)$item['amount']);
             }
-            $variant = isset($item['variant_id'])
-                ? ArticleVariant::get($item['variant_id'])
-                : null;
-            $net   = $variant
-                ? $variant->getPrice('net')
-                : $article->getPrice('net');
-            $gross = $variant
-                ? $variant->getPrice('gross')
-                : $article->getPrice('gross');
-            $sum += (($gross - $net) * (int)$item['amount']);
         }
         return round($sum, 2);
     }

@@ -41,7 +41,7 @@ class Warehouse
     {
         $cart = Cart::get();
         $shipping = Shipping::getCost();
-        $total = $cart->getTotal();
+        $total = Cart::getTotal();
 
         $return = '';
         $return .= mb_str_pad('Art. Nr.', 20, ' ', STR_PAD_RIGHT);
@@ -53,39 +53,53 @@ class Warehouse
         $return .= str_repeat('-', 92);
         $return .= PHP_EOL;
 
-        foreach ($cart as $pos) {
-            if ($pos['var_whvarid']) {
-                $return .= mb_str_pad(mb_substr(html_entity_decode($pos['var_whvarid']), 0, 20), 20, ' ', STR_PAD_RIGHT);
-            } else {
-                $return .= mb_str_pad(mb_substr(html_entity_decode($pos['whid']), 0, 20), 20, ' ', STR_PAD_RIGHT);
+        foreach ($cart->getItems() as $item) {
+            $article_number = $item['article_id'];
+            if ($item['type'] === 'variant' && $item['variant_id']) {
+                $article_number .= '-' . $item['variant_id'];
             }
-            $return .= mb_str_pad(mb_substr(html_entity_decode($pos['name']), 0, 45), 45, ' ', STR_PAD_RIGHT);
-            $return .= mb_str_pad($pos['amount'], 7, ' ', STR_PAD_LEFT);
-            $return .= mb_str_pad(number_format($pos['price_netto'], 2), 10, ' ', STR_PAD_LEFT);
-            $return .= mb_str_pad(number_format($pos['price_netto'] * $pos['amount'], 2), 10, ' ', STR_PAD_LEFT);
+            
+            $return .= mb_str_pad(mb_substr(html_entity_decode($article_number), 0, 20), 20, ' ', STR_PAD_RIGHT);
+            $return .= mb_str_pad(mb_substr(html_entity_decode($item['name']), 0, 45), 45, ' ', STR_PAD_RIGHT);
+            $return .= mb_str_pad($item['amount'], 7, ' ', STR_PAD_LEFT);
+            $return .= mb_str_pad(number_format($item['price'], 2), 10, ' ', STR_PAD_LEFT);
+            $return .= mb_str_pad(number_format($item['total'], 2), 10, ' ', STR_PAD_LEFT);
             $return .= PHP_EOL;
-            if (is_array($pos['attributes'])) {
-                foreach ($pos['attributes'] as $attr) {
-                    $return .= str_repeat(' ', 20);
-                    $return .= mb_substr(html_entity_decode($attr['value'] . '  ' . $attr['at_name'] . ': ' . $attr['label']), 0, 70);
-                    $return .= PHP_EOL;
+            
+            // Calculate tax for this item
+            $tax_amount = 0;
+            $tax_rate = 0;
+            if ($item['type'] === 'variant' && $item['variant_id']) {
+                $variant = ArticleVariant::get($item['variant_id']);
+                if ($variant) {
+                    $tax_rate = $variant->getTax();
+                    $net_price = $variant->getPrice('net');
+                    $tax_amount = ($item['price'] - $net_price) * $item['amount'];
+                }
+            } else {
+                $article = Article::get($item['article_id']);
+                if ($article) {
+                    $tax_rate = $article->getTax();
+                    $net_price = $article->getPrice('net');
+                    $tax_amount = ($item['price'] - $net_price) * $item['amount'];
                 }
             }
+            
             $return .= str_repeat(' ', 20);
-            $return .= mb_substr(html_entity_decode('Steuer: ' . $pos['taxpercent'] . '% = ' . number_format($pos['taxval'], 2)), 0, 70);
+            $return .= mb_substr(html_entity_decode('Steuer: ' . $tax_rate . '% = ' . number_format($tax_amount, 2)), 0, 70);
             $return .= PHP_EOL;
         }
         $return .= str_repeat('-', 92);
         $return .= PHP_EOL;
         $return .= mb_str_pad('Summe', 55, ' ', STR_PAD_RIGHT);
-        $return .= mb_str_pad(number_format($cart->getSubTotalNetto(), 2), 37, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad(number_format(Cart::getSubTotal(), 2), 37, ' ', STR_PAD_LEFT);
         $return .= PHP_EOL;
         $return .= mb_str_pad('Mehrwertsteuer', 55, ' ', STR_PAD_RIGHT);
-        $return .= mb_str_pad(number_format($cart->getTaxTotal(), 2), 37, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad(number_format(Cart::getTaxTotalByMode(), 2), 37, ' ', STR_PAD_LEFT);
         $return .= PHP_EOL;
-        if ($cart->getDiscountValue()) {
+        if (Cart::getDiscountValue()) {
             $return .= mb_str_pad(rex_config::get("warehouse", "global_discount_text"), 55, ' ', STR_PAD_RIGHT);
-            $return .= mb_str_pad(number_format($cart->getDiscountValue(), 2), 37, ' ', STR_PAD_LEFT);
+            $return .= mb_str_pad(number_format(Cart::getDiscountValue(), 2), 37, ' ', STR_PAD_LEFT);
             $return .= PHP_EOL;
         }
         $return .= mb_str_pad('Versand', 55, ' ', STR_PAD_RIGHT);
@@ -350,9 +364,47 @@ class Warehouse
      *
      * @return 'net'|'gross' Modus der Preiseingabe
      */
-    public static function getPriceInputMode(): string
+    /**
+     * Get global cart instance
+     */
+    public static function getCart(): Cart
     {
-        return rex_config::get('warehouse', 'price_input_mode', 'net');
+        return Cart::get();
+    }
+
+    /**
+     * Add item to cart
+     */
+    public static function addToCart(int $article_id, ?int $variant_id = null, int $amount = 1): bool
+    {
+        $cart = Cart::get();
+        return $cart->add($article_id, $variant_id, $amount);
+    }
+
+    /**
+     * Modify cart item
+     */
+    public static function modifyCart(int $article_id, ?int $variant_id = null, int $amount = 1, string $mode = '='): void
+    {
+        $cart = Cart::get();
+        $cart->modify($article_id, $variant_id, $amount, $mode);
+    }
+
+    /**
+     * Delete article from cart
+     */
+    public static function deleteArticleFromCart(int $article_id, ?int $variant_id = null): void
+    {
+        $cart = Cart::get();
+        $cart->remove($article_id, $variant_id);
+    }
+
+    /**
+     * Empty the cart
+     */
+    public static function emptyCart(): void
+    {
+        Cart::empty();
     }
 
 }

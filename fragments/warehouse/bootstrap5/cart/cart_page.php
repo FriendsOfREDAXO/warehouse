@@ -45,7 +45,7 @@ $cart_items = $cart->getItems();
 					</div>
 				</div>
 
-				<?php foreach ($cart_items as $uuid => $item) : ?>
+				<?php foreach ($cart_items as $item_key => $item) : ?>
 				<!-- Item -->
 				<div class="card-body">
 					<div class="row row-cols-1 row-cols-md-2 align-items-center">
@@ -54,9 +54,9 @@ $cart_items = $cart->getItems();
 						<div class="col">
 							<div class="row">
 								<div class="col-12 col-md-4">
-									<?php if ($item['image']) : ?>
+									<?php if (isset($item['image']) && $item['image']) : ?>
 									<a class=""
-										href="<?= rex_getUrl('', '', ['warehouse-article-id'=>$item['id']]) ?>">
+										href="<?= rex_getUrl('', '', ['warehouse-article-id'=>$item['article_id']]) ?>">
 										<figure class=""><img
 												src="/images/products/<?= $item['image'] ?>"
 												alt="<?= $item['name'] ?>"
@@ -66,11 +66,14 @@ $cart_items = $cart->getItems();
 								</div>
 								<div class="col">
 									<div class="text-meta">
-										<?= $item['cat_name'] ?>
+										<?= isset($item['cat_name']) ? $item['cat_name'] : '' ?>
 									</div>
 									<a class="link-heading"
-										href="<?= rex_getUrl('', '', ['warehouse-article-id'=>$item['id']]) ?>"><?= html_entity_decode($item['name']) ?>
+										href="<?= rex_getUrl('', '', ['warehouse-article-id'=>$item['article_id']]) ?>"><?= html_entity_decode($item['name']) ?>
 									</a>
+									<?php if ($item['type'] === 'variant'): ?>
+										<small class="text-muted d-block">Variante</small>
+									<?php endif; ?>
 								</div>
 							</div>
 						</div>
@@ -86,12 +89,12 @@ $cart_items = $cart->getItems();
 									</div>
 								</div>
 								<div class="col">
-									<a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uuid ?>&mod=-1"
+									<a href="?rex_api_call=warehouse_cart_api&action=modify&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>&amount=1&mode=-"
 										class="btn btn-sm"><i class="bi bi-dash"></i></a>
 									<input class="form-control wh-qty-input" id="product-1" type="text" maxlength="3"
 										value="<?= $item['amount'] ?>"
 										disabled>
-									<a href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uuid ?>&mod=+1"
+									<a href="?rex_api_call=warehouse_cart_api&action=modify&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>&amount=1&mode=+"
 										class="btn btn-sm"><i class="bi bi-plus"></i></a>
 								</div>
 								<div class="col">
@@ -103,7 +106,7 @@ $cart_items = $cart->getItems();
 									</div>
 								</div>
 								<div class="col"><a
-										href="/?current_article=<?= rex_article::getCurrentId() ?>&action=modify_cart&art_uid=<?= $uuid ?>&mod=del"
+										href="?rex_api_call=warehouse_cart_api&action=delete&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>"
 										class="text-danger" data-bs-toggle="tooltip" data-bs-title="Remove"><i
 											class="bi bi-x-circle"></i></a></div>
 							</div>

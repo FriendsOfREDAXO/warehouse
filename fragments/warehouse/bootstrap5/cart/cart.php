@@ -37,10 +37,13 @@ if (!$cart) {
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($cart_items as $uuid => $item) : ?>
-		<tr data-article-uuid="<?= $uuid ?>">
+		<?php foreach ($cart_items as $item_key => $item) : ?>
+		<tr data-article-key="<?= $item_key ?>">
 			<td class="align-left">
 				<?= html_entity_decode($item['name']) ?>
+				<?php if ($item['type'] === 'variant'): ?>
+					<small class="text-muted d-block">Variante</small>
+				<?php endif; ?>
 			</td>
 			<td class="align-right">
 				<?= Warehouse::getCurrencySign() ?>
@@ -49,12 +52,12 @@ if (!$cart) {
 			<td class="no-wrap" data-warehouse-cart-item="quantity">
 				<div class="d-inline-flex align-items-center gap-1">
 					<a data-warehouse-cart-item-amount="-1"
-						href="?&action=modify_cart&art_uuid=<?= $uuid ?>&mod=-1"
+						href="?rex_api_call=warehouse_cart_api&action=modify&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>&amount=1&mode=-"
 						class="btn btn-outline-secondary btn-sm px-2 py-0">-</a>
 					<span
 						class="mx-2 warehouse-cart-item-amount"><?= $item['amount'] ?></span>
 					<a data-warehouse-cart-item-amount="+1"
-						href="?&action=modify_cart&art_uuid=<?= $uuid ?>&mod=+1"
+						href="?rex_api_call=warehouse_cart_api&action=modify&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>&amount=1&mode=+"
 						class="btn btn-outline-secondary btn-sm px-2 py-0">+</a>
 				</div>
 			</td>
@@ -64,7 +67,7 @@ if (!$cart) {
 			</td>
 			<td>
 				<a data-warehouse-cart-action="remove"
-					href="?&action=modify_cart&art_uuid=<?= $uuid ?>&mod=del"
+					href="?rex_api_call=warehouse_cart_api&action=delete&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>"
 					class="btn btn-outline-danger btn-sm px-2 py-0"><?= Warehouse::getLabel('remove_from_cart') ?></a>
 			</td>
 		</tr>
