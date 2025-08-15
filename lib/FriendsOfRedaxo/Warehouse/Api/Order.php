@@ -4,6 +4,7 @@ namespace FriendsOfRedaxo\Warehouse\Api;
 
 use Exception;
 use FriendsOfRedaxo\Warehouse\Cart;
+use FriendsOfRedaxo\Warehouse\Document;
 use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Order as WarehouseOrder;
 use FriendsOfRedaxo\Warehouse\Payment;
@@ -236,8 +237,12 @@ class Order extends rex_api_function
         ->setOrderJson($apiResponse->getBody())
         ->setValue('payment_status', Payment::PAYMENT_STATUS_COMPLETED)
         ->setOrderTotal($capture['purchase_units'][0]['payments']['captures'][0]['amount']['value'] ?? 0)
-        ->setValue('shipping_status', Shipping::SHIPPING_STATUS_NOT_SHIPPED)
-        ->save();
+        ->setValue('shipping_status', Shipping::SHIPPING_STATUS_NOT_SHIPPED);
+
+        // Auto-assign order number before saving
+        Document::assignOrderNo($order);
+        
+        $order->save();
 
         
         return self::handleResponse($apiResponse);

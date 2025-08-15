@@ -20,6 +20,19 @@ use rex_yform;
 class Order extends rex_yform_manager_dataset
 {
 
+    /* Bestellnummer */
+    /** @api */
+    public function getOrderNo(): ?string
+    {
+        return $this->getValue("order_no");
+    }
+    /** @api */
+    public function setOrderNo(string $value): self
+    {
+        $this->setValue("order_no", $value);
+        return $this;
+    }
+
     /* Anrede */
     /** @api */
     public function getSalutation() : ?string
@@ -392,6 +405,18 @@ class Order extends rex_yform_manager_dataset
                 return $payment_id;
             },
         );
+
+        $list->setColumnFormat(
+            'order_no',
+            'custom',
+            static function ($a) {
+                $order_no = $a['value'];
+                if (!empty($order_no)) {
+                    return '<code>' . htmlspecialchars($order_no) . '</code>';
+                }
+                return '<em class="text-muted">—</em>';
+            },
+        );
         
         $list->setColumnFormat(
             'createdate',
@@ -400,6 +425,9 @@ class Order extends rex_yform_manager_dataset
                 return rex_formatter::intlDate($a['value']);
             },
         );
+
+        // Set label for order number column
+        $list->setColumnLabel('order_no', rex_i18n::msg('warehouse_order.order_no'));
 
         if (rex_addon::get('ycom')->isAvailable()) {
             $list->setColumnLabel('ycom_user_id', rex_i18n::msg('warehouse_order.ycom_user'));

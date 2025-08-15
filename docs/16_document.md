@@ -64,6 +64,57 @@ rex_extension::register('WAREHOUSE_DELIVERY_NOTE_NUMBER', function(rex_extension
 });
 ```
 
+### `generateOrderNo()`
+
+Generiert und gibt die nächste Bestellnummer als String zurück. Die Nummer kann über einen Extension Point modifiziert werden. Standardformat: `YYYY-MM-####` mit monatlicher Zurücksetzung.
+
+**Rückgabe:** String (Bestellnummer)
+
+```php
+use FriendsOfRedaxo\Warehouse\Document;
+
+// Nächste Bestellnummer generieren
+$orderNo = Document::generateOrderNo();
+echo "Neue Bestellnummer: " . $orderNo; // z.B. "2024-01-0001"
+```
+
+**Extension Point:** `WAREHOUSE_ORDER_NO_GENERATE`
+
+```php
+// Beispiel: Bestellnummer mit eigenem Präfix
+rex_extension::register('WAREHOUSE_ORDER_NO_GENERATE', function(rex_extension_point $ep) {
+    $orderNo = $ep->getSubject();
+    $params = $ep->getParams();
+    
+    return 'WH-' . $orderNo;
+});
+
+// Beispiel: Komplett eigenes Format
+rex_extension::register('WAREHOUSE_ORDER_NO_GENERATE', function(rex_extension_point $ep) {
+    $params = $ep->getParams();
+    $year = $params['year'];
+    $counter = $params['counter'];
+    
+    return $year . sprintf('%06d', $counter);
+});
+```
+
+### `assignOrderNo()`
+
+Weist einer Bestellung automatisch eine Bestellnummer zu, wenn sie noch keine hat.
+
+```php
+use FriendsOfRedaxo\Warehouse\Document;
+use FriendsOfRedaxo\Warehouse\Order;
+
+// Bestellung erstellen und Nummer zuweisen
+$order = Order::create();
+Document::assignOrderNo($order);
+$order->save();
+
+echo "Zugewiesene Bestellnummer: " . $order->getOrderNo();
+```
+
 ### `getInvoiceNumber()`
 
 Gibt die aktuelle Rechnungsnummer zurück. Die Nummer kann über einen Extension Point modifiziert werden.
