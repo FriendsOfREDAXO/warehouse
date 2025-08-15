@@ -301,7 +301,6 @@ class ArticleVariant extends rex_yform_manager_dataset
         if (!empty($bulkPrices)) {
             foreach ($bulkPrices as $bulk) {
                 if (
-                    isset($bulk['min'], $bulk['max'], $bulk['price']) &&
                     $quantity >= (int)$bulk['min'] &&
                     ($quantity <= (int)$bulk['max'] || (int)$bulk['max'] === 0)
                 ) {
