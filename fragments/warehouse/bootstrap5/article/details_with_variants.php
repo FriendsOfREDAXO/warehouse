@@ -9,17 +9,17 @@ $article = $this->getVar('article');
 ?>
 <div class="row">
 	<div class="col-12">
-		<h2><?= htmlspecialchars($article->category->getName()) ?>
+		<h2><?= htmlspecialchars($article->getCategory()->getName() ?? '') ?>
 		</h2>
-		<?php if ($article->category->getImage()) : ?>
-		<img src="<?= rex_url::media($article->category->getImage()) ?>"
+		<?php if ($article->getCategory()?->getImage()) : ?>
+		<img src="<?= rex_url::media($article->getCategory()->getImage()) ?>"
 			class="img-fluid"
-			alt="<?= htmlspecialchars($article->category->getName()) ?>">
+			alt="<?= htmlspecialchars($article->getCategory()->getName() ?? '') ?>">
 		<?php endif ?>
-		<?= $article->category->getText() ?>
+		<?= $article->getCategory()?->getText() ?>
 	</div>
 	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-		<?php foreach ($article->items as $item) : ?>
+		<?php foreach ($article->getVariants() ?? [] as $item) : ?>
 		<div class="col">
 			<div class="mt-3">
 				<div class="card-title">

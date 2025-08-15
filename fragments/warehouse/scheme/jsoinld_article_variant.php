@@ -9,7 +9,7 @@ use FriendsOfRedaxo\Warehouse\Domain;
 
 /** @var Article $article */
 $article = $this->getVar('article');
-if(Warehouse::isVariantsEnabled()) {
+if(!Warehouse::isVariantsEnabled()) {
     return;
 }
 $variants = $article->getVariants();

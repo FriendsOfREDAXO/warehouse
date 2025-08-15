@@ -14,10 +14,10 @@ $cart = Cart::loadCartFromSession();
 $payment = Payment::loadPaymentFromSession();
 $domain = Domain::getCurrent();
 
-$warehouse_cart_text = $this->subfragment('warehouse/bootstrap5/checkout/order_summary_page.php');
+$this->subfragment('warehouse/bootstrap5/checkout/order_summary_page.php');
 
 $yform = new rex_yform();
-$yform->setObjectparams('form_action', $domain->getCheckoutUrl(['continue_with' => 'order']));
+$yform->setObjectparams('form_action', $domain?->getCheckoutUrl(['continue_with' => 'order']) ?? '');
 $yform->setObjectparams('form_class', 'rex-yform wh-form summary');
 $yform->setObjectparams('form_anchor', 'formular');
 $yform->setObjectparams('form_ytemplate', 'bootstrap5,bootstrap');
