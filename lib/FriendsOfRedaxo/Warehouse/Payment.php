@@ -4,6 +4,7 @@ namespace FriendsOfRedaxo\Warehouse;
 
 use rex_extension;
 use rex_extension_point;
+use rex_i18n;
 
 class Payment
 {
@@ -77,6 +78,9 @@ class Payment
     public static function getPaymentStatusOptions(): array
     {
         $payment_status_options = self::PAYMENT_STATUS_OPTIONS;
+        foreach ($payment_status_options as $key => $label) {
+            $payment_status_options[$key] = rex_i18n::msg($label);
+        }
         return $payment_status_options;
     }
 
@@ -119,6 +123,15 @@ class Payment
         // Via Extension Point eigene Zahlungsarten hinzufügen
         $payment_options = rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_PAYMENT_OPTIONS', $payment_options));
         return $payment_options;
+    }
+
+    public static function getPaymentOptionsChoice() {
+        $payment_options = self::getPaymentOptions();
+        $options = [];
+        foreach ($payment_options as $key => $label) {
+            $options[$key] = rex_i18n::msg($payment_options[$key]);
+        }
+        return $options;
     }
 
     public static function getAllowedPaymentOptions() :array
