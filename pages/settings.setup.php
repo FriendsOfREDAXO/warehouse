@@ -36,7 +36,7 @@ if ('' !== $func) {
                     }
                     echo rex_view::success($addon->i18n('warehouse.setup.success_tables_repaired'));
                 } catch (Exception $e) {
-                    echo rex_view::error('Fehler beim Reparieren der Tabellen: ' . $e->getMessage());
+                    echo rex_view::error($addon->i18n('warehouse.setup.error_repair_tables', [$e->getMessage()]));
                 }
                 break;
 
