@@ -24,7 +24,7 @@ $domain = Domain::getCurrent();
 		</div>
 		<p>
 			<a class="text-muted small"
-				href="<?= $domain?->getCartArtUrl() ?? '' ?>">>
+				href="<?= $domain?->getCartArtUrl() ?? '' ?>">
 				<?= Warehouse::getLabel('back_to_cart'); ?>
 			</a>
 		</p>
