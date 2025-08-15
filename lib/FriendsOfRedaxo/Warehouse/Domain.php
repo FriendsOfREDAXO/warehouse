@@ -12,14 +12,18 @@ class Domain extends rex_yform_manager_dataset
 {
     public static function getCurrent() : ?self
     {
-        $yrewrite_domain_id = rex_yrewrite::getCurrentDomain()?->getId();
-        return self::query()->where('yrewrite_domain_id', $yrewrite_domain_id)->findOne();
+        $domain = rex_yrewrite::getCurrentDomain();
+        if ($domain instanceof rex_yrewrite_domain) {
+            $yrewrite_domain_id = $domain->getId();
+            return self::query()->where('yrewrite_domain_id', $yrewrite_domain_id)->findOne();
+        }
+        return null;
     }
 
     public static function getCurrentUrl() : string
     {
         $domain = rex_yrewrite::getCurrentDomain();
-        if ($domain) {
+        if ($domain instanceof rex_yrewrite_domain) {
             return $domain->getUrl();
         }
         return '';
@@ -53,6 +57,9 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("checkout_art_id");
     }
+    /**
+     * @param array<string, mixed> $params
+     */
     public function getCheckoutUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== ($article = $this->getCheckoutArt())) {
@@ -71,6 +78,9 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("cart_art_id");
     }
+    /**
+     * @param array<string, mixed> $params
+     */
     public function getCartArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== ($article = $this->getCartArt())) {
@@ -81,8 +91,8 @@ class Domain extends rex_yform_manager_dataset
     /** @api */
     public function setCartArtId(string $id) : self
     {
-        if (rex_article::get($id)) {
-            $this->getValue("cart_art_id", $id);
+        if (rex_article::get((int) $id)) {
+            $this->setValue("cart_art_id", $id);
         }
         return $this;
     }
@@ -97,6 +107,9 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("shippinginfo_art_id");
     }
+    /**
+     * @param array<string, mixed> $params
+     */
     public function getShippinginfoArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if ($article = $this->getShippinginfoArt()) {
@@ -107,8 +120,8 @@ class Domain extends rex_yform_manager_dataset
     /** @api */
     public function setShippinginfoArtId(string $id) : self
     {
-        if (rex_article::get($id)) {
-            $this->getValue("shippinginfo_art_id", $id);
+        if (rex_article::get((int) $id)) {
+            $this->setValue("shippinginfo_art_id", $id);
         }
         return $this;
     }
@@ -123,6 +136,9 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("address_art_id");
     }
+    /**
+     * @param array<string, mixed> $params
+     */
     public function getAddressArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== ($article = $this->getAddressArt())) {
@@ -133,8 +149,8 @@ class Domain extends rex_yform_manager_dataset
     /** @api */
     public function setAddressArtId(string $id) : self
     {
-        if (rex_article::get($id)) {
-            $this->getValue("address_art_id", $id);
+        if (rex_article::get((int) $id)) {
+            $this->setValue("address_art_id", $id);
         }
         return $this;
     }
@@ -149,6 +165,9 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("order_art_id");
     }
+    /**
+     * @param array<string, mixed> $params
+     */
     public function getOrderArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== $article = $this->getOrderArt()) {
@@ -159,8 +178,8 @@ class Domain extends rex_yform_manager_dataset
     /** @api */
     public function setOrderArtId(string $id) : self
     {
-        if (rex_article::get($id)) {
-            $this->getValue("order_art_id", $id);
+        if (rex_article::get((int) $id)) {
+            $this->setValue("order_art_id", $id);
         }
         return $this;
     }
@@ -175,6 +194,9 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("payment_error_art_id");
     }
+    /**
+     * @param array<string, mixed> $params
+     */
     public function getPaymentErrorArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== ($article = $this->getPaymentErrorArt())) {
@@ -185,8 +207,8 @@ class Domain extends rex_yform_manager_dataset
     /** @api */
     public function setPaymentErrorArtId(string $id) : self
     {
-        if (rex_article::get($id)) {
-            $this->getValue("payment_error_art_id", $id);
+        if (rex_article::get((int) $id)) {
+            $this->setValue("payment_error_art_id", $id);
         }
         return $this;
     }
@@ -201,6 +223,9 @@ class Domain extends rex_yform_manager_dataset
     {
         return $this->getValue("thankyou_art_id");
     }
+    /**
+     * @param array<string, mixed> $params
+     */
     public function getThankyouArtUrl(array $params = [], string $divider = '&amp;') : string
     {
         if (null !== ($article = $this->getThankyouArt())) {
@@ -211,8 +236,8 @@ class Domain extends rex_yform_manager_dataset
     /** @api */
     public function setThankyouArtId(string $id) : self
     {
-        if (rex_article::get($id)) {
-            $this->getValue("thankyou_art_id", $id);
+        if (rex_article::get((int) $id)) {
+            $this->setValue("thankyou_art_id", $id);
         }
         return $this;
     }
@@ -244,6 +269,9 @@ class Domain extends rex_yform_manager_dataset
         return $this;
     }
 
+    /**
+     * @return array<int|string, string>
+     */
     public static function getEmailTemplateOptions() : array
     {
         // E-Mail-Templates aus YForm auswählen, wenn YForm installiert
