@@ -24,140 +24,158 @@ $shipping = Shipping::getCost();
 ?>
 
 <div class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="mb-0">{{ Bestellübersicht }}</h2>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="table_order_summary">
-                            <thead class="table-light">
-                                <tr>
-                                    <th scope="col">Artikel</th>
-                                    <th scope="col">Beschreibung</th>
-                                    <?php if ($with_tax): ?>
-                                    <th scope="col" class="text-end">{{ tax }}</th>
-                                    <?php endif; ?>
-                                    <th scope="col" class="text-end"><?= Warehouse::getCurrencySign() ?></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($cart_items as $uuid => $item) : ?>
-                                <tr>
-                                    <td>
-                                        <div class="text-muted small">
-                                            <?= $item['id'] ?>
-                                        </div>
-                                        <?= trim(html_entity_decode($item['name']), ' -') ?><br>
-                                        <small class="text-muted">
-                                            <?= $item['amount'] ?> x à
-                                            <?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($item['price'], 2) ?>
-                                        </small>
-                                    </td>
-                                    <td>
-                                        <?php if (isset($item['variant_name']) && !empty($item['variant_name'])): ?>
-                                        <div class="text-muted small">&nbsp;</div>
-                                        <?= $item['variant_name'] ?>
-                                        <?php endif; ?>
-                                    </td>
-                                    <?php if ($with_tax): ?>
-                                    <td class="text-end">
-                                        <?= isset($item['tax']) ? $item['tax'] : '19' ?>%
-                                    </td>
-                                    <?php endif; ?>
-                                    <td class="text-end">
-                                        <?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($item['total'], 2) ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach ?>
-                                
-                                <!-- Versandkosten -->
-                                <tr>
-                                    <td colspan="<?= $with_tax ? '3' : '2' ?>" class="border-top">
-                                        <strong>{{ Shipping }}</strong>
-                                    </td>
-                                    <td class="text-end border-top">
-                                        <?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($shipping, 2) ?>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Steuer -->
-                                <?php if ($with_tax): ?>
-                                <tr>
-                                    <td colspan="3">
-                                        <strong>{{ Card_Mwst_Total }}</strong>
-                                    </td>
-                                    <td class="text-end">
-                                        <?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format(Cart::getTaxTotalByMode(), 2) ?>
-                                    </td>
-                                </tr>
-                                <?php endif; ?>
-                                
-                                <!-- Gesamtsumme -->
-                                <tr class="table-info">
-                                    <td colspan="<?= $with_tax ? '3' : '2' ?>" class="fw-bold">
-                                        <?php if ($with_tax) { ?>{{ Total_Mwst }}<?php } else { ?>{{ Total }}<?php } ?>
-                                    </td>
-                                    <td class="text-end fw-bold">
-                                        <?= Cart::getCartTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Lieferadresse -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="mb-0">{{ Lieferadresse }}</h3>
-                </div>
-                <div class="card-body">
-                    <address>
-                        <?php
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<h2 class="mb-0">{{ Bestellübersicht }}</h2>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-striped" id="table_order_summary">
+							<thead class="table-light">
+								<tr>
+									<th scope="col">Artikel</th>
+									<th scope="col">Beschreibung</th>
+									<?php if ($with_tax): ?>
+									<th scope="col" class="text-end">{{ tax }}</th>
+									<?php endif; ?>
+									<th scope="col" class="text-end">
+										<?= Warehouse::getCurrencySign() ?>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach ($cart_items as $uuid => $item) : ?>
+								<tr>
+									<td>
+										<div class="text-muted small">
+											<?= $item['id'] ?>
+										</div>
+										<?= trim(html_entity_decode($item['name']), ' -') ?><br>
+										<small class="text-muted">
+											<?= $item['amount'] ?>
+											x à
+											<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($item['price'], 2) ?>
+										</small>
+									</td>
+									<td>
+										<?php if (isset($item['variant_name']) && !empty($item['variant_name'])): ?>
+										<div class="text-muted small">&nbsp;</div>
+										<?= $item['variant_name'] ?>
+										<?php endif; ?>
+									</td>
+									<?php if ($with_tax): ?>
+									<td class="text-end">
+										<?= isset($item['tax']) ? $item['tax'] : '19' ?>%
+									</td>
+									<?php endif; ?>
+									<td class="text-end">
+										<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($item['total'], 2) ?>
+									</td>
+								</tr>
+								<?php endforeach ?>
+
+								<!-- Versandkosten -->
+								<tr>
+									<td colspan="<?= $with_tax ? '3' : '2' ?>"
+										class="border-top">
+										<strong>{{ Shipping }}</strong>
+									</td>
+									<td class="text-end border-top">
+										<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($shipping, 2) ?>
+									</td>
+								</tr>
+
+								<!-- Steuer -->
+								<?php if ($with_tax): ?>
+								<tr>
+									<td colspan="3">
+										<strong>{{ Card_Mwst_Total }}</strong>
+									</td>
+									<td class="text-end">
+										<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format(Cart::getTaxTotalByMode(), 2) ?>
+									</td>
+								</tr>
+								<?php endif; ?>
+
+								<!-- Gesamtsumme -->
+								<tr class="table-info">
+									<td colspan="<?= $with_tax ? '3' : '2' ?>"
+										class="fw-bold">
+										<?php if ($with_tax) { ?>{{
+										Total_Mwst
+										}}<?php } else { ?>{{ Total
+										}}<?php } ?>
+									</td>
+									<td class="text-end fw-bold">
+										<?= Cart::getCartTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Lieferadresse -->
+	<div class="row mt-4">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="mb-0">{{ Lieferadresse }}</h3>
+				</div>
+				<div class="card-body">
+					<address>
+						<?php
                         // Customer-Daten korrekt laden
                         $customerData = is_array($customer) ? $customer : [];
-                        if (empty($customerData)) {
-                            // Fallback: Daten aus Session laden
-                            $customerData = rex_session('user_data', 'array', []);
-                        }
-                        
-                        $firma = (isset($customerData['company']) && !empty($customerData['company'])) ? $customerData['company'] . ' ' . ($customerData['department'] ?? '') .'<br>': '';
-                        $ust = (isset($customerData['ust']) && !empty($customerData['ust'])) ? 'Ust. Identnummer: ' . $customerData['ust'] .'<br>': '';
-                        $title = (isset($customerData['title']) && !empty($customerData['title'])) ? ' ' . $customerData['title'] .' ': ' ';
-                        
-                        echo "<strong>";
-                        echo ($customerData['salutation'] ?? '') . $title . ($customerData['firstname'] ?? '') . ' ' . ($customerData['lastname'] ?? '');
-                        echo "</strong><br>";
-                        echo $firma . $ust;
-                        echo ($customerData['address'] ?? '') . ' ' . ($customerData['housenumber'] ?? '') . '<br>';
-                        echo ($customerData['zip'] ?? '') . ' ' . ($customerData['city'] ?? '') . '<br>';
-                        echo ($customerData['country'] ?? '');
-                        ?>
-                    </address>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Zahlungsart -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="mb-0"><?= Warehouse::getLabel('payment_type'); ?></h3>
-                </div>
-                <div class="card-body">
-                    {{ payment_<?= $customerData['payment_type'] ?? '' ?> }}
-                </div>
-            </div>
-        </div>
-    </div>
+if (empty($customerData)) {
+    // Fallback: Daten aus Session laden
+    $customerData = rex_session('user_data', 'array', []);
+}
+
+$firma = (isset($customerData['company']) && !empty($customerData['company'])) ? $customerData['company'] . ' ' . ($customerData['department'] ?? '') .'<br>': '';
+$ust = (isset($customerData['ust']) && !empty($customerData['ust'])) ? 'Ust. Identnummer: ' . $customerData['ust'] .'<br>': '';
+$title = (isset($customerData['title']) && !empty($customerData['title'])) ? ' ' . $customerData['title'] .' ': ' ';
+
+echo "<strong>";
+echo ($customerData['salutation'] ?? '') . $title . ($customerData['firstname'] ?? '') . ' ' . ($customerData['lastname'] ?? '');
+echo "</strong><br>";
+echo $firma . $ust;
+echo ($customerData['address'] ?? '') . ' ' . ($customerData['housenumber'] ?? '') . '<br>';
+echo ($customerData['zip'] ?? '') . ' ' . ($customerData['city'] ?? '') . '<br>';
+echo($customerData['country'] ?? '');
+?>
+					</address>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Zahlungsart -->
+	<div class="row mt-4">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="mb-0">
+						<?= Warehouse::getLabel('payment_type'); ?>
+					</h3>
+				</div>
+				<div class="card-body">
+					{{
+					payment_<?= $customerData['payment_type'] ?? '' ?>
+					}}
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+
+
+<?php
+echo "paypal";
+echo $this->getSubfragment('warehouse/bootstrap5/paypal/paypal-button.php');
+?>

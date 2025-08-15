@@ -180,7 +180,7 @@ class Dashboard
     {
         $paid_unshipped_orders = Order::query()
             ->where('payed', 1)
-            ->where('shipping_status', Order::SHIPPING_STATUS_NOT_SHIPPED)
+            ->where('shipping_status', Shipping::SHIPPING_STATUS_NOT_SHIPPED)
             ->find();
 
         $paid_unshipped_count = count($paid_unshipped_orders);
@@ -226,7 +226,7 @@ class Dashboard
                 $orders_output .= '<tr>';
                 $orders_output .= '<td><a href="' . $order_edit_url . '">' . htmlspecialchars($order->getId()) . '</a></td>';
                 $orders_output .= '<td><a href="' . $order_edit_url . '">' . htmlspecialchars($order->getCreatedateFormatted()) . '</a></td>';
-                $orders_output .= '<td class="text-right"><a href="' . $order_edit_url . '">' . number_format($order->getOrderTotal(), 2, ',') . '</a></td>';
+                $orders_output .= '<td class="text-right"><a href="' . $order_edit_url . '">' . number_format($order->getOrderTotal() ?? 0, 2, ',') . '</a></td>';
                 $orders_output .= '</tr>';
             }
             $orders_output .= '</tbody></table>';
@@ -266,7 +266,7 @@ class Dashboard
             $month_localized = rex_formatter::intlDate($timestamp, 'MMMM yyyy');
             $orders_by_month_output .= '<tr>';
             $orders_by_month_output .= '<td>' . htmlspecialchars($month_localized) . '</td>';
-            $orders_by_month_output .= '<td>' . Warehouse::getCurrencySign() . htmlspecialchars(number_format($order->getOrderTotal(), 2)) . '</td>';
+            $orders_by_month_output .= '<td>' . Warehouse::getCurrencySign() . htmlspecialchars(number_format($order->getOrderTotal() ?? 0, 2)) . '</td>';
             $orders_by_month_output .= '</tr>';
         }
         $orders_by_month_output .= '</tbody></table>';

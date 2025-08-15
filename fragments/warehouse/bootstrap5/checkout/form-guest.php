@@ -10,14 +10,14 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
 $customer = Customer::getCurrent();
 $customer_shipping_address = null;
 if ($customer !== null) {
-	$customer_shipping_address = $customer->getShippingAddress();
+    $customer_shipping_address = $customer->getShippingAddress();
 }
 
 $allowedPaymentOptions = Payment::getAllowedPaymentOptions();
 $domain = Domain::getCurrent();
 
 $yform = new rex_yform();
-dump($domain->getCheckoutUrl(["continue_as" => "guest"]));
+
 $yform->setObjectparams('form_action', $domain->getCheckoutUrl(["continue_as" => "guest"]));
 $yform->setObjectparams('form_wrap_class', 'warehouse_checkout_form');
 $yform->setObjectparams('form_ytemplate', 'bootstrap5,bootstrap');
@@ -102,38 +102,3 @@ $form = $yform->getForm();
 $fragment = new rex_fragment();
 $fragment->setVar('form', $form);
 echo $fragment->parse('warehouse/bootstrap5/checkout/checkout_page.php');
-?>
-
-<style nonce="<?= rex_response::getNonce() ?>">
-	input#accordion_switcher+.accordion {
-		display: none;
-	}
-
-	input#accordion_switcher:checked+.accordion {
-		display: block;
-	}
-
-	#accordion_switcher_label {
-		text-decoration: underline;
-		cursor: pointer;
-	}
-
-	#direct_debit_box {
-		display: none;
-	}
-</style>
-<script type="text/javascript" nonce="<?= rex_response::getNonce() ?>">
-	$(function() {
-		$('#payment_box input').each(function() {
-			if ($(this).val() == 'direct_debit' && $(this).prop('checked')) {
-				$('#direct_debit_box').show();
-			}
-		});
-		$('#payment_box').on('change', 'input', function() {
-			$('#direct_debit_box').hide();
-			if ($(this).val() == 'direct_debit') {
-				$('#direct_debit_box').show();
-			}
-		});
-	});
-</script>

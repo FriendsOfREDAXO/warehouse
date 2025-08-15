@@ -9,6 +9,7 @@ use rex_extension;
 use rex_yform_manager_dataset;
 use rex_yform;
 use rex_addon;
+use rex_api_function;
 use rex_be_controller;
 use rex_extension_point;
 use rex_fragment;
@@ -136,3 +137,6 @@ rex_extension::register('WAREHOUSE_TAX_OTIONS', function (rex_extension_point $e
     krsort($taxes);
     return $taxes;
 });
+
+// API verfügbar machen
+rex_api_function::register('warehouse_order', Api\Order::class);

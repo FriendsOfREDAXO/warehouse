@@ -472,6 +472,51 @@ warehouse.payment_options.prepayment = Vorkasse
 warehouse.payment_options.paypal = PayPal
 warehouse.payment_options.direct_debit = Lastschrift
 
+# PayPal Button Style Konfiguration
+
+warehouse.settings.payment.paypal_style = PayPal Button-Stil
+
+warehouse.settings.payment.paypal_button_shape = Button-Form
+warehouse.settings.payment.paypal_button_shape.notice = Wählen Sie die Form des PayPal-Buttons.
+warehouse.settings.payment.paypal_button_shape.rect = Rechteckig
+warehouse.settings.payment.paypal_button_shape.pill = Pillenform
+
+warehouse.settings.payment.paypal_button_size = Button-Größe
+warehouse.settings.payment.paypal_button_size.notice = Wählen Sie die Größe des PayPal-Buttons.
+warehouse.settings.payment.paypal_button_size.small = Klein
+warehouse.settings.payment.paypal_button_size.medium = Mittel
+warehouse.settings.payment.paypal_button_size.large = Groß
+warehouse.settings.payment.paypal_button_size.responsive = Responsiv
+
+warehouse.settings.payment.paypal_button_color = Button-Farbe
+warehouse.settings.payment.paypal_button_color.notice = Wählen Sie die Farbe des PayPal-Buttons.
+warehouse.settings.payment.paypal_button_color.gold = Gold
+warehouse.settings.payment.paypal_button_color.blue = Blau
+warehouse.settings.payment.paypal_button_color.silver = Silber
+warehouse.settings.payment.paypal_button_color.black = Schwarz
+warehouse.settings.payment.paypal_button_color.white = Weiß
+
+warehouse.settings.payment.paypal_button_label = Button-Beschriftung
+warehouse.settings.payment.paypal_button_label.notice = Wählen Sie die Beschriftung des PayPal-Buttons.
+warehouse.settings.payment.paypal_button_label.paypal = PayPal
+warehouse.settings.payment.paypal_button_label.checkout = Checkout
+warehouse.settings.payment.paypal_button_label.pay = Bezahlen
+warehouse.settings.payment.paypal_button_label.buynow = Jetzt kaufen
+warehouse.settings.payment.paypal_button_label.installment = Ratenzahlung
+warehouse.settings.payment.paypal_button_label.donate = Spenden
+
+warehouse.settings.payment.paypal_button_layout = Button-Layout
+warehouse.settings.payment.paypal_button_layout.notice = Wählen Sie das Layout des PayPal-Buttons.
+warehouse.settings.payment.paypal_button_layout.horizontal = Horizontal
+warehouse.settings.payment.paypal_button_layout.vertical = Vertikal
+
+warehouse.settings.payment.paypal_button_height = Button-Höhe
+warehouse.settings.payment.paypal_button_height.notice = Geben Sie die Höhe des PayPal-Buttons in Pixel an (optional).
+
+warehouse.settings.payment.paypal_button_funding_source = Bevorzugte Zahlungsquelle
+warehouse.settings.payment.paypal_button_funding_source.notice = Wählen Sie die bevorzugte Zahlungsquelle für den PayPal-Button.
+warehouse.settings.payment.paypal_button_funding_source.paypal = PayPal
+warehouse.settings.payment.paypal_button_funding_source.credit = Kreditkarte
 
 warehouse.order.dashboard.recent_orders = Neueste Bestellungen
 warehouse.order.dashboard.orders_by_month = Bestellungen nach Monat
@@ -490,3 +535,18 @@ warehouse.payment_options.direct_debit = Lastschrift
 
 warehouse.settings.documents.info = Dokumente werden derzeit nicht unterstützt. Beteilige dich an der Entwicklung von <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> für die Entwicklung einer Dokumenten-Erstellung, bestehend aus Nummernkreisen, Bestell-Bestätigungs-PDF, Rechnungs-PDF, Lieferschein-PDF und E-Rechnung.
 warehouse.settings.documents.pdfout_version = Bitte installiere PDFout in Version 10.x oder höher, um Dokumente zu erstellen. Die Version 9.x wird nicht mehr unterstützt.
+
+
+warehouse.order.shipping_status.shipped = Versandt
+warehouse.order.shipping_status.not_shipped = Nicht versandt
+warehouse.order.shipping_status.partially_shipped = Teilweise versandt
+warehouse.order.shipping_status.returned = Zurückgesendet
+warehouse.order.shipping_status.lost = Verloren
+warehouse.order.shipping_status.cancelled = Abgebrochen
+
+warehouse.payment_status = Zahlungsstatus
+warehouse.payment_status.pending = ⌛ Ausstehend
+warehouse.payment_status.completed = ✅ Abgeschlossen
+warehouse.payment_status.failed = ❌ Fehlgeschlagen
+warehouse.payment_status.cancelled = ❌ Abgebrochen
+warehouse.payment_status.refunded = ✅ Erstattet

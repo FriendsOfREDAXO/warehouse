@@ -78,7 +78,8 @@ if (!$cart) {
 			<td></td>
 			<td></td>
 			<td class="align-right">
-				<?= Shipping::getCostFormatted() ?></td>
+				<?= Shipping::getCostFormatted() ?>
+			</td>
 			<td></td>
 		</tr>
 		<!-- Netto/Brutto-Ausgabe im Tabellen-Cart -->
@@ -108,7 +109,8 @@ if (!$cart) {
 			<td></td>
 			<td></td>
 			<td class="align-right">
-				<?= Shipping::getCostFormatted() ?></td>
+				<?= Shipping::getCostFormatted() ?>
+			</td>
 			<td></td>
 		</tr>
 		<tr>
@@ -130,7 +132,8 @@ if (!$cart) {
 			<?= Warehouse::getLabel('cart_subtotal') ?>
 		</div>
 		<div class="col-auto h4 fw-bolder">
-			<?= Cart::getSubTotalFormatted() ?></div>
+			<?= Cart::getSubTotalFormatted() ?>
+		</div>
 		<p><a data-warehouse-cart-action="next" class="btn btn-primary"
 				href="<?= $domain->getCheckoutUrl() ?>"
 				class="white_big_circle"><?= Warehouse::getLabel('next'); ?></a>
@@ -152,7 +155,7 @@ if (!$cart) {
 			}
 			if (confirm(
 					'<?= rex_escape(Warehouse::getLabel('cart_remove_item_confirm')) ?>'
-					)) {
+				)) {
 				window.location.href = this.href;
 			} else {
 				// Wenn der Nutzer nicht bestätigt, dann Button wieder zurücksetzen
