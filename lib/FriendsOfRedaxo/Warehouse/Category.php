@@ -177,6 +177,9 @@ class Category extends \rex_yform_manager_dataset
         return $categories;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getStatusOptions(): array
     {
         return self::STATUS_OPTIONS;
@@ -213,6 +216,9 @@ class Category extends \rex_yform_manager_dataset
         return $yform;
     }
 
+    /**
+     * @param rex_extension_point<mixed> $ep
+     */
     public static function epYformDataList(rex_extension_point $ep): void
     {
         /** @var \rex_yform_manager_table $table */
