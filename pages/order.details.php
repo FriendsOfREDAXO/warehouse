@@ -17,6 +17,11 @@ if (rex_request('data_id', 'int') <= 0) {
 
 $order = FriendsOfRedaxo\Warehouse\Order::get(rex_request('data_id', 'int'));
 
+if (!$order) {
+    echo rex_view::error($addon->i18n('warehouse.order.details.error.order_not_found'));
+    return;
+}
+
 // Ein schönes Bootstrap 3 Layout eines Lieferscheins
 /*
 
