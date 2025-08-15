@@ -18,7 +18,6 @@ if (!$cart) {
     return;
 }
 ?>
-xxx
 <table class="table table-striped table-hover table-bordered">
 	<thead>
 		<tr>
