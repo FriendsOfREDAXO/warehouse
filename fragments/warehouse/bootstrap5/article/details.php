@@ -6,7 +6,6 @@ use FriendsOfRedaxo\Warehouse\Category;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 /** @var rex_fragment $this */
-/** @var Article $article */
 $article = $this->getVar('article');
 if (!$article instanceof Article) {
     return;
@@ -32,7 +31,7 @@ if (Warehouse::isBulkPricesEnabled()) {
             <div class="col-12 col-md-4">
                 <div class="card-body p-0">
                     <?php if ($article->getImageAsMedia()) : ?>
-                        <img src="<?= $article->getImageAsMedia()->getUrl() ?>" class="img-fluid" alt="<?= htmlspecialchars($article->getName()) ?>">
+                        <img src="<?= $article->getImageAsMedia()->getUrl() ?>" class="img-fluid" alt="<?= htmlspecialchars($article->getName() ?? '') ?>">
                     <?php endif; ?>
                 </div>
             </div>
@@ -40,11 +39,11 @@ if (Warehouse::isBulkPricesEnabled()) {
 
                 <p>
                     <a href="<?= $category->getUrl() ?>" class="text-decoration-none">
-                        <span class="badge bg-secondary"><?= htmlspecialchars($category->getName()) ?></span>
+                        <span class="badge bg-secondary"><?= htmlspecialchars($category->getName() ?? '') ?></span>
                     </a>
                 </p>
                 <h3><?= $article->getName() ?></h3>
-                <p><?= htmlspecialchars($article->getShortText(true)) ?></p>
+                <p><?= htmlspecialchars($article->getShortText(true) ?? '') ?></p>
 
                 <!-- Varianten -->
                 <?php if (count($variants) > 1) :
@@ -77,8 +76,8 @@ if (Warehouse::isBulkPricesEnabled()) {
                             <tbody>
                                 <?php foreach ($bulkPrices as $price) : ?>
                                     <tr>
-                                        <td><?= $priceGroup->getMinCount() ?> - <?= $priceGroup->getMaxCount() ?></td>
-                                        <td><?= $priceGroup->getPriceFormatted() ?></td>
+                                        <td><?= $price->getMinCount() ?> - <?= $price->getMaxCount() ?></td>
+                                        <td><?= $price->getPriceFormatted() ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -96,7 +95,7 @@ if (Warehouse::isBulkPricesEnabled()) {
 
                 <div class="row g-3">
                     <div class="col-12">
-                        <?= html_entity_decode($article->getText()) ?>
+                        <?= html_entity_decode($article->getText() ?? '') ?>
 
                     </div>
                     <div class="col-12">
@@ -106,7 +105,7 @@ if (Warehouse::isBulkPricesEnabled()) {
                             <p class="text-small mb-0">inkl. MwSt. zzgl. <a href="#shipping_modal" data-bs-toggle="modal"><?= Warehouse::getLabel('shipping_costs') ?></a></p>
                             <div class="input-group mb-3">
                                 <button class="btn btn-outline-primary switch_count" type="button" data-value="-1">[-]</button>
-                                <input name="order_count" type="number" min="1" , step="1" class="form-control" id="warehouse_count_<?= $this->article->getId() ?>" value="1">
+                                <input name="order_count" type="number" min="1" , step="1" class="form-control" id="warehouse_count_<?= $article->getId() ?>" value="1">
                                 <button class="btn btn-outline-primary switch_count" type="button" data-value="+1">[+]</button>
                             </div>
                             <button type="submit" name="submit" value="cart" class="btn btn-secondary"><?= Warehouse::getLabel('cart') ?></button>

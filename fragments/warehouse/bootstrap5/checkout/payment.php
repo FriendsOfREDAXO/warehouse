@@ -24,4 +24,4 @@ $domain = Domain::getCurrent();
 
 <?php
 
-rex_response::sendRedirect($domain->getCheckoutUrl(['continue_with' => 'summary']));
+rex_response::sendRedirect($domain?->getCheckoutUrl(['continue_with' => 'summary']) ?? '');

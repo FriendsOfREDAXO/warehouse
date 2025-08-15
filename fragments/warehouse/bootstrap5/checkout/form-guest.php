@@ -18,7 +18,7 @@ $domain = Domain::getCurrent();
 
 $yform = new rex_yform();
 
-$yform->setObjectparams('form_action', $domain->getCheckoutUrl(["continue_as" => "guest"]));
+$yform->setObjectparams('form_action', $domain?->getCheckoutUrl(["continue_as" => "guest"]) ?? '');
 $yform->setObjectparams('form_wrap_class', 'warehouse_checkout_form');
 $yform->setObjectparams('form_ytemplate', 'bootstrap5,bootstrap');
 $yform->setObjectparams('form_class', 'rex-yform warehouse_checkout');
@@ -95,7 +95,7 @@ $yform->setValueField('html', ['','</section>']);
 
 $yform->setActionField('callback', ['FriendsOfRedaxo\Warehouse\Checkout::saveCustomerInSession']);
 
-$yform->setActionField('redirect', [$domain->getCheckoutUrl(['continue_with' => 'payment'])]);
+$yform->setActionField('redirect', [$domain?->getCheckoutUrl(['continue_with' => 'payment']) ?? '']);
 
 $form = $yform->getForm();
 
