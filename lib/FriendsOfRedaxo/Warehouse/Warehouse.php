@@ -334,7 +334,8 @@ class Warehouse
         // Überprüfe, ob 'stock' im Config-Wert vorhanden ist
         return in_array('stock', self::getEnabledFeatures());
     }
-    /** @api 
+    /**
+     * @api
      * @param array<string, mixed> $values
      */
     public static function parse(string $file, array $values = []): ?string
