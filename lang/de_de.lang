@@ -519,6 +519,61 @@ warehouse.settings.payment.paypal_button_funding_source.notice = Wählen Sie die
 warehouse.settings.payment.paypal_button_funding_source.paypal = PayPal
 warehouse.settings.payment.paypal_button_funding_source.credit = Kreditkarte
 
+# Setup-Seite
+warehouse.setup.repair_tables = Tabellen reparieren
+warehouse.setup.repair_tables_info = Repariert die Datenbankstruktur und importiert die YForm-Tablesets neu.
+warehouse.setup.repair_tables_button = Tabellen reparieren
+warehouse.setup.repair_tables_confirm = Sind Sie sicher, dass Sie die Tabellen reparieren möchten? Dieser Vorgang kann nicht rückgängig gemacht werden.
+
+warehouse.setup.install_structure = Struktur anlegen
+warehouse.setup.install_structure_info = Erstellt die Shop-Struktur mit Kategorien und Domain-Profil. Nur möglich, wenn noch kein Domain-Profil existiert.
+warehouse.setup.install_structure_button = Struktur anlegen
+warehouse.setup.install_structure_confirm = Sind Sie sicher, dass Sie die Shop-Struktur anlegen möchten?
+
+warehouse.setup.install_url_profiles = URL-Profile anlegen
+warehouse.setup.install_url_profiles_info = Installiert die URL-Profile für Artikel, Kategorien und Bestellungen.
+warehouse.setup.install_url_profiles_button = URL-Profile anlegen
+warehouse.setup.install_url_profiles_confirm = Sind Sie sicher, dass Sie die URL-Profile anlegen möchten?
+
+warehouse.setup.import_demo = Demo-Daten importieren
+warehouse.setup.import_demo_info = Importiert Demo-Artikel, Kategorien und Bestellungen für Testzwecke.
+warehouse.setup.import_demo_button = Demo-Daten importieren
+warehouse.setup.import_demo_confirm = Sind Sie sicher, dass Sie die Demo-Daten importieren möchten? Bestehende Daten können überschrieben werden.
+
+warehouse.setup.reset_shop = Shop zurücksetzen
+warehouse.setup.reset_shop_info = Löscht alle Demo-Daten und setzt den Shop auf den Ausgangszustand zurück.
+warehouse.setup.reset_shop_button = Shop zurücksetzen
+warehouse.setup.reset_shop_confirm = Sind Sie WIRKLICH sicher, dass Sie den Shop zurücksetzen möchten? Alle Artikel, Kategorien und Bestellungen werden gelöscht!
+
+warehouse.setup.install_module = Warehouse-Modul installieren
+warehouse.setup.install_module_info = Installiert oder aktualisiert das Warehouse-Modul für die Frontend-Ausgabe.
+
+warehouse.setup.success_tables_repaired = Tabellen wurden erfolgreich repariert und Tablesets importiert.
+warehouse.setup.success_structure_installed = Shop-Struktur wurde erfolgreich angelegt.
+warehouse.setup.success_url_profiles_installed = URL-Profile wurden erfolgreich installiert.
+warehouse.setup.success_demo_imported = Demo-Daten wurden erfolgreich importiert.
+warehouse.setup.success_shop_reset = Shop wurde erfolgreich zurückgesetzt.
+
+# Setup Error Messages
+warehouse.setup.error_repair_tables = Fehler beim Reparieren der Tabellen: {0}
+warehouse.setup.error_domain_exists = Ein Domain-Profil existiert bereits. Die Struktur kann nur angelegt werden, wenn noch kein Domain-Profil vorhanden ist.
+warehouse.setup.error_install_structure = Fehler beim Anlegen der Struktur: {0}
+warehouse.setup.error_url_addon_unavailable = Das URL-Addon ist nicht verfügbar. Bitte installieren Sie das URL-Addon.
+warehouse.setup.error_install_url_profiles = Fehler beim Installieren der URL-Profile: {0}
+warehouse.setup.error_import_demo = Fehler beim Importieren der Demo-Daten: {0}
+warehouse.setup.error_reset_shop = Fehler beim Zurücksetzen des Shops: {0}
+
+# Module and Email Template Messages
+warehouse.setup.module_updated = Modul "{0}" wurde aktualisiert.
+warehouse.setup.module_created = Modul wurde angelegt unter "{0}".
+warehouse.setup.email_template_updated = E-Mail Template "{0}" wurde aktualisiert.
+warehouse.setup.email_template_created = E-Mail Template "{0}" wurde angelegt.
+warehouse.setup.module_button = Modul {0} {1}
+warehouse.setup.email_template_button = Template {0} {1}
+warehouse.setup.module_update = aktualisieren
+warehouse.setup.module_install = installieren
+warehouse.setup.install_email_templates = E-Mail Templates installieren oder aktualisieren
+
 warehouse.order.dashboard.recent_orders = Neueste Bestellungen
 warehouse.order.dashboard.orders_by_month = Bestellungen nach Monat
 warehouse.order.dashboard.date = Datum
