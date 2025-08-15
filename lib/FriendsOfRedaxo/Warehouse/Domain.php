@@ -118,7 +118,7 @@ class Domain extends rex_yform_manager_dataset
         return '';
     }
     /** @api */
-    public function setShippinginfoArtId(string $id) : self
+    public function setShippinginfoArtId(int $id) : self
     {
         if (rex_article::get((int) $id)) {
             $this->setValue("shippinginfo_art_id", $id);
