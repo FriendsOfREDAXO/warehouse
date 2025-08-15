@@ -16,7 +16,7 @@ rex_extension::register(
     static function (rex_extension_point $ep) {
         /** @var rex_yform_manager_dataset $yform */
         $yform = $ep->getParam('yform');
-        if ($yform->table->getTableName() === $ep->getParam('table_name')) {
+        if ($yform->getTable()->getTableName() === $ep->getParam('table_name')) {
             return '';
         }
     },

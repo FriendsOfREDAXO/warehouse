@@ -107,9 +107,9 @@ foreach ($results as $result) {
 
     echo '<tr>';
     echo '<td><div style="white-space: nowrap;">' . $source_emoji . '</div></td>';
-    echo '<td>' . htmlspecialchars($result['name'] ?? '') . '</td>';
-    echo '<td>' . htmlspecialchars($result['details'] ?? '') . '</td>';
-    echo '<td><small>' . htmlspecialchars($result['uuid'] ?? '') . '</small></td>';
+    echo '<td>' . htmlspecialchars((string)($result['name'] ?? '')) . '</td>';
+    echo '<td>' . htmlspecialchars((string)($result['details'] ?? '')) . '</td>';
+    echo '<td><small>' . htmlspecialchars((string)($result['uuid'] ?? '')) . '</small></td>';
     echo '<td style="white-space: nowrap;"><div class="btn-group" style="white-space: nowrap;"><a class="btn btn-primary btn-sm" href="' . $backend_url . '">Bearbeiten</a><a class="btn btn-success btn-sm" href="' . $frontend_url . '">Anzeigen</a></div></td>';
 
     echo '</tr>';

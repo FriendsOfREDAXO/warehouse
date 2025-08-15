@@ -26,17 +26,41 @@ if ('' !== $func) {
                     
                     // Import tablesets if YForm is available
                     if (rex_addon::get('yform')->isAvailable()) {
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_settings_domain.json'));
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_article.json'));
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_article_variant.json'));
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_category.json'));
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_order.json'));
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_customer_address.json'));
+                        $tableset1 = rex_file::get(__DIR__ . '/../install/tablesets/warehouse_settings_domain.json');
+                        if ($tableset1 !== null) {
+                            rex_yform_manager_table_api::importTablesets($tableset1);
+                        }
+                        
+                        $tableset2 = rex_file::get(__DIR__ . '/../install/tablesets/warehouse_article.json');
+                        if ($tableset2 !== null) {
+                            rex_yform_manager_table_api::importTablesets($tableset2);
+                        }
+                        
+                        $tableset3 = rex_file::get(__DIR__ . '/../install/tablesets/warehouse_article_variant.json');
+                        if ($tableset3 !== null) {
+                            rex_yform_manager_table_api::importTablesets($tableset3);
+                        }
+                        
+                        $tableset4 = rex_file::get(__DIR__ . '/../install/tablesets/warehouse_category.json');
+                        if ($tableset4 !== null) {
+                            rex_yform_manager_table_api::importTablesets($tableset4);
+                        }
+                        
+                        $tableset5 = rex_file::get(__DIR__ . '/../install/tablesets/warehouse_order.json');
+                        if ($tableset5 !== null) {
+                            rex_yform_manager_table_api::importTablesets($tableset5);
+                        }
+                        
+                        $tableset6 = rex_file::get(__DIR__ . '/../install/tablesets/warehouse_customer_address.json');
+                        if ($tableset6 !== null) {
+                            rex_yform_manager_table_api::importTablesets($tableset6);
+                        }
+                        
                         rex_yform_manager_table::deleteCache();
                     }
                     echo rex_view::success($addon->i18n('warehouse.setup.success_tables_repaired'));
                 } catch (Exception $e) {
-                    echo rex_view::error($addon->i18n('warehouse.setup.error_repair_tables', [$e->getMessage()]));
+                    echo rex_view::error($addon->i18n('warehouse.setup.error_repair_tables', $e->getMessage()));
                 }
                 break;
 
