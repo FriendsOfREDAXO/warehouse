@@ -14,7 +14,7 @@ if(Warehouse::isVariantsEnabled()) {
 }
 $variants = $article->getVariants();
 
-if ($variants) {
+if ($variants !== null) {
     foreach ($variants as $variant) {
         /** @var ArticleVariant $variant */
         $imageMedia = $variant->getImageAsMedia();
