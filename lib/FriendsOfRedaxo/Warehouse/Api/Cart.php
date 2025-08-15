@@ -30,7 +30,7 @@ class Cart extends rex_api_function
 
         // index.php?rex_api_call=cart&action=remove&article_id=1&variant_id=1&amount=1&mode=remove
         if (rex_request('action', 'string') == 'remove') {
-            Warehouse::modifyCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null), rex_request('amount', 'int', 1), rex_request('mode', 'string', '='));
+            Warehouse::modifyCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null), rex_request('amount', 'int', 1), rex_request('mode', 'string', 'remove'));
         }
 
         // index.php?rex_api_call=cart&action=delete&article_id=1&variant_id=1
