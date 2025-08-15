@@ -11,6 +11,7 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
 use rex;
 use rex_api_function;
 use rex_response;
+use CoreInterfaces\Core\Response\ResponseInterface;
 
 use FriendsOfRedaxo\Warehouse\PayPal;
 use FriendsOfRedaxo\Warehouse\Shipping;
@@ -49,7 +50,7 @@ class Order extends rex_api_function
 {
     protected $published = true;
 
-    public function execute(): void
+    public function execute()
     {
 
         rex_response::cleanOutputBuffers();
@@ -105,9 +106,6 @@ class Order extends rex_api_function
     }
         
     /**
-     * @param mixed $response
-     * @return array{jsonResponse: array|null, httpStatusCode: int|string}
-     */
      * @param ResponseInterface $response
      * @return array{jsonResponse: mixed, httpStatusCode: mixed}
      */
