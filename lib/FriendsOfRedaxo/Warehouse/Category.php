@@ -145,6 +145,9 @@ class Category extends \rex_yform_manager_dataset
         return $this;
     }
 
+    /**
+     * @return rex_yform_manager_collection<self>
+     */
     public function findChildren(string $status = self::STATUS_ACTIVE) : rex_yform_manager_collection
     {
         return self::query()
@@ -224,7 +227,7 @@ class Category extends \rex_yform_manager_dataset
         $list->setColumnFormat(
             'name',
             'custom',
-            static function ($a) {
+            static function (array $a) {
                 $_csrf_key = self::table()->getCSRFKey();
                 $token = rex_csrf_token::factory($_csrf_key)->getUrlParams();
 
@@ -232,7 +235,9 @@ class Category extends \rex_yform_manager_dataset
                 $params['table_name'] = self::table()->getTableName();
                 $params['rex_yform_manager_popup'] = '0';
                 $params['_csrf_token'] = $token['_csrf_token'] ?? '';
-                $params['data_id'] = $a['list']->getValue('id');
+                /** @var rex_yform_manager_dataset $list */
+                $list = $a['list'];
+                $params['data_id'] = $list->getValue('id');
                 $params['func'] = 'edit';
 
                 return '<a href="' . rex_url::backendPage('warehouse/category', $params) . '">' . $a['value'] . '</a>';
@@ -241,7 +246,7 @@ class Category extends \rex_yform_manager_dataset
         $list->setColumnFormat(
             'id',
             'custom',
-            static function ($a) {
+            static function (array $a) {
                 return $a['value'];
             },
         );
