@@ -373,7 +373,7 @@ class Warehouse
     public static function getPriceInputMode(): string
     {
         $mode = rex_config::get('warehouse', 'price_input_mode', 'net');
-        return in_array($mode, ['net', 'gross']) ? $mode : 'net';
+        return $mode === 'gross' ? 'gross' : 'net';
     }
 
     /**
