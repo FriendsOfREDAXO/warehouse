@@ -45,7 +45,7 @@ if ('' !== $func) {
                     // Check if domain profile already exists
                     rex_yform_manager_dataset::setModelClass('rex_warehouse_settings_domain', Domain::class);
                     if (Domain::query()->findOne() !== null) {
-                        echo rex_view::error('Es existiert bereits ein Domain-Profil. Bitte löschen Sie dieses, um die Struktur erneut zu initialisieren.');
+                        echo rex_view::error($addon->i18n('warehouse.setup.error_domain_exists'));
                     } else {
                         $this->includeFile(__DIR__ . '/../install/structure.php');
                         echo rex_view::success($addon->i18n('warehouse.setup.success_structure_installed'));
