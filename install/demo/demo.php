@@ -5,20 +5,22 @@ use Alexplusde\Tracks\Structure;
 use FriendsOfRedaxo\Warehouse\Domain;
 
 /* Medien in den Medienpool hinzufügen */
-$files = [
-    'warehouse_einhom_blau.jpeg' => 'Warehouse Demo - Einhorn blau',
-    'warehouse_trex_blau.jpeg' => 'Warehouse Demo - T-Rex blau',
-    'warehouse_trex_gruen.jpeg' => 'Warehouse Demo - T-Rex grün',
-    'warehouse_trex_rot.jpeg' => 'Warehouse Demo - T-Rex rot',
-    'warehouse_trex_rot_2.jpeg' => 'Warehouse Demo - T-Rex rot 2',
-    'warehouse_triceratops_blau.jpeg' => 'Warehouse Demo - Triceratops blau',
-    'warehouse_triceratops_gruen.jpeg' => 'Warehouse Demo - Triceratops grün',
-];
+if (rex_addon::get('tracks')->isAvailable()) {
+    $files = [
+        'warehouse_einhorn_blau.jpeg' => 'Warehouse Demo - Einhorn blau',
+        'warehouse_trex_blau.jpeg' => 'Warehouse Demo - T-Rex blau',
+        'warehouse_trex_gruen.jpeg' => 'Warehouse Demo - T-Rex grün',
+        'warehouse_trex_rot.jpeg' => 'Warehouse Demo - T-Rex rot',
+        'warehouse_trex_rot_2.jpeg' => 'Warehouse Demo - T-Rex rot 2',
+        'warehouse_triceratops_blau.jpeg' => 'Warehouse Demo - Triceratops blau',
+        'warehouse_triceratops_gruen.jpeg' => 'Warehouse Demo - Triceratops grün',
+    ];
 
-foreach ($files as $filename => $title) {
-    $path = __DIR__ . '/install/media/' . $filename;
-    if (file_exists($path)) {
-        Media::addImage($filename, $path, $title);
+    foreach ($files as $filename => $title) {
+        $path = __DIR__ . '/' . $filename;
+        if (file_exists($path)) {
+            Media::addImage($filename, $path, $title);
+        }
     }
 }
 
