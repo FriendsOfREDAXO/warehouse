@@ -22,6 +22,12 @@ if (!$order) {
     return;
 }
 
+// Bestellung als gelesen markieren
+if (!$order->getIsRead()) {
+    $order->setIsRead(true);
+    $order->save();
+}
+
 ?>
 <div class="panel">
 	<div class="container content">

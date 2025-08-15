@@ -269,6 +269,19 @@ class Order extends rex_yform_manager_dataset
         return $data->find();
     }
     
+    /* Gelesen-Status */
+    /** @api */
+    public function getIsRead() : bool
+    {
+        return (bool) $this->getValue("is_read");
+    }
+    /** @api */
+    public function setIsRead(bool $value) : self
+    {
+        $this->setValue("is_read", $value ? 1 : 0);
+        return $this;
+    }
+    
     public static function findByUuid(string $uuid) : ?self
     {
         return self::query()->where('uuid', $uuid)->findOne();
@@ -305,6 +318,10 @@ class Order extends rex_yform_manager_dataset
 
         $name = rex_i18n::msg('warehouse_order.buyer');
         $list->addColumn($name, '', 2);
+        
+        // Status-Spalte für Gelesen/Ungelesen
+        $status_name = rex_i18n::msg('warehouse_order.is_read');
+        $list->addColumn($status_name, '', 1);
 
         $list->setColumnFormat(
             $name,
@@ -335,6 +352,22 @@ class Order extends rex_yform_manager_dataset
                 return '<div class="text-nowrap">' . $return . '</div>';
 
             },
+        );
+
+        $list->setColumnFormat(
+            $status_name,
+            'custom',
+            static function ($a) {
+                /** @var rex_yform_manager_dataset $values */
+                $values = $a['list'];
+                $is_read = (bool) $values->getValue('is_read');
+                
+                // Zeige schwarzen Punkt für ungelesene Bestellungen
+                if (!$is_read) {
+                    return '<span style="font-size: 1.2em; color: #000;">•</span>';
+                }
+                return '';
+            }
         );
 
         $list->setColumnFormat(

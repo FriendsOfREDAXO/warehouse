@@ -267,6 +267,7 @@ warehouse_order.payment_type = Zahlungsart
 warehouse_order.payed = Bezahlt
 warehouse_order.not_payed = Nicht bezahlt
 warehouse_order.imported = Importiert
+warehouse_order.is_read = Gelesen
 warehouse_order.updatedate = Bestellung gestartet am...
 warehouse_order.payment_status = Zahlungsstatus
 warehouse_order.payment_status.select = Zahlungsstatus auswählen
