@@ -11,7 +11,7 @@ class Cart extends rex_api_function
 {
     protected $published = true;
 
-    public function execute()
+    public function execute(): void
     {
         // index.php?rex_api_call=cart&action=set&article_id=1&variant_id=1&amount=1
         if(rex_request('action', 'string') == 'set') {
