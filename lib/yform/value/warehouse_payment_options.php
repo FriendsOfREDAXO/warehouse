@@ -126,7 +126,7 @@ class rex_yform_value_warehouse_payment_options extends rex_yform_value_abstract
     /**
      * @param array<string, string> $options
      */
-    public function getLabelForValue(array $options = [], string $selected = null): string
+    public function getLabelForValue(array $options = [], ?string $selected = null): string
     {
         if (is_null($selected)) {
             $selected = $this->getValue();
