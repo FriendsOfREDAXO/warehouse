@@ -89,7 +89,7 @@ class Domain extends rex_yform_manager_dataset
         return '';
     }
     /** @api */
-    public function setCartArtId(string $id) : self
+    public function setCartArtId(int $id) : self
     {
         if (rex_article::get((int) $id)) {
             $this->setValue("cart_art_id", $id);
