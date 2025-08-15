@@ -22,35 +22,6 @@ if (!$order) {
     return;
 }
 
-// Ein schönes Bootstrap 3 Layout eines Lieferscheins
-/*
-
-    -data: array:22 [▼
-        "id" => 3
-        "salutation" => "Herr"
-        "firstname" => "Alexander"
-        "lastname" => "Walther"
-        "company" => "alex+ Digitales Marketing"
-        "address" => "Werderstr. 138"
-        "zip" => "74074"
-        "city" => "Heilbronn"
-        "country" => "DE"
-        "email" => "aw@alexplus.de"
-        "createdate" => "2025-05-20 11:38:56"
-        "paypal_id" => "3294374698237tz38247632487353436472673736232798432042309"
-        "payment_id" => "3294374698237tz38247632487353436472673736232798432042309"
-        "paypal_confirm_token" => "3294374698237tz38247632487353436472673736232798432042309"
-        "payment_confirm" => ""
-        "order_text" => ""
-        "order_json" => ""
-        "order_total" => "999.00"
-        "ycom_user_id" => 1
-        "payment_type" => "Lastschrift"
-        "payed" => 1
-        "imported" => 0
-    ]
-        */
-
 ?>
 <div class="panel">
 	<div class="container content">
@@ -71,7 +42,7 @@ if (!$order) {
 				<div class="card">
 					<div class="card-header">
 						<span class="badge">
-							<?= $order->getPaymentType() ?>
+							<?= '' # $order->getPaymentType()?>
 						</span>
 					</div>
 				</div>
@@ -93,8 +64,6 @@ if (!$order) {
 				<p>
 					<strong>Bestelldatum:</strong>
 					<?= $order->getCreateDate() ?><br />
-					<strong>Bestelltext:</strong>
-					<?= $order->getOrderText() ?><br />
 					<strong>Gesamtbetrag:</strong>
 					<?= $order->getOrderTotal() ?>
 					<?= FriendsOfRedaxo\Warehouse\Warehouse::getCurrencySign() ?><br />
