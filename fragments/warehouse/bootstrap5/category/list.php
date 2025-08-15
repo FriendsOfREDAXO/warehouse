@@ -2,6 +2,7 @@
 
 use FriendsOfRedaxo\Warehouse\Category;
 use FriendsOfRedaxo\Warehouse\Article;
+use FriendsOfRedaxo\Warehouse\ArticleVariant;
 
 $categories = Category::findRootCategories('active');
 ?>
