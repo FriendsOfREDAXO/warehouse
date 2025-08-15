@@ -59,10 +59,10 @@ class Order extends rex_api_function
                 $response = [
                     "message" => "Warehouse API is running. If you see this, the API is working correctly - but if you see this as a consumer, something is wrong. Get in touch with the shop owner.",
                 ];
-                rex_response::setStatus(200);
+                rex_response::setStatus('200');
                 rex_response::sendJson($response);
             } catch (Exception $e) {
-                rex_response::setStatus(500);
+                rex_response::setStatus('500');
                 rex_response::sendJson(["error" => $e->getMessage()]);
             }
         }
@@ -84,7 +84,7 @@ class Order extends rex_api_function
                 $orderResponse = self::createOrder($cart_test);
                 rex_response::sendJson($orderResponse["jsonResponse"]);
             } catch (Exception $e) {
-                rex_response::setStatus(500);
+                rex_response::setStatus('500');
                 rex_response::sendJson(["error" => $e->getMessage()]);
             }
         }
@@ -96,7 +96,7 @@ class Order extends rex_api_function
                 $captureResponse = self::captureOrder($orderID);
                 rex_response::sendJson($captureResponse["jsonResponse"]);
             } catch (Exception $e) {
-                rex_response::setStatus(500);
+                rex_response::setStatus('500');
                 rex_response::sendJson(["error" => $e->getMessage()]);
             }
         }
@@ -104,7 +104,11 @@ class Order extends rex_api_function
         exit;
     }
         
-    public static function handleResponse($response)
+    /**
+     * @param mixed $response
+     * @return array{jsonResponse: mixed, httpStatusCode: mixed}
+     */
+    public static function handleResponse($response): array
     {
         $jsonResponse = json_decode($response->getBody(), true);
         return [
@@ -116,8 +120,10 @@ class Order extends rex_api_function
     /**
      * Create an order to start the transaction.
      * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
+     * @param mixed $cart
+     * @return array{jsonResponse: mixed, httpStatusCode: mixed}
      */
-    public static function createOrder($cart)
+    public static function createOrder($cart): array
     {
 
         global $client;
@@ -194,8 +200,10 @@ class Order extends rex_api_function
     /**
      * Capture payment for the created order to complete the transaction.
      * @see https://developer.paypal.com/docs/api/orders/v2/#orders_capture
+     * @param string $orderID
+     * @return array{jsonResponse: mixed, httpStatusCode: mixed}
      */
-    public static function captureOrder($orderID)
+    public static function captureOrder($orderID): array
     {
         global $client;
         $PAYPAL_CLIENT_ID = PayPal::getClientId();

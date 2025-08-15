@@ -11,7 +11,7 @@ class Cart extends rex_api_function
 {
     protected $published = true;
 
-    public function execute(): void
+    public function execute()
     {
         // index.php?rex_api_call=cart&action=set&article_id=1&variant_id=1&amount=1
         if(rex_request('action', 'string') == 'set') {
@@ -19,7 +19,7 @@ class Cart extends rex_api_function
         }
         // index.php?rex_api_call=cart&action=add&article_id=1&variant_id=1&amount=1
         if (rex_request('action', 'string') == 'add') {
-            Warehouse::addToCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null), rex_request('amount', 'int'), 'add');
+            Warehouse::addToCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null), rex_request('amount', 'int'));
         }
         // index.php?rex_api_call=cart&action=modify&article_id=1&variant_id=1&amount=1&mode=add
         // index.php?rex_api_call=cart&action=modify&article_id=1&variant_id=1&amount=1&mode=remove
@@ -30,7 +30,7 @@ class Cart extends rex_api_function
 
         // index.php?rex_api_call=cart&action=remove&article_id=1&variant_id=1&amount=1&mode=remove
         if (rex_request('action', 'string') == 'remove') {
-            Warehouse::modifyCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null), \rex_request('amount', 'int', 1), rex_request('mode', '='));
+            Warehouse::modifyCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null), rex_request('amount', 'int', 1), rex_request('mode', 'string', '='));
         }
 
         // index.php?rex_api_call=cart&action=delete&article_id=1&variant_id=1
@@ -45,10 +45,14 @@ class Cart extends rex_api_function
 
         // Gebe den Cart als JSON zurück
         $cart = Warehouse::getCart();
-        $cart = json_encode($cart, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        $cartJson = json_encode($cart, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        
+        if ($cartJson === false) {
+            $cartJson = '{"error":"Failed to encode cart data"}';
+        }
 
         rex_response::cleanOutputBuffers();
-        rex_response::sendContent($cart, 'application/json');
+        rex_response::sendContent($cartJson, 'application/json');
         exit;
     }
 }
