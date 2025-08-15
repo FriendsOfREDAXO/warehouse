@@ -11,7 +11,7 @@ $domain = Domain::getCurrent();
 <div class="row">
 	<section class="col-12 my-3">
 		<a class="text-muted small"
-			href="<?= $domain?->getCartArtUrl() ?? '' ?>">>
+			href="<?= $domain?->getCartArtUrl() ?? '' ?>">
 			<i class="bi bi-arrow-left small"></i>
 			<?= Warehouse::getLabel('back_to_cart'); ?>
 		</a>
