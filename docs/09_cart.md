@@ -352,11 +352,17 @@ echo "Zwischensumme: " . number_format($subtotal, 2) . "€";
 
 ### `empty()`
 
-Leert den Warenkorb vollständig.
+Leert den Warenkorb vollständig und entfernt alle checkout-bezogenen Daten aus der Session. Dies umfasst:
+
+- Warenkorb-Daten (`warehouse_cart`)
+- Kundendaten aus dem Checkout-Prozess (`user_data`)
+- Zahlungsinformationen (`warehouse_payment`)
+
+Wichtige Sessions wie YCom-Anmeldung oder REDAXO-Backend-Session bleiben erhalten.
 
 ```php
 Cart::empty();
-echo "Warenkorb wurde geleert.";
+echo "Warenkorb und Checkout-Daten wurden geleert.";
 ```
 
 ## Rabatt-Funktionen
