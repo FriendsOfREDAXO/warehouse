@@ -90,7 +90,6 @@ if ('' !== $func) {
                         'warehouse_customer_address'
                     ];
                     
-                    foreach ($tables_to_clear as $table) {
                     $sql = rex_sql::factory();
                     foreach ($tables_to_clear as $table) {
                         $sql->setQuery('TRUNCATE TABLE ' . rex::getTable($table));
@@ -154,12 +153,12 @@ if (rex_request('install_module')) {
         if ($is_installed) {
             $mi->setWhere('`key`=:key', ['key' => rex_string::normalize($mod_to_install)]);
             $mi->update();
-            echo rex_view::success('Modul "' . $mod_to_install . '" wurde aktualisiert.');
+            echo rex_view::success($addon->i18n('warehouse.setup.module_updated', $mod_to_install));
         } else {
             $mi->setValue('name', $mod_to_install);
             $mi->setValue('key', rex_string::normalize($mod_to_install));
             $mi->insert();
-            echo rex_view::success('Modul wurde angelegt unter "' . $mod_to_install . '"');
+            echo rex_view::success($addon->i18n('warehouse.setup.module_created', $mod_to_install));
         }
         $all_modules = rex_sql::factory()->getArray('SELECT * FROM ' . rex::getTable('module'));
     }
@@ -188,10 +187,10 @@ if (rex_request('install_yform_email')) {
     if ($is_installed) {
         $mi->setWhere('`name`=:name', ['name' => $tpl_key]);
         $mi->update();
-        echo rex_view::success('E-Mail Template "' . $tpl_key . '" wurde aktualisiert.');
+        echo rex_view::success($addon->i18n('warehouse.setup.email_template_updated', $tpl_key));
     } else {
         $mi->insert();
-        echo rex_view::success('E-Mail Template "' . $tpl_key . '" wurde angelegt');
+        echo rex_view::success($addon->i18n('warehouse.setup.email_template_created', $tpl_key));
     }
     $all_etpls = rex_sql::factory()->getArray('SELECT * FROM ' . rex::getTable('yform_email_template'));
 }
@@ -264,7 +263,7 @@ foreach ($modules_dir as $mod_name) {
             $is_installed = true;
         }
     }
-    $content .= '<p><a class="btn btn-primary ' . ($is_installed ? '' : 'btn-save') . '" href="index.php?page=' . $this->getName() . '/setup&amp;install_module=' . md5($mod_name) . '" class="rex-button">Modul ' . $mod_name . ' ' . ($is_installed ? 'aktualisieren' : 'installieren') . '</a></p>';
+    $content .= '<p><a class="btn btn-primary ' . ($is_installed ? '' : 'btn-save') . '" href="index.php?page=' . $this->getName() . '/setup&amp;install_module=' . md5($mod_name) . '" class="rex-button">' . $addon->i18n('warehouse.setup.module_button', $mod_name, $addon->i18n($is_installed ? 'warehouse.setup.module_update' : 'warehouse.setup.module_install')) . '</a></p>';
 }
 
 $fragment = new rex_fragment();
@@ -275,7 +274,7 @@ echo $fragment->parse('core/page/section.php');
 
 // Section 7: E-Mail Templates (existing functionality)
 $content = '';
-$content .= '<h4>E-Mail Templates installieren oder aktualisieren</h4>';
+$content .= '<h4>' . $addon->i18n('warehouse.setup.install_email_templates') . '</h4>';
 
 foreach ($etpl_dir as $etpl_name) {
     $is_installed = false;
@@ -284,11 +283,11 @@ foreach ($etpl_dir as $etpl_name) {
             $is_installed = true;
         }
     }
-    $content .= '<p><a class="btn btn-primary ' . ($is_installed ? '' : 'btn-save') . '" href="index.php?page=' . $this->getName() . '/setup&amp;install_yform_email=' . $etpl_name . '" class="rex-button">Template ' . $etpl_name . ' ' . ($is_installed ? 'aktualisieren' : 'installieren') . '</a></p>';
+    $content .= '<p><a class="btn btn-primary ' . ($is_installed ? '' : 'btn-save') . '" href="index.php?page=' . $this->getName() . '/setup&amp;install_yform_email=' . $etpl_name . '" class="rex-button">' . $addon->i18n('warehouse.setup.email_template_button', $etpl_name, $addon->i18n($is_installed ? 'warehouse.setup.module_update' : 'warehouse.setup.module_install')) . '</a></p>';
 }
 
 $fragment = new rex_fragment();
 $fragment->setVar('class', 'default', false);
-$fragment->setVar('title', 'E-Mail Templates', false);
+$fragment->setVar('title', $addon->i18n('warehouse.setup.install_email_templates'), false);
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');

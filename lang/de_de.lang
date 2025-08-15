@@ -553,6 +553,26 @@ warehouse.setup.success_url_profiles_installed = URL-Profile wurden erfolgreich 
 warehouse.setup.success_demo_imported = Demo-Daten wurden erfolgreich importiert.
 warehouse.setup.success_shop_reset = Shop wurde erfolgreich zurückgesetzt.
 
+# Setup Error Messages
+warehouse.setup.error_repair_tables = Fehler beim Reparieren der Tabellen: {0}
+warehouse.setup.error_domain_exists = Ein Domain-Profil existiert bereits. Die Struktur kann nur angelegt werden, wenn noch kein Domain-Profil vorhanden ist.
+warehouse.setup.error_install_structure = Fehler beim Anlegen der Struktur: {0}
+warehouse.setup.error_url_addon_unavailable = Das URL-Addon ist nicht verfügbar. Bitte installieren Sie das URL-Addon.
+warehouse.setup.error_install_url_profiles = Fehler beim Installieren der URL-Profile: {0}
+warehouse.setup.error_import_demo = Fehler beim Importieren der Demo-Daten: {0}
+warehouse.setup.error_reset_shop = Fehler beim Zurücksetzen des Shops: {0}
+
+# Module and Email Template Messages
+warehouse.setup.module_updated = Modul "{0}" wurde aktualisiert.
+warehouse.setup.module_created = Modul wurde angelegt unter "{0}".
+warehouse.setup.email_template_updated = E-Mail Template "{0}" wurde aktualisiert.
+warehouse.setup.email_template_created = E-Mail Template "{0}" wurde angelegt.
+warehouse.setup.module_button = Modul {0} {1}
+warehouse.setup.email_template_button = Template {0} {1}
+warehouse.setup.module_update = aktualisieren
+warehouse.setup.module_install = installieren
+warehouse.setup.install_email_templates = E-Mail Templates installieren oder aktualisieren
+
 warehouse.order.dashboard.recent_orders = Neueste Bestellungen
 warehouse.order.dashboard.orders_by_month = Bestellungen nach Monat
 warehouse.order.dashboard.date = Datum
