@@ -19,35 +19,36 @@ use FriendsOfRedaxo\Warehouse\Search;
 $results = Search::query(rex_request('query', 'string', ''));
 ?>
 <div class="rex-page-section">
-    <?= Search::getForm() ?>
+	<?= Search::getForm() ?>
 </div>
 <?php if (empty($results)): ?>
-    <div class="alert alert-info">
-        <?= $this->i18n('warehouse.search.no_results') ?>
-    </div>
+<div class="alert alert-info">
+	<?= $this->i18n('warehouse.search.no_results') ?>
+</div>
 <?php
 endif; ?>
 <?php if (!empty($results)): ?>
-    <div class="alert alert-success">
-        <?= $this->i18n('warehouse.search.results', count($results)) ?>
-    </div>
+<div class="alert alert-success">
+	<?= $this->i18n('warehouse.search.results', count($results)) ?>
+</div>
 
 <?php
 endif; ?>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>Quelle</th>
-            <th style="width: 20%;">Name</th>
-            <th style="width: auto">Details</th>
-            <th style="width: 10%;">UUID</th>
-            <th style="white-space: nowrap; min-width: 180px">Aktion</th>
-        </tr>
-    </thead>
-    <tbody>
-<?php 
+	<thead>
+		<tr>
+			<th>Quelle</th>
+			<th style="width: 20%;">Name</th>
+			<th style="width: auto">Details</th>
+			<th style="width: 10%;">UUID</th>
+			<th style="white-space: nowrap; min-width: 180px">Aktion</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
 foreach ($results as $result) {
+    /** @var array<string, int> $result */
     $backend_url = '';
     switch ($result['source']) {
         case 'article':
@@ -114,5 +115,5 @@ foreach ($results as $result) {
     echo '</tr>';
 }
 ?>
-    </tbody>
+	</tbody>
 </table>
