@@ -9,10 +9,14 @@ use FriendsOfRedaxo\Warehouse\Domain;
 
 /** @var Article $article */
 $article = $this->getVar('article');
-if(Warehouse::isVariantsEnabled()) {
+if(!Warehouse::isVariantsEnabled()) {
     return;
 }
 $variants = $article->getVariants();
+
+if(!$variants || count($variants) === 0) {
+    return;
+}
 
 foreach ($variants as $variant) {
     /** @var ArticleVariant $variant */
@@ -20,8 +24,8 @@ foreach ($variants as $variant) {
         '@context' => 'https://schema.org/',
         '@type' => 'Product',
         'name' => $variant->getName(),
-        'image' => [Domain::getCurrentUrl() . $variant->getImageAsMedia()->getUrl()],
-        'description' => strip_tags($variant->getArticle()->getShortText(true)),
+        'image' => [Domain::getCurrentUrl() . ($variant->getImageAsMedia()?->getUrl() ?? '')],
+        'description' => strip_tags($variant->getArticle()?->getShortText(true) ?? ''),
         'sku' => $variant->getValue('sku'),
         'offers' => [
             '@type' => 'Offer',
