@@ -108,7 +108,10 @@ class Order extends rex_api_function
      * @param mixed $response
      * @return array{jsonResponse: mixed, httpStatusCode: mixed}
      */
-    public static function handleResponse($response): array
+     * @param ResponseInterface $response
+     * @return array{jsonResponse: mixed, httpStatusCode: mixed}
+     */
+    public static function handleResponse(ResponseInterface $response): array
     {
         $jsonResponse = json_decode($response->getBody(), true);
         return [
