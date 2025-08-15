@@ -41,7 +41,7 @@ class Document
     public static function getInvoiceNumber(): int
     {
         $number = (int)Warehouse::getConfig('invoice_number', 1);
-        return (int)\rex_extension::registerPoint(new \rex_extension_point('WAREHOUSE_INVOICE_NUMBER', $number));
+        return (int)rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_INVOICE_NUMBER', $number));
     }
 
     /**
