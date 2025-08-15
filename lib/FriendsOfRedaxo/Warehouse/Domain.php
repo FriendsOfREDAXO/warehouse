@@ -205,7 +205,7 @@ class Domain extends rex_yform_manager_dataset
         return '';
     }
     /** @api */
-    public function setPaymentErrorArtId(string $id) : self
+    public function setPaymentErrorArtId(int $id) : self
     {
         if (rex_article::get((int) $id)) {
             $this->setValue("payment_error_art_id", $id);
