@@ -91,7 +91,8 @@ if ('' !== $func) {
                     ];
                     
                     foreach ($tables_to_clear as $table) {
-                        $sql = rex_sql::factory();
+                    $sql = rex_sql::factory();
+                    foreach ($tables_to_clear as $table) {
                         $sql->setQuery('TRUNCATE TABLE ' . rex::getTable($table));
                     }
                     
