@@ -55,7 +55,9 @@ class ArticleVariant extends rex_yform_manager_dataset
     /** @api */
     public function getArticle() : ?Article
     {
-        return $this->getRelatedDataset("article_id");
+        /** @var Article|null $article */
+        $article = $this->getRelatedDataset("article_id");
+        return $article;
     }
 
     /* Name */
@@ -75,7 +77,8 @@ class ArticleVariant extends rex_yform_manager_dataset
     {
         $article = $this->getArticle();
         if ($article) {
-            return $article->getTax();
+            $tax = $article->getTax();
+            return $tax !== null ? (float)$tax : null;
         }
         return 0.0;
     }
@@ -83,7 +86,7 @@ class ArticleVariant extends rex_yform_manager_dataset
     /* Preis */
     /** @api */    /**
      * Gibt den Preis zurück, netto oder brutto je nach Modus.
-     * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
+     * @param 'net'|'gross'|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
      * @return float|null
      */
     public function getPrice(?string $mode = null): ?float
@@ -174,19 +177,25 @@ class ArticleVariant extends rex_yform_manager_dataset
     }
 
 
+    /**
+     * @return array<string, string>
+     */
     public static function getAvailabilityOptions() : array
     {
         
         return self::AVAILABILITY;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getStatusOptions() : array
     {
         return self::STATUS;
     }
     
 
-    public function getProjectValue(string $key)
+    public function getProjectValue(string $key): mixed
     {
         return $this->getValue('project_' . $key);
     }
@@ -243,7 +252,10 @@ class ArticleVariant extends rex_yform_manager_dataset
         $params = [];
         $params['table_name'] = self::table()->getTableName();
         $params['rex_yform_manager_popup'] = '0';
-        $params['_csrf_token'] = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams()['_csrf_token'];
+        $csrfParams = rex_csrf_token::factory(self::table()->getCSRFKey())->getUrlParams();
+        if (isset($csrfParams['_csrf_token'])) {
+            $params['_csrf_token'] = $csrfParams['_csrf_token'];
+        }
         $params['data_id'] = $this->getId();
         $params['func'] = 'edit';
 
@@ -257,6 +269,9 @@ class ArticleVariant extends rex_yform_manager_dataset
         return '<i class="rex-icon fa-cubes"></i>';
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getBulkPrices() :array
     {
         $bulk_prices = (array) $this->getValue('bulk_prices');
@@ -275,7 +290,7 @@ class ArticleVariant extends rex_yform_manager_dataset
     /**
      * Gibt den Gesamtpreis für eine bestimmte Menge zurück, unter Berücksichtigung von Staffelpreisen, Modus und Fallbacks.
      * @param int $quantity
-     * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
+     * @param 'net'|'gross'|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
      * @return float
      */
     public function getPriceForQuantity(int $quantity, ?string $mode = null): float
@@ -304,19 +319,12 @@ class ArticleVariant extends rex_yform_manager_dataset
             }
         }
         $price = $this->getPrice($mode);
-        if ($price !== null && $price !== '') {
+        if ($price !== null && $price !== 0.0) {
             return (float)$price * $quantity;
         }
         $article = $this->getArticle();
         if ($article) {
-            if (method_exists($article, 'getPriceForQuantity')) {
-                return $article->getPriceForQuantity($quantity, $mode);
-            } else {
-                $articlePrice = $article->getPrice($mode);
-                if ($articlePrice !== null && $articlePrice !== '') {
-                    return (float)$articlePrice * $quantity;
-                }
-            }
+            return $article->getPriceForQuantity($quantity, $mode);
         }
         // 4. Kein Preis gefunden
         return 0.0;

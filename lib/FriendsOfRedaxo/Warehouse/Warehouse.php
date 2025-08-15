@@ -364,6 +364,11 @@ class Warehouse
      *
      * @return 'net'|'gross' Modus der Preiseingabe
      */
+    public static function getPriceInputMode(): string
+    {
+        return rex_config::get('warehouse', 'price_input_mode', 'net');
+    }
+
     /**
      * Get global cart instance
      */
