@@ -66,7 +66,7 @@ if ('' !== $func) {
                         echo rex_view::error($addon->i18n('warehouse.setup.error_url_addon_unavailable'));
                     }
                 } catch (Exception $e) {
-                    echo rex_view::error('Fehler beim Installieren der URL-Profile: ' . $e->getMessage());
+                    echo rex_view::error($addon->i18n('warehouse.setup.error_install_url_profiles', $e->getMessage()));
                 }
                 break;
 
