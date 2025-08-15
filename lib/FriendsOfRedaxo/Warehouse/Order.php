@@ -18,22 +18,6 @@ use rex_yform;
 class Order extends rex_yform_manager_dataset
 {
 
-    public const SHIPPING_STATUS_SHIPPED = 'shipped';
-    public const SHIPPING_STATUS_NOT_SHIPPED = 'not_shipped';
-    public const SHIPPING_STATUS_PARTIALLY_SHIPPED = 'partially_shipped';
-    public const SHIPPING_STATUS_RETURNED = 'returned';
-    public const SHIPPING_STATUS_LOST = 'lost';
-    public const SHIPPING_STATUS_CANCELLED = 'cancelled';
-
-    public const SHIPPING_STATUS_OPTIONS = [
-        self::SHIPPING_STATUS_SHIPPED => 'warehouse.order.shipping_status.shipped',
-        self::SHIPPING_STATUS_NOT_SHIPPED => 'warehouse.order.shipping_status.not_shipped',
-        self::SHIPPING_STATUS_PARTIALLY_SHIPPED => 'warehouse.order.shipping_status.partially_shipped',
-        self::SHIPPING_STATUS_RETURNED => 'warehouse.order.shipping_status.returned',
-        self::SHIPPING_STATUS_LOST => 'warehouse.order.shipping_status.lost',
-        self::SHIPPING_STATUS_CANCELLED => 'warehouse.order.shipping_status.cancelled',
-    ];
-
     /* Anrede */
     /** @api */
     public function getSalutation() : ?string
@@ -223,22 +207,6 @@ class Order extends rex_yform_manager_dataset
         $this->setValue("payment_confirm", $value);
         return $this;
     }
-    
-    /* Bestelltext */
-    /** @api */
-    public function getOrderText(bool $asPlaintext = false) : mixed
-    {
-        if ($asPlaintext) {
-            return strip_tags($this->getValue("order_text"));
-        }
-        return $this->getValue("order_text");
-    }
-    /** @api */
-    public function setOrderText(mixed $value) : self
-    {
-        $this->setValue("order_text", $value);
-        return $this;
-    }
                 
     /* Bestell-JSON */
     /** @api */
@@ -282,45 +250,6 @@ class Order extends rex_yform_manager_dataset
         return $this;
     }
     
-    /* Zahlungsart */
-    /** @api */
-    public function getPaymentType() : ?string
-    {
-        return $this->getValue("payment_type");
-    }
-    /** @api */
-    public function setPaymentType(mixed $value) : self
-    {
-        $this->setValue("payment_type", $value);
-        return $this;
-    }
-    
-    /* Bezahlt */
-    /** @api */
-    public function getPayed() : ?bool
-    {
-        return $this->getValue("payed");
-    }
-    /** @api */
-    public function setPayed(bool $value) : self
-    {
-        $this->setValue("payed", $value);
-        return $this;
-    }
-    
-    /* Importiert */
-    /** @api */
-    public function getImported() : bool
-    {
-        return $this->getValue("imported");
-    }
-    /** @api */
-    public function setImported(bool $value) : self
-    {
-        $this->setValue("imported", $value);
-        return $this;
-    }
-
     public static function findByYComUserId(int $ycom_user_id = null) : ?rex_yform_manager_collection
     {
         if ($ycom_user_id === null) {
@@ -429,41 +358,44 @@ class Order extends rex_yform_manager_dataset
             },
         );
 
-        $list->setColumnPosition('ycom_user_id', 2);
-        $list->setColumnLabel('ycom_user_id', '<i class=\'rex-icon rex-icon-user\'></i>');
+        if(rex_addon::get('ycom')->isAvailable()) {
+            $list->setColumnLabel('ycom_user_id', rex_i18n::msg('warehouse_order.ycom_user'));
+            $list->setColumnSortable('ycom_user_id', false);
+                
+            $list->setColumnFormat(
+                'ycom_user_id',
+                'custom',
+                static function ($a) {
+                    if ($a['value'] > 0 && rex_addon::get('ycom')->isAvailable()) {
+                        $user = \rex_ycom_user::get($a['value']);
+                        
+                        if ($user === null && $a['value'] > 0) {
+                            return '<i class="rex-icon rex-icon-user text-warning"></i>';
+                        }
 
-        $list->setColumnFormat(
-            'ycom_user_id',
-            'custom',
-            static function ($a) {
-                if ($a['value'] > 0 && rex_addon::get('ycom')->isAvailable()) {
-                    $user = \rex_ycom_user::get($a['value']);
-                    
-                    if ($user === null && $a['value'] > 0) {
-                        return '<i class="rex-icon rex-icon-user text-warning"></i>';
+                        $user_status = $user->getValue('status');
+
+                        $user_status_class = '';
+                        if ($user_status == 0) {
+                            $user_status_class = 'text-info';
+                        } elseif ($user_status < 0) {
+                            $user_status_class = 'text-danger';
+                        } elseif ($user_status > 0) {
+                            $user_status_class = 'text-success';
+                        }
+
+                        // index.php?page=yform/manager/data_edit&table_name=rex_ycom_user&list=45e18d03&sort=&sorttype=&start=0&_csrf_token=Qk3DRM8nOTKy8pFY9H7jA8qL7PQAORVL0hYGfUmEtw8&rex_yform_manager_popup=0&data_id=1&func=edit&45e18d03_start=0
+                        return '<a href="' . rex_url::backendController(['page' => 'yform/manager/data_edit', 'table_name' => 'rex_ycom_user', '_csrf_token' => \rex_csrf_token::factory('ycom_user')->getUrlParams()['_csrf_token'], 'rex_yform_manager_popup' => 0, 'data_id' => $user->getId(), 'func' => 'edit']) . '"><i class="rex-icon rex-icon-user '.$user_status_class.'"></i></a>';
                     }
-
-                    $user_status = $user->getValue('status');
-
-                    $user_status_class = '';
-                    if ($user_status == 0) {
-                        $user_status_class = 'text-info';
-                    } elseif ($user_status < 0) {
-                        $user_status_class = 'text-danger';
-                    } elseif ($user_status > 0) {
-                        $user_status_class = 'text-success';
-                    }
-
-                    // index.php?page=yform/manager/data_edit&table_name=rex_ycom_user&list=45e18d03&sort=&sorttype=&start=0&_csrf_token=Qk3DRM8nOTKy8pFY9H7jA8qL7PQAORVL0hYGfUmEtw8&rex_yform_manager_popup=0&data_id=1&func=edit&45e18d03_start=0
-                    return '<a href="' . rex_url::backendController(['page' => 'yform/manager/data_edit', 'table_name' => 'rex_ycom_user', '_csrf_token' => \rex_csrf_token::factory('ycom_user')->getUrlParams()['_csrf_token'], 'rex_yform_manager_popup' => 0, 'data_id' => $user->getId(), 'func' => 'edit']) . '"><i class="rex-icon rex-icon-user '.$user_status_class.'"></i></a>';
+                    return '<i class="rex-icon rex-icon-user text-muted" style="opacity: 0.3"></i>';
                 }
-                return '<i class="rex-icon rex-icon-user text-muted" style="opacity: 0.3"></i>';
-            }
-        );
+            );
+        } else {
+            $list->removeColumn('ycom_user_id');
+        }
 
         $list->removeColumn('payment_confirm');
         $list->removeColumn('payment_type');
-        $list->removeColumn('payed');
 
         $list->setColumnFormat(
             'order_total',
@@ -709,15 +641,6 @@ class Order extends rex_yform_manager_dataset
             ->setSaveAndSend(true)
             ->run();
         return $addonDataPath;
-    }
-
-    public static function getShippingStatusOptions(): array
-    {
-        $options = [];
-        foreach (self::SHIPPING_STATUS_OPTIONS as $key => $label) {
-            $options[$key] = rex_i18n::msg($label);
-        }
-        return $options;
     }
 
     public static function getPaymentStatusOptions(): array

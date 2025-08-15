@@ -5,6 +5,7 @@ namespace FriendsOfRedaxo\Warehouse;
 use rex_config;
 use rex_extension;
 use rex_extension_point;
+use rex_i18n;
 
 class Shipping {
 
@@ -13,6 +14,22 @@ class Shipping {
         'quantity' => 'translate:warehouse.settings.shipping_calculation_mode.options.quantity',
         'weight' => 'translate:warehouse.settings.shipping_calculation_mode.options.weight',
         'order_total' => 'translate:warehouse.settings.shipping_calculation_mode.options.order_total',
+    ];
+    
+    public const SHIPPING_STATUS_SHIPPED = 'shipped';
+    public const SHIPPING_STATUS_NOT_SHIPPED = 'not_shipped';
+    public const SHIPPING_STATUS_PARTIALLY_SHIPPED = 'partially_shipped';
+    public const SHIPPING_STATUS_RETURNED = 'returned';
+    public const SHIPPING_STATUS_LOST = 'lost';
+    public const SHIPPING_STATUS_CANCELLED = 'cancelled';
+
+    public const SHIPPING_STATUS_OPTIONS = [
+        self::SHIPPING_STATUS_SHIPPED => 'warehouse.order.shipping_status.shipped',
+        self::SHIPPING_STATUS_NOT_SHIPPED => 'warehouse.order.shipping_status.not_shipped',
+        self::SHIPPING_STATUS_PARTIALLY_SHIPPED => 'warehouse.order.shipping_status.partially_shipped',
+        self::SHIPPING_STATUS_RETURNED => 'warehouse.order.shipping_status.returned',
+        self::SHIPPING_STATUS_LOST => 'warehouse.order.shipping_status.lost',
+        self::SHIPPING_STATUS_CANCELLED => 'warehouse.order.shipping_status.cancelled',
     ];
 
     public static function getCost() :float {
@@ -68,4 +85,13 @@ class Shipping {
         return Warehouse::getCurrencySign() . ' ' . number_format(self::getCost(), 2, ',', '.');
     }
     
+    public static function getShippingStatusOptions(): array
+    {
+        $options = [];
+        foreach (self::SHIPPING_STATUS_OPTIONS as $key => $label) {
+            $options[$key] = rex_i18n::msg($label);
+        }
+        return $options;
+    }
+
 }

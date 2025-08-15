@@ -150,6 +150,15 @@ default_config:
     paypal_page_success:
     paypal_page_error: 
 
+    # Paypal Button Style Defaults
+    paypal_button_shape: 'rect'
+    paypal_button_size: 'responsive'
+    paypal_button_color: 'gold'
+    paypal_button_label: 'paypal'
+    paypal_button_layout: 'horizontal'
+    paypal_button_height: ''
+    paypal_button_funding_source: 'paypal'
+    
     # Versandkosten
     minimum_order_value: 0
     shipping_fee: 0

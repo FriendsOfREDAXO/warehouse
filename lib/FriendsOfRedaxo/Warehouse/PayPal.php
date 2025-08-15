@@ -338,4 +338,35 @@ class PayPal
     public static function createOrder()
     {
     }
+
+    public static function getMode(): string
+    {
+        return rex_config::get('warehouse', 'sandboxmode', self::MODE_SANDBOX) ? self::MODE_SANDBOX : self::MODE_LIVE;
+    }
+
+    public static function getStyleConfig(): string
+    {
+        $style = json_encode([
+            'shape' => rex_config::get('warehouse', 'paypal_button_shape', 'rect'),
+            'size' => rex_config::get('warehouse', 'paypal_button_size', 'responsive'),
+            'color' => rex_config::get('warehouse', 'paypal_button_color', 'gold'),
+            'label' => rex_config::get('warehouse', 'paypal_button_label', 'paypal'),
+            'layout' => rex_config::get('warehouse', 'paypal_button_layout', 'horizontal'),
+            'height' => rex_config::get('warehouse', 'paypal_button_height', ''),
+            'fundingSource' => rex_config::get('warehouse', 'paypal_button_funding_source', 'paypal')
+        ]);
+        return $style;
+    }
+
+    public static function getErrorPageUrl(): string
+    {
+        $domain = Domain::getCurrent();
+        return $domain->getThankyouArtUrl();
+    }
+
+    public static function getSuccessPageUrl(): string
+    {
+        $domain = Domain::getCurrent();
+        return $domain->getThankyouArtUrl();
+    }
 }

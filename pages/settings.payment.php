@@ -57,6 +57,77 @@ $field = $form->addTextField('paypal_getparams');
 $field->setLabel(rex_i18n::msg('warehouse.settings.payment.paypal_getparams'));
 $field->setNotice(rex_i18n::msg('warehouse.settings.payment.paypal_getparams.notice'));
 
+
+$form->addFieldset(rex_i18n::msg('warehouse.settings.payment.paypal_style'));
+
+$field = $form->addSelectField('paypal_button_shape');
+$field->setLabel(rex_i18n::msg('warehouse.settings.payment.paypal_button_shape'));
+$select = $field->getSelect();
+$select->addOptions([
+    'rect' => rex_i18n::msg('warehouse.settings.payment.paypal_button_shape.rect'),
+    'pill' => rex_i18n::msg('warehouse.settings.payment.paypal_button_shape.pill'),
+]);
+$field->setNotice(rex_i18n::msg('warehouse.settings.payment.paypal_button_shape.notice'));
+
+$field = $form->addSelectField('paypal_button_size');
+$field->setLabel(rex_i18n::msg('warehouse.settings.payment.paypal_button_size'));
+$select = $field->getSelect();
+$select->addOptions([
+    'small' => rex_i18n::msg('warehouse.settings.payment.paypal_button_size.small'),
+    'medium' => rex_i18n::msg('warehouse.settings.payment.paypal_button_size.medium'),
+    'large' => rex_i18n::msg('warehouse.settings.payment.paypal_button_size.large'),
+    'responsive' => rex_i18n::msg('warehouse.settings.payment.paypal_button_size.responsive'),
+]);
+$field->setNotice(rex_i18n::msg('warehouse.settings.payment.paypal_button_size.notice'));
+
+$field = $form->addSelectField('paypal_button_color');
+$field->setLabel(rex_i18n::msg('warehouse.settings.payment.paypal_button_color'));
+$select = $field->getSelect();
+$select->addOptions([
+    'gold' => rex_i18n::msg('warehouse.settings.payment.paypal_button_color.gold'),
+    'blue' => rex_i18n::msg('warehouse.settings.payment.paypal_button_color.blue'),
+    'silver' => rex_i18n::msg('warehouse.settings.payment.paypal_button_color.silver'),
+    'black' => rex_i18n::msg('warehouse.settings.payment.paypal_button_color.black'),
+    'white' => rex_i18n::msg('warehouse.settings.payment.paypal_button_color.white'),
+]);
+$field->setNotice(rex_i18n::msg('warehouse.settings.payment.paypal_button_color.notice'));
+
+$field = $form->addSelectField('paypal_button_label');
+$field->setLabel(rex_i18n::msg('warehouse.settings.payment.paypal_button_label'));
+$select = $field->getSelect();
+$select->addOptions([
+    'paypal' => rex_i18n::msg('warehouse.settings.payment.paypal_button_label.paypal'),
+    'checkout' => rex_i18n::msg('warehouse.settings.payment.paypal_button_label.checkout'),
+    'pay' => rex_i18n::msg('warehouse.settings.payment.paypal_button_label.pay'),
+    'buynow' => rex_i18n::msg('warehouse.settings.payment.paypal_button_label.buynow'),
+    'installment' => rex_i18n::msg('warehouse.settings.payment.paypal_button_label.installment'),
+    'donate' => rex_i18n::msg('warehouse.settings.payment.paypal_button_label.donate'),
+]);
+$field->setNotice(rex_i18n::msg('warehouse.settings.payment.paypal_button_label.notice'));
+
+$field = $form->addSelectField('paypal_button_layout');
+$field->setLabel(rex_i18n::msg('warehouse.settings.payment.paypal_button_layout'));
+$select = $field->getSelect();
+$select->addOptions([
+    'horizontal' => rex_i18n::msg('warehouse.settings.payment.paypal_button_layout.horizontal'),
+    'vertical' => rex_i18n::msg('warehouse.settings.payment.paypal_button_layout.vertical'),
+]);
+$field->setNotice(rex_i18n::msg('warehouse.settings.payment.paypal_button_layout.notice'));
+
+$field = $form->addTextField('paypal_button_height');
+$field->setLabel(rex_i18n::msg('warehouse.settings.payment.paypal_button_height'));
+$field->setNotice(rex_i18n::msg('warehouse.settings.payment.paypal_button_height.notice'));
+$field = $form->addSelectField('paypal_button_funding_source');
+
+$select = $field->getSelect();
+$select->addOptions([
+    'paypal' => rex_i18n::msg('warehouse.settings.payment.paypal_button_funding_source.paypal'),
+    'credit' => rex_i18n::msg('warehouse.settings.payment.paypal_button_funding_source.credit'),
+]);
+$field->setLabel(rex_i18n::msg('warehouse.settings.payment.paypal_button_funding_source'));
+$field->setNotice(rex_i18n::msg('warehouse.settings.payment.paypal_button_funding_source.notice'));
+
+
 $content = $form->get();
 
 $fragment = new rex_fragment();
