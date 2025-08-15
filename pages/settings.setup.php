@@ -63,7 +63,7 @@ if ('' !== $func) {
                         $this->includeFile(__DIR__ . '/../install/url/url_profile_order.php');
                         echo rex_view::success($addon->i18n('warehouse.setup.success_url_profiles_installed'));
                     } else {
-                        echo rex_view::error('Das URL-Addon ist nicht verfügbar.');
+                        echo rex_view::error($addon->i18n('warehouse.setup.error_url_addon_unavailable'));
                     }
                 } catch (Exception $e) {
                     echo rex_view::error('Fehler beim Installieren der URL-Profile: ' . $e->getMessage());
