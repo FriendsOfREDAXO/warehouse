@@ -1,3 +1,8 @@
+<?php
+
+/** @var rex_fragment $this */
+
+?>
 <div class="panel">
     <div class="panel-body">
         <div class="form-group">

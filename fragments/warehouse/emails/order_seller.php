@@ -2,7 +2,7 @@
 
 namespace FriendsOfRedaxo\Warehouse;
 
-/** @var \rex_fragment $this */
+/** @var rex_fragment $this */
 
 $order_id = $this->getVar('order_id', null);
 $order = Order::get($order_id);
