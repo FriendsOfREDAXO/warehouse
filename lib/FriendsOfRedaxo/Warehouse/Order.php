@@ -608,7 +608,7 @@ class Order extends rex_yform_manager_dataset
      * Gibt die Gesamtsumme (inkl. Versand, Rabatt) im gewünschten Modus zurück.
      * @param 'net'|'gross'|null $mode
      */
-    public function getOrderTotalByMode($mode = null): float
+    public function getOrderTotalByMode(?string $mode = null): float
     {
         $sum = (float) $this->getOrderSubTotalByMode($mode);
         $sum += (float) $this->getValue('shipping_cost');
