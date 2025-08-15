@@ -62,27 +62,42 @@ class Payment
     }
 
     // Getter und Setter für payment_direct_debit
+    /**
+     * @return array<string, string>
+     */
     public function getPaymentDirectDebit(): array
     {
         return $this->payment_direct_debit;
     }
 
+    /**
+     * @param array<string, string> $direct_debit
+     */
     public function setPaymentDirectDebit(array $direct_debit): void
     {
         $this->payment_direct_debit = array_merge($this->payment_direct_debit, $direct_debit);
     }
 
     // Getter und Setter für payment_paypal
+    /**
+     * @return array<string, string>
+     */
     public function getPaymentPaypal(): array
     {
         return $this->payment_paypal;
     }
 
+    /**
+     * @param array<string, string> $paypal
+     */
     public function setPaymentPaypal(array $paypal): void
     {
         $this->payment_paypal = array_merge($this->payment_paypal, $paypal);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getPaymentStatusOptions(): array
     {
         $payment_status_options = self::PAYMENT_STATUS_OPTIONS;
@@ -92,6 +107,9 @@ class Payment
         return $payment_status_options;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function getPaymentDetailsByType(string $payment_type): array
     {
         $payment_details = [];
@@ -125,6 +143,9 @@ class Payment
     }
 
 
+    /**
+     * @return array<string, string>
+     */
     public static function getPaymentOptions() :array
     {
         $payment_options = self::PAYMENT_OPTIONS;
@@ -133,7 +154,10 @@ class Payment
         return $payment_options;
     }
 
-    public static function getPaymentOptionsChoice()
+    /**
+     * @return array<string, string>
+     */
+    public static function getPaymentOptionsChoice(): array
     {
         $payment_options = self::getPaymentOptions();
         $options = [];
@@ -143,6 +167,9 @@ class Payment
         return $options;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getAllowedPaymentOptions() :array
     {
         $payment_options = self::getPaymentOptions();
@@ -157,6 +184,9 @@ class Payment
         return $available_options;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function loadPaymentFromSession(): array
     {
         $payment = rex_session('warehouse_payment', 'array', []);

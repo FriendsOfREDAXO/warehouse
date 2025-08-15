@@ -26,17 +26,17 @@ if ('' !== $func) {
                     
                     // Import tablesets if YForm is available
                     if (rex_addon::get('yform')->isAvailable()) {
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_settings_domain.json'));
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_article.json'));
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_article_variant.json'));
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_category.json'));
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_order.json'));
-                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_customer_address.json'));
+                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_settings_domain.json') ?? '');
+                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_article.json') ?? '');
+                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_article_variant.json') ?? '');
+                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_category.json') ?? '');
+                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_order.json') ?? '');
+                        rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/../install/tablesets/warehouse_customer_address.json') ?? '');
                         rex_yform_manager_table::deleteCache();
                     }
                     echo rex_view::success($addon->i18n('warehouse.setup.success_tables_repaired'));
                 } catch (Exception $e) {
-                    echo rex_view::error($addon->i18n('warehouse.setup.error_repair_tables', [$e->getMessage()]));
+                    echo rex_view::error($addon->i18n('warehouse.setup.error_repair_tables') . $e->getMessage());
                 }
                 break;
 
@@ -51,7 +51,7 @@ if ('' !== $func) {
                         echo rex_view::success($addon->i18n('warehouse.setup.success_structure_installed'));
                     }
                 } catch (Exception $e) {
-                    echo rex_view::error($addon->i18n('warehouse.setup.error_install_structure', $e->getMessage()));
+                    echo rex_view::error($addon->i18n('warehouse.setup.error_install_structure') . $e->getMessage());
                 }
                 break;
 
@@ -84,7 +84,7 @@ if ('' !== $func) {
                     // Clear warehouse tables (keep structure but remove data)
                     $tables_to_clear = [
                         'warehouse_article',
-                        'warehouse_article_variant', 
+                        'warehouse_article_variant',
                         'warehouse_category',
                         'warehouse_order',
                         'warehouse_customer_address'
@@ -168,7 +168,7 @@ if (rex_request('install_yform_email')) {
     $tpl_key = rex_request('install_yform_email');
     $body = rex_file::get(rex_path::addon($this->getName(), 'install/yform_email/' . $tpl_key . '/body.php'));
     $body_html = rex_file::get(rex_path::addon($this->getName(), 'install/yform_email/' . $tpl_key . '/body_html.php'));
-    $meta = rex_string::yamlDecode(rex_file::get(rex_path::addon($this->getName(), 'install/yform_email/' . $tpl_key . '/metadata.yml')));
+    $meta = rex_string::yamlDecode(rex_file::get(rex_path::addon($this->getName(), 'install/yform_email/' . $tpl_key . '/metadata.yml')) ?? '');
     $meta['name'] = $tpl_key;
 
     $mi = rex_sql::factory();

@@ -6,10 +6,12 @@ use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Payment;
 use FriendsOfRedaxo\Warehouse\Warehouse;
+use FriendsOfRedaxo\Warehouse\Address;
 
 $customer = Customer::getCurrent();
 $customer_shipping_address = null;
 if ($customer !== null) {
+    /** @var Address $customer_shipping_address */
     $customer_shipping_address = $customer->getShippingAddress();
 }
 

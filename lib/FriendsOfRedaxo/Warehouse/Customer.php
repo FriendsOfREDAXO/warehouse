@@ -53,7 +53,7 @@ class Customer extends rex_yform_manager_dataset
     
     /* E-Mail */
     /** @api */
-    public function getEmail() : mixed
+    public function getEmail() : ?string
     {
         return $this->getValue("email");
     }
@@ -67,7 +67,7 @@ class Customer extends rex_yform_manager_dataset
 
     /* Vorname */
     /** @api */
-    public function getFirstname() : mixed
+    public function getFirstname() : ?string
     {
         return $this->getValue("firstname");
     }

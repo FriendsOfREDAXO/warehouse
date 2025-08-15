@@ -12,6 +12,7 @@ use rex;
 use rex_api_function;
 use rex_response;
 use CoreInterfaces\Core\Response\ResponseInterface;
+use PaypalServerSdkLib\Http\ApiResponse;
 
 use FriendsOfRedaxo\Warehouse\PayPal;
 use FriendsOfRedaxo\Warehouse\Shipping;
@@ -106,10 +107,10 @@ class Order extends rex_api_function
     }
         
     /**
-     * @param ResponseInterface $response
+     * @param ApiResponse $response
      * @return array{jsonResponse: mixed, httpStatusCode: mixed}
      */
-    public static function handleResponse(ResponseInterface $response): array
+    public static function handleResponse(ApiResponse $response): array
     {
         $jsonResponse = json_decode($response->getBody(), true);
         return [
