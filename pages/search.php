@@ -51,32 +51,40 @@ foreach ($results as $result) {
     $backend_url = '';
     switch ($result['source']) {
         case 'article':
-            $backend_url = Article::get($result['id'])->getBackendUrl();
+            $article = Article::get($result['id']);
+            $backend_url = $article?->getBackendUrl() ?? '';
             break;
         case 'article_variant':
-            $backend_url = ArticleVariant::get($result['id'])->getBackendUrl();
+            $variant = ArticleVariant::get($result['id']);
+            $backend_url = $variant?->getBackendUrl() ?? '';
             break;
         case 'order':
-            $backend_url = Order::get($result['id'])->getBackendUrl();
+            $order = Order::get($result['id']);
+            $backend_url = $order?->getBackendUrl() ?? '';
             break;
         case 'category':
-            $backend_url = Category::get($result['id'])->getBackendUrl();
+            $category = Category::get($result['id']);
+            $backend_url = $category?->getBackendUrl() ?? '';
             break;
     }
 
     $frontend_url = '';
     switch ($result['source']) {
         case 'article':
-            $frontend_url = Article::get($result['id'])->getUrl();
+            $article = Article::get($result['id']);
+            $frontend_url = $article?->getUrl() ?? '';
             break;
         case 'article_variant':
-            $frontend_url = ArticleVariant::get($result['id'])->getUrl();
+            $variant = ArticleVariant::get($result['id']);
+            $frontend_url = $variant?->getUrl() ?? '';
             break;
         case 'order':
-            $frontend_url = Order::get($result['id'])->getUrl();
+            $order = Order::get($result['id']);
+            $frontend_url = $order?->getUrl() ?? '';
             break;
         case 'category':
-            $frontend_url = Category::get($result['id'])->getUrl();
+            $category = Category::get($result['id']);
+            $frontend_url = $category?->getUrl() ?? '';
             break;
     }
 
