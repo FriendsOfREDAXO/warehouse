@@ -133,7 +133,7 @@ $domain = Domain::getCurrent();
 					<?= Warehouse::getLabel('cart_empty') ?>
 				</a>
 				<a class="btn btn-primary ms-auto"
-					href="<?= $domain?->getCheckoutUrl() ?? '' ?>">>
+					href="<?= $domain?->getCheckoutUrl() ?? '' ?>">
 					<?= Warehouse::getLabel('next') ?>
 				</a>
 			</div>
