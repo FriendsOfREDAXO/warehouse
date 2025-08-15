@@ -1,5 +1,7 @@
 <?php
 
+/** @var rex_addon $this */
+
 // Überprüfe aktuell installierte Version von Warehouse
 /*
 if (rex_version::compare($this->getVersion(), '2.0.0', '<')) {
@@ -8,28 +10,69 @@ if (rex_version::compare($this->getVersion(), '2.0.0', '<')) {
 }
 */
 
-$this->includeFile(__DIR__ . '/install/update_scheme.php');
-
 $addon = rex_addon::get('warehouse');
+$addon->includeFile(__DIR__ . '/install/update_scheme.php');
 
 if (rex_addon::get('yform')->isAvailable()) {
-    rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_settings_domain.json'));
-    rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_article.json'));
-    rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_article_variant.json'));
-    rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_category.json'));
-    rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_order.json'));
-    rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_customer_address.json'));
-    //    rex_yform_manager_table_api::importTablesets(rex_file::get(__DIR__ . '/install/tablesets/warehouse_ycom_user.json'));
+    $tableset1 = rex_file::get(__DIR__ . '/install/tablesets/warehouse_settings_domain.json');
+    if ($tableset1 !== null) {
+        rex_yform_manager_table_api::importTablesets($tableset1);
+    }
+    
+    $tableset2 = rex_file::get(__DIR__ . '/install/tablesets/warehouse_article.json');
+    if ($tableset2 !== null) {
+        rex_yform_manager_table_api::importTablesets($tableset2);
+    }
+    
+    $tableset3 = rex_file::get(__DIR__ . '/install/tablesets/warehouse_article_variant.json');
+    if ($tableset3 !== null) {
+        rex_yform_manager_table_api::importTablesets($tableset3);
+    }
+    
+    $tableset4 = rex_file::get(__DIR__ . '/install/tablesets/warehouse_category.json');
+    if ($tableset4 !== null) {
+        rex_yform_manager_table_api::importTablesets($tableset4);
+    }
+    
+    $tableset5 = rex_file::get(__DIR__ . '/install/tablesets/warehouse_order.json');
+    if ($tableset5 !== null) {
+        rex_yform_manager_table_api::importTablesets($tableset5);
+    }
+    
+    $tableset6 = rex_file::get(__DIR__ . '/install/tablesets/warehouse_customer_address.json');
+    if ($tableset6 !== null) {
+        rex_yform_manager_table_api::importTablesets($tableset6);
+    }
+    /**
+     * Helper function to load and import a tableset file.
+     *
+     * @param string $filename
+     * @return void
+     */
+    function warehouse_import_tableset($filename) {
+        $tableset = rex_file::get($filename);
+        if ($tableset !== null) {
+            rex_yform_manager_table_api::importTablesets($tableset);
+        }
+    }
+
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_settings_domain.json');
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_article.json');
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_article_variant.json');
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_category.json');
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_order.json');
+    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_customer_address.json');
+    //    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_ycom_user.json');
     rex_yform_manager_table::deleteCache();
 }
 
 if (rex_addon::get('url')->isAvailable()) {
-    // $this->includeFile(__DIR__ . '/install/url/url_profile_article.php');
-    // $this->includeFile(__DIR__ . '/install/url/url_profile_category.php');
+    // $addon->includeFile(__DIR__ . '/install/url/url_profile_article.php');
+    // $addon->includeFile(__DIR__ . '/install/url/url_profile_category.php');
 }
 
 if (rex_addon::get('mediapool')->isAvailable()) {
-    $this->includeFile(__DIR__ . '/install/media.php');
+    $addon->includeFile(__DIR__ . '/install/media.php');
 }
 
 if (rex_addon::get('ycom')->isAvailable() && rex_config::get('warehouse', 'ycom_mode') == '') {
@@ -41,16 +84,19 @@ if (rex_config::get('warehouse', 'store_name') == '') {
 }
 
 if (rex_config::get('warehouse', 'order_email') == '') {
-    rex_config::set('order_email', rex::getErrorEmail());
+    rex_config::set('warehouse', 'order_email', rex::getErrorEmail());
 }
 
-if (rex_config::get('warehouse', 'editor') == '' && rex_addon::get('tracks')?->isAvailable()) {
-    $class = Alexplusde\Tracks\Editor::getFirstEditorProfile();
-    rex_config::set('warehouse', 'editor', $class);
+if (rex_config::get('warehouse', 'editor') == '') {
+    $tracksAddon = rex_addon::get('tracks');
+    if ($tracksAddon->isAvailable()) {
+        $class = Alexplusde\Tracks\Editor::getFirstEditorProfile();
+        rex_config::set('warehouse', 'editor', $class);
+    }
 }
 
 /* Initialisiere Struktur: Artikel, Kategorien, Domain-Profil */
-$this->includeFile(__DIR__ . '/install/structure.php');
+$addon->includeFile(__DIR__ . '/install/structure.php');
 
 
 // Patch Addon YForm - kopiere uuid.php in die YForm Addon - wenn Version <= 5.0.0
