@@ -234,7 +234,7 @@ class Domain extends rex_yform_manager_dataset
         return '';
     }
     /** @api */
-    public function setThankyouArtId(string $id) : self
+    public function setThankyouArtId(int $id) : self
     {
         if (rex_article::get((int) $id)) {
             $this->setValue("thankyou_art_id", $id);
