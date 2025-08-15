@@ -26,7 +26,7 @@ if (!$order) {
     </div>
 
     <div style="margin: 20px 0; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
-        <?php echo Warehouse::getCustomerDataAsText(); ?>
+        <?php echo Warehouse::getCustomerDataAsText($order_id); ?>
     </div>
 
     <?php if ($order->getPaymentId() == "prepayment") : ?>
