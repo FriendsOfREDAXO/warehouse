@@ -28,14 +28,14 @@ $PAYPAL_CLIENT_ID = PayPal::getClientId();
 $PAYPAL_CLIENT_SECRET = PayPal::getClientSecret();
 
 $client = PaypalServerSdkClientBuilder::init()
-	->clientCredentialsAuthCredentials(
-		ClientCredentialsAuthCredentialsBuilder::init(
-			$PAYPAL_CLIENT_ID,
-			$PAYPAL_CLIENT_SECRET
-		)
-	)
-	->environment(Environment::SANDBOX) // Use Environment::live() for production
-	->build();
+    ->clientCredentialsAuthCredentials(
+        ClientCredentialsAuthCredentialsBuilder::init(
+            $PAYPAL_CLIENT_ID,
+            $PAYPAL_CLIENT_SECRET
+        )
+    )
+    ->environment(Environment::SANDBOX) // Use Environment::live() for production
+    ->build();
 
 
 Order::createOrder([]); // For debugging purposes, remove in production

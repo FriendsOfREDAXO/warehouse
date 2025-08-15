@@ -15,13 +15,13 @@ class rex_api_warehouse_search extends rex_api_function
         foreach ($result as $item) {
             $item['url'] = '';
             $item['icon'] = '';
-            if($item['source'] == 'article') {
+            if ($item['source'] == 'article') {
                 $item['url'] = '<a href="'. rex_url::backendPage('warehouse/article/edit', ['id' => $item['id']]) . '" class="rex-link" target="_blank"> '.$item['name'].' <i class="rex-icon fa-arrow-right"></i></a>';
                 $item['icon'] = '<i class="rex-icon fa-cube"></i>';
-            } elseif($item['source'] == 'article_variant') {
+            } elseif ($item['source'] == 'article_variant') {
                 $item['url'] = '<a href="'. rex_url::backendPage('warehouse/article_variant/edit', ['id' => $item['id']]) . '" class="rex-link" target="_blank"> '.$item['name'].' <i class="rex-icon fa-arrow-right"></i></a>';
                 $item['icon'] = '<i class="rex-icon fa-cubes"></i>';
-            } elseif($item['source'] == 'order') {
+            } elseif ($item['source'] == 'order') {
                 $item['url'] = '<a href="'. rex_url::backendPage('warehouse/order/edit', ['id' => $item['id']]) . '" class="rex-link" target="_blank"> '.$item['name'].' <i class="rex-icon fa-arrow-right"></i></a>';
                 $item['icon'] = '<i class="rex-icon fa-shopping-cart"></i>';
             }

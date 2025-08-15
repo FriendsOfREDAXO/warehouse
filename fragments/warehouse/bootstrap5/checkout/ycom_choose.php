@@ -24,7 +24,7 @@ $domain = Domain::getCurrent();
                         <div class="mt-auto">
                             <?=
                             Checkout::getContinueAsGuestForm()->getForm();
-                            ?>
+?>
                         </div>
                     </div>
                 </div>

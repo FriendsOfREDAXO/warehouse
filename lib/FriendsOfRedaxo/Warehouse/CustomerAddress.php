@@ -18,17 +18,20 @@ class CustomerAddress extends rex_yform_manager_dataset
 
     /* YCom-Benutzer-ID */
     /** @api */
-    public function getYcomUser() : ?rex_yform_manager_dataset {
+    public function getYcomUser() : ?rex_yform_manager_dataset
+    {
         return $this->getRelatedDataset("ycom_user_id");
     }
 
     /* Typ */
     /** @api */
-    public function getType() : ?string {
+    public function getType() : ?string
+    {
         return $this->getValue("type");
     }
     /** @api */
-    public function setType(mixed $value) : self {
+    public function setType(mixed $value) : self
+    {
         $this->setValue("type", $value);
         return $this;
     }
@@ -37,72 +40,84 @@ class CustomerAddress extends rex_yform_manager_dataset
     public static function getTypeOptions() : array
     {
         return self::TYPE_OPTIONS;
-    }	
+    }
 
     /* Firma */
     /** @api */
-    public function getCompany() : ?string {
+    public function getCompany() : ?string
+    {
         return $this->getValue("company");
     }
     /** @api */
-    public function setCompany(mixed $value) : self {
+    public function setCompany(mixed $value) : self
+    {
         $this->setValue("company", $value);
         return $this;
     }
 
     /* Name */
     /** @api */
-    public function getName() : ?string {
+    public function getName() : ?string
+    {
         return $this->getValue("name");
     }
     /** @api */
-    public function setName(mixed $value) : self {
+    public function setName(mixed $value) : self
+    {
         $this->setValue("name", $value);
         return $this;
     }
 
     /* Straße */
     /** @api */
-    public function getStreet() : ?string {
+    public function getStreet() : ?string
+    {
         return $this->getValue("street");
     }
     /** @api */
-    public function setStreet(mixed $value) : self {
+    public function setStreet(mixed $value) : self
+    {
         $this->setValue("street", $value);
         return $this;
     }
 
     /* PLZ */
     /** @api */
-    public function getZip() : ?string {
+    public function getZip() : ?string
+    {
         return $this->getValue("zip");
     }
     /** @api */
-    public function setZip(mixed $value) : self {
+    public function setZip(mixed $value) : self
+    {
         $this->setValue("zip", $value);
         return $this;
     }
 
     /* Stadt */
     /** @api */
-    public function getCity() : ?string {
+    public function getCity() : ?string
+    {
         return $this->getValue("city");
     }
     /** @api */
-    public function setCity(mixed $value) : self {
+    public function setCity(mixed $value) : self
+    {
         $this->setValue("city", $value);
         return $this;
     }
 
     /* Land */
     /** @api */
-    public function getCountry() : ?string {
+    public function getCountry() : ?string
+    {
         return $this->getValue("country");
     }
     /** @api */
-    public function setCountry(mixed $value) : self {
+    public function setCountry(mixed $value) : self
+    {
         $this->setValue("country", $value);
         return $this;
     }
 
-}?>
+}

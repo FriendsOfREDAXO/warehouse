@@ -9,7 +9,7 @@ use FriendsOfRedaxo\Warehouse\Domain;
 
 /** @var Article $article */
 $article = $this->getVar('article');
-if(!Warehouse::isVariantsEnabled()) {
+if (!Warehouse::isVariantsEnabled()) {
     return;
 }
 $variants = $article->getVariants();
@@ -33,7 +33,7 @@ if ($variants !== null) {
             'url' => Domain::getCurrentUrl() . $variant->getUrl(),
             'priceCurrency' => Warehouse::getConfig('currency', 'EUR'),
             'price' => $variant->getPrice(),
-            'priceValidUntil' => date('Y-m-d',strtotime('+1 year')),
+            'priceValidUntil' => date('Y-m-d', strtotime('+1 year')),
             'itemCondition' => 'https://schema.org/NewCondition',
             'availability' => 'https://schema.org/' . ($variant->getAvailability() ?: 'InStock'),
             'seller' => [
@@ -62,11 +62,11 @@ if ($variants !== null) {
             ],
         ],
     ];
-?>
+        ?>
 <script type="application/ld+json" nonce="<?= rex_response::getNonce() ?>">
 <?= json_encode($output, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT) ?>
 </script>
-<?php 
-    } 
-} 
+<?php
+    }
+}
 ?>

@@ -21,12 +21,12 @@ $user_data = $this->warehouse_userdata;
     <?php foreach ($this->cart as $item) : ?>
         <tr>
             <td>
-                <?= trim(html_entity_decode($item['name']),' -') ?><br>
+                <?= trim(html_entity_decode($item['name']), ' -') ?><br>
                 <?php $attr_text = []; ?>
                 <?php foreach ($item['attributes'] as $attr) : ?>
                     <?php $attr_text[] = $attr['value'] ?>
                 <?php endforeach ?>
-                <?= implode(' - ',$attr_text). ($attr_text ? '<br>' : '') ?>
+                <?= implode(' - ', $attr_text). ($attr_text ? '<br>' : '') ?>
                 
                 
                 

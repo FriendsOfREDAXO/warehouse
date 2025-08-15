@@ -26,7 +26,7 @@ if (rex_addon::get('tracks')->isAvailable()) {
 
 /* To-Do - Slices befüllen */
 
-if(rex_addon::get('yform_seeder')->isAvailable()) {
+if (rex_addon::get('yform_seeder')->isAvailable()) {
     /*
     $tableName = 'rex_warehouse_article';
 

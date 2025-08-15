@@ -3,6 +3,7 @@
 /** @var rex_fragment $this */
 
 use FriendsOfRedaxo\Warehouse\Order;
+
 ?>
 <!-- BEGIN my_orders -->
 <?php

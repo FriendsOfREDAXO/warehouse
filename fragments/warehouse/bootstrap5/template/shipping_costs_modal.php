@@ -3,6 +3,7 @@
 /** @var rex_fragment $this */
 
 use FriendsOfRedaxo\Warehouse\Warehouse;
+
 ?>
 <!-- template/shipping_costs_modal.php -->
 <div class="modal fade" id="warehouseShippingCostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="warehouseShippingCostModalLabel" aria-hidden="true">

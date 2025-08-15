@@ -288,8 +288,8 @@ class Article extends rex_yform_manager_dataset
     }
 
     /* Varianten */
-    /** 
-     * @api 
+    /**
+     * @api
      * @return rex_yform_manager_collection<ArticleVariant>|null
      */
     public function getVariants() : ?rex_yform_manager_collection

@@ -76,8 +76,8 @@ if (rex::isFrontend()) {
 
 }
 
-if(rex::isBackend()) {
-	rex_view::info(
-		rex_i18n::msg('warehouse_checkout_not_available_in_backend')
-	);
+if (rex::isBackend()) {
+    rex_view::info(
+        rex_i18n::msg('warehouse_checkout_not_available_in_backend')
+    );
 }

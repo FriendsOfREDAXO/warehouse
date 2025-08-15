@@ -25,7 +25,7 @@ class Cart
         $this->init();
         
         // Auto-detect customer from YCom if available and not already set
-        if ((!isset($this->cart['customer']) || !$this->cart['customer']) && 
+        if ((!isset($this->cart['customer']) || !$this->cart['customer']) &&
             (!isset($this->cart['customer_data']) || empty($this->cart['customer_data']))) {
             $this->autoSetCustomerFromYCom();
         }
@@ -215,7 +215,7 @@ class Cart
      */
     public function hasSeparateDeliveryAddress(): bool
     {
-        return $this->cart['delivery_address'] !== null && 
+        return $this->cart['delivery_address'] !== null &&
                $this->cart['delivery_address'] !== $this->cart['billing_address'];
     }
 

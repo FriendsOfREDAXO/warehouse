@@ -59,7 +59,7 @@ rex_sql_table::get(rex::getTable('warehouse_category'))
     ->ensureIndex(new rex_sql_index('parent_id', ['parent_id']))
     ->ensureIndex(new rex_sql_index('name_uuid', ['name', 'uuid'], rex_sql_index::FULLTEXT))
     ->ensure();
-    
+
 rex_sql_table::get(rex::getTable('warehouse_order'))
     ->ensurePrimaryIdColumn()
     ->ensureColumn(new rex_sql_column('salutation', 'varchar(191)', false, ''))
@@ -120,7 +120,7 @@ rex_sql_table::get(rex::getTable('warehouse_customer_address'))
     ->ensure();
 
 
-if(rex_addon::get('ycom')->isAvailable() && rex_config::get('warehouse', 'ycom_mode') == '') {
+if (rex_addon::get('ycom')->isAvailable() && rex_config::get('warehouse', 'ycom_mode') == '') {
     rex_sql_table::get(rex::getTable('ycom_user'))
         ->ensurePrimaryIdColumn()
         ->ensureColumn(new rex_sql_column('lastname', 'varchar(191)', false, ''), 'firstname')

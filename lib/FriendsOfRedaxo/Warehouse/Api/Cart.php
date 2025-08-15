@@ -14,7 +14,7 @@ class Cart extends rex_api_function
     public function execute()
     {
         // index.php?rex_api_call=cart&action=set&article_id=1&variant_id=1&amount=1
-        if(rex_request('action', 'string') == 'set') {
+        if (rex_request('action', 'string') == 'set') {
             Warehouse::modifyCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null), rex_request('amount', 'int'), 'set');
         }
         // index.php?rex_api_call=cart&action=add&article_id=1&variant_id=1&amount=1

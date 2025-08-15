@@ -7,16 +7,16 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
 if (rex::isBackend()) {
     echo '<h2>Warehouse Kategorie- und Detailansicht</h2>';
     return;
-} 
+}
 
-if(!rex_addon::get('warehouse')->isAvailable() || !rex_addon::get('url')->isAvailable()) {
+if (!rex_addon::get('warehouse')->isAvailable() || !rex_addon::get('url')->isAvailable()) {
     // Addon nicht installiert oder nicht aktiviert
     echo rex_view::error(rex_i18n::msg('warehouse.addon.misssing'));
     return;
 }
 
 $manager = Url\Url::resolveCurrent();
-        
+
 if ($manager) {
     $profile = $manager->getProfile();
     $dataset = $manager->getDataset();

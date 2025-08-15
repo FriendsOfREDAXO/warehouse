@@ -49,7 +49,8 @@ if (rex_addon::get('yform')->isAvailable()) {
      * @param string $filename
      * @return void
      */
-    function warehouse_import_tableset($filename) {
+    function warehouse_import_tableset($filename)
+    {
         $tableset = rex_file::get($filename);
         if ($tableset !== null) {
             rex_yform_manager_table_api::importTablesets($tableset);

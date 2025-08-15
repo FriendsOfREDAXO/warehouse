@@ -7,7 +7,8 @@ use rex_extension;
 use rex_extension_point;
 use rex_i18n;
 
-class Shipping {
+class Shipping
+{
 
     public const CALCULATION_MODE_OPTIONS = [
         '' => 'translate:warehouse.settings.shipping_calculation_mode.options.default',
@@ -32,7 +33,8 @@ class Shipping {
         self::SHIPPING_STATUS_CANCELLED => 'warehouse.order.shipping_status.cancelled',
     ];
 
-    public static function getCost() :float {
+    public static function getCost() :float
+    {
 
         $cart = Cart::get();
 
@@ -53,21 +55,21 @@ class Shipping {
             }
         }
 
-        if($shipping_calculation_mode == 'quantity') {
+        if ($shipping_calculation_mode == 'quantity') {
             if ($total_pieces >= $free_shipping_from) {
                 $return = 0;
             }
             // TODO: Implement quantity calculation
         }
 
-        if($shipping_calculation_mode == 'weight') {
+        if ($shipping_calculation_mode == 'weight') {
             if ($total_weight >= $free_shipping_from) {
                 $return = 0;
             }
             // TODO: Implement weight calculation
         }
 
-        if($shipping_calculation_mode == 'order_total') {
+        if ($shipping_calculation_mode == 'order_total') {
             if ($total_price >= $free_shipping_from) {
                 $return = 0;
             }
@@ -81,7 +83,8 @@ class Shipping {
         ));
     }
 
-    public static function getCostFormatted() :string {
+    public static function getCostFormatted() :string
+    {
         return Warehouse::getCurrencySign() . ' ' . number_format(self::getCost(), 2, ',', '.');
     }
     

@@ -11,7 +11,7 @@ class Checkout
     public static function getContinueAsGuestForm(): \rex_yform
     {
         // Formular für Gast-Bestellung
-        // Hier wird ein YForm-Objekt erstellt, das die Gast-Bestellung ermöglicht       
+        // Hier wird ein YForm-Objekt erstellt, das die Gast-Bestellung ermöglicht
         $yform = new rex_yform();
 
         $yform->setObjectparams('form_action', Domain::getCurrent()->getCheckoutUrl());
@@ -94,8 +94,8 @@ class Checkout
     }
 
     /**
-     * Nachdem das Gäste-Formular abgesendet wurde, werden die 
-     * Angaben des Kunden in der Session zwischengespeichert, 
+     * Nachdem das Gäste-Formular abgesendet wurde, werden die
+     * Angaben des Kunden in der Session zwischengespeichert,
      * um sie beim Bezahlvorgang verfügbar zu haben.
      * @param type $params
      */

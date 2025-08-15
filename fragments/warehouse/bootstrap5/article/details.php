@@ -47,7 +47,7 @@ if (Warehouse::isBulkPricesEnabled()) {
 
                 <!-- Varianten -->
                 <?php if (count($variants) > 1) :
-                ?>
+                    ?>
                     <div class="mb-3">
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                             <?php foreach ($variants as $variant) :
