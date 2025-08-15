@@ -75,7 +75,7 @@ if ('' !== $func) {
                     include_once __DIR__ . '/../install/demo/demo.php';
                     echo rex_view::success($addon->i18n('warehouse.setup.success_demo_imported'));
                 } catch (Exception $e) {
-                    echo rex_view::error('Fehler beim Importieren der Demo-Daten: ' . $e->getMessage());
+                    echo rex_view::error($addon->i18n('warehouse.setup.error_import_demo', $e->getMessage()));
                 }
                 break;
 
