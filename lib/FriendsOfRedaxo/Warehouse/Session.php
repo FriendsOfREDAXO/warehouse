@@ -15,7 +15,8 @@ class Session extends rex_request
     const WAREHOUSE_CUSTOMER_SESSION_KEY = 'warehouse_customer';
     const WAREHOUSE_PAYMENT_SESSION_KEY = 'warehouse_payment';
     const WAREHOUSE_BILLING_ADRESS_SESSION_KEY = 'warehouse_billing_address';
-    const WAREHOUSE_SHIPPING_ADRESS_SESSION_KEY = 'warehouse_shipping_address';
+    const WAREHOUSE_BILLING_ADDRESS_SESSION_KEY = 'warehouse_billing_address';
+    const WAREHOUSE_SHIPPING_ADDRESS_SESSION_KEY = 'warehouse_shipping_address';
 
     /**
      * Returns the session namespace for the warehouse addon.
