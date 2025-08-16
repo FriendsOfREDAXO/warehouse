@@ -56,7 +56,7 @@ class CartApi extends rex_api_function
             ],
             'totals' => [
                 'subtotal' => $cart::getSubTotal(),
-                'subtotal_formatted' => $cart::getSubTotalFormatted(),
+                'subtotal_formatted' => $cart->getSubTotalFormatted(),
                 'total' => $cart::getTotal(),
                 'subtotal' => $cart->getSubTotal(),
                 'subtotal_formatted' => $cart->getSubTotalFormatted(),
