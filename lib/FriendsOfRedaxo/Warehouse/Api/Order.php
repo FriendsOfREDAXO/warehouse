@@ -51,6 +51,9 @@ use PaypalServerSdkLib\Models\OAuthToken;
 use PaypalServerSdkLib\Models\Builders\OrderApplicationContextBuilder;
 use PaypalServerSdkLib\Models\Builders\NameBuilder;
 use PaypalServerSdkLib\Models\Builders\AddressPortableBuilder;
+use PaypalServerSdkLib\Models\Builders\PayerBuilder;
+use PaypalServerSdkLib\Models\Builders\PhoneWithTypeBuilder;
+use PaypalServerSdkLib\Models\Builders\PhoneNumberBuilder;
 
 class Order extends rex_api_function
 {
@@ -205,6 +208,40 @@ class Order extends rex_api_function
                 ->build();
         }
         
+        // Build payer information from customer data
+        $payer = null;
+        if (!empty($customer)) {
+            $payerBuilder = PayerBuilder::init();
+            
+            // Add email address
+            if (!empty($customer['email'])) {
+                $payerBuilder->emailAddress($customer['email']);
+            }
+            
+            // Add name information
+            $firstName = $customer['firstname'] ?? '';
+            $lastName = $customer['lastname'] ?? '';
+            if (!empty($firstName) || !empty($lastName)) {
+                $nameBuilder = NameBuilder::init();
+                if (!empty($firstName)) {
+                    $nameBuilder->givenName($firstName);
+                }
+                if (!empty($lastName)) {
+                    $nameBuilder->surname($lastName);
+                }
+                $payerBuilder->name($nameBuilder->build());
+            }
+            
+            // Add phone information if available
+            if (!empty($customer['phone'])) {
+                $phoneNumber = PhoneNumberBuilder::init($customer['phone'])->build();
+                $phoneWithType = PhoneWithTypeBuilder::init($phoneNumber)->build();
+                $payerBuilder->phone($phoneWithType);
+            }
+            
+            $payer = $payerBuilder->build();
+        }
+        
         // Create application context with return URLs
         $return_url = PayPal::getSuccessPageUrl() ?: '';
         $cancel_url = PayPal::getErrorPageUrl() ?: '';
@@ -219,21 +256,27 @@ class Order extends rex_api_function
             ->cancelUrl($cancel_url)
             ->build();
         
+        $orderRequestBuilder = OrderRequestBuilder::init("CAPTURE", [
+            PurchaseUnitRequestBuilder::init(
+                AmountWithBreakdownBuilder::init($currency, number_format($cart_total, 2, '.', ''))
+                    ->breakdown($breakdown->build())
+                    ->build()
+            )
+                ->items($paypal_items)
+                ->customId(PayPal::getStoreName() . '-' . date('Y-m-d-H-i-s'))
+                ->description('Order from ' . PayPal::getStoreName())
+                ->shipping($shipping) // Add shipping details
+                ->build(),
+        ])
+        ->applicationContext($applicationContext); // Add application context
+        
+        // Add payer information if available
+        if ($payer !== null) {
+            $orderRequestBuilder->payer($payer);
+        }
+        
         $collect =[
-            "body" => OrderRequestBuilder::init("CAPTURE", [
-                PurchaseUnitRequestBuilder::init(
-                    AmountWithBreakdownBuilder::init($currency, number_format($cart_total, 2, '.', ''))
-                        ->breakdown($breakdown->build())
-                        ->build()
-                )
-                    ->items($paypal_items)
-                    ->customId(PayPal::getStoreName() . '-' . date('Y-m-d-H-i-s'))
-                    ->description('Order from ' . PayPal::getStoreName())
-                    ->shipping($shipping) // Add shipping details
-                    ->build(),
-            ])
-            ->applicationContext($applicationContext) // Add application context
-            ->build(),
+            "body" => $orderRequestBuilder->build(),
         ];
     
 
