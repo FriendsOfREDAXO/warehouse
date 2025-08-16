@@ -50,7 +50,7 @@ class BillingAddressApi extends rex_api_function
         ];
 
         // Filter empty values
-        $billingData = array_filter($billingData, function($value) {
+        $billingData = array_filter($billingData, function(string $value) {
             return $value !== '';
         });
 
