@@ -390,6 +390,14 @@ warehouse.settings.cart_mode.page = Produktseite anzeigen
 
 warehouse.order.details.error.no_data_id = Bitte zunächst aus der Übresicht oder Suche eine Bestellung auswählen.
 warehouse.order.details.error.order_not_found = Die angeforderte Bestellung wurde nicht gefunden.
+warehouse.order.details.error.invalid_payment_status = Ungültiger Zahlungsstatus.
+warehouse.order.details.error.invalid_shipping_status = Ungültiger Versandstatus.
+warehouse.order.details.error.invoice_generation_failed = Fehler beim Generieren der Rechnung.
+warehouse.order.details.error.delivery_note_generation_failed = Fehler beim Generieren des Lieferscheins.
+warehouse.order.details.success.payment_status_updated = Zahlungsstatus wurde erfolgreich aktualisiert.
+warehouse.order.details.success.shipping_status_updated = Versandstatus wurde erfolgreich aktualisiert.
+warehouse.order.details.success.invoice_generated = Rechnung wurde erfolgreich generiert.
+warehouse.order.details.success.delivery_note_generated = Lieferschein wurde erfolgreich generiert.
 
 warehouse.settings.framework = Gewünschtes Ausgabe-Framework
 warehouse.settings.framework.notice = Derzeit wird nur Bootstrap 5 unterstützt. <code>bootstrap5</code> ist der Standard-Wert. Du kannst auch den Ordner <code>src/addons/warehouse/fragments/bootstrap5</code> nach <code>src/addons/project/fragments/bootstrap5</code> kopieren und anpassen. Weitere Informationen dazu in den Docs.

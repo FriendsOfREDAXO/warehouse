@@ -737,4 +737,16 @@ class Order extends rex_yform_manager_dataset
         }
         return $options;
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function getShippingStatusOptions(): array
+    {
+        $options = [];
+        foreach (Shipping::getShippingStatusOptions() as $key => $label) {
+            $options[$key] = rex_i18n::msg($label);
+        }
+        return $options;
+    }
 }
