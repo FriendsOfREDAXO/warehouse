@@ -207,7 +207,7 @@ class Session extends rex_request
     /**
      * Check if delivery address is different from billing address
      */
-    public function hasSeparateDeliveryAddress(): bool
+    public static function hasSeparateDeliveryAddress(): bool
     {
         $billingAddress = self::getBillingAddressData();
         $shippingAddress = self::getShippingAddressData();
