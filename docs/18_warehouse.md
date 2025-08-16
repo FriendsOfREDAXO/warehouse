@@ -136,14 +136,6 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
 $currency = Warehouse::getCurrency(); // "EUR"
 ```
 
-### `getCurrencySign()` *(Deprecated)*
-
-**@deprecated** Verwenden Sie stattdessen `formatCurrency()` für vollständige Währungsformatierung oder `getCurrency()` für den Währungscode.
-
-Gibt das Währungssymbol basierend auf der konfigurierten Währung zurück.
-
-**Rückgabe:** String - Währungssymbol
-
 ## Feature-Management
 
 ### `getEnabledFeatures()`
