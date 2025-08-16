@@ -50,23 +50,27 @@ if (!$cart_items || count($cart_items) === 0) {
 			</td>
 			<td class="no-wrap" data-warehouse-cart-item="quantity">
 				<div class="d-inline-flex align-items-center gap-1">
-					<a data-warehouse-cart-item-amount="-1"
-						href="?rex_api_call=warehouse_cart_api&action=modify&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>&amount=1&mode=-"
-						class="btn btn-outline-secondary btn-sm px-2 py-0">-</a>
-					<span
-						class="mx-2 warehouse-cart-item-amount"><?= $item['amount'] ?></span>
-					<a data-warehouse-cart-item-amount="+1"
-						href="?rex_api_call=warehouse_cart_api&action=modify&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>&amount=1&mode=+"
-						class="btn btn-outline-secondary btn-sm px-2 py-0">+</a>
+					<button type="button" class="btn btn-outline-secondary btn-sm px-2 py-0 cart-quantity-btn"
+						data-action="modify" data-mode="-" 
+						data-article-id="<?= $item['article_id'] ?>" 
+						data-variant-id="<?= $item['variant_id'] ?>" 
+						data-amount="1">-</button>
+					<span class="mx-2 warehouse-cart-item-amount" data-item-key="<?= $item_key ?>"><?= $item['amount'] ?></span>
+					<button type="button" class="btn btn-outline-secondary btn-sm px-2 py-0 cart-quantity-btn"
+						data-action="modify" data-mode="+" 
+						data-article-id="<?= $item['article_id'] ?>" 
+						data-variant-id="<?= $item['variant_id'] ?>" 
+						data-amount="1">+</button>
 				</div>
 			</td>
-			<td class="align-right">
+			<td class="align-right item-total" data-item-key="<?= $item_key ?>">
 				<?= Warehouse::formatCurrency($item['total']) ?>
 			</td>
 			<td>
-				<a data-warehouse-cart-action="remove"
-					href="?rex_api_call=warehouse_cart_api&action=delete&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>"
-					class="btn btn-outline-danger btn-sm px-2 py-0"><?= Warehouse::getLabel('remove_from_cart') ?></a>
+				<button type="button" class="btn btn-outline-danger btn-sm px-2 py-0 cart-delete-btn"
+					data-action="delete" 
+					data-article-id="<?= $item['article_id'] ?>" 
+					data-variant-id="<?= $item['variant_id'] ?>"><?= Warehouse::getLabel('remove_from_cart') ?></button>
 			</td>
 		</tr>
 		<?php endforeach; ?>
@@ -90,7 +94,7 @@ if (!$cart_items || count($cart_items) === 0) {
 			</td>
 			<td></td>
 			<td></td>
-			<td class="align-right">
+			<td class="align-right" id="cart-table-subtotal">
 				<?= Cart::getSubTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
 			</td>
 			<td></td>
@@ -142,70 +146,146 @@ if (!$cart_items || count($cart_items) === 0) {
 </div>
 
 <script nonce="<?= rex_response::getNonce() ?>" type="module">
-	// Wenn data-warehouse-cart-action="remove" angeklickt wird, confirm anzeigen
-	document.querySelectorAll('[data-warehouse-cart-action="remove"]').forEach(function(element) {
-		element.addEventListener('click', function(event) {
-			event.preventDefault();
-			// Bootstrap Loading Animation
-			const loadingButton = event.target.closest('a[data-warehouse-cart-action="remove"]');
-			if (loadingButton) {
-				loadingButton.classList.add('disabled');
-				loadingButton.innerHTML =
-					'<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-			}
-			if (confirm(
-					'<?= rex_escape(Warehouse::getLabel('cart_remove_item_confirm')) ?>'
-				)) {
-				window.location.href = this.href;
-			} else {
-				// Wenn der Nutzer nicht bestätigt, dann Button wieder zurücksetzen
+	// Handle cart table interactions with JavaScript and API calls
+	document.addEventListener('DOMContentLoaded', function() {
+		// Handle quantity button clicks
+		document.querySelectorAll('.cart-quantity-btn').forEach(function(button) {
+			button.addEventListener('click', function(e) {
+				e.preventDefault();
+				const action = this.dataset.action;
+				const mode = this.dataset.mode;
+				const articleId = this.dataset.articleId;
+				const variantId = this.dataset.variantId;
+				const amount = this.dataset.amount;
+
+				updateCartTableItem(action, articleId, variantId, amount, mode);
+			});
+		});
+
+		// Handle delete button clicks
+		document.querySelectorAll('.cart-delete-btn').forEach(function(button) {
+			button.addEventListener('click', function(e) {
+				e.preventDefault();
+				const articleId = this.dataset.articleId;
+				const variantId = this.dataset.variantId;
+
+				if (confirm('<?= rex_escape(Warehouse::getLabel('cart_remove_item_confirm')) ?>')) {
+					updateCartTableItem('delete', articleId, variantId);
+				}
+			});
+		});
+
+		// Handle next button clicks with loading animation
+		document.querySelectorAll('[data-warehouse-cart-action="next"]').forEach(function(element) {
+			element.addEventListener('click', function(event) {
+				const loadingButton = event.target.closest('a[data-warehouse-cart-action="next"]');
 				if (loadingButton) {
-					loadingButton.classList.remove('disabled');
-					loadingButton.innerHTML =
-						'<?= rex_escape(Warehouse::getLabel('remove_from_cart')) ?>';
+					loadingButton.classList.add('disabled');
+					loadingButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
 				}
-			}
-		});
-	});
-	// Wenn die Menge geändert wird, dann Zahl im DOM aktualisieren
-	document.querySelectorAll('[data-warehouse-cart-item="quantity"]').forEach(function(element) {
-		element.addEventListener('click', function(event) {
-			event.preventDefault();
-			// Bootstrap Loading Animation 
-			const loadingButton = event.target.closest('a[data-warehouse-cart-item-amount]');
-			if (loadingButton) {
-				loadingButton.classList.add('disabled');
-				loadingButton.innerHTML =
-					'<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-			}
-
-			const target = event.target.closest('[data-warehouse-cart-item-amount]');
-			if (target) {
-				const mod = target.getAttribute('data-warehouse-cart-item-amount');
-				const amountElement = element.querySelector('.warehouse-cart-item-amount');
-				let amount = parseInt(amountElement.textContent, 10);
-				if (mod === '+1') {
-					amount++;
-				} else if (mod === '-1' && amount > 1) {
-					amount--;
-				}
-				amountElement.textContent = amount;
-			}
+			});
 		});
 	});
 
-	// Klick auf weiter - Loading Animation
-	document.querySelectorAll('[data-warehouse-cart-action="next"]').forEach(function(element) {
-		element.addEventListener('click', function(event) {
-			event.preventDefault();
-			// Bootstrap Loading Animation
-			const loadingButton = event.target.closest('a[data-warehouse-cart-action="next"]');
-			if (loadingButton) {
-				loadingButton.classList.add('disabled');
-				loadingButton.innerHTML =
-					'<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+	function updateCartTableItem(action, articleId, variantId = null, amount = 1, mode = null) {
+		// Build API URL
+		let url = `index.php?rex_api_call=warehouse_cart_api&action=${action}`;
+		url += `&article_id=${encodeURIComponent(articleId)}`;
+		if (variantId && variantId !== 'null' && variantId !== '') {
+			url += `&variant_id=${encodeURIComponent(variantId)}`;
+		}
+		url += `&amount=${encodeURIComponent(amount)}`;
+		if (mode) {
+			url += `&mode=${encodeURIComponent(mode)}`;
+		}
+
+		// Show loading state
+		const loadingElements = document.querySelectorAll(`[data-article-id="${articleId}"][data-variant-id="${variantId || ''}"]`);
+		loadingElements.forEach(el => {
+			el.classList.add('disabled');
+			if (el.tagName === 'BUTTON') {
+				el.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
 			}
-			window.location.href = this.href;
 		});
-	});
+
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'X-Requested-With': 'XMLHttpRequest'
+			}
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.success) {
+				updateCartTableDisplay(data);
+			} else {
+				console.error('Cart table update failed:', data);
+				alert('Fehler beim Aktualisieren des Warenkorbs.');
+			}
+		})
+		.catch(error => {
+			console.error('Cart table update error:', error);
+			alert('Fehler beim Aktualisieren des Warenkorbs.');
+		})
+		.finally(() => {
+			// Reset loading state
+			loadingElements.forEach(el => {
+				el.classList.remove('disabled');
+				if (el.tagName === 'BUTTON') {
+					if (el.classList.contains('cart-quantity-btn')) {
+						el.innerHTML = el.dataset.mode === '+' ? '+' : '-';
+					} else if (el.classList.contains('cart-delete-btn')) {
+						el.innerHTML = '<?= rex_escape(Warehouse::getLabel('remove_from_cart')) ?>';
+					}
+				}
+			});
+		});
+	}
+
+	function updateCartTableDisplay(cartData) {
+		// Update item quantities and totals in table
+		Object.entries(cartData.items).forEach(([itemKey, item]) => {
+			// Update quantity display
+			const quantitySpan = document.querySelector(`.warehouse-cart-item-amount[data-item-key="${itemKey}"]`);
+			if (quantitySpan) {
+				quantitySpan.textContent = item.amount;
+			}
+
+			// Update item total with tier pricing
+			const itemTotal = document.querySelector(`.item-total[data-item-key="${itemKey}"]`);
+			if (itemTotal && item.current_total !== undefined) {
+				const formatter = new Intl.NumberFormat('de-DE', {
+					style: 'currency',
+					currency: 'EUR'
+				});
+				itemTotal.textContent = formatter.format(item.current_total);
+			}
+		});
+
+		// Update cart table subtotal
+		const subtotalElement = document.getElementById('cart-table-subtotal');
+		if (subtotalElement && cartData.totals && cartData.totals.subtotal_formatted) {
+			subtotalElement.textContent = cartData.totals.subtotal_formatted;
+		}
+
+		// Remove deleted items from table DOM
+		if (cartData.cart && cartData.cart.items) {
+			const currentItemKeys = Object.keys(cartData.cart.items);
+			document.querySelectorAll('tr [data-item-key]').forEach(element => {
+				const itemKey = element.dataset.itemKey;
+				if (itemKey && !currentItemKeys.includes(itemKey)) {
+					// Find and remove the entire table row
+					const tableRow = element.closest('tr');
+					if (tableRow) {
+						tableRow.remove();
+					}
+				}
+			});
+		}
+
+		// If cart is empty, reload page to show empty cart message
+		if (cartData.totals && cartData.totals.items_count === 0) {
+			window.location.reload();
+		}
+	}
 </script>

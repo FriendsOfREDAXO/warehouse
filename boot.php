@@ -138,6 +138,7 @@ rex_extension::register('WAREHOUSE_TAX_OTIONS', function (rex_extension_point $e
 
 // API verfügbar machen
 rex_api_function::register('warehouse_order', Api\Order::class);
+rex_api_function::register('warehouse_cart_api', Api\CartApi::class);
 
 // WAREHOUSE_ORDER_CREATED extension point
 rex_extension::register('YFORM_DATA_ADDED', function (rex_extension_point $ep) {

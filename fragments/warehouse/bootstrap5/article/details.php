@@ -102,12 +102,11 @@ if (Warehouse::isBulkPricesEnabled()) {
                 <!-- / Preis -->
 
                     <div class="col-12">
-                        <form action="/index.php?rex_api_call=cart" method="post" id="warehouse_form_detail">
+                        <form id="warehouse_form_detail">
                             <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
-                            <input type="hidden" name="action" value="add_to_cart">
                             <div class="input-group mb-3">
                                 <button class="btn btn-outline-primary switch_count" type="button" data-value="-1">[-]</button>
-                                <input name="order_count" type="number" min="1" , step="1" class="form-control" id="warehouse_count_<?= $article->getId() ?>" value="1">
+                                <input name="order_count" type="number" min="1" step="1" class="form-control" id="warehouse_count_<?= $article->getId() ?>" value="1">
                                 <button class="btn btn-outline-primary switch_count" type="button" data-value="+1">[+]</button>
                             </div>
                             <button type="submit" name="submit" value="cart" class="btn btn-secondary"><?= Warehouse::getLabel('add_to_cart') ?></button>
@@ -124,6 +123,10 @@ if (Warehouse::isBulkPricesEnabled()) {
 <script nonce="<?= rex_response::getNonce() ?>">
     document.addEventListener('DOMContentLoaded', function() {
         const buttons = document.querySelectorAll('.switch_count');
+        const priceElement = document.getElementById('warehouse_art_price');
+        const basePrice = parseFloat(priceElement.dataset.price);
+        const bulkPrices = <?= json_encode($bulkPrices) ?>;
+        
         buttons.forEach(button => {
             button.addEventListener('click', function() {
                 const input = document.getElementById('warehouse_count_<?= $article->getId() ?>');
@@ -135,9 +138,51 @@ if (Warehouse::isBulkPricesEnabled()) {
                         currentValue = 1; // Mindestwert auf 1 setzen
                     }
                     input.value = currentValue;
+                    
+                    // Update price based on tier pricing
+                    updatePriceDisplay(currentValue);
                 }
             });
         });
+        
+        // Also update price when input value changes directly
+        const input = document.getElementById('warehouse_count_<?= $article->getId() ?>');
+        input.addEventListener('input', function() {
+            const quantity = parseInt(this.value, 10) || 1;
+            updatePriceDisplay(quantity);
+        });
+        
+        function updatePriceDisplay(quantity) {
+            let pricePerUnit = basePrice;
+            let totalPrice = basePrice * quantity;
+            
+            // Check if bulk pricing applies
+            if (bulkPrices && bulkPrices.length > 0) {
+                for (const bulkPrice of bulkPrices) {
+                    if (quantity >= bulkPrice.min && (bulkPrice.max === null || quantity <= bulkPrice.max)) {
+                        pricePerUnit = parseFloat(bulkPrice.price);
+                        totalPrice = pricePerUnit * quantity;
+                        break;
+                    }
+                }
+            }
+            
+            // Format price
+            const formatter = new Intl.NumberFormat('de-DE', {
+                style: 'currency',
+                currency: 'EUR'
+            });
+            
+            // Update the price display
+            const priceSpan = priceElement.querySelector('span.fs-3');
+            if (priceSpan) {
+                if (quantity === 1) {
+                    priceSpan.textContent = formatter.format(pricePerUnit);
+                } else {
+                    priceSpan.innerHTML = `${formatter.format(pricePerUnit)} × ${quantity} = <strong>${formatter.format(totalPrice)}</strong>`;
+                }
+            }
+        }
     });
 </script>
 <script nonce="<?= rex_response::getNonce() ?>">
@@ -161,7 +206,7 @@ if (Warehouse::isBulkPricesEnabled()) {
                     action = 'add'; // oder ggf. andere Logik
                 }
                 // API-URL zusammenbauen
-                let url = `index.php?rex_api_call=cart&action=${action}`;
+                let url = `index.php?rex_api_call=warehouse_cart_api&action=${action}`;
                 url += `&article_id=${encodeURIComponent(articleId)}`;
                 if (variantId) {
                     url += `&variant_id=${encodeURIComponent(variantId)}`;
