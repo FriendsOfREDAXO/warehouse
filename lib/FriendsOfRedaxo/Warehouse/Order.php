@@ -18,17 +18,115 @@ use rex_yform_manager_table;
 
 class Order extends rex_yform_manager_dataset
 {
+    // Single point of truth for field names
+    public const string ID = 'id';
+    public const string ORDER_NO = 'order_no';
+    public const string SALUTATION = 'salutation';
+    public const string FIRSTNAME = 'firstname';
+    public const string LASTNAME = 'lastname';
+    public const string COMPANY = 'company';
+    public const string ADDRESS = 'address';
+    public const string ZIP = 'zip';
+    public const string CITY = 'city';
+    public const string COUNTRY = 'country';
+    public const string EMAIL = 'email';
+    public const string CREATEDATE = 'createdate';
+    public const string PAYPAL_ID = 'paypal_id';
+    public const string PAYMENT_ID = 'payment_id';
+    public const string PAYPAL_CONFIRM_TOKEN = 'paypal_confirm_token';
+    public const string PAYMENT_CONFIRM = 'payment_confirm';
+    public const string ORDER_TEXT = 'order_text';
+    public const string ORDER_JSON = 'order_json';
+    public const string ORDER_TOTAL = 'order_total';
+    public const string YCOM_USER_ID = 'ycom_user_id';
+    public const string PAYMENT_TYPE = 'payment_type';
+    public const string PAYED = 'payed';
+    public const string IMPORTED = 'imported';
+    public const string IS_READ = 'is_read';
+    public const string UPDATEDATE = 'updatedate';
+    public const string HASH = 'hash';
+    public const string CUSTOM_ORDER_ID = 'custom_order_id';
+    public const string PAYMENT_STATUS = 'payment_status';
+    public const string SHIPPING_STATUS = 'shipping_status';
+    public const string CART_TOTAL_TAX = 'cart_total_tax';
+    public const string CURRENCY = 'currency';
+    public const string NOTE = 'note';
+    public const string ORDER_DATE = 'order_date';
+    public const string ORDER_NUMBER = 'order_number';
+    public const string PAYDATE = 'paydate';
+    public const string SHIPPING_COST = 'shipping_cost';
+    public const string SHIPPING_TYPE = 'shipping_type';
+    public const string SUB_TOTAL = 'sub_total';
+    public const string SUB_TOTAL_NETTO = 'sub_total_netto';
+    public const string USER_E_NUMBER = 'user_e_number';
+    public const string UST = 'ust';
+    public const string VERWENDUNGSZWECK = 'verwendungszweck';
+    public const string WITH_TAX = 'with_tax';
+    public const string DISCOUNT = 'discount';
+    public const string STATUS = 'status';
+    public const string PAYMENT_TYPE_LABELS = 'payment_type_LABELS';
+    public const string SHIPPMENT_TYPE = 'shippment_type'; // typo in database field
+
+    public const array FIELD_CONFIG = [
+        self::ID => [],
+        self::ORDER_NO => [],
+        self::SALUTATION => [],
+        self::FIRSTNAME => [],
+        self::LASTNAME => [],
+        self::COMPANY => [],
+        self::ADDRESS => [],
+        self::ZIP => [],
+        self::CITY => [],
+        self::COUNTRY => [],
+        self::EMAIL => [],
+        self::CREATEDATE => [],
+        self::PAYPAL_ID => [],
+        self::PAYMENT_ID => [],
+        self::PAYPAL_CONFIRM_TOKEN => [],
+        self::PAYMENT_CONFIRM => [],
+        self::ORDER_TEXT => [],
+        self::ORDER_JSON => [],
+        self::ORDER_TOTAL => [],
+        self::YCOM_USER_ID => [],
+        self::PAYMENT_TYPE => [],
+        self::PAYED => [],
+        self::IMPORTED => [],
+        self::IS_READ => [],
+        self::UPDATEDATE => [],
+        self::HASH => [],
+        self::CUSTOM_ORDER_ID => [],
+        self::PAYMENT_STATUS => [],
+        self::SHIPPING_STATUS => [],
+        self::CART_TOTAL_TAX => [],
+        self::CURRENCY => [],
+        self::NOTE => [],
+        self::ORDER_DATE => [],
+        self::ORDER_NUMBER => [],
+        self::PAYDATE => [],
+        self::SHIPPING_COST => [],
+        self::SHIPPING_TYPE => [],
+        self::SUB_TOTAL => [],
+        self::SUB_TOTAL_NETTO => [],
+        self::USER_E_NUMBER => [],
+        self::UST => [],
+        self::VERWENDUNGSZWECK => [],
+        self::WITH_TAX => [],
+        self::DISCOUNT => [],
+        self::STATUS => [],
+        self::PAYMENT_TYPE_LABELS => [],
+        self::SHIPPMENT_TYPE => [], // typo in database field
+    ];
 
     /* Bestellnummer */
     /** @api */
     public function getOrderNo(): ?string
     {
-        return $this->getValue("order_no");
+        return $this->getValue(self::ORDER_NO);
     }
     /** @api */
     public function setOrderNo(string $value): self
     {
-        $this->setValue("order_no", $value);
+        $this->setValue(self::ORDER_NO, $value);
         return $this;
     }
 
@@ -36,12 +134,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getSalutation() : ?string
     {
-        return $this->getValue("salutation");
+        return $this->getValue(self::SALUTATION);
     }
     /** @api */
     public function setSalutation(mixed $value) : self
     {
-        $this->setValue("salutation", $value);
+        $this->setValue(self::SALUTATION, $value);
         return $this;
     }
     
@@ -49,12 +147,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getFirstname() : mixed
     {
-        return $this->getValue("firstname");
+        return $this->getValue(self::FIRSTNAME);
     }
     /** @api */
     public function setFirstname(mixed $value) : self
     {
-        $this->setValue("firstname", $value);
+        $this->setValue(self::FIRSTNAME, $value);
         return $this;
     }
     
@@ -62,12 +160,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getLastname() : mixed
     {
-        return $this->getValue("lastname");
+        return $this->getValue(self::LASTNAME);
     }
     /** @api */
     public function setLastname(mixed $value) : self
     {
-        $this->setValue("lastname", $value);
+        $this->setValue(self::LASTNAME, $value);
         return $this;
     }
     
@@ -75,12 +173,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getCompany() : mixed
     {
-        return $this->getValue("company");
+        return $this->getValue(self::COMPANY);
     }
     /** @api */
     public function setCompany(mixed $value) : self
     {
-        $this->setValue("company", $value);
+        $this->setValue(self::COMPANY, $value);
         return $this;
     }
     
@@ -88,12 +186,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getAddress() : mixed
     {
-        return $this->getValue("address");
+        return $this->getValue(self::ADDRESS);
     }
     /** @api */
     public function setAddress(mixed $value) : self
     {
-        $this->setValue("address", $value);
+        $this->setValue(self::ADDRESS, $value);
         return $this;
     }
     
@@ -101,12 +199,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getZip() : mixed
     {
-        return $this->getValue("zip");
+        return $this->getValue(self::ZIP);
     }
     /** @api */
     public function setZip(mixed $value) : self
     {
-        $this->setValue("zip", $value);
+        $this->setValue(self::ZIP, $value);
         return $this;
     }
     
@@ -114,12 +212,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getCity() : mixed
     {
-        return $this->getValue("city");
+        return $this->getValue(self::CITY);
     }
     /** @api */
     public function setCity(mixed $value) : self
     {
-        $this->setValue("city", $value);
+        $this->setValue(self::CITY, $value);
         return $this;
     }
     
@@ -127,12 +225,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getCountry() : ?string
     {
-        return $this->getValue("country");
+        return $this->getValue(self::COUNTRY);
     }
     /** @api */
     public function setCountry(mixed $value) : self
     {
-        $this->setValue("country", $value);
+        $this->setValue(self::COUNTRY, $value);
         return $this;
     }
     
@@ -140,12 +238,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getEmail() : ?string
     {
-        return $this->getValue("email");
+        return $this->getValue(self::EMAIL);
     }
     /** @api */
     public function setEmail(mixed $value) : self
     {
-        $this->setValue("email", $value);
+        $this->setValue(self::EMAIL, $value);
         return $this;
     }
     
@@ -153,20 +251,20 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getCreatedate() : ?string
     {
-        return $this->getValue("createdate");
+        return $this->getValue(self::CREATEDATE);
     }
 
     // TODO: IntldateFromatter verwenden
     /** @api */
     public function getCreatedateFormatted() : ?string
     {
-        return date('d.m.Y H:i', strtotime($this->getValue("createdate")));
+        return date('d.m.Y H:i', strtotime($this->getValue(self::CREATEDATE)));
     }
 
     /** @api */
     public function setCreatedate(string $value) : self
     {
-        $this->setValue("createdate", $value);
+        $this->setValue(self::CREATEDATE, $value);
         return $this;
     }
     
@@ -174,12 +272,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getPaypalId() : mixed
     {
-        return $this->getValue("paypal_id");
+        return $this->getValue(self::PAYPAL_ID);
     }
     /** @api */
     public function setPaypalId(mixed $value) : self
     {
-        $this->setValue("paypal_id", $value);
+        $this->setValue(self::PAYPAL_ID, $value);
         return $this;
     }
     
@@ -187,12 +285,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getPaymentId() : ?string
     {
-        return $this->getValue("payment_id");
+        return $this->getValue(self::PAYMENT_ID);
     }
     /** @api */
     public function setPaymentId(mixed $value) : self
     {
-        $this->setValue("payment_id", $value);
+        $this->setValue(self::PAYMENT_ID, $value);
         return $this;
     }
     
@@ -200,12 +298,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getPaypalConfirmToken() : ?string
     {
-        return $this->getValue("paypal_confirm_token");
+        return $this->getValue(self::PAYPAL_CONFIRM_TOKEN);
     }
     /** @api */
     public function setPaypalConfirmToken(mixed $value) : self
     {
-        $this->setValue("paypal_confirm_token", $value);
+        $this->setValue(self::PAYPAL_CONFIRM_TOKEN, $value);
         return $this;
     }
     
@@ -213,12 +311,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getPaymentConfirm() : ?string
     {
-        return $this->getValue("payment_confirm");
+        return $this->getValue(self::PAYMENT_CONFIRM);
     }
     /** @api */
     public function setPaymentConfirm(mixed $value) : self
     {
-        $this->setValue("payment_confirm", $value);
+        $this->setValue(self::PAYMENT_CONFIRM, $value);
         return $this;
     }
                 
@@ -227,14 +325,14 @@ class Order extends rex_yform_manager_dataset
     public function getOrderJson(bool $asArray = true) : mixed
     {
         if ($asArray) {
-            return json_decode($this->getValue("order_json"), true);
+            return json_decode($this->getValue(self::ORDER_JSON), true);
         }
-        return $this->getValue("order_json");
+        return $this->getValue(self::ORDER_JSON);
     }
     /** @api */
     public function setOrderJson(string $value) : self
     {
-        $this->setValue("order_json", $value);
+        $this->setValue(self::ORDER_JSON, $value);
         return $this;
     }
                 
@@ -242,12 +340,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getOrderTotal() : ?float
     {
-        return $this->getValue("order_total");
+        return $this->getValue(self::ORDER_TOTAL);
     }
     /** @api */
     public function setOrderTotal(float $value) : self
     {
-        $this->setValue("order_total", $value);
+        $this->setValue(self::ORDER_TOTAL, $value);
         return $this;
     }
                 
@@ -260,7 +358,7 @@ class Order extends rex_yform_manager_dataset
 
     public function setYComUser(int $ycom_user_id) : self
     {
-        $this->setValue("ycom_user_id", $ycom_user_id);
+        $this->setValue(self::YCOM_USER_ID, $ycom_user_id);
         return $this;
     }
     
@@ -285,12 +383,12 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getIsRead() : bool
     {
-        return (bool) $this->getValue("is_read");
+        return (bool) $this->getValue(self::IS_READ);
     }
     /** @api */
     public function setIsRead(bool $value) : self
     {
-        $this->setValue("is_read", $value ? 1 : 0);
+        $this->setValue(self::IS_READ, $value ? 1 : 0);
         return $this;
     }
     
@@ -346,20 +444,20 @@ class Order extends rex_yform_manager_dataset
                 $params['table_name'] = self::table()->getTableName();
                 $params['rex_yform_manager_popup'] = '0';
                 $params['_csrf_token'] = $token['_csrf_token'] ?? '';
-                $params['data_id'] = $a['list']->getValue('id');
+                $params['data_id'] = $a['list']->getValue(self::ID);
                 $params['func'] = 'edit';
 
                 $return = '';
                 /** @var rex_yform_manager_dataset $values */
                 $values = $a['list'];
                 // Anrede, Name, Adresse in einer Zelle
-                if ($values->getValue('company') != '') {
-                    $return .= $values->getValue('company') . '<br>';
+                if ($values->getValue(self::COMPANY) != '') {
+                    $return .= $values->getValue(self::COMPANY) . '<br>';
                 }
-                $return .= $values->getValue('salutation') . ' ' . $values->getValue('firstname') . ' ' . $values->getValue('lastname') . '<br>';
-                $return .= $values->getValue('address') . '<br>';
-                $return .= $values->getValue('zip') . ' ' . $values->getValue('city') . '<br>';
-                $return .= $values->getValue('country') . '<br>';
+                $return .= $values->getValue(self::SALUTATION) . ' ' . $values->getValue(self::FIRSTNAME) . ' ' . $values->getValue(self::LASTNAME) . '<br>';
+                $return .= $values->getValue(self::ADDRESS) . '<br>';
+                $return .= $values->getValue(self::ZIP) . ' ' . $values->getValue(self::CITY) . '<br>';
+                $return .= $values->getValue(self::COUNTRY) . '<br>';
 
                 return '<div class="text-nowrap">' . $return . '</div>';
 
@@ -372,7 +470,7 @@ class Order extends rex_yform_manager_dataset
             static function ($a) {
                 /** @var rex_yform_manager_dataset $values */
                 $values = $a['list'];
-                $is_read = (bool) $values->getValue('is_read');
+                $is_read = (bool) $values->getValue(self::IS_READ);
                 
                 // Zeige schwarzen Punkt für ungelesene Bestellungen
                 if (!$is_read) {
@@ -477,10 +575,10 @@ class Order extends rex_yform_manager_dataset
             static function ($a) {
                 /** @var rex_yform_manager_dataset $list */
                 $list = $a['list'];
-                $order_total = $list->getValue('order_total');
-                $payment_confirm = $list->getValue('payment_confirm');
-                $payment_type = $list->getValue('payment_type');
-                $payed = $list->getValue('payed');
+                $order_total = $list->getValue(self::ORDER_TOTAL);
+                $payment_confirm = $list->getValue(self::PAYMENT_CONFIRM);
+                $payment_type = $list->getValue(self::PAYMENT_TYPE);
+                $payed = $list->getValue(self::PAYED);
 
                 $return = '';
 
@@ -675,8 +773,8 @@ class Order extends rex_yform_manager_dataset
     public function getOrderTotalByMode(?string $mode = null): float
     {
         $sum = (float) $this->getOrderSubTotalByMode($mode);
-        $sum += (float) $this->getValue('shipping_cost');
-        $sum -= (float) $this->getValue('discount');
+        $sum += (float) $this->getValue(self::SHIPPING_COST);
+        $sum -= (float) $this->getValue(self::DISCOUNT);
         return $sum;
     }
 

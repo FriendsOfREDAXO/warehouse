@@ -10,6 +10,45 @@ use rex_yrewrite;
 
 class Domain extends rex_yform_manager_dataset
 {
+    // Single point of truth for field names
+    public const string ID = 'id';
+    public const string YREWRITE_DOMAIN_ID = 'yrewrite_domain_id';
+    public const string CART_ART_ID = 'cart_art_id';
+    public const string CHECKOUT_ART_ID = 'checkout_art_id';
+    public const string SHIPPINGINFO_ART_ID = 'shippinginfo_art_id';
+    public const string ADDRESS_ART_ID = 'address_art_id';
+    public const string ORDER_ART_ID = 'order_art_id';
+    public const string PAYMENT_ERROR_ART_ID = 'payment_error_art_id';
+    public const string THANKYOU_ART_ID = 'thankyou_art_id';
+    public const string EMAIL_TEMPLATE_CUSTOMER = 'email_template_customer';
+    public const string EMAIL_TEMPLATE_SELLER = 'email_template_seller';
+    public const string ORDER_EMAIL = 'order_email';
+    public const string EMAIL_SIGNATURE = 'email_signature';
+    public const string SEPA_BANK_NAME = 'sepa_bank_name';
+    public const string SEPA_BIC = 'sepa_bic';
+    public const string SEPA_IBAN = 'sepa_iban';
+    public const string SEPA_ACCOUNT_HOLDER_NAME = 'sepa_account_holder_name';
+
+    public const array FIELD_CONFIG = [
+        self::ID => [],
+        self::YREWRITE_DOMAIN_ID => [],
+        self::CART_ART_ID => [],
+        self::CHECKOUT_ART_ID => [],
+        self::SHIPPINGINFO_ART_ID => [],
+        self::ADDRESS_ART_ID => [],
+        self::ORDER_ART_ID => [],
+        self::PAYMENT_ERROR_ART_ID => [],
+        self::THANKYOU_ART_ID => [],
+        self::EMAIL_TEMPLATE_CUSTOMER => [],
+        self::EMAIL_TEMPLATE_SELLER => [],
+        self::ORDER_EMAIL => [],
+        self::EMAIL_SIGNATURE => [],
+        self::SEPA_BANK_NAME => [],
+        self::SEPA_BIC => [],
+        self::SEPA_IBAN => [],
+        self::SEPA_ACCOUNT_HOLDER_NAME => [],
+    ];
+
     public static function getCurrent() : ?self
     {
         $domain = rex_yrewrite::getCurrentDomain();

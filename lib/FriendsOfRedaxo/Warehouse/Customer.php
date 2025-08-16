@@ -40,9 +40,44 @@ const ALL_FIELDS = [
 
 class Customer extends rex_yform_manager_dataset
 {
+    // Single point of truth for field names
+    public const string ID = 'id';
+    public const string LOGIN = 'login';
+    public const string EMAIL = 'email';
+    public const string FIRSTNAME = 'firstname';
+    public const string LASTNAME = 'lastname';
+    public const string SALUTATION = 'salutation';
+    public const string COMPANY = 'company';
+    public const string DEPARTMENT = 'department';
+    public const string ADDRESS = 'address';
+    public const string PHONE = 'phone';
+    public const string ZIP = 'zip';
+    public const string CITY = 'city';
+    public const string STATUS = 'status';
+    public const string CREATEDATE = 'createdate';
+    public const string UPDATEDATE = 'updatedate';
+
+    public const array FIELD_CONFIG = [
+        self::ID => [],
+        self::LOGIN => [],
+        self::EMAIL => [],
+        self::FIRSTNAME => [],
+        self::LASTNAME => [],
+        self::SALUTATION => [],
+        self::COMPANY => [],
+        self::DEPARTMENT => [],
+        self::ADDRESS => [],
+        self::PHONE => [],
+        self::ZIP => [],
+        self::CITY => [],
+        self::STATUS => [],
+        self::CREATEDATE => [],
+        self::UPDATEDATE => [],
+    ];
+
     public static function getCurrent()
     {
-        $user_id = rex_ycom_auth::getUser()?->getValue('id') ?? null;
+        $user_id = rex_ycom_auth::getUser()?->getValue(self::ID) ?? null;
         if (!$user_id) {
             return null;
         }
@@ -113,7 +148,7 @@ class Customer extends rex_yform_manager_dataset
     public function getShippingAddress() : ?CustomerAddress
     {
         $address = CustomerAddress::query()
-            ->where('ycom_user_id', $this->getValue('id'))
+            ->where('ycom_user_id', $this->getValue(self::ID))
             ->where('type', 'shipping')
             ->findOne();
         if ($address) {
@@ -121,7 +156,7 @@ class Customer extends rex_yform_manager_dataset
         }
         // Fallback to the main address if no shipping address is set
         $address = CustomerAddress::query()
-            ->where('ycom_user_id', $this->getValue('id'))
+            ->where('ycom_user_id', $this->getValue(self::ID))
             ->findOne();
         if ($address) {
             return $address;
