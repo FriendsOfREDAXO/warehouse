@@ -18,6 +18,68 @@ use rex_yform_manager_table;
 
 class Order extends rex_yform_manager_dataset
 {
+    // Single point of truth for field names
+    public const string ID = 'id';
+    public const string ORDER_NO = 'order_no';
+    public const string SALUTATION = 'salutation';
+    public const string FIRSTNAME = 'firstname';
+    public const string LASTNAME = 'lastname';
+    public const string COMPANY = 'company';
+    public const string ADDRESS = 'address';
+    public const string ZIP = 'zip';
+    public const string CITY = 'city';
+    public const string COUNTRY = 'country';
+    public const string EMAIL = 'email';
+    public const string CREATEDATE = 'createdate';
+    public const string PAYPAL_ID = 'paypal_id';
+    public const string PAYMENT_ID = 'payment_id';
+    public const string PAYPAL_CONFIRM_TOKEN = 'paypal_confirm_token';
+    public const string PAYMENT_CONFIRM = 'payment_confirm';
+    public const string ORDER_TEXT = 'order_text';
+    public const string ORDER_JSON = 'order_json';
+    public const string ORDER_TOTAL = 'order_total';
+    public const string YCOM_USER_ID = 'ycom_user_id';
+    public const string PAYMENT_TYPE = 'payment_type';
+    public const string PAYED = 'payed';
+    public const string IMPORTED = 'imported';
+    public const string IS_READ = 'is_read';
+    public const string UPDATEDATE = 'updatedate';
+    public const string HASH = 'hash';
+    public const string CUSTOM_ORDER_ID = 'custom_order_id';
+    public const string PAYMENT_STATUS = 'payment_status';
+    public const string SHIPPING_STATUS = 'shipping_status';
+
+    public const array FIELD_CONFIG = [
+        self::ID => [],
+        self::ORDER_NO => [],
+        self::SALUTATION => [],
+        self::FIRSTNAME => [],
+        self::LASTNAME => [],
+        self::COMPANY => [],
+        self::ADDRESS => [],
+        self::ZIP => [],
+        self::CITY => [],
+        self::COUNTRY => [],
+        self::EMAIL => [],
+        self::CREATEDATE => [],
+        self::PAYPAL_ID => [],
+        self::PAYMENT_ID => [],
+        self::PAYPAL_CONFIRM_TOKEN => [],
+        self::PAYMENT_CONFIRM => [],
+        self::ORDER_TEXT => [],
+        self::ORDER_JSON => [],
+        self::ORDER_TOTAL => [],
+        self::YCOM_USER_ID => [],
+        self::PAYMENT_TYPE => [],
+        self::PAYED => [],
+        self::IMPORTED => [],
+        self::IS_READ => [],
+        self::UPDATEDATE => [],
+        self::HASH => [],
+        self::CUSTOM_ORDER_ID => [],
+        self::PAYMENT_STATUS => [],
+        self::SHIPPING_STATUS => [],
+    ];
 
     /* Bestellnummer */
     /** @api */

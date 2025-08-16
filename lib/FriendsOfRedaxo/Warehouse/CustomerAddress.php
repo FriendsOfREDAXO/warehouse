@@ -16,6 +16,29 @@ class CustomerAddress extends rex_yform_manager_dataset
         'other' => 'translate:warehouse.customer_address.type.other'
     ];
 
+    // Single point of truth for field names
+    public const string ID = 'id';
+    public const string YCOM_USER_ID = 'ycom_user_id';
+    public const string TYPE = 'type';
+    public const string COMPANY = 'company';
+    public const string NAME = 'name';
+    public const string STREET = 'street';
+    public const string ZIP = 'zip';
+    public const string CITY = 'city';
+    public const string COUNTRY = 'country';
+
+    public const array FIELD_CONFIG = [
+        self::ID => [],
+        self::YCOM_USER_ID => [],
+        self::TYPE => [],
+        self::COMPANY => [],
+        self::NAME => [],
+        self::STREET => [],
+        self::ZIP => [],
+        self::CITY => [],
+        self::COUNTRY => [],
+    ];
+
     /* YCom-Benutzer-ID */
     /** @api */
     public function getYcomUser() : ?rex_yform_manager_dataset

@@ -24,6 +24,33 @@ class Category extends \rex_yform_manager_dataset
     ];
 
     public const TABLE_NAME = 'warehouse_category';
+
+    // Single point of truth for field names
+    public const string ID = 'id';
+    public const string PRIO = 'prio';
+    public const string PARENT_ID = 'parent_id';
+    public const string NAME = 'name';
+    public const string TEASER = 'teaser';
+    public const string IMAGE = 'image';
+    public const string TEXT = 'text';
+    public const string STATUS = 'status';
+    public const string UUID = 'uuid';
+    public const string UPDATEDATE = 'updatedate';
+    public const string CREATEDATE = 'createdate';
+
+    public const array FIELD_CONFIG = [
+        self::ID => [],
+        self::PRIO => [],
+        self::PARENT_ID => [],
+        self::NAME => [],
+        self::TEASER => [],
+        self::IMAGE => [],
+        self::TEXT => [],
+        self::STATUS => [],
+        self::UUID => [],
+        self::UPDATEDATE => [],
+        self::CREATEDATE => [],
+    ];
     
     /* Status */
     /** @api */

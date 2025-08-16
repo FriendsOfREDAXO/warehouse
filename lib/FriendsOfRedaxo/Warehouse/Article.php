@@ -58,6 +58,49 @@ class Article extends rex_yform_manager_dataset
         '0' => '0%',
     ];
 
+    // Single point of truth for field names
+    public const string ID = 'id';
+    public const string CATEGORY_ID = 'category_id';
+    public const string NAME = 'name';
+    public const string PRICE = 'price';
+    public const string AVAILABILITY_FIELD = 'availability';
+    public const string IMAGE = 'image';
+    public const string STATUS = 'status';
+    public const string TAX = 'tax';
+    public const string PRICE_TEXT = 'price_text';
+    public const string BULK_PRICES = 'bulk_prices';
+    public const string WEIGHT = 'weight';
+    public const string STOCK = 'stock';
+    public const string GALLERY = 'gallery';
+    public const string VARIANT_IDS = 'variant_ids';
+    public const string SHORT_TEXT = 'short_text';
+    public const string TEXT = 'text';
+    public const string UUID = 'uuid';
+    public const string UPDATEDATE = 'updatedate';
+    public const string CREATEDATE = 'createdate';
+
+    public const array FIELD_CONFIG = [
+        self::ID => [],
+        self::CATEGORY_ID => [],
+        self::NAME => [],
+        self::PRICE => [],
+        self::AVAILABILITY_FIELD => [],
+        self::IMAGE => [],
+        self::STATUS => [],
+        self::TAX => [],
+        self::PRICE_TEXT => [],
+        self::BULK_PRICES => [],
+        self::WEIGHT => [],
+        self::STOCK => [],
+        self::GALLERY => [],
+        self::VARIANT_IDS => [],
+        self::SHORT_TEXT => [],
+        self::TEXT => [],
+        self::UUID => [],
+        self::UPDATEDATE => [],
+        self::CREATEDATE => [],
+    ];
+
     /* Name */
     /** @api */
     public function getName() : ?string
