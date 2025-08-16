@@ -157,7 +157,7 @@ class Session extends rex_request
      */
     public static function setShippingAddress(array $shippingAddress)
     {
-        self::setSession(self::WAREHOUSE_SHIPPING_ADRESS_SESSION_KEY, $shippingAddress);
+        self::setSession(self::WAREHOUSE_SHIPPING_ADDRESS_SESSION_KEY, $shippingAddress);
     }
 
     
