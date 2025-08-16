@@ -373,7 +373,8 @@ if ($user_data['email']) {
                 echo '<td class="text-left">' . html_entity_decode($pos['name']) . $variant_indicator . $attr . '</td>';
                 echo '<td class="text-right">' . $pos['amount'] . '</td>';
                 if ($with_tax) {
-                    echo '<td class="text-right">19</td>'; // Default tax rate - should be calculated dynamically
+                    $tax_rate = isset($pos['tax_rate']) ? $pos['tax_rate'] : '-';
+                    echo '<td class="text-right">' . htmlspecialchars($tax_rate) . '</td>';
                     echo '<td class="text-right">' . number_format($pos['price'], 2, ',', '.') . '</td>';
                     echo '<td class="text-right">' . number_format($pos['total'], 2, ',', '.') . '</td>';
                 } else {
