@@ -127,11 +127,5 @@ if (rex_addon::get('ycom')->isAvailable() && rex_config::get('warehouse', 'ycom_
     rex_sql_table::get(rex::getTable('ycom_user'))
         ->ensurePrimaryIdColumn()
         ->ensureColumn(new rex_sql_column('lastname', 'varchar(191)', false, ''), 'firstname')
-        ->ensureColumn(new rex_sql_column('company', 'varchar(191)', false, ''), 'ycom_groups')
-        ->ensureColumn(new rex_sql_column('department', 'varchar(191)', false, ''), 'company')
-        ->ensureColumn(new rex_sql_column('address', 'varchar(191)', false, ''), 'department')
-        ->ensureColumn(new rex_sql_column('phone', 'varchar(191)', false, ''), 'address')
-        ->ensureColumn(new rex_sql_column('zip', 'varchar(191)', false, ''), 'phone')
-        ->ensureColumn(new rex_sql_column('city', 'varchar(191)', false, ''), 'zip')
         ->ensure();
 }
