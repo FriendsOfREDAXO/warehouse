@@ -68,7 +68,7 @@ $yform->setValueField('html', ['', '</div>']);
 // Shipping Address Section
 $yform->setValueField('html', ['', '<div class="col-md-6">']);
 $yform->setValueField('html', ['', '<div class="mb-3">']);
-$yform->setValueField('checkbox', ['different_shipping_address', 'Abweichende Lieferadresse', '1', '', ['class' => 'form-check-input', 'id' => 'different_shipping_address']]);
+$yform->setValueField('checkbox', ['different_shipping_address', 'Abweichende Lieferadresse verwenden', '1', '', ['class' => 'form-check-input', 'id' => 'different_shipping_address']]);
 $yform->setValueField('html', ['', '</div>']);
 
 $yform->setValueField('html', ['', '<div id="shipping-address-fields" style="display: none;">']);

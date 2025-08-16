@@ -134,7 +134,22 @@ class Checkout
         // Save customer data using Session class
         Session::setCustomer($customer_session);
         
-        // Save billing address if provided
+        // If no explicit billing address provided, use customer data as billing address
+        if (empty($billing_address) && !empty($customer_session)) {
+            $billing_address = array_filter([
+                'firstname' => $customer_session['firstname'] ?? '',
+                'lastname' => $customer_session['lastname'] ?? '',
+                'company' => $customer_session['company'] ?? '',
+                'department' => $customer_session['department'] ?? '',
+                'address' => $customer_session['address'] ?? '',
+                'zip' => $customer_session['zip'] ?? '',
+                'city' => $customer_session['city'] ?? '',
+                'email' => $customer_session['email'] ?? '',
+                'phone' => $customer_session['phone'] ?? '',
+            ]);
+        }
+        
+        // Save billing address if provided or derived from customer data
         if (!empty($billing_address)) {
             Session::setBillingAddress($billing_address);
         }
