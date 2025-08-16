@@ -17,5 +17,4 @@ In den Grundeinstellungen werden die wesentlichen Einstellungen für den Betrieb
 
 **Nicht (mehr) implementiert:**
 
-- `currency_symbol` (wurde entfernt - verwenden Sie `Warehouse::formatCurrency()` für Währungsformatierung)
 - `enable_weight` (wird über enable_features/weight abgedeckt)
