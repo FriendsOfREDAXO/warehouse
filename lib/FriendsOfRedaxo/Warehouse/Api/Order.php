@@ -141,6 +141,12 @@ class Order extends rex_api_function
         // Get dynamic currency and cart totals
         $currency = Warehouse::getCurrency();
         $cart = new Cart(); // Load cart from session
+        
+        // Validate cart is not empty
+        if ($cart->isEmpty()) {
+            throw new Exception('Cart is empty - cannot create PayPal order');
+        }
+        
         $cart_total = Cart::getCartTotal(); // Total including shipping
         $cart_subtotal = Cart::getSubTotal(); // Items only, excluding shipping
         $shipping_cost = Shipping::getCost(); // Shipping costs
@@ -197,9 +203,8 @@ class Order extends rex_api_function
         }
         
         // Create application context with return URLs
-        $domain = Domain::getCurrent();
-        $return_url = $domain ? $domain->getUrl() . '?warehouse_paypal_return=1' : '';
-        $cancel_url = $domain ? $domain->getUrl() . '?warehouse_paypal_cancel=1' : '';
+        $return_url = PayPal::getSuccessPageUrl() ?: '';
+        $cancel_url = PayPal::getErrorPageUrl() ?: '';
         
         $applicationContext = OrderApplicationContextBuilder::init()
             ->brandName(PayPal::getStoreName() ?: 'Shop')
@@ -287,7 +292,11 @@ class Order extends rex_api_function
                     ->setValue('shipping_status', Shipping::SHIPPING_STATUS_NOT_SHIPPED);
                 
                 $order->save();
+            } else {
+                throw new Exception('Failed to find saved order after Session::saveAsOrder');
             }
+        } else {
+            throw new Exception('Failed to save order via Session::saveAsOrder');
         }
 
         
