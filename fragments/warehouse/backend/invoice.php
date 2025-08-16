@@ -377,7 +377,7 @@ if ($user_data['email']) {
                 echo '<td class="text-left">' . html_entity_decode($pos['name']) . $variant_indicator . $attr . '</td>';
                 echo '<td class="text-right">' . $pos['amount'] . '</td>';
                 if ($with_tax) {
-                    echo '<td class="text-right">19</td>'; // Default tax rate - should be calculated dynamically
+                    echo '<td class="text-right">' . (isset($pos['tax_rate']) ? htmlspecialchars($pos['tax_rate']) : '19') . '</td>'; // Tax rate from cart item or fallback
                     echo '<td class="text-right">' . number_format($pos['price'], 2, ',', '.') . '</td>';
                     echo '<td class="text-right">' . number_format($pos['total'], 2, ',', '.') . '</td>';
                 } else {
