@@ -82,7 +82,22 @@ class CartApi extends rex_api_function
                 $article = Article::get($item['article_id']);
                 if ($article) {
                     $itemInfo['bulk_prices'] = $article->getBulkPrices();
-                    $itemInfo['current_price'] = $article->getPriceForQuantity($item['amount']) / $item['amount'];
+                    if ($item['amount'] > 0) {
+                        $itemInfo['current_price'] = $variant->getPriceForQuantity($item['amount']) / $item['amount'];
+                    } else {
+                        $itemInfo['current_price'] = null;
+                    }
+                    $itemInfo['current_total'] = $variant->getPriceForQuantity($item['amount']);
+                }
+            } else {
+                $article = Article::get($item['article_id']);
+                if ($article) {
+                    $itemInfo['bulk_prices'] = $article->getBulkPrices();
+                    if ($item['amount'] > 0) {
+                        $itemInfo['current_price'] = $article->getPriceForQuantity($item['amount']) / $item['amount'];
+                    } else {
+                        $itemInfo['current_price'] = null;
+                    }
                     $itemInfo['current_total'] = $article->getPriceForQuantity($item['amount']);
                 }
             }
