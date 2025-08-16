@@ -246,6 +246,9 @@ class Article extends rex_yform_manager_dataset
         }
         $currencyCode = Warehouse::getCurrency();
         $formatted = $formatter->formatCurrency($price, $currencyCode);
+        if ($formatted === false) {
+            return '';
+        }
         return $formatted;
     }
 
