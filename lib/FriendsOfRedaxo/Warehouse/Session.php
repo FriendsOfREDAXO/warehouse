@@ -219,7 +219,7 @@ class Session extends rex_request
     /**
      * Auto-set customer from YCom if available
      */
-    public function autoSetCustomerFromYCom(): void
+    public static function autoSetCustomerFromYCom(): void
     {
         if (rex_addon::get('ycom')->isAvailable()) {
             $ycom_user = rex_ycom_auth::getUser();
