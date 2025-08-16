@@ -4,10 +4,13 @@
 
 use FriendsOfRedaxo\Warehouse\Cart;
 use FriendsOfRedaxo\Warehouse\Warehouse;
+use FriendsOfRedaxo\Warehouse\Session;
 
 ?>
 <?php
 $user_data = $this->warehouse_userdata;
+$billing_data = Session::getBillingAddressData();
+$shipping_data = Session::getShippingAddressData();
 ?>
 
 <h2><?= Warehouse::getLabel('order_summary') ?></h2>
@@ -36,7 +39,7 @@ $user_data = $this->warehouse_userdata;
         </tr>
     <?php endforeach ?>
     <tr>
-        <td><?= Warehouse::getLabel('shipping_costs') ?> <?= $this->warehouse_userdata['country'] ?></td>
+        <td><?= Warehouse::getLabel('shipping_costs') ?> <?= $billing_data['country'] ?? $user_data['country'] ?? '' ?></td>
         <td class="uk-text-right"><?= number_format((float) FriendsOfRedaxo\Warehouse\Shipping::getCost(), 2) ?></td>
     </tr>
     <tr>
@@ -45,25 +48,48 @@ $user_data = $this->warehouse_userdata;
     </tr>
 </table>
 
-<p><?= Warehouse::getLabel('address_shipping') ?>:</p>
-<p>
-    <?= $user_data['firstname'] . ' ' . $user_data['lastname'] ?><br>
-    <?= $user_data['address'] ?><br>
-    <?= $user_data['zip'] . ' ' . $user_data['city'] ?><br>
-    <?= $user_data['country'] ?>
-</p>
+<div class="row">
+    <div class="col-md-6">
+        <h4><?= Warehouse::getLabel('address_billing') ?>:</h4>
+        <p>
+            <?php if (!empty($billing_data)): ?>
+                <?= ($billing_data['firstname'] ?? '') . ' ' . ($billing_data['lastname'] ?? '') ?><br>
+                <?php if (!empty($billing_data['company'])): ?>
+                    <?= $billing_data['company'] ?><br>
+                <?php endif ?>
+                <?= $billing_data['address'] ?? '' ?><br>
+                <?= ($billing_data['zip'] ?? '') . ' ' . ($billing_data['city'] ?? '') ?><br>
+                <?= $billing_data['country'] ?? '' ?>
+            <?php else: ?>
+                <?= ($user_data['firstname'] ?? '') . ' ' . ($user_data['lastname'] ?? '') ?><br>
+                <?php if (!empty($user_data['company'])): ?>
+                    <?= $user_data['company'] ?><br>
+                <?php endif ?>
+                <?= $user_data['address'] ?? '' ?><br>
+                <?= ($user_data['zip'] ?? '') . ' ' . ($user_data['city'] ?? '') ?><br>
+                <?= $user_data['country'] ?? '' ?>
+            <?php endif ?>
+        </p>
+    </div>
+    
+    <div class="col-md-6">
+        <h4><?= Warehouse::getLabel('address_shipping') ?>:</h4>
+        <?php if (!empty($shipping_data)): ?>
+            <p>
+                <?= ($shipping_data['firstname'] ?? '') . ' ' . ($shipping_data['lastname'] ?? '') ?><br>
+                <?php if (!empty($shipping_data['company'])): ?>
+                    <?= $shipping_data['company'] ?><br>
+                <?php endif ?>
+                <?= $shipping_data['address'] ?? '' ?><br>
+                <?= ($shipping_data['zip'] ?? '') . ' ' . ($shipping_data['city'] ?? '') ?><br>
+                <?= $shipping_data['country'] ?? '' ?>
+            </p>
+        <?php else: ?>
+            <p>
+                <em><?= Warehouse::getLabel('address_same_as_billing') ?></em>
+            </p>
+        <?php endif ?>
+    </div>
+</div>
 
-<p><?= Warehouse::getLabel('address_billing') ?>:</p>
-
-<?php if (isset($user_data['separate_delivery_address']) && $user_data['separate_delivery_address'] == 1) : ?>
-    <p><?= Warehouse::getLabel('address_same_as_billing') ?></p>
-<?php else: ?>
-    <p>
-        <?= $user_data['to_firstname'] . ' ' . $user_data['to_lastname'] ?><br>
-        <?= $user_data['to_address'] ?><br>
-        <?= $user_data['to_zip'] . ' ' . $user_data['to_city'] ?><br>
-        <?= $user_data['to_country'] ?>    
-    </p>
-<?php endif ?>
-
-<p><?= Warehouse::getLabel('payment_type'); ?>: <?= Warehouse::getLabel('paymentoptions_' . $user_data['payment_type']) ?></p>
+<p><?= Warehouse::getLabel('payment_type'); ?>: <?= Warehouse::getLabel('paymentoptions_' . ($user_data['payment_type'] ?? '')) ?></p>
