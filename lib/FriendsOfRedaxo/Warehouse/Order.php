@@ -485,9 +485,9 @@ class Order extends rex_yform_manager_dataset
                 $return = '';
 
                 if ($order_total > 0) {
-                    $return .= '<span class="">' . rex_formatter::number($order_total) ." " . Warehouse::getCurrencySign() .  '</span><br>';
+                    $return .= '<span class="">' . Warehouse::formatCurrency($order_total) .  '</span><br>';
                 } else {
-                    $return .= '<span class="text-danger">' . rex_formatter::number($order_total) ." " . Warehouse::getCurrencySign() . '</span><br>';
+                    $return .= '<span class="text-danger">' . Warehouse::formatCurrency($order_total) . '</span><br>';
                 }
 
                 if ($payment_confirm != '') {

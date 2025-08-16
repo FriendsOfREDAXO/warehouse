@@ -46,8 +46,7 @@ if (!$cart_items || count($cart_items) === 0) {
 				<?php endif; ?>
 			</td>
 			<td class="align-right">
-				<?= Warehouse::getCurrencySign() ?>
-				<?= number_format($item['price'], 2) ?>
+				<?= Warehouse::formatCurrency($item['price']) ?>
 			</td>
 			<td class="no-wrap" data-warehouse-cart-item="quantity">
 				<div class="d-inline-flex align-items-center gap-1">
@@ -62,8 +61,7 @@ if (!$cart_items || count($cart_items) === 0) {
 				</div>
 			</td>
 			<td class="align-right">
-				<?= Warehouse::getCurrencySign() ?>
-				<?= number_format($item['total'], 2) ?>
+				<?= Warehouse::formatCurrency($item['total']) ?>
 			</td>
 			<td>
 				<a data-warehouse-cart-action="remove"
@@ -102,8 +100,7 @@ if (!$cart_items || count($cart_items) === 0) {
 			<td></td>
 			<td></td>
 			<td class="align-right">
-				<?= Warehouse::getCurrencySign() ?>
-				<?= number_format(Cart::getTaxTotalByMode(), 2) ?>
+				<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
 			</td>
 			<td></td>
 		</tr>

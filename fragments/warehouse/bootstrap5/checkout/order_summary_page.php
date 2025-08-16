@@ -42,7 +42,7 @@ $shipping = Shipping::getCost();
 									<th scope="col" class="text-end">{{ tax }}</th>
 									<?php endif; ?>
 									<th scope="col" class="text-end">
-										<?= Warehouse::getCurrencySign() ?>
+										<?= Warehouse::getCurrency() ?>
 									</th>
 								</tr>
 							</thead>
@@ -57,7 +57,7 @@ $shipping = Shipping::getCost();
 										<small class="text-muted">
 											<?= $item['amount'] ?>
 											x à
-											<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($item['price'], 2) ?>
+											<?= Warehouse::formatCurrency($item['price']) ?>
 										</small>
 									</td>
 									<td>
@@ -72,7 +72,7 @@ $shipping = Shipping::getCost();
 									</td>
 									<?php endif; ?>
 									<td class="text-end">
-										<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($item['total'], 2) ?>
+										<?= Warehouse::formatCurrency($item['total']) ?>
 									</td>
 								</tr>
 								<?php endforeach ?>
@@ -84,7 +84,7 @@ $shipping = Shipping::getCost();
 										<strong>{{ Shipping }}</strong>
 									</td>
 									<td class="text-end border-top">
-										<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($shipping, 2) ?>
+										<?= Warehouse::formatCurrency($shipping) ?>
 									</td>
 								</tr>
 
@@ -95,7 +95,7 @@ $shipping = Shipping::getCost();
 										<strong>{{ Card_Mwst_Total }}</strong>
 									</td>
 									<td class="text-end">
-										<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format(Cart::getTaxTotalByMode(), 2) ?>
+										<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
 									</td>
 								</tr>
 								<?php endif; ?>

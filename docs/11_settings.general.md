@@ -17,5 +17,4 @@ In den Grundeinstellungen werden die wesentlichen Einstellungen für den Betrieb
 
 **Nicht (mehr) implementiert:**
 
-- `currency_symbol` (wird nicht im Formular angeboten)
 - `enable_weight` (wird über enable_features/weight abgedeckt)
