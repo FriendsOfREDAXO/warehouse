@@ -1,10 +1,13 @@
 # PayPal PHP Server SDK (@paypal/PayPal-PHP-Server-SDK) – Technische Übersicht: Order erstellen und capturen
 
+> **Hinweis:** Diese Anleitung ist maschinell erstellt und kann Fehler enthalten - überprüfe sie mit der aktuellen Version des PHP-SDKs von PayPal sowie den referenzierten Klassen im Vendor-Ordner
+
 Diese Anleitung zeigt Schritt für Schritt, wie du mit der offiziellen PayPal PHP Server SDK (Repository: paypal/PayPal-PHP-Server-SDK) eine Order erstellst, den Warenkorb (Cart) modellierst, den Käufer zur Genehmigung weiterleitest und die Zahlung anschließend capturst. Zusätzlich werden Branding, Währungen/Länder, Versandadresse sowie Steuer-/Versand-/Rabattangaben abgedeckt – mit konkreten SDK-Klassen und Hinweisen zu englischen Parametern.
 
 Wichtig:
 - Diese SDK kapselt die PayPal Orders API v2. Die API-Objekte sind als PHP-Modelle/Builder verfügbar.
 - Einige Experience-Felder sind in application_context vorhanden; Teile sind in PayPals neueren Spezifikationen in experience_context von payment_source gewandert. Nutze die SDK-Modelle wie bereitgestellt.
+
 
 ---
 
