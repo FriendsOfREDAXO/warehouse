@@ -19,22 +19,22 @@ $user_data = [
     'city' => $order->getCity(),
     'country' => $order->getCountry(),
     'email' => $order->getEmail(),
-    'ust' => $order->getValue('ust'),
-    'user_e_number' => $order->getValue('user_e_number'),
-    'payment_type' => $order->getValue('payment_type'),
-    'payment_type_LABELS' => $order->getValue('payment_type_LABELS'),
-    'note' => $order->getValue('note'),
+    'ust' => $order->getValue(Order::UST),
+    'user_e_number' => $order->getValue(Order::USER_E_NUMBER),
+    'payment_type' => $order->getValue(Order::PAYMENT_TYPE),
+    'payment_type_LABELS' => $order->getValue(Order::PAYMENT_TYPE_LABELS),
+    'note' => $order->getValue(Order::NOTE),
     // ggf. weitere Felder
 ];
 
 $cart = $order->getOrderJson();
-$shipping = $order->getValue('shipping_cost');
-$total = $order->getValue('order_total');
-$with_tax = $order->getValue('with_tax');
-$currency = $order->getValue('currency');
-$sub_total_netto = $order->getValue('sub_total_netto');
-$sub_total = $order->getValue('sub_total');
-$cart_total_tax = $order->getValue('cart_total_tax');
+$shipping = $order->getValue(Order::SHIPPING_COST);
+$total = $order->getValue(Order::ORDER_TOTAL);
+$with_tax = $order->getValue(Order::WITH_TAX);
+$currency = $order->getValue(Order::CURRENCY);
+$sub_total_netto = $order->getValue(Order::SUB_TOTAL_NETTO);
+$sub_total = $order->getValue(Order::SUB_TOTAL);
+$cart_total_tax = $order->getValue(Order::CART_TOTAL_TAX);
 $userNumber = $user_data['user_e_number'];
 $ustId = (!empty($user_data['ust'])) ? $user_data['ust'] : '';
 $payment_type = $user_data['payment_type'];
@@ -277,7 +277,7 @@ if ($user_data['email']) {
 									<tr>
 										<th><?= sprogcard('pdf_order_date') ?>
 										</th>
-										<td><?= $order->getValue('order_date') ?>
+										<td><?= $order->getValue(Order::ORDER_DATE) ?>
 										</td>
 									</tr>
 									<tr>
@@ -288,7 +288,7 @@ if ($user_data['email']) {
 									<tr>
 										<th><?= sprogcard('pdf_shipping_type') ?>
 										</th>
-										<td><?= $order->getValue('shipping_type') ?>
+										<td><?= $order->getValue(Order::SHIPPING_TYPE) ?>
 										</td>
 									</tr>
 									<tr>
@@ -312,7 +312,7 @@ if ($user_data['email']) {
 			</table>
 
 			<h2 class="invoice">
-				<?= sprintf(sprogcard('pdf_invoice_headline'), $order->getValue('order_number')); ?>
+				<?= sprintf(sprogcard('pdf_invoice_headline'), $order->getValue(Order::ORDER_NUMBER)); ?>
 			</h2>
 
 			<?php
@@ -397,10 +397,10 @@ if ($user_data['email']) {
 										<td><?= sprogcard('pdf_full') ?>
 										</td>
 										<?php if ($with_tax): ?>
-										<td><?= $formatInvoiceCurrency($order->getValue('sub_total')) ?>
+										<td><?= $formatInvoiceCurrency($order->getValue(Order::SUB_TOTAL)) ?>
 										</td>
 										<?php else: ?>
-										<td><?= $formatInvoiceCurrency($order->getValue('sub_total_netto')) ?>
+										<td><?= $formatInvoiceCurrency($order->getValue(Order::SUB_TOTAL_NETTO)) ?>
 										</td>
 										<?php endif; ?>
 									</tr>
@@ -412,8 +412,8 @@ if ($user_data['email']) {
 									</tr>
 									<?php if ($with_tax):
 									    $taxItems = [
-									        19 => $order->getValue('cart_total_tax') * 0.19,
-									        7 => $order->getValue('cart_total_tax') * 0.07
+									        19 => $order->getValue(Order::CART_TOTAL_TAX) * 0.19,
+									        7 => $order->getValue(Order::CART_TOTAL_TAX) * 0.07
 									    ];
 									    foreach ($taxItems as $tax => $taxValue) :
 									        ?>
@@ -443,12 +443,12 @@ if ($user_data['email']) {
 			<?php if (!is_null($note)): ?>
 			<p>Bemerkungen: <?php echo $note; ?></p>
 			<?php endif; ?>
-			<?php if ($payment_type == 'paypal' && !is_null($order->getValue('paydate'))): ?>
-			<p><?= sprintf(sprogcard('pdf_order_msg_paypal'), $order->getValue('paydate')); ?>
+			<?php if ($payment_type == 'paypal' && !is_null($order->getValue(Order::PAYDATE))): ?>
+			<p><?= sprintf(sprogcard('pdf_order_msg_paypal'), $order->getValue(Order::PAYDATE)); ?>
 			</p>
-			<?php elseif ($payment_type == 'prepayment' && !is_null($order->getValue('paydate'))): ?>
+			<?php elseif ($payment_type == 'prepayment' && !is_null($order->getValue(Order::PAYDATE))): ?>
 			<p style="font-size: 14px;">
-				<?= sprintf(sprogcard('pdf_order_msg_prepayment'), $formatInvoiceCurrency($total), $order->getValue('verwendungszweck')); ?>
+				<?= sprintf(sprogcard('pdf_order_msg_prepayment'), $formatInvoiceCurrency($total), $order->getValue(Order::VERWENDUNGSZWECK)); ?>
 			</p>
 			<?php endif; ?>
 		</div>

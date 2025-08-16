@@ -75,6 +75,7 @@ class Article extends rex_yform_manager_dataset
     public const string VARIANT_IDS = 'variant_ids';
     public const string SHORT_TEXT = 'short_text';
     public const string TEXT = 'text';
+    public const string SKU = 'sku';
     public const string UUID = 'uuid';
     public const string UPDATEDATE = 'updatedate';
     public const string CREATEDATE = 'createdate';
@@ -96,6 +97,7 @@ class Article extends rex_yform_manager_dataset
         self::VARIANT_IDS => [],
         self::SHORT_TEXT => [],
         self::TEXT => [],
+        self::SKU => [],
         self::UUID => [],
         self::UPDATEDATE => [],
         self::CREATEDATE => [],
@@ -436,7 +438,7 @@ class Article extends rex_yform_manager_dataset
                 $params['table_name'] = self::table()->getTableName();
                 $params['rex_yform_manager_popup'] = '0';
                 $params['_csrf_token'] = $token['_csrf_token'] ?? '';
-                $params['data_id'] = $a['list']->getValue('id');
+                $params['data_id'] = $a['list']->getValue(self::ID);
                 $params['func'] = 'edit';
 
                 return '<a href="' . rex_url::backendPage('warehouse/article', $params) . '">' . $a['value'] . '</a>';

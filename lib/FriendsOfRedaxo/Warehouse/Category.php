@@ -270,7 +270,7 @@ class Category extends \rex_yform_manager_dataset
                 $params['_csrf_token'] = $token['_csrf_token'] ?? '';
                 /** @var rex_yform_manager_dataset $list */
                 $list = $a['list'];
-                $params['data_id'] = $list->getValue('id');
+                $params['data_id'] = $list->getValue(self::ID);
                 $params['func'] = 'edit';
 
                 return '<a href="' . rex_url::backendPage('warehouse/category', $params) . '">' . $a['value'] . '</a>';

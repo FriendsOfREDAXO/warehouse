@@ -63,6 +63,8 @@ class ArticleVariant extends rex_yform_manager_dataset
     public const string AVAILABILITY_FIELD = 'availability';
     public const string IMAGE = 'image';
     public const string STATUS_FIELD = 'status';
+    public const string SKU = 'sku';
+    public const string SPECIFICATIONS = 'specifications';
     public const string UUID = 'uuid';
     public const string UPDATEDATE = 'updatedate';
     public const string CREATEDATE = 'createdate';
@@ -79,6 +81,8 @@ class ArticleVariant extends rex_yform_manager_dataset
         self::AVAILABILITY_FIELD => [],
         self::IMAGE => [],
         self::STATUS_FIELD => [],
+        self::SKU => [],
+        self::SPECIFICATIONS => [],
         self::UUID => [],
         self::UPDATEDATE => [],
         self::CREATEDATE => [],
@@ -307,9 +311,9 @@ class ArticleVariant extends rex_yform_manager_dataset
      */
     public function getBulkPrices() :array
     {
-        $bulk_prices = (array) $this->getValue('bulk_prices');
+        $bulk_prices = (array) $this->getValue(self::BULK_PRICES);
         if (!empty($bulk_prices)) {
-            $bulkPrices = json_decode($this->getValue('bulk_prices'), true);
+            $bulkPrices = json_decode($this->getValue(self::BULK_PRICES), true);
             if (is_array($bulkPrices)) {
                 return $bulkPrices;
             }

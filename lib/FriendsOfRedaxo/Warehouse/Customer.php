@@ -77,7 +77,7 @@ class Customer extends rex_yform_manager_dataset
 
     public static function getCurrent()
     {
-        $user_id = rex_ycom_auth::getUser()?->getValue('id') ?? null;
+        $user_id = rex_ycom_auth::getUser()?->getValue(self::ID) ?? null;
         if (!$user_id) {
             return null;
         }
@@ -148,7 +148,7 @@ class Customer extends rex_yform_manager_dataset
     public function getShippingAddress() : ?CustomerAddress
     {
         $address = CustomerAddress::query()
-            ->where('ycom_user_id', $this->getValue('id'))
+            ->where('ycom_user_id', $this->getValue(self::ID))
             ->where('type', 'shipping')
             ->findOne();
         if ($address) {
@@ -156,7 +156,7 @@ class Customer extends rex_yform_manager_dataset
         }
         // Fallback to the main address if no shipping address is set
         $address = CustomerAddress::query()
-            ->where('ycom_user_id', $this->getValue('id'))
+            ->where('ycom_user_id', $this->getValue(self::ID))
             ->findOne();
         if ($address) {
             return $address;
