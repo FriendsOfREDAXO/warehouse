@@ -384,4 +384,9 @@ class PayPal
         $domain = Domain::getCurrent();
         return $domain ? $domain->getThankyouArtUrl() : '';
     }
+
+    public static function shouldIncludeImages(): bool
+    {
+        return (bool) rex_config::get('warehouse', 'paypal_include_images', false);
+    }
 }
