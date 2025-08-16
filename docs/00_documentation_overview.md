@@ -108,6 +108,7 @@ Viele Klassen bieten Extension Points für individuelle Anpassungen:
 | Extension Point | Klasse | Zweck |
 |-----------------|--------|-------|
 | `WAREHOUSE_ORDER_NUMBER` | Document | Bestellnummern anpassen |
+| `WAREHOUSE_ORDER_CREATED` | Order | Bestellungen via API weiterverarbeiten |
 | `WAREHOUSE_PAYMENT_OPTIONS` | Payment | Zahlungsarten erweitern |
 | `WAREHOUSE_CART_SHIPPING_COST` | Shipping | Versandkosten berechnen |
 | `WAREHOUSE_CART_VALIDATE` | Cart | Warenkorb validieren |
