@@ -15,8 +15,8 @@ if ($order_id = rex_get('order_id', 'int')) {
         $fragment->setVar('order', $order);
         echo $fragment->parse('warehouse/bootstrap5/my_orders/details.php');
     } else {
-        echo '<p>{{ Bestellung nicht gefunden }}</p>';
-        echo '<p><a href="' . rex_getUrl() . '">{{ Zur Übersicht }}</a></p>';
+        echo '<p>' . Warehouse::getLabel('order_not_found') . '</p>';
+        echo '<p><a href="' . rex_getUrl() . '">' . Warehouse::getLabel('order_back_to_overview') . '</a></p>';
     }
 } else {
     // Listendarstellung

@@ -29,7 +29,7 @@ $shipping = Shipping::getCost();
 		<div class="col-12">
 			<div class="card">
 				<div class="card-header">
-					<h2 class="mb-0">{{ Bestellübersicht }}</h2>
+					<h2 class="mb-0"><?= Warehouse::getLabel('order_summary') ?></h2>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -37,9 +37,9 @@ $shipping = Shipping::getCost();
 							<thead class="table-light">
 								<tr>
 									<th scope="col">Artikel</th>
-									<th scope="col">Beschreibung</th>
+									<th scope="col"><?= Warehouse::getLabel('product_description') ?></th>
 									<?php if ($with_tax): ?>
-									<th scope="col" class="text-end">{{ tax }}</th>
+									<th scope="col" class="text-end"><?= Warehouse::getLabel('tax_column') ?></th>
 									<?php endif; ?>
 									<th scope="col" class="text-end">
 										<?= Warehouse::getCurrency() ?>
@@ -81,7 +81,7 @@ $shipping = Shipping::getCost();
 								<tr>
 									<td colspan="<?= $with_tax ? '3' : '2' ?>"
 										class="border-top">
-										<strong>{{ Shipping }}</strong>
+										<strong><?= Warehouse::getLabel('shipping_costs') ?></strong>
 									</td>
 									<td class="text-end border-top">
 										<?= Warehouse::formatCurrency($shipping) ?>
@@ -92,7 +92,7 @@ $shipping = Shipping::getCost();
 								<?php if ($with_tax): ?>
 								<tr>
 									<td colspan="3">
-										<strong>{{ Card_Mwst_Total }}</strong>
+										<strong><?= Warehouse::getLabel('tax_total') ?></strong>
 									</td>
 									<td class="text-end">
 										<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
@@ -104,10 +104,7 @@ $shipping = Shipping::getCost();
 								<tr class="table-info">
 									<td colspan="<?= $with_tax ? '3' : '2' ?>"
 										class="fw-bold">
-										<?php if ($with_tax) { ?>{{
-										Total_Mwst
-										}}<?php } else { ?>{{ Total
-										}}<?php } ?>
+										<?= $with_tax ? Warehouse::getLabel('total_with_tax') : Warehouse::getLabel('total_net') ?>
 									</td>
 									<td class="text-end fw-bold">
 										<?= Cart::getCartTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
@@ -126,7 +123,7 @@ $shipping = Shipping::getCost();
 		<div class="col-12">
 			<div class="card">
 				<div class="card-header">
-					<h3 class="mb-0">{{ Lieferadresse }}</h3>
+					<h3 class="mb-0"><?= Warehouse::getLabel('address_shipping') ?></h3>
 				</div>
 				<div class="card-body">
 					<address>
@@ -166,9 +163,7 @@ echo($customerData['country'] ?? '');
 					</h3>
 				</div>
 				<div class="card-body">
-					{{
-					payment_<?= $customerData['payment_type'] ?? '' ?>
-					}}
+					<?= Warehouse::getLabel('paymentoptions_' . ($customerData['payment_type'] ?? '')) ?>
 				</div>
 			</div>
 		</div>

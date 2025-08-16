@@ -30,40 +30,40 @@ $yform->setObjectparams('real_field_names', true);
 $yform->setValueField('html', ['', '<section><div class="row">']);
 $yform->setValueField('html', ['', '<div class="col-md-6">']);
 
-$yform->setValueField('text', ['firstname', 'Vorname*', $customer?->getFirstname(), '', ['required' => 'required']]);
-$yform->setValidateField('empty', ['firstname', 'Bitte füllen Sie alle markierten Felder aus']);
+$yform->setValueField('text', ['firstname', Warehouse::getLabel('customer_firstname') . '*', $customer?->getFirstname(), '', ['required' => 'required']]);
+$yform->setValidateField('empty', ['firstname', Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', ['lastname', 'Nachname*', $customer?->getLastname(), '', ['required' => 'required']]);
-$yform->setValidateField('empty', ['lastname', 'Bitte füllen Sie alle markierten Felder aus']);
+$yform->setValueField('text', ['lastname', Warehouse::getLabel('customer_lastname') . '*', $customer?->getLastname(), '', ['required' => 'required']]);
+$yform->setValidateField('empty', ['lastname', Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', ['company', 'Firma', $customer?->getCompany(), '']);
+$yform->setValueField('text', ['company', Warehouse::getLabel('customer_company'), $customer?->getCompany(), '']);
 
-$yform->setValueField('text', ['department', 'Abteilung', $customer?->getDepartment(), '']);
+$yform->setValueField('text', ['department', Warehouse::getLabel('customer_department'), $customer?->getDepartment(), '']);
 
-$yform->setValueField('text', ['address', 'Adresse*', $customer?->getAddress(), '', ['required' => 'required']]);
-$yform->setValidateField('empty', ['address', 'Bitte füllen Sie alle markierten Felder aus']);
+$yform->setValueField('text', ['address', Warehouse::getLabel('address_address') . '*', $customer?->getAddress(), '', ['required' => 'required']]);
+$yform->setValidateField('empty', ['address', Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', ['zip', 'PLZ*', $customer?->getZip(), '', ['required' => 'required']]);
-$yform->setValidateField('empty', ['zip', 'Bitte füllen Sie alle markierten Felder aus']);
+$yform->setValueField('text', ['zip', Warehouse::getLabel('address_zip') . '*', $customer?->getZip(), '', ['required' => 'required']]);
+$yform->setValidateField('empty', ['zip', Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', ['city', 'Ort*', $customer?->getCity(), '', ['required' => 'required']]);
+$yform->setValueField('text', ['city', Warehouse::getLabel('address_city') . '*', $customer?->getCity(), '', ['required' => 'required']]);
 
-$yform->setValidateField('empty', ['city', 'Bitte füllen Sie alle markierten Felder aus']);
+$yform->setValidateField('empty', ['city', Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', ['email', 'E-Mail*', $customer?->getEmail(), '', ['required' => 'required']]);
-$yform->setValidateField('empty', ['email', 'Bitte füllen Sie alle markierten Felder aus']);
-$yform->setValidateField('type', ['email', 'email', 'Bitte geben Sie eine gültige E-Mail Adresse ein']);
+$yform->setValueField('text', ['email', Warehouse::getLabel('customer_email') . '*', $customer?->getEmail(), '', ['required' => 'required']]);
+$yform->setValidateField('empty', ['email', Warehouse::getLabel('validation_required_fields')]);
+$yform->setValidateField('type', ['email', 'email', Warehouse::getLabel('validation_email_invalid')]);
 
-$yform->setValueField('text', ['phone', 'Telefon', $customer?->getPhone(), '']);
+$yform->setValueField('text', ['phone', Warehouse::getLabel('customer_phone'), $customer?->getPhone(), '']);
 
 $yform->setValueField('html', ['', '</div>']);
 $yform->setValueField('html', ['', '<div class="col-md-6">']);
 
 $yform->setValueField('text', ['to_name', 'Name', $customer_shipping_address?->getName(), '']);
-$yform->setValueField('text', ['to_company', 'Firma', $customer_shipping_address?->getCompany(), '']);
-$yform->setValueField('text', ['to_address', 'Lieferadresse', $customer_shipping_address?->getStreet(), '']);
-$yform->setValueField('text', ['to_zip', 'PLZ', $customer_shipping_address?->getZip(), '']);
-$yform->setValueField('text', ['to_city', 'Ort', $customer_shipping_address?->getCity(), '']);
+$yform->setValueField('text', ['to_company', Warehouse::getLabel('customer_company'), $customer_shipping_address?->getCompany(), '']);
+$yform->setValueField('text', ['to_address', Warehouse::getLabel('address_shipping'), $customer_shipping_address?->getStreet(), '']);
+$yform->setValueField('text', ['to_zip', Warehouse::getLabel('address_zip'), $customer_shipping_address?->getZip(), '']);
+$yform->setValueField('text', ['to_city', Warehouse::getLabel('address_city'), $customer_shipping_address?->getCity(), '']);
 
 $yform->setValueField('textarea', ['note', 'Bemerkung', '', '']);
 
@@ -75,7 +75,7 @@ $yform->setValueField('html', ['', '</div>']); // close row
 $yform->setValueField('html', ['', '<div class="row"><div class="col-12">']);
 if (count($allowedPaymentOptions) > 1) {
     $yform->setValueField('warehouse_payment_options', ["payment_type", Warehouse::getLabel('payment_type')]);
-    $yform->setValidateField('empty', ['payment_type', 'Bitte füllen Sie alle markierten Felder aus']);
+    $yform->setValidateField('empty', ['payment_type', Warehouse::getLabel('validation_required_fields')]);
 } else {
     $yform->setValueField('warehouse_payment_options', ["payment_type", Warehouse::getLabel('payment_type')]);
     $yform->setValueField('html', ['', Warehouse::getLabel('payment_type')]);

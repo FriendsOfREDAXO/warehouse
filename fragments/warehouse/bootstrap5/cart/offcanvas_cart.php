@@ -44,7 +44,7 @@ $domain = Domain::getCurrent();
 								(<?= $item['article_id'] ?><?= $item['type'] === 'variant' ? '-' . $item['variant_id'] : '' ?>)</span>
 						</a>
 						<?php if ($item['type'] === 'variant'): ?>
-							<small class="text-muted d-block">Variante</small>
+							<small class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
 						<?php endif; ?>
 						<div class="mt-1 row g-2 align-items-center">
 							<div class="col-auto fw-bolder small">
@@ -118,7 +118,7 @@ $domain = Domain::getCurrent();
 			</div>
 		</div>
 		<div class="row g-2 align-items-center">
-			<div class="col text-muted">Total
+			<div class="col text-muted"><?= Warehouse::getLabel('total') ?>
 				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 			</div>
 			<div class="col-auto h5 fw-bolder">

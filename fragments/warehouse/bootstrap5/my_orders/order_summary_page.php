@@ -10,7 +10,7 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
 $user_data = $this->warehouse_userdata;
 ?>
 
-<h2>{{ Bestellübersicht }}</h2>
+<h2><?= Warehouse::getLabel('order_summary') ?></h2>
 <table class="table table-striped table-sm w-100" id="table_order_summary">
     <thead>
         <tr>
@@ -36,16 +36,16 @@ $user_data = $this->warehouse_userdata;
         </tr>
     <?php endforeach ?>
     <tr>
-        <td>{{ Shipping }} <?= $this->warehouse_userdata['country'] ?></td>
+        <td><?= Warehouse::getLabel('shipping_costs') ?> <?= $this->warehouse_userdata['country'] ?></td>
         <td class="uk-text-right"><?= number_format((float) FriendsOfRedaxo\Warehouse\Shipping::getCost(), 2) ?></td>
     </tr>
     <tr>
-        <td>{{ Total }}</td>
+        <td><?= Warehouse::getLabel('total') ?></td>
         <td class="uk-text-right"><?= Cart::getCartTotalFormatted() ?></td>
     </tr>
 </table>
 
-<p>{{ Lieferadresse }}:</p>
+<p><?= Warehouse::getLabel('address_shipping') ?>:</p>
 <p>
     <?= $user_data['firstname'] . ' ' . $user_data['lastname'] ?><br>
     <?= $user_data['address'] ?><br>
@@ -53,10 +53,10 @@ $user_data = $this->warehouse_userdata;
     <?= $user_data['country'] ?>
 </p>
 
-<p>{{ Rechnungsadresse }}:</p>
+<p><?= Warehouse::getLabel('address_billing') ?>:</p>
 
 <?php if (isset($user_data['separate_delivery_address']) && $user_data['separate_delivery_address'] == 1) : ?>
-    <p>{{ Entspricht der Lieferadresse }}</p>
+    <p><?= Warehouse::getLabel('address_same_as_billing') ?></p>
 <?php else: ?>
     <p>
         <?= $user_data['to_firstname'] . ' ' . $user_data['to_lastname'] ?><br>

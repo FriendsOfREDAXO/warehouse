@@ -72,7 +72,7 @@ $cart_items = $cart->getItems();
 										href="<?= rex_getUrl('', '', ['warehouse-article-id'=>$item['article_id']]) ?>"><?= html_entity_decode($item['name']) ?>
 									</a>
 									<?php if ($item['type'] === 'variant'): ?>
-										<small class="text-muted d-block">Variante</small>
+										<small class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
 									<?php endif; ?>
 								</div>
 							</div>
@@ -146,7 +146,7 @@ $cart_items = $cart->getItems();
 				</div>
 				<div class="card-body">
 					<div class="row align-items-center">
-						<div class="col text-muted">Total
+						<div class="col text-muted"><?= Warehouse::getLabel('total') ?>
 							(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 						</div>
 						<div class="col text-lead fw-bolder">

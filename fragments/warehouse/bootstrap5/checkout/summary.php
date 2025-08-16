@@ -28,10 +28,10 @@ $yform->setObjectparams('real_field_names', true);
 // Bestellübersicht anzeigen
 $yform->setValueField('html', ['', $warehouse_cart_text]);
 
-$yform->setValueField('privacy_policy', ['agb', '{{ agb_dsgvo_label|format(' . rex_getUrl(14) . ',' . rex_getUrl(15) . ') }}', '0,1', '0']);
-$yform->setValidateField('empty', ['agb', '{{ Sie müssen die AGBs akzeptieren. }}']);
-$yform->setValueField('privacy_policy', ['privacy_policy', '{{ Ich habe die Datenschutzbestimmungen gelesen.|format(' . rex_getUrl(4) . ') }}', '0,1', '0']);
-$yform->setValidateField('empty', ['privacy_policy', '{{ Sie müssen die Datenschutzbestimmungen akzeptieren. }}']);
+$yform->setValueField('privacy_policy', ['agb', Warehouse::getLabel('legal_agb_privacy'), '0,1', '0']);
+$yform->setValidateField('empty', ['agb', Warehouse::getLabel('validation_agb_required')]);
+$yform->setValueField('privacy_policy', ['privacy_policy', Warehouse::getLabel('legal_privacy_policy'), '0,1', '0']);
+$yform->setValidateField('empty', ['privacy_policy', Warehouse::getLabel('validation_privacy_required')]);
 
 $yform->setValueField('submit_once', ['send', Warehouse::getLabel('label_checkout_submit_order'), 'Wird bearbeitet...', '[no_db]', '', 'btn btn-primary mt-3']);
 /*
