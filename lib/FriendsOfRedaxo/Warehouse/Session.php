@@ -44,7 +44,11 @@ class Session extends rex_request
             parent::setSession(self::WAREHOUSE_BILLING_ADRESS_SESSION_KEY, []);
         }
         if (!parent::session(self::WAREHOUSE_SHIPPING_ADRESS_SESSION_KEY)) {
-            parent::setSession(self::WAREHOUSE_SHIPPING_ADRESS_SESSION_KEY, []);
+        if (!parent::session(self::WAREHOUSE_BILLING_ADDRESS_SESSION_KEY)) {
+            parent::setSession(self::WAREHOUSE_BILLING_ADDRESS_SESSION_KEY, []);
+        }
+        if (!parent::session(self::WAREHOUSE_SHIPPING_ADDRESS_SESSION_KEY)) {
+            parent::setSession(self::WAREHOUSE_SHIPPING_ADDRESS_SESSION_KEY, []);
         }
 
     }
