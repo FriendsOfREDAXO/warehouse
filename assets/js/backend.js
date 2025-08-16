@@ -1,4 +1,72 @@
+// Copy-to-clipboard function for warehouse address data
+function data_copy() {
+    var textToCopy = this.textContent.trim();
+    
+    if (navigator.clipboard && window.isSecureContext) {
+        // Modern clipboard API
+        navigator.clipboard.writeText(textToCopy).then(function() {
+            showCopyFeedback(this, 'Kopiert!');
+        }.bind(this), function() {
+            // Fallback for clipboard API failure
+            fallbackCopyMethod.call(this, textToCopy);
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            showCopyFeedback(this, 'Kopiert!');
+        }, () => {
+            // Fallback for clipboard API failure
+            fallbackCopyMethod.call(this, textToCopy);
+        });
+    } else {
+        // Fallback for older browsers
+        fallbackCopyMethod.call(this, textToCopy);
+    }
+}
+
+// Fallback copy method for browsers without clipboard API
+function fallbackCopyMethod(textToCopy) {
+    var tempInput = document.createElement('textarea');
+    tempInput.value = textToCopy;
+    tempInput.style.position = 'fixed';
+    tempInput.style.left = '-9999px';
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    
+    try {
+        var successful = document.execCommand('copy');
+        if (successful) {
+            showCopyFeedback(this, 'Kopiert!');
+        } else {
+            showCopyFeedback(this, 'Kopieren fehlgeschlagen', true);
+        }
+    } catch (err) {
+        showCopyFeedback(this, 'Kopieren nicht unterstützt', true);
+    }
+    
+    document.body.removeChild(tempInput);
+}
+
+// Show feedback after copy operation
+function showCopyFeedback(element, message, isError = false) {
+    var originalText = element.title || '';
+    var originalBg = element.style.backgroundColor;
+    
+    // Set feedback styling
+    element.style.backgroundColor = isError ? '#f8d7da' : '#d4edda';
+    element.style.transition = 'background-color 0.3s ease';
+    element.title = message;
+    
+    // Reset after 1 second
+    setTimeout(function() {
+        element.style.backgroundColor = originalBg;
+        element.title = originalText;
+    }, 1000);
+}
+
 $(document).on("rex:ready", function(warehouse, container) {
+
+    // Initialize copy functionality for existing elements
+    document.querySelectorAll('div[data-warehouse-copy]').forEach(function(el) {
+        el.addEventListener('click', data_copy);
+    });
 
     // Warte auf QuickNavigation -  Event an das Formular erst nach 2 Sekunden
     setTimeout(function() {

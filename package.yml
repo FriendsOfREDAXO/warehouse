@@ -1,5 +1,5 @@
 package: warehouse
-version: '2.0.0-dev-2025-08-16'
+version: '2.1.0-dev'
 author: FriendsOfREDAXO
 supportpage: https://github.com/FriendsOfREDAXO/warehouse
 
@@ -159,6 +159,7 @@ default_config:
     paypal_button_layout: 'horizontal'
     paypal_button_height: ''
     paypal_button_funding_source: 'paypal'
+    paypal_include_images: 0
     
     # Versandkosten
     minimum_order_value: 0

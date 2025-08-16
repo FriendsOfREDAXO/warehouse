@@ -155,14 +155,20 @@ class Order extends rex_api_function
         // Build PayPal items from cart
         $paypal_items = [];
         foreach ($cart_items as $item) {
-            $paypal_items[] = ItemBuilder::init(
+            $itemBuilder = ItemBuilder::init(
                 $item['name'],
                 MoneyBuilder::init($currency, number_format($item['price'], 2, '.', ''))->build(),
                 (string) $item['amount']
             )
                 ->description($item['name'])
-                ->sku($item['sku'] ?? ($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : '')))
-                ->build();
+              ->sku($item['sku'] ?? ($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : '')))
+                
+            // Add image URL if setting is enabled and image is available
+            if (PayPal::shouldIncludeImages() && !empty($item['image'])) {
+                $itemBuilder->imageUrl($item['image']);
+            }
+                
+            $paypal_items[] = $itemBuilder->build();
         }
         
         $breakdown = AmountBreakdownBuilder::init()
