@@ -207,6 +207,46 @@ default_config:
     label_shipping_costs_weight: 'Versandkosten nach Gewicht'
     label_total: 'Gesamtpreis'
     label_order_number: 'Bestellnummer'
+    label_add_to_order: 'Bestellen'
+    label_button_okay: 'Okay'
+
+    # Customer / Personal data
+    label_customer_firstname: 'Vorname'
+    label_customer_lastname: 'Nachname'
+    label_customer_company: 'Firma'
+    label_customer_department: 'Abteilung'
+    label_customer_email: 'E-Mail'
+    label_customer_phone: 'Telefon'
+
+    # Address fields
+    label_address_address: 'Adresse'
+    label_address_zip: 'PLZ'
+    label_address_city: 'Ort'
+    label_address_country: 'Land'
+    label_address_shipping: 'Lieferadresse'
+    label_address_billing: 'Rechnungsadresse'
+    label_address_same_as_billing: 'Entspricht der Lieferadresse'
+
+    # Product / Order labels
+    label_product_variant: 'Variante'
+    label_product_description: 'Beschreibung'
+    label_order_summary: 'Bestellübersicht'
+    label_order_not_found: 'Bestellung nicht gefunden'
+    label_order_back_to_overview: 'Zur Übersicht'
+    label_tax_total: 'Steuer'
+    label_tax_column: 'Steuer'
+    label_total_with_tax: 'Total inkl. MwSt.'
+    label_total_net: 'Total'
+
+    # Validation messages
+    label_validation_required_fields: 'Bitte füllen Sie alle markierten Felder aus'
+    label_validation_email_invalid: 'Bitte geben Sie eine gültige E-Mail Adresse ein'
+    label_validation_agb_required: 'Sie müssen die AGBs akzeptieren.'
+    label_validation_privacy_required: 'Sie müssen die Datenschutzbestimmungen akzeptieren.'
+
+    # Legal / Terms
+    label_legal_agb_privacy: 'AGBs und Datenschutz'
+    label_legal_privacy_policy: 'Ich habe die Datenschutzbestimmungen gelesen.'
 
     # Zahlungsoptionen 
     label_paymentoptions_direct_debit: 'Lastschrift'

@@ -2,6 +2,3 @@ composer.phar
 vendor/
 .phpunit.result.cache
 coverage/
-/composer.lock
-/.php-cs-fixer.cache
-/vendor
