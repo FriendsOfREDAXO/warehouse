@@ -530,6 +530,7 @@ warehouse.settings.payment.paypal_button_funding_source.paypal = PayPal
 warehouse.settings.payment.paypal_button_funding_source.credit = Kreditkarte
 
 warehouse.settings.payment.paypal_include_images = Produktbilder in PayPal-Bestellung übertragen
+warehouse.settings.payment.paypal_include_images.option = Produktbilder an PayPal übertragen
 warehouse.settings.payment.paypal_include_images.notice = Wenn aktiviert, werden Produktbilder als URLs an PayPal übertragen. Die Bilder werden in kleiner Größe (rex_media_small) übertragen.
 
 # Setup-Seite
