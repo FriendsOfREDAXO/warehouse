@@ -71,8 +71,8 @@ class Dashboard
         $month_icon = $month_diff >= 0 ? '↗' : '↘';
 
         $revenue_stats .= '<tr><td><strong>Aktueller Monat</strong></td>';
-        $revenue_stats .= '<td class="text-right"><strong>' . Warehouse::getCurrencySign() . ' ' . number_format($current_month_value, 2, ',', '.') . '</strong></td>';
-        $revenue_stats .= '<td class="text-right">' . Warehouse::getCurrencySign() . ' ' . number_format($last_month_value, 2, ',', '.') . '</td>';
+        $revenue_stats .= '<td class="text-right"><strong>' . Warehouse::formatCurrency($current_month_value) . '</strong></td>';
+        $revenue_stats .= '<td class="text-right">' . Warehouse::formatCurrency($last_month_value) . '</td>';
         $revenue_stats .= '<td class="text-right ' . $month_trend . '"><strong>' . $month_icon . ' ' . ($month_percent > 0 ? '+' : '') . $month_percent . '%</strong></td></tr>';
 
         // Letzte 4 Wochen
@@ -95,8 +95,8 @@ class Dashboard
         $weeks_icon = $weeks_diff >= 0 ? '↗' : '↘';
 
         $revenue_stats .= '<tr><td><strong>Letzte 4 Wochen</strong></td>';
-        $revenue_stats .= '<td class="text-right"><strong>' . Warehouse::getCurrencySign() . ' ' . number_format($last_4_weeks_value, 2, ',', '.') . '</strong></td>';
-        $revenue_stats .= '<td class="text-right">' . Warehouse::getCurrencySign() . ' ' . number_format($prev_4_weeks_value, 2, ',', '.') . '</td>';
+        $revenue_stats .= '<td class="text-right"><strong>' . Warehouse::formatCurrency($last_4_weeks_value) . '</strong></td>';
+        $revenue_stats .= '<td class="text-right">' . Warehouse::formatCurrency($prev_4_weeks_value) . '</td>';
         $revenue_stats .= '<td class="text-right ' . $weeks_trend . '"><strong>' . $weeks_icon . ' ' . ($weeks_percent > 0 ? '+' : '') . $weeks_percent . '%</strong></td></tr>';
 
         // Letzte 12 Monate
@@ -119,8 +119,8 @@ class Dashboard
         $months_icon = $months_diff >= 0 ? '↗' : '↘';
 
         $revenue_stats .= '<tr><td><strong>Letzte 12 Monate</strong></td>';
-        $revenue_stats .= '<td class="text-right"><strong>' . Warehouse::getCurrencySign() . ' ' . number_format($last_12_months_value, 2, ',', '.') . '</strong></td>';
-        $revenue_stats .= '<td class="text-right">' . Warehouse::getCurrencySign() . ' ' . number_format($prev_12_months_value, 2, ',', '.') . '</td>';
+        $revenue_stats .= '<td class="text-right"><strong>' . Warehouse::formatCurrency($last_12_months_value) . '</strong></td>';
+        $revenue_stats .= '<td class="text-right">' . Warehouse::formatCurrency($prev_12_months_value) . '</td>';
         $revenue_stats .= '<td class="text-right ' . $months_trend . '"><strong>' . $months_icon . ' ' . ($months_percent > 0 ? '+' : '') . $months_percent . '%</strong></td></tr>';
 
         // Aktuelles Jahr
@@ -137,8 +137,8 @@ class Dashboard
         $year_icon = $year_diff >= 0 ? '↗' : '↘';
 
         $revenue_stats .= '<tr><td><strong>Aktuelles Jahr</strong></td>';
-        $revenue_stats .= '<td class="text-right"><strong>' . Warehouse::getCurrencySign() . ' ' . number_format($current_year_value, 2, ',', '.') . '</strong></td>';
-        $revenue_stats .= '<td class="text-right">' . Warehouse::getCurrencySign() . ' ' . number_format($last_year_value, 2, ',', '.') . '</td>';
+        $revenue_stats .= '<td class="text-right"><strong>' . Warehouse::formatCurrency($current_year_value) . '</strong></td>';
+        $revenue_stats .= '<td class="text-right">' . Warehouse::formatCurrency($last_year_value) . '</td>';
         $revenue_stats .= '<td class="text-right ' . $year_trend . '"><strong>' . $year_icon . ' ' . ($year_percent > 0 ? '+' : '') . $year_percent . '%</strong></td></tr>';
 
         $revenue_stats .= '</tbody></table>';
@@ -166,7 +166,7 @@ class Dashboard
 
         $unpaid_stats = '<div class="alert alert-warning">';
         $unpaid_stats .= '<h4>' . $unpaid_count . ' offene Bestellungen</h4>';
-        $unpaid_stats .= '<p>Gesamtwert: <strong>' . Warehouse::getCurrencySign() . ' ' . number_format($unpaid_total, 2, ',', '.') . '</strong></p>';
+        $unpaid_stats .= '<p>Gesamtwert: <strong>' . Warehouse::formatCurrency($unpaid_total) . '</strong></p>';
         $unpaid_stats .= '</div>';
 
         $fragment = new rex_fragment();
@@ -193,7 +193,7 @@ class Dashboard
 
         $paid_unshipped_stats = '<div class="alert alert-info">';
         $paid_unshipped_stats .= '<h4>' . $paid_unshipped_count . ' zu versendende Bestellungen</h4>';
-        $paid_unshipped_stats .= '<p>Gesamtwert: <strong>' . Warehouse::getCurrencySign() . ' ' . number_format($paid_unshipped_total, 2, ',', '.') . '</strong></p>';
+        $paid_unshipped_stats .= '<p>Gesamtwert: <strong>' . Warehouse::formatCurrency($paid_unshipped_total) . '</strong></p>';
         $paid_unshipped_stats .= '</div>';
 
         $fragment = new rex_fragment();
@@ -213,7 +213,7 @@ class Dashboard
 
         if (count($orders) > 0) {
             $orders_output = '<table class="table table-striped">';
-            $orders_output .= '<thead><tr><th>#</th><th>' . $this->addon->i18n('warehouse.order.dashboard.date') . '</th><th class="text-right">'.Warehouse::getCurrencySign().'</th></tr></thead>';
+            $orders_output .= '<thead><tr><th>#</th><th>' . $this->addon->i18n('warehouse.order.dashboard.date') . '</th><th class="text-right">'.Warehouse::getCurrency().'</th></tr></thead>';
             $orders_output .= '<tbody>';
             foreach ($orders as $order) {
                 // Korrekte URL-Generierung mit CSRF-Token für YForm Manager
@@ -228,7 +228,7 @@ class Dashboard
                 $orders_output .= '<tr>';
                 $orders_output .= '<td><a href="' . $order_edit_url . '">' . htmlspecialchars($order->getId()) . '</a></td>';
                 $orders_output .= '<td><a href="' . $order_edit_url . '">' . htmlspecialchars($order->getCreatedateFormatted()) . '</a></td>';
-                $orders_output .= '<td class="text-right"><a href="' . $order_edit_url . '">' . number_format($order->getOrderTotal() ?? 0, 2, ',') . '</a></td>';
+                $orders_output .= '<td class="text-right"><a href="' . $order_edit_url . '">' . Warehouse::formatCurrency($order->getOrderTotal()) . '</a></td>';
                 $orders_output .= '</tr>';
             }
             $orders_output .= '</tbody></table>';
@@ -268,7 +268,7 @@ class Dashboard
             $month_localized = rex_formatter::intlDate($timestamp, 'MMMM yyyy');
             $orders_by_month_output .= '<tr>';
             $orders_by_month_output .= '<td>' . htmlspecialchars($month_localized) . '</td>';
-            $orders_by_month_output .= '<td>' . Warehouse::getCurrencySign() . htmlspecialchars(number_format($order->getOrderTotal() ?? 0, 2)) . '</td>';
+            $orders_by_month_output .= '<td>' . htmlspecialchars(Warehouse::formatCurrency($order->getOrderTotal())) . '</td>';
             $orders_by_month_output .= '</tr>';
         }
         $orders_by_month_output .= '</tbody></table>';

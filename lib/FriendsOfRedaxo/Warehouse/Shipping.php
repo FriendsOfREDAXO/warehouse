@@ -36,7 +36,7 @@ class Shipping
     public static function getCost() :float
     {
 
-        $cart = Cart::get();
+        $cart = Cart::create();
 
         $total_weight = $cart->totalWeight();
         $total_pieces = $cart->count();
@@ -85,7 +85,7 @@ class Shipping
 
     public static function getCostFormatted() :string
     {
-        return Warehouse::getCurrencySign() . ' ' . number_format(self::getCost(), 2, ',', '.');
+        return Warehouse::formatCurrency(self::getCost());
     }
     
     /**

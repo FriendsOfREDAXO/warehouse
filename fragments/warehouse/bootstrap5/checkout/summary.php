@@ -7,11 +7,12 @@ use FriendsOfRedaxo\Warehouse\Checkout;
 use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Payment;
+use FriendsOfRedaxo\Warehouse\Session;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 $customer = $this->getVar('customer');
-$cart = Cart::loadCartFromSession();
-$payment = Payment::loadPaymentFromSession();
+$cart = Session::getCartData();
+$payment = Session::getPaymentData();
 $domain = Domain::getCurrent();
 
 $this->subfragment('warehouse/bootstrap5/checkout/order_summary_page.php');

@@ -1,6 +1,7 @@
 <?php
 
 use FriendsOfRedaxo\Warehouse\Order;
+use FriendsOfRedaxo\Warehouse\Warehouse;
 
 /** @var rex_fragment $this */
 /** @var Order $order */
@@ -45,6 +46,16 @@ if (!$with_tax) {
 if (empty($userNumber)) {
     $userNumber = 'Gastbestellung';
 }
+
+// Helper function for currency formatting in invoice
+$formatInvoiceCurrency = function($value) use ($currency) {
+    if ($value === null) {
+        return '';
+    }
+    $formatter = new NumberFormatter('de_DE', NumberFormatter::CURRENCY);
+    $formatted = $formatter->formatCurrency((float)$value, $currency);
+    return $formatted !== false ? $formatted : '';
+};
 
 ?>
 <html>
@@ -383,17 +394,17 @@ if ($user_data['email']) {
 										<td><?= sprogcard('pdf_full') ?>
 										</td>
 										<?php if ($with_tax): ?>
-										<td><?= number_format($order->getValue('sub_total'), 2, ',', '.') . ' ' . $currency ?>
+										<td><?= $formatInvoiceCurrency($order->getValue('sub_total')) ?>
 										</td>
 										<?php else: ?>
-										<td><?= number_format($order->getValue('sub_total_netto'), 2, ',', '.') . ' ' . $currency ?>
+										<td><?= $formatInvoiceCurrency($order->getValue('sub_total_netto')) ?>
 										</td>
 										<?php endif; ?>
 									</tr>
 									<tr>
 										<td><?= sprogcard('pdf_shipping_costs') ?>
 										</td>
-										<td><?= number_format($shipping, 2, ',', '.') . ' ' . $currency ?>
+										<td><?= $formatInvoiceCurrency($shipping) ?>
 										</td>
 									</tr>
 									<?php if ($with_tax):
@@ -406,7 +417,7 @@ if ($user_data['email']) {
 									<tr>
 										<td><?= sprintf(sprogcard('pdf_ust'), $tax . '%') ?>
 										</td>
-										<td><?= number_format($taxValue, 2, ',', '.') . ' ' . $currency ?>
+										<td><?= $formatInvoiceCurrency($taxValue) ?>
 										</td>
 									</tr>
 									<?php endforeach;
@@ -414,7 +425,7 @@ if ($user_data['email']) {
 									<tr>
 										<td><strong><?= sprogcard('pdf_g_price') ?></strong>
 										</td>
-										<td><strong><?= number_format($total, 2, ',', '.') . ' ' . $currency ?></strong>
+										<td><strong><?= $formatInvoiceCurrency($total) ?></strong>
 										</td>
 									</tr>
 								</tbody>
@@ -434,7 +445,7 @@ if ($user_data['email']) {
 			</p>
 			<?php elseif ($payment_type == 'prepayment' && !is_null($order->getValue('paydate'))): ?>
 			<p style="font-size: 14px;">
-				<?= sprintf(sprogcard('pdf_order_msg_prepayment'), number_format($total, 2, ',', '.') . ' ' . $currency, $order->getValue('verwendungszweck')); ?>
+				<?= sprintf(sprogcard('pdf_order_msg_prepayment'), $formatInvoiceCurrency($total), $order->getValue('verwendungszweck')); ?>
 			</p>
 			<?php endif; ?>
 		</div>

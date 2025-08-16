@@ -120,4 +120,25 @@ class CustomerAddress extends rex_yform_manager_dataset
         return $this;
     }
 
+    public function saveInSession() {
+        $data = [
+            'type' => $this->getType(),
+            'company' => $this->getCompany(),
+            'name' => $this->getName(),
+            'street' => $this->getStreet(),
+            'zip' => $this->getZip(),
+            'city' => $this->getCity(),
+            'country' => $this->getCountry(),
+        ];
+
+        if($this->getType() === 'shipping') {
+            Session::setShippingAddress($data);
+        } elseif($this->getType() === 'billing') {
+            Session::setBillingAddress($data);
+        } else {
+            // Handle other types if necessary
+        }
+    }
+
+
 }

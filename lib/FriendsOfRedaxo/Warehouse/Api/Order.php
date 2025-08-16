@@ -4,6 +4,7 @@ namespace FriendsOfRedaxo\Warehouse\Api;
 
 use Exception;
 use FriendsOfRedaxo\Warehouse\Cart;
+use FriendsOfRedaxo\Warehouse\Document;
 use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Order as WarehouseOrder;
 use FriendsOfRedaxo\Warehouse\Payment;
@@ -15,6 +16,7 @@ use CoreInterfaces\Core\Response\ResponseInterface;
 use PaypalServerSdkLib\Http\ApiResponse;
 
 use FriendsOfRedaxo\Warehouse\PayPal;
+use FriendsOfRedaxo\Warehouse\Session;
 use FriendsOfRedaxo\Warehouse\Shipping;
 use PaypalServerSdkLib\PaypalServerSdkClientBuilder;
 use PaypalServerSdkLib\Authentication\ClientCredentialsAuthCredentialsBuilder;
@@ -145,7 +147,7 @@ class Order extends rex_api_function
         
         // Get dynamic currency and cart totals
         $currency = Warehouse::getCurrency();
-        $cart_data = Cart::loadCartFromSession();
+        $cart_data = Session::getCartData();
         $cart_total = Cart::getCartTotal(); // Total including shipping
         $cart_subtotal = Cart::getSubTotal(); // Items only, excluding shipping
         $shipping_cost = Shipping::getCost(); // Shipping costs
@@ -236,8 +238,12 @@ class Order extends rex_api_function
         ->setOrderJson($apiResponse->getBody())
         ->setValue('payment_status', Payment::PAYMENT_STATUS_COMPLETED)
         ->setOrderTotal($capture['purchase_units'][0]['payments']['captures'][0]['amount']['value'] ?? 0)
-        ->setValue('shipping_status', Shipping::SHIPPING_STATUS_NOT_SHIPPED)
-        ->save();
+        ->setValue('shipping_status', Shipping::SHIPPING_STATUS_NOT_SHIPPED);
+
+        // Auto-assign order number before saving
+        Document::assignOrderNo($order);
+        
+        $order->save();
 
         
         return self::handleResponse($apiResponse);

@@ -113,8 +113,7 @@ if ('' !== $func) {
 					<strong>Bestelldatum:</strong>
 					<?= $order->getCreateDate() ?><br />
 					<strong>Gesamtbetrag:</strong>
-					<?= $order->getOrderTotal() ?>
-					<?= FriendsOfRedaxo\Warehouse\Warehouse::getCurrencySign() ?><br />
+					<?= FriendsOfRedaxo\Warehouse\Warehouse::formatCurrency($order->getOrderTotal()) ?><br />
 					<strong>Zahlungs-ID:</strong>
 					<?= $order->getPaymentId() ?><br />
 					<strong>PayPal ID:</strong>

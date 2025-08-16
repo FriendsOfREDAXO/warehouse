@@ -5,20 +5,32 @@ namespace FriendsOfRedaxo\Warehouse;
 use rex_addon;
 use rex_config;
 use rex_csrf_token;
-use rex_ycom_auth;
+use rex_formatter;
+use rex_i18n;
+use rex_response;
 use rex_url;
+use rex_ycom_auth;
+use rex_yform;
+use rex_yform_list;
 use rex_yform_manager_collection;
 use rex_yform_manager_dataset;
 use rex_yform_manager_table;
-use rex_yform_list;
-use rex_extension_point;
-use rex_i18n;
-use rex_formatter;
-use rex_response;
-use rex_yform;
 
 class Order extends rex_yform_manager_dataset
 {
+
+    /* Bestellnummer */
+    /** @api */
+    public function getOrderNo(): ?string
+    {
+        return $this->getValue("order_no");
+    }
+    /** @api */
+    public function setOrderNo(string $value): self
+    {
+        $this->setValue("order_no", $value);
+        return $this;
+    }
 
     /* Anrede */
     /** @api */
@@ -269,6 +281,19 @@ class Order extends rex_yform_manager_dataset
         return $data->find();
     }
     
+    /* Gelesen-Status */
+    /** @api */
+    public function getIsRead() : bool
+    {
+        return (bool) $this->getValue("is_read");
+    }
+    /** @api */
+    public function setIsRead(bool $value) : self
+    {
+        $this->setValue("is_read", $value ? 1 : 0);
+        return $this;
+    }
+    
     public static function findByUuid(string $uuid) : ?self
     {
         return self::query()->where('uuid', $uuid)->findOne();
@@ -305,6 +330,10 @@ class Order extends rex_yform_manager_dataset
 
         $name = rex_i18n::msg('warehouse_order.buyer');
         $list->addColumn($name, '', 2);
+        
+        // Status-Spalte für Gelesen/Ungelesen
+        $status_name = rex_i18n::msg('warehouse_order.is_read');
+        $list->addColumn($status_name, '', 1);
 
         $list->setColumnFormat(
             $name,
@@ -338,6 +367,22 @@ class Order extends rex_yform_manager_dataset
         );
 
         $list->setColumnFormat(
+            $status_name,
+            'custom',
+            static function ($a) {
+                /** @var rex_yform_manager_dataset $values */
+                $values = $a['list'];
+                $is_read = (bool) $values->getValue('is_read');
+                
+                // Zeige schwarzen Punkt für ungelesene Bestellungen
+                if (!$is_read) {
+                    return '<span style="font-size: 1.2em; color: #000;">•</span>';
+                }
+                return '';
+            }
+        );
+
+        $list->setColumnFormat(
             'email',
             'custom',
             static function ($a) {
@@ -359,6 +404,18 @@ class Order extends rex_yform_manager_dataset
                 return $payment_id;
             },
         );
+
+        $list->setColumnFormat(
+            'order_no',
+            'custom',
+            static function ($a) {
+                $order_no = $a['value'];
+                if (!empty($order_no)) {
+                    return '<code>' . htmlspecialchars($order_no) . '</code>';
+                }
+                return '<em class="text-muted">—</em>';
+            },
+        );
         
         $list->setColumnFormat(
             'createdate',
@@ -367,6 +424,9 @@ class Order extends rex_yform_manager_dataset
                 return rex_formatter::intlDate($a['value']);
             },
         );
+
+        // Set label for order number column
+        $list->setColumnLabel('order_no', rex_i18n::msg('warehouse_order.order_no'));
 
         if (rex_addon::get('ycom')->isAvailable()) {
             $list->setColumnLabel('ycom_user_id', rex_i18n::msg('warehouse_order.ycom_user'));
@@ -425,9 +485,9 @@ class Order extends rex_yform_manager_dataset
                 $return = '';
 
                 if ($order_total > 0) {
-                    $return .= '<span class="">' . rex_formatter::number($order_total) ." " . Warehouse::getCurrencySign() .  '</span><br>';
+                    $return .= '<span class="">' . Warehouse::formatCurrency($order_total) .  '</span><br>';
                 } else {
-                    $return .= '<span class="text-danger">' . rex_formatter::number($order_total) ." " . Warehouse::getCurrencySign() . '</span><br>';
+                    $return .= '<span class="text-danger">' . Warehouse::formatCurrency($order_total) . '</span><br>';
                 }
 
                 if ($payment_confirm != '') {
@@ -663,6 +723,8 @@ class Order extends rex_yform_manager_dataset
             ->run();
         return $addonDataPath;
     }
+
+
 
     /**
      * @return array<string, string>

@@ -7,7 +7,7 @@ use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Shipping;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
-$cart = Cart::get();
+$cart = Cart::create();
 $cart_items = $cart->getItems();
 $domain = Domain::getCurrent();
 ?>
@@ -48,12 +48,12 @@ $domain = Domain::getCurrent();
 						<?php endif; ?>
 						<div class="mt-1 row g-2 align-items-center">
 							<div class="col-auto fw-bolder small">
-								<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($item['total'], 2) ?>
+								<?= Warehouse::formatCurrency($item['total']) ?>
 							</div>
 							<div class="col-auto text-muted small">
 								<?= $item['amount'] ?>
 								&times;
-								<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($item['price'], 2) ?>
+								<?= Warehouse::formatCurrency($item['price']) ?>
 							</div>
 						</div>
 					</div>
@@ -75,7 +75,7 @@ $domain = Domain::getCurrent();
 					<?= Warehouse::getLabel('cart_subtotal') ?>
 				</div>
 				<div class="col-auto h4 fw-bolder">
-					<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format(Cart::getSubTotal(), 2) ?>
+					<?= Warehouse::formatCurrency(Cart::getSubTotal()) ?>
 				</div>
 			</div>
 			<div class="row g-2">
@@ -83,7 +83,7 @@ $domain = Domain::getCurrent();
 					<?= Warehouse::getLabel('shipping_costs') ?>
 				</div>
 				<div class="col-auto">
-					<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format(Shipping::getCost(), 2) ?>
+					<?= Warehouse::formatCurrency(Shipping::getCost()) ?>
 				</div>
 			</div>
 			<div class="row g-2 align-items-center">
@@ -91,7 +91,7 @@ $domain = Domain::getCurrent();
 					<?= Warehouse::getLabel('cart_total') ?>
 				</div>
 				<div class="col-auto h5 fw-bolder">
-					<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format($cart->getTotal(), 2) ?>
+					<?= Warehouse::formatCurrency($cart->getTotal()) ?>
 				</div>
 			</div>
 		</div>
@@ -102,19 +102,19 @@ $domain = Domain::getCurrent();
 				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 			</div>
 			<div class="col-auto h4 fw-bolder">
-				<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format(Cart::getSubTotalByMode(Warehouse::getPriceInputMode()), 2) ?>
+				<?= Warehouse::formatCurrency(Cart::getSubTotalByMode(Warehouse::getPriceInputMode())) ?>
 			</div>
 		</div>
 		<div class="row g-2">
 			<div class="col text-muted">MwSt.</div>
 			<div class="col-auto">
-				<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format(Cart::getTaxTotalByMode(), 2) ?>
+				<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
 			</div>
 		</div>
 		<div class="row g-2">
 			<div class="col text-muted">Versand</div>
 			<div class="col-auto">
-				<?= Warehouse::getCurrencySign() ?>&nbsp;<?= number_format(Shipping::getCost(), 2) ?>
+				<?= Warehouse::formatCurrency(Shipping::getCost()) ?>
 			</div>
 		</div>
 		<div class="row g-2 align-items-center">
@@ -122,7 +122,7 @@ $domain = Domain::getCurrent();
 				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 			</div>
 			<div class="col-auto h5 fw-bolder">
-				<?= Warehouse::getCurrencySign() ?>&nbsp;<?= Cart::getCartTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
+				<?= Warehouse::formatCurrency(Cart::getCartTotalByMode(Warehouse::getPriceInputMode())) ?>
 			</div>
 		</div>
 

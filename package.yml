@@ -1,5 +1,5 @@
 package: warehouse
-version: '2.3.0-dev'
+version: '2.4.0-dev'
 author: FriendsOfREDAXO
 supportpage: https://github.com/FriendsOfREDAXO/warehouse
 
@@ -119,7 +119,6 @@ default_config:
     store_country_code: "DE"
 
     currency: "EUR"
-    currency_symbol: "€"
     country_codes: "DE"
     cart_mode: "cart"
     editor: ''
@@ -129,6 +128,8 @@ default_config:
     delivery_note_number: 1
     invoice_number: 1
     order_number: 1
+    order_no_counter: 1
+    order_no_last_period: ''
 
     fallback_category_image: 'warehouse_placeholder_category.jpeg'
     fallback_article_image: 'warehouse_placeholder_article.jpeg'
@@ -168,8 +169,10 @@ default_config:
     ### Labels
     # Cart
     label_cart: 'Warenkorb'
+    label_add_to_cart: 'Zum Warenkorb hinzufügen'
     labeL_cart_empty: 'Der Warenkorb ist leer'
     label_article: 'Artikel'
+    label_tax: 'inkl. MwSt.'
     label_back_to_cart: 'Zurück zum Warenkorb'
     label_cart_empty: 'Der Warenkorb ist leer.'
     label_cart_empty_confirm: 'Sind Sie sicher, dass Sie den Warenkorb leeren möchten?'

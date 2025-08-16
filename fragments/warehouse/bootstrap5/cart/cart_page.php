@@ -6,7 +6,7 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
 use FriendsOfRedaxo\Warehouse\Cart;
 use FriendsOfRedaxo\Warehouse\Shipping;
 
-$cart = Cart::get();
+$cart = Cart::create();
 $cart_items = $cart->getItems();
 
 ?>
@@ -85,7 +85,7 @@ $cart_items = $cart->getItems();
 										<?= Warehouse::getLabel('price') ?>
 									</div>
 									<div>
-										<?= rex_config::get('warehouse', 'currency_symbol').'&nbsp;'.number_format($item['price'], 2) ?>
+										<?= Warehouse::formatCurrency($item['price']) ?>
 									</div>
 								</div>
 								<div class="col">
@@ -102,7 +102,7 @@ $cart_items = $cart->getItems();
 										<?= Warehouse::getLabel('total') ?>
 									</div>
 									<div>
-										<?= rex_config::get('warehouse', 'currency_symbol').'&nbsp;'.number_format($item['total'], 2) ?>
+										<?= Warehouse::formatCurrency($item['total']) ?>
 									</div>
 								</div>
 								<div class="col"><a
@@ -128,19 +128,19 @@ $cart_items = $cart->getItems();
 							(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 						</div>
 						<div class="col">
-							<?= rex_config::get('warehouse', 'currency_symbol') ?>&nbsp;<?= number_format($cart::getSubTotalByMode(Warehouse::getPriceInputMode()), 2) ?>
+							<?= Warehouse::formatCurrency($cart::getSubTotalByMode(Warehouse::getPriceInputMode())) ?>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col text-muted">MwSt.</div>
 						<div class="col">
-							<?= rex_config::get('warehouse', 'currency_symbol') ?>&nbsp;<?= number_format($cart::getTaxTotalByMode(), 2) ?>
+							<?= Warehouse::formatCurrency($cart::getTaxTotalByMode()) ?>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col text-muted">Versand</div>
 						<div class="col text">
-							<?= rex_config::get('warehouse', 'currency_symbol') ?>&nbsp;<?= number_format((float) Shipping::getCost(), 2) ?>
+							<?= Warehouse::formatCurrency((float) Shipping::getCost()) ?>
 						</div>
 					</div>
 				</div>
@@ -150,7 +150,7 @@ $cart_items = $cart->getItems();
 							(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 						</div>
 						<div class="col text-lead fw-bolder">
-							<?= rex_config::get('warehouse', 'currency_symbol') ?>&nbsp;<?= $cart::getCartTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
+							<?= Warehouse::formatCurrency($cart::getCartTotalByMode(Warehouse::getPriceInputMode())) ?>
 						</div>
 					</div>
 					<a class="btn btn-primary mt-3 w-100"

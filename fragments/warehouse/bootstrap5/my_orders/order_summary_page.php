@@ -15,7 +15,7 @@ $user_data = $this->warehouse_userdata;
     <thead>
         <tr>
             <th></th>
-            <th class="text-right"><?= Warehouse::getCurrencySign() ?></th>
+            <th class="text-right"><?= Warehouse::getCurrency() ?></th>
         </tr>
     </thead>
     <?php foreach ($this->cart as $item) : ?>
