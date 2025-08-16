@@ -78,10 +78,8 @@ class Warehouse
         $return .= PHP_EOL;
 
         foreach ($cart->getItems() as $item) {
-            $article_number = $item['article_id'];
-            if ($item['type'] === 'variant' && $item['variant_id']) {
-                $article_number .= '-' . $item['variant_id'];
-            }
+            // Use SKU if available, otherwise fallback to generated pattern
+            $article_number = $item['sku'] ?? ($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : ''));
             
             $return .= mb_str_pad(mb_substr(html_entity_decode($article_number), 0, 20), 20, ' ', STR_PAD_RIGHT);
             $return .= mb_str_pad(mb_substr(html_entity_decode($item['name']), 0, 45), 45, ' ', STR_PAD_RIGHT);
@@ -169,8 +167,8 @@ class Warehouse
 
         foreach ($cart->getItems() as $pos) {
             $return .= '<tr><td>';
-            // Use standardized cart item structure
-            $article_sku = $pos['article_id'] . ($pos['variant_id'] ? '-' . $pos['variant_id'] : '');
+            // Use SKU if available, otherwise fallback to generated pattern
+            $article_sku = $pos['sku'] ?? ($pos['article_id'] . ($pos['variant_id'] ? '-' . $pos['variant_id'] : ''));
             $return .= mb_substr(html_entity_decode($article_sku), 0, 20) . '</td><td>';
             
             $return .= mb_substr(html_entity_decode($pos['name']), 0, 45);
@@ -374,6 +372,12 @@ class Warehouse
     {
         // Überprüfe, ob 'stock' im Config-Wert vorhanden ist
         return in_array('stock', self::getEnabledFeatures());
+    }
+
+    public static function isSkuEnabled() :bool
+    {
+        // Überprüfe, ob 'sku' im Config-Wert vorhanden ist
+        return in_array('sku', self::getEnabledFeatures());
     }
     /**
      * @api

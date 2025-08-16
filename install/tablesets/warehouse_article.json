@@ -224,6 +224,24 @@
                 "type_name": "text"
             },
             {
+                "append": "",
+                "attributes": "",
+                "db_type": "varchar(191)",
+                "default": "",
+                "label": "translate:warehouse_article.sku",
+                "list_hidden": 1,
+                "name": "sku",
+                "no_db": "0",
+                "not_required": "1",
+                "notice": "translate:warehouse_article.sku.notice",
+                "prepend": "",
+                "prio": 12.5,
+                "search": 1,
+                "table_name": "rex_warehouse_article",
+                "type_id": "value",
+                "type_name": "text"
+            },
+            {
                 "columns": "number|amount|Menge|5|0||0|input:number|\u00d7||{\"min\":\"2\",\"max\":\"99999\",\"step\":\"1\"},number|price|Preis|10|2||0|input:number|EUR||{\"min\":\"0\",\"max\":\"99999999.99\",\"step\":\"0.01\"}",
                 "db_type": "text",
                 "label": "translate:warehouse_article.bulk_prices",
