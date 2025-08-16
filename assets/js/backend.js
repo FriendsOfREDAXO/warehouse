@@ -9,7 +9,12 @@ function data_copy() {
         }.bind(this), function() {
             // Fallback for clipboard API failure
             fallbackCopyMethod.call(this, textToCopy);
-        }.bind(this));
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            showCopyFeedback(this, 'Kopiert!');
+        }, () => {
+            // Fallback for clipboard API failure
+            fallbackCopyMethod.call(this, textToCopy);
+        });
     } else {
         // Fallback for older browsers
         fallbackCopyMethod.call(this, textToCopy);
