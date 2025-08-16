@@ -77,7 +77,7 @@ class Customer extends rex_yform_manager_dataset
         $this->setValue("firstname", $value);
         return $this;
     }
-    /* [translate:warehouse.ycom_user.lastname] */
+    /* Nachname */
     /** @api */
     public function getLastname() : ?string
     {
@@ -90,7 +90,7 @@ class Customer extends rex_yform_manager_dataset
         return $this;
     }
 
-    /* [translate:warehouse.ycom_user.salutation] */
+    /* Anrede */
     /** @api */
     public function getSalutation() : ?string
     {
@@ -108,84 +108,6 @@ class Customer extends rex_yform_manager_dataset
     {
         $salutation = $this->getSalutation() ? $this->getSalutation() . ' ' : '';
         return $salutation . $this->getFirstname() . ' ' . $this->getLastname();
-    }
-
-    /* [translate:warehouse.ycom_user.company] */
-    /** @api */
-    public function getCompany() : ?string
-    {
-        return $this->getValue("company");
-    }
-    /** @api */
-    public function setCompany(mixed $value) : self
-    {
-        $this->setValue("company", $value);
-        return $this;
-    }
-
-    /* [translate:warehouse.ycom_user.department] */
-    /** @api */
-    public function getDepartment() : ?string
-    {
-        return $this->getValue("department");
-    }
-    /** @api */
-    public function setDepartment(mixed $value) : self
-    {
-        $this->setValue("department", $value);
-        return $this;
-    }
-
-    /* [translate:warehouse.ycom_user.address] */
-    /** @api */
-    public function getAddress() : ?string
-    {
-        return $this->getValue("address");
-    }
-    /** @api */
-    public function setAddress(mixed $value) : self
-    {
-        $this->setValue("address", $value);
-        return $this;
-    }
-
-    /* [translate:warehouse.ycom_user.phone] */
-    /** @api */
-    public function getPhone() : ?string
-    {
-        return $this->getValue("phone");
-    }
-    /** @api */
-    public function setPhone(mixed $value) : self
-    {
-        $this->setValue("phone", $value);
-        return $this;
-    }
-
-    /* [translate:warehouse.ycom_user.zip] */
-    /** @api */
-    public function getZip() : ?string
-    {
-        return $this->getValue("zip");
-    }
-    /** @api */
-    public function setZip(mixed $value) : self
-    {
-        $this->setValue("zip", $value);
-        return $this;
-    }
-
-    /* [translate:warehouse.ycom_user.city] */
-    /** @api */
-    public function getCity() : ?string
-    {
-        return $this->getValue("city");
-    }
-    /** @api */
-    public function setCity(mixed $value) : self
-    {
-        $this->setValue("city", $value);
-        return $this;
     }
 
     public function getShippingAddress() : ?CustomerAddress
