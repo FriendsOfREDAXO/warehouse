@@ -47,7 +47,7 @@ class ShippingAddressApi extends rex_api_function
         ];
 
         // Filter empty values
-        $shippingData = array_filter($shippingData, function($value) {
+        $shippingData = array_filter($shippingData, function(string $value) {
             return $value !== '';
         });
 
