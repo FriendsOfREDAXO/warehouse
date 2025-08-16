@@ -40,10 +40,6 @@ class Session extends rex_request
         if (!parent::session(self::WAREHOUSE_PAYMENT_SESSION_KEY)) {
             parent::setSession(self::WAREHOUSE_PAYMENT_SESSION_KEY, []);
         }
-        if (!parent::session(self::WAREHOUSE_BILLING_ADRESS_SESSION_KEY)) {
-            parent::setSession(self::WAREHOUSE_BILLING_ADRESS_SESSION_KEY, []);
-        }
-        if (!parent::session(self::WAREHOUSE_SHIPPING_ADRESS_SESSION_KEY)) {
         if (!parent::session(self::WAREHOUSE_BILLING_ADDRESS_SESSION_KEY)) {
             parent::setSession(self::WAREHOUSE_BILLING_ADDRESS_SESSION_KEY, []);
         }
@@ -64,8 +60,8 @@ class Session extends rex_request
         parent::unsetSession(self::WAREHOUSE_CART_SESSION_KEY);
         parent::unsetSession(self::WAREHOUSE_CUSTOMER_SESSION_KEY);
         parent::unsetSession(self::WAREHOUSE_PAYMENT_SESSION_KEY);
-        parent::unsetSession(self::WAREHOUSE_BILLING_ADRESS_SESSION_KEY);
-        parent::unsetSession(self::WAREHOUSE_SHIPPING_ADRESS_SESSION_KEY);
+        parent::unsetSession(self::WAREHOUSE_BILLING_ADDRESS_SESSION_KEY);
+        parent::unsetSession(self::WAREHOUSE_SHIPPING_ADDRESS_SESSION_KEY);
     }
 
     /**
@@ -130,7 +126,7 @@ class Session extends rex_request
      */
     public static function getBillingAddressData()
     {
-        return self::session(self::WAREHOUSE_BILLING_ADRESS_SESSION_KEY, 'array', []);
+        return self::session(self::WAREHOUSE_BILLING_ADDRESS_SESSION_KEY, 'array', []);
     }
     /**
      * Sets the billing address in the session.
@@ -139,7 +135,7 @@ class Session extends rex_request
      */
     public static function setBillingAddress(array $billingAddress)
     {
-        self::setSession(self::WAREHOUSE_BILLING_ADRESS_SESSION_KEY, $billingAddress);
+        self::setSession(self::WAREHOUSE_BILLING_ADDRESS_SESSION_KEY, $billingAddress);
     }
     /**
      * Returns the shipping address from the session.
@@ -227,7 +223,7 @@ class Session extends rex_request
                 // Try to find corresponding customer
                 $customer = Customer::query()->where('email', $ycom_user->getValue('email'))->findOne();
                 if ($customer) {
-                    $this->setCustomer($customer);
+                    self::setCustomer($customer);
                     
                     // Also set billing address if available
                     $billing_address = CustomerAddress::query()
@@ -235,7 +231,7 @@ class Session extends rex_request
                         ->where('type', 'billing')
                         ->findOne();
                     if ($billing_address) {
-                        $this->setBillingAddress($billing_address);
+                        self::setBillingAddress($billing_address->toArray());
                     }
                 }
             }

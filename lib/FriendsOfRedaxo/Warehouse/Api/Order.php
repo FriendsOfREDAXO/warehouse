@@ -48,6 +48,9 @@ use PaypalServerSdkLib\Models\Builders\PhoneNumberWithCountryCodeBuilder;
 use PaypalServerSdkLib\Models\Builders\PaymentSourceBuilder;
 use PaypalServerSdkLib\Models\CallbackEvents;
 use PaypalServerSdkLib\Models\OAuthToken;
+use PaypalServerSdkLib\Models\Builders\OrderApplicationContextBuilder;
+use PaypalServerSdkLib\Models\Builders\NameBuilder;
+use PaypalServerSdkLib\Models\Builders\AddressPortableBuilder;
 
 class Order extends rex_api_function
 {
@@ -72,20 +75,11 @@ class Order extends rex_api_function
         }
         if (rex_get('action', 'string') === 'order') {
 
-            $data = Cart::loadCartFromSession();
-
-            $cart = $data->cart;
-
-            $cart_test = [[
-                'id' => "YOUR_PRODUCT_ID",
-                'quantity' => 1
-                ],[
-                'id' => "YOUR_PRODUCT_ID2",
-                'quantity' => 3
-                ]];
-
+            $cart = new Cart(); // Load cart from session
+            
+            // Use real cart data instead of test data
             try {
-                $orderResponse = self::createOrder($cart_test);
+                $orderResponse = self::createOrder();
                 rex_response::sendJson($orderResponse["jsonResponse"]);
             } catch (Exception $e) {
                 rex_response::setStatus('500');
@@ -124,10 +118,9 @@ class Order extends rex_api_function
     /**
      * Create an order to start the transaction.
      * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
-     * @param mixed $cart
      * @return array{jsonResponse: mixed, httpStatusCode: mixed}
      */
-    public static function createOrder($cart): array
+    public static function createOrder(): array
     {
 
         global $client;
@@ -147,11 +140,17 @@ class Order extends rex_api_function
         
         // Get dynamic currency and cart totals
         $currency = Warehouse::getCurrency();
-        $cart_data = Session::getCartData();
+        $cart = new Cart(); // Load cart from session
+        
+        // Validate cart is not empty
+        if ($cart->isEmpty()) {
+            throw new Exception('Cart is empty - cannot create PayPal order');
+        }
+        
         $cart_total = Cart::getCartTotal(); // Total including shipping
         $cart_subtotal = Cart::getSubTotal(); // Items only, excluding shipping
         $shipping_cost = Shipping::getCost(); // Shipping costs
-        $cart_items = $cart_data->getItems();
+        $cart_items = $cart->getItems(); // Get items from Cart object
         
         // Build PayPal items from cart
         $paypal_items = [];
@@ -178,6 +177,45 @@ class Order extends rex_api_function
             );
         }
         
+        // Get customer data and addresses from session
+        $customer = Session::getCustomerData();
+        $shippingAddress = Session::getShippingAddressData();
+        $billingAddress = Session::getBillingAddressData();
+        
+        // Build shipping details if shipping address is provided
+        $shipping = null;
+        if (!empty($shippingAddress)) {
+            $shippingName = ($customer['firstname'] ?? '') . ' ' . ($customer['lastname'] ?? '');
+            if (empty(trim($shippingName))) {
+                $shippingName = ($shippingAddress['firstname'] ?? '') . ' ' . ($shippingAddress['lastname'] ?? '');
+            }
+            
+            $shipping = ShippingDetailsBuilder::init()
+                ->name(NameBuilder::init()->fullName(trim($shippingName))->build())
+                ->address(AddressPortableBuilder::init()
+                    ->addressLine1($shippingAddress['address'] ?? '')
+                    ->adminArea2($shippingAddress['city'] ?? '') // Stadt
+                    ->postalCode($shippingAddress['zip'] ?? '')
+                    ->countryCode($shippingAddress['country'] ?? PayPal::getStoreCountryCode())
+                    ->build()
+                )
+                ->build();
+        }
+        
+        // Create application context with return URLs
+        $return_url = PayPal::getSuccessPageUrl() ?: '';
+        $cancel_url = PayPal::getErrorPageUrl() ?: '';
+        
+        $applicationContext = OrderApplicationContextBuilder::init()
+            ->brandName(PayPal::getStoreName() ?: 'Shop')
+            ->locale('de-DE')
+            ->userAction(PaypalExperienceUserAction::PAY_NOW)
+            ->landingPage(PaypalExperienceLandingPage::LOGIN)
+            ->shippingPreference($shipping ? ShippingPreference::SET_PROVIDED_ADDRESS : ShippingPreference::NO_SHIPPING)
+            ->returnUrl($return_url)
+            ->cancelUrl($cancel_url)
+            ->build();
+        
         $collect =[
             "body" => OrderRequestBuilder::init("CAPTURE", [
                 PurchaseUnitRequestBuilder::init(
@@ -188,8 +226,10 @@ class Order extends rex_api_function
                     ->items($paypal_items)
                     ->customId(PayPal::getStoreName() . '-' . date('Y-m-d-H-i-s'))
                     ->description('Order from ' . PayPal::getStoreName())
+                    ->shipping($shipping) // Add shipping details
                     ->build(),
             ])
+            ->applicationContext($applicationContext) // Add application context
             ->build(),
         ];
     
@@ -230,20 +270,34 @@ class Order extends rex_api_function
 
         $apiResponse = $client->getOrdersController()->captureOrder($captureBody);
 
-        // save the order to the database;
+        // Save the order to the database using Session data
         $capture = json_decode($apiResponse->getBody(), true);
-        $order = WarehouseOrder::create()
-        ->setValue('paypal_id', $capture['id'])
-        ->setValue('payment_id', $capture['payer']['payer_id'])
-        ->setOrderJson($apiResponse->getBody())
-        ->setValue('payment_status', Payment::PAYMENT_STATUS_COMPLETED)
-        ->setOrderTotal($capture['purchase_units'][0]['payments']['captures'][0]['amount']['value'] ?? 0)
-        ->setValue('shipping_status', Shipping::SHIPPING_STATUS_NOT_SHIPPED);
-
-        // Auto-assign order number before saving
-        Document::assignOrderNo($order);
+        $payment_id = $capture['payer']['payer_id'] ?? $orderID;
         
-        $order->save();
+        // Use Session::saveAsOrder to properly save with customer data, addresses, and cart items
+        $saved = Session::saveAsOrder($payment_id);
+        
+        if ($saved) {
+            // Update the saved order with PayPal specific data
+            $order = Order::query()
+                ->where('payment_id', $payment_id)
+                ->orderBy('id', 'DESC')
+                ->findOne();
+                
+            if ($order) {
+                $order->setValue('paypal_id', $capture['id'] ?? '')
+                    ->setOrderJson($apiResponse->getBody())
+                    ->setValue('payment_status', Payment::PAYMENT_STATUS_COMPLETED)
+                    ->setOrderTotal($capture['purchase_units'][0]['payments']['captures'][0]['amount']['value'] ?? 0)
+                    ->setValue('shipping_status', Shipping::SHIPPING_STATUS_NOT_SHIPPED);
+                
+                $order->save();
+            } else {
+                throw new Exception('Failed to find saved order after Session::saveAsOrder');
+            }
+        } else {
+            throw new Exception('Failed to save order via Session::saveAsOrder');
+        }
 
         
         return self::handleResponse($apiResponse);
