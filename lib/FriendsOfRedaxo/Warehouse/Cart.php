@@ -239,7 +239,9 @@ class Cart
 
         // Recalculate totals for existing items
         $items[$item_key]['total'] = $items[$item_key]['price'] * $items[$item_key]['amount'];
-        $items[$item_key]['tax_amount'] = ($items[$item_key]['gross_price'] - $items[$item_key]['net_price']) * $items[$item_key]['amount'];
+        $gross_price = $items[$item_key]['gross_price'] ?? 0.0;
+        $net_price = $items[$item_key]['net_price'] ?? 0.0;
+        $items[$item_key]['tax_amount'] = ($gross_price - $net_price) * $items[$item_key]['amount'];
 
         $this->update($items);
         return true;
