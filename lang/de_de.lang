@@ -100,6 +100,7 @@ warehouse.settings.enable_features.bulk_prices = Staffelpreise abfragen
 warehouse.settings.enable_features.weight = Artikelgewicht abfragen
 warehouse.settings.enable_features.variants = Varianten zulassen
 warehouse.settings.enable_features.stock = Lagerbestand verwalten
+warehouse.settings.enable_features.sku = SKU (Artikelnummer) verwalten
 
 warehouse.settings.fallback_category_image = Fallback-Kategorie-Bild
 warehouse.settings.fallback_category_image.notice = Wird verwendet, wenn kein Bild für die Kategorie vorhanden ist.
@@ -194,6 +195,8 @@ warehouse_article.availability = Verfügbarkeit
 warehouse_article.uuid = UUID
 warehouse_article.bulk_prices = Staffelpreise
 warehouse_article.stock = Lagerbestand
+warehouse_article.sku = SKU
+warehouse_article.sku.notice = Artikelnummer - falls leer, wird die ID verwendet
 
 # YForm-Tabelle "Kategorien": Labels
 
@@ -229,6 +232,8 @@ warehouse_article_variant.status.active = 🟢 Aktiv
 warehouse_article_variant.status.draft = 🟡 Entwurf
 warehouse_article_variant.status.hidden = 🔴 Versteckt
 warehouse_article_variant.image = Bild
+warehouse_article_variant.sku = SKU
+warehouse_article_variant.sku.notice = Artikelnummer - falls leer, wird die ID verwendet
 warehouse_article_variant.uuid = UUID
 warehouse_article_variant.createdate = Erstellt am
 warehouse_article_variant.updatedate = Zuletzt geändert
@@ -528,6 +533,10 @@ warehouse.settings.payment.paypal_button_funding_source = Bevorzugte Zahlungsque
 warehouse.settings.payment.paypal_button_funding_source.notice = Wählen Sie die bevorzugte Zahlungsquelle für den PayPal-Button.
 warehouse.settings.payment.paypal_button_funding_source.paypal = PayPal
 warehouse.settings.payment.paypal_button_funding_source.credit = Kreditkarte
+
+warehouse.settings.payment.paypal_include_images = Produktbilder in PayPal-Bestellung übertragen
+warehouse.settings.payment.paypal_include_images.option = Produktbilder an PayPal übertragen
+warehouse.settings.payment.paypal_include_images.notice = Wenn aktiviert, werden Produktbilder als URLs an PayPal übertragen. Die Bilder werden in kleiner Größe (rex_media_small) übertragen.
 
 # Setup-Seite
 warehouse.setup.repair_tables = Tabellen reparieren

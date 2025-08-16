@@ -220,12 +220,31 @@ class Cart
             $price = $current_mode === 'net' ? $net_price : $gross_price;
             
             $name = $article_variant ? $article_variant->getName() : $article->getName();
+            $sku = $article_variant ? $article_variant->getSku() : $article->getSku();
+            
+            // Get image filename for this item (variant takes precedence over article)
+            $image_filename = null;
+            if ($article_variant && $article_variant->getImage()) {
+                $image_filename = $article_variant->getImage();
+            } elseif ($article && $article->getImage()) {
+                $image_filename = $article->getImage();
+            }
+            
+            // Generate image URL if image exists
+            $image_url = null;
+            if ($image_filename) {
+                $domain_url = Domain::getCurrentUrl();
+                if ($domain_url) {
+                    $image_url = rtrim($domain_url, '/') . '/media/rex_media_small/' . $image_filename;
+                }
+            }
             
             $items[$item_key] = [
                 'type' => $article_variant ? 'variant' : 'article',
                 'article_id' => $article_id,
                 'variant_id' => $article_variant_id,
                 'name' => $name,
+                'sku' => $sku,
                 'price' => $price,
                 'net_price' => $net_price,
                 'gross_price' => $gross_price,
@@ -233,7 +252,8 @@ class Cart
                 'tax_amount' => ($gross_price - $net_price) * $quantity,
                 'amount' => $quantity,
                 'total' => $price * $quantity,
-                'added_at' => time()
+                'added_at' => time(),
+                'image' => $image_url
             ];
         }
 

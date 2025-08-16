@@ -197,6 +197,24 @@
                 "type_name": "choice_status"
             },
             {
+                "append": "",
+                "attributes": "",
+                "db_type": "varchar(191)",
+                "default": "",
+                "label": "translate:warehouse_article_variant.sku",
+                "list_hidden": 1,
+                "name": "sku",
+                "no_db": "0",
+                "not_required": "1",
+                "notice": "translate:warehouse_article_variant.sku.notice",
+                "prepend": "",
+                "prio": 10.5,
+                "search": 1,
+                "table_name": "rex_warehouse_article_variant",
+                "type_id": "value",
+                "type_name": "text"
+            },
+            {
                 "db_type": "varchar(36)",
                 "label": "translate:warehouse_article_variant.uuid",
                 "list_hidden": 1,

@@ -142,6 +142,105 @@ if ('' !== $func) {
 </div>
 
 <?php
+// Section: Address Information
+$orderJson = $order->getOrderJson(true);
+$billingAddress = $orderJson['billing_address'] ?? [];
+$shippingAddress = $orderJson['shipping_address'] ?? [];
+
+if (!empty($billingAddress) || !empty($shippingAddress)) {
+    $content = '';
+    
+    // Add CSS for copyable addresses
+    $content .= '<style nonce="' . rex_response::getNonce() . '">
+        .warehouse-copyable-address {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #dee2e6;
+            transition: background-color 0.3s ease;
+        }
+        .warehouse-copyable-address:hover {
+            background: #e9ecef;
+        }
+    </style>';
+    
+    $content .= '<div class="row">';
+    
+    // Billing Address
+    if (!empty($billingAddress)) {
+        $content .= '<div class="col-md-6">';
+        $content .= '<h4>Rechnungsadresse <small class="text-muted">(Klicken zum Kopieren)</small></h4>';
+        $content .= '<div class="warehouse-copyable-address" data-warehouse-copy title="Klicken um Adresse zu kopieren">';
+        
+        $addressLines = [];
+        if (!empty($billingAddress['firstname']) || !empty($billingAddress['lastname'])) {
+            $addressLines[] = trim(($billingAddress['firstname'] ?? '') . ' ' . ($billingAddress['lastname'] ?? ''));
+        }
+        if (!empty($billingAddress['company'])) {
+            $addressLines[] = $billingAddress['company'];
+        }
+        if (!empty($billingAddress['department'])) {
+            $addressLines[] = $billingAddress['department'];
+        }
+        if (!empty($billingAddress['address'])) {
+            $addressLines[] = $billingAddress['address'];
+        }
+        if (!empty($billingAddress['zip']) || !empty($billingAddress['city'])) {
+            $addressLines[] = trim(($billingAddress['zip'] ?? '') . ' ' . ($billingAddress['city'] ?? ''));
+        }
+        if (!empty($billingAddress['country'])) {
+            $addressLines[] = $billingAddress['country'];
+        }
+        if (!empty($billingAddress['email'])) {
+            $addressLines[] = $billingAddress['email'];
+        }
+        if (!empty($billingAddress['phone'])) {
+            $addressLines[] = $billingAddress['phone'];
+        }
+        
+        $content .= implode('<br>', array_filter(array_map('htmlspecialchars', $addressLines)));
+        $content .= '</div>';
+        $content .= '</div>';
+    }
+    
+    // Shipping Address
+    if (!empty($shippingAddress)) {
+        $content .= '<div class="col-md-6">';
+        $content .= '<h4>Lieferadresse <small class="text-muted">(Klicken zum Kopieren)</small></h4>';
+        $content .= '<div class="warehouse-copyable-address" data-warehouse-copy title="Klicken um Adresse zu kopieren">';
+        
+        $addressLines = [];
+        if (!empty($shippingAddress['firstname']) || !empty($shippingAddress['lastname'])) {
+            $addressLines[] = trim(($shippingAddress['firstname'] ?? '') . ' ' . ($shippingAddress['lastname'] ?? ''));
+        }
+        if (!empty($shippingAddress['company'])) {
+            $addressLines[] = $shippingAddress['company'];
+        }
+        if (!empty($shippingAddress['address'])) {
+            $addressLines[] = $shippingAddress['address'];
+        }
+        if (!empty($shippingAddress['zip']) || !empty($shippingAddress['city'])) {
+            $addressLines[] = trim(($shippingAddress['zip'] ?? '') . ' ' . ($shippingAddress['city'] ?? ''));
+        }
+        if (!empty($shippingAddress['country'])) {
+            $addressLines[] = $shippingAddress['country'];
+        }
+        
+        $content .= implode('<br>', array_filter(array_map('htmlspecialchars', $addressLines)));
+        $content .= '</div>';
+        $content .= '</div>';
+    }
+    
+    $content .= '</div>';
+    
+    $fragment = new rex_fragment();
+    $fragment->setVar('class', 'info', false);
+    $fragment->setVar('title', 'Adressdaten', false);
+    $fragment->setVar('body', $content, false);
+    echo $fragment->parse('core/page/section.php');
+}
+
 // Section 1: Payment Status Actions
 $content = '';
 $content .= '<p>Ändern Sie den Zahlungsstatus der Bestellung.</p>';

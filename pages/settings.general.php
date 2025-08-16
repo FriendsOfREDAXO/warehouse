@@ -64,6 +64,7 @@ $field->addOption(rex_i18n::msg('warehouse.settings.enable_features.bulk_prices'
 $field->addOption(rex_i18n::msg('warehouse.settings.enable_features.weight'), "weight");
 $field->addOption(rex_i18n::msg('warehouse.settings.enable_features.variants'), "variants");
 $field->addOption(rex_i18n::msg('warehouse.settings.enable_features.stock'), "stock");
+$field->addOption(rex_i18n::msg('warehouse.settings.enable_features.sku'), "sku");
 
 $field = $form->addInputField('text', 'editor', null, ['class' => 'form-control']);
 $field->setLabel(rex_i18n::msg('warehouse.settings.editor'));
