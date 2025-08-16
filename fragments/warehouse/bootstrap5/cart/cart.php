@@ -42,7 +42,7 @@ if (!$cart_items || count($cart_items) === 0) {
 			<td class="align-left">
 				<?= html_entity_decode($item['name']) ?>
 				<?php if ($item['type'] === 'variant'): ?>
-					<small class="text-muted d-block">Variante</small>
+					<small class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
 				<?php endif; ?>
 			</td>
 			<td class="align-right">
@@ -105,7 +105,7 @@ if (!$cart_items || count($cart_items) === 0) {
 			<td></td>
 		</tr>
 		<tr>
-			<td class="align-left">Versand</td>
+			<td class="align-left"><?= Warehouse::getLabel('shipping_costs') ?></td>
 			<td></td>
 			<td></td>
 			<td class="align-right">
@@ -114,7 +114,7 @@ if (!$cart_items || count($cart_items) === 0) {
 			<td></td>
 		</tr>
 		<tr>
-			<td class="align-left">Total
+			<td class="align-left"><?= Warehouse::getLabel('total') ?>
 				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 			</td>
 			<td></td>

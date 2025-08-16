@@ -16,6 +16,9 @@ $form = rex_config_form::factory('warehouse');
 $formFields = [
     'cart' => [],
     'checkout' => [],
+    'customer' => [],
+    'address' => [],
+    'product' => [],
     'shipping' => [],
     'payment' => [],
     'paymentoptions' => [],
@@ -53,6 +56,41 @@ $allFields = [
     ['label_checkout_login_submit', rex_i18n::msg('warehouse.settings.label_checkout_login_submit'), 'text'],
     ['label_checkout_register_text', rex_i18n::msg('warehouse.settings.label_checkout_register_text'), 'text'],
     ['label_checkout_submit_order', rex_i18n::msg('warehouse.settings.label_checkout_submit_order'), 'text'],
+    // customer fields (text)
+    ['label_customer_firstname', 'Vorname', 'text'],
+    ['label_customer_lastname', 'Nachname', 'text'],
+    ['label_customer_company', 'Firma', 'text'],
+    ['label_customer_department', 'Abteilung', 'text'],
+    ['label_customer_email', 'E-Mail', 'text'],
+    ['label_customer_phone', 'Telefon', 'text'],
+    // address fields (text)
+    ['label_address_address', 'Adresse', 'text'],
+    ['label_address_zip', 'PLZ', 'text'],
+    ['label_address_city', 'Ort', 'text'],
+    ['label_address_country', 'Land', 'text'],
+    ['label_address_shipping', 'Lieferadresse', 'text'],
+    ['label_address_billing', 'Rechnungsadresse', 'text'],
+    ['label_address_same_as_billing', 'Entspricht der Lieferadresse', 'text'],
+    // product/order fields (text)
+    ['label_product_variant', 'Variante', 'text'],
+    ['label_product_description', 'Beschreibung', 'text'],
+    ['label_order_summary', 'Bestellübersicht', 'text'],
+    ['label_order_not_found', 'Bestellung nicht gefunden', 'text'],
+    ['label_order_back_to_overview', 'Zur Übersicht', 'text'],
+    ['label_tax_total', 'Steuer', 'text'],
+    ['label_tax_column', 'Steuer', 'text'],
+    ['label_total_with_tax', 'Total inkl. MwSt.', 'text'],
+    ['label_total_net', 'Total', 'text'],
+    ['label_add_to_order', 'Bestellen', 'text'],
+    ['label_button_okay', 'Okay', 'text'],
+    // validation fields (text)
+    ['label_validation_required_fields', 'Bitte füllen Sie alle markierten Felder aus', 'text'],
+    ['label_validation_email_invalid', 'Bitte geben Sie eine gültige E-Mail Adresse ein', 'text'],
+    ['label_validation_agb_required', 'Sie müssen die AGBs akzeptieren.', 'text'],
+    ['label_validation_privacy_required', 'Sie müssen die Datenschutzbestimmungen akzeptieren.', 'text'],
+    // legal fields (text)
+    ['label_legal_agb_privacy', 'AGBs und Datenschutz', 'text'],
+    ['label_legal_privacy_policy', 'Ich habe die Datenschutzbestimmungen gelesen.', 'text'],
     // payment options (text)
     ['label_payment_options', rex_i18n::msg('warehouse.settings.label_payment_options'), 'text'],
     // shipping (text)
@@ -87,6 +125,12 @@ foreach ($allFields as [$name, $label, $type]) {
         $formFields['cart'][] = $field;
     } elseif (strpos($name, 'checkout_') !== false) {
         $formFields['checkout'][] = $field;
+    } elseif (strpos($name, 'customer_') !== false) {
+        $formFields['customer'][] = $field;
+    } elseif (strpos($name, 'address_') !== false) {
+        $formFields['address'][] = $field;
+    } elseif (strpos($name, 'product_') !== false || strpos($name, 'order_') !== false || strpos($name, 'tax_') !== false || strpos($name, 'total_') !== false || strpos($name, 'validation_') !== false || strpos($name, 'legal_') !== false) {
+        $formFields['product'][] = $field;
     } elseif (strpos($name, 'shipping_') !== false) {
         $formFields['shipping'][] = $field;
     } elseif (strpos($name, 'paymentoptions_') !== false) {
@@ -103,6 +147,9 @@ $content = '';
 foreach ([
     'cart' => 'Warenkorb',
     'checkout' => 'Checkout',
+    'customer' => 'Kundendaten',
+    'address' => 'Adressdaten',
+    'product' => 'Produkte & Bestellungen',
     'shipping' => 'Versand',
     'paymentoptions' => 'Verfügbare Bezahloptionen',
     'payment' => 'Zahlung',

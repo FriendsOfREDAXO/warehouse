@@ -63,7 +63,7 @@ $article = $this->getVar('article');
 				<p class="priceline mb-0">
 					<?= $item->getPriceFormatted() ?></p>
 				<p class="text-small mt-0">inkl. MwSt. zzgl. <a href="#" data-bs-toggle="modal"
-						data-bs-target="#shipping_modal">Versandkosten</a></p>
+						data-bs-target="#shipping_modal"><?= Warehouse::getLabel('shipping_costs') ?></a></p>
 				<form action="/" method="post">
 					<input type="hidden" name="art_id"
 						value="<?= $item->getId() ?>">
@@ -76,7 +76,7 @@ $article = $this->getVar('article');
 							value="1">
 						<button class="btn btn-outline-primary switch_count" type="button" data-value="+1"><i
 								class="bi bi-plus"></i></button>
-						<button type="submit" name="submit" value="1" class="btn btn-primary ms-2">Bestellen</button>
+						<button type="submit" name="submit" value="1" class="btn btn-primary ms-2"><?= Warehouse::getLabel('add_to_order') ?></button>
 					</div>
 				</form>
 			</div>
