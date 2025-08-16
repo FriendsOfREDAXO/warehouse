@@ -182,21 +182,24 @@ class Order extends rex_api_function
         $shippingAddress = Session::getShippingAddressData();
         $billingAddress = Session::getBillingAddressData();
         
-        // Build shipping details if shipping address is provided
+        // Build shipping details - use shipping address if provided, otherwise use billing address
         $shipping = null;
-        if (!empty($shippingAddress)) {
-            $shippingName = ($customer['firstname'] ?? '') . ' ' . ($customer['lastname'] ?? '');
+        $addressToUse = !empty($shippingAddress) ? $shippingAddress : $billingAddress;
+        
+        if (!empty($addressToUse)) {
+            // Try to get name from the specific address first, then fall back to customer data
+            $shippingName = ($addressToUse['firstname'] ?? '') . ' ' . ($addressToUse['lastname'] ?? '');
             if (empty(trim($shippingName))) {
-                $shippingName = ($shippingAddress['firstname'] ?? '') . ' ' . ($shippingAddress['lastname'] ?? '');
+                $shippingName = ($customer['firstname'] ?? '') . ' ' . ($customer['lastname'] ?? '');
             }
             
             $shipping = ShippingDetailsBuilder::init()
                 ->name(NameBuilder::init()->fullName(trim($shippingName))->build())
                 ->address(AddressPortableBuilder::init()
-                    ->addressLine1($shippingAddress['address'] ?? '')
-                    ->adminArea2($shippingAddress['city'] ?? '') // Stadt
-                    ->postalCode($shippingAddress['zip'] ?? '')
-                    ->countryCode($shippingAddress['country'] ?? PayPal::getStoreCountryCode())
+                    ->addressLine1($addressToUse['address'] ?? '')
+                    ->adminArea2($addressToUse['city'] ?? '') // Stadt
+                    ->postalCode($addressToUse['zip'] ?? '')
+                    ->countryCode($addressToUse['country'] ?? PayPal::getStoreCountryCode())
                     ->build()
                 )
                 ->build();
