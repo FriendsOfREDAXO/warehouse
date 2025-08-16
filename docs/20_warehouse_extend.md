@@ -31,8 +31,137 @@ Warehouse 2 bietet viele Extension Points, die genutzt werden können, um eigene
 5. **Eigene Versandarten** und -kosten
 6. **Eigene Zahlungsarten** und Zahlungsanbieter anstelle von PayPal, z.B. Stripe, Wallee, ...
 7. **Eigene E-Mail-Templates** für Bestellbestätigung, Versandbestätigung, ...
+8. **API-Integrationen** für externe Systeme wie sevdesk, Lexware, SAP, ...
 
 Momentan gibt es folgende Extension Points:
+
+### `WAREHOUSE_ORDER_CREATED`
+
+Wird ausgelöst, wenn eine neue Bestellung erstellt wurde. Ermöglicht die Verarbeitung von Bestellungen für externe Systeme wie sevdesk, Lexware oder SAP-Integrationen.
+
+**Parameter:**
+- `subject`: Die erstellte Bestellung als `Order`-Objekt
+
+**Beispiel für Lexware-API-Integration:**
+
+```php
+rex_extension::register('WAREHOUSE_ORDER_CREATED', function(rex_extension_point $ep) {
+    /** @var \FriendsOfRedaxo\Warehouse\Order $order */
+    $order = $ep->getSubject();
+    
+    // Bestelldaten für Lexware API vorbereiten
+    $lexwareData = [
+        'kunde' => [
+            'name' => $order->getFirstname() . ' ' . $order->getLastname(),
+            'email' => $order->getEmail(),
+            'adresse' => $order->getAddress(),
+            'plz' => $order->getZip(),
+            'ort' => $order->getCity(),
+            'land' => $order->getCountry(),
+        ],
+        'rechnung' => [
+            'bestellnummer' => $order->getOrderNo(),
+            'betrag' => $order->getOrderTotal(),
+            'datum' => $order->getCreatedate(),
+            'positionen' => []
+        ]
+    ];
+    
+    // Bestellpositionen hinzufügen
+    $orderJson = $order->getOrderJson(true);
+    foreach ($orderJson['items'] ?? [] as $item) {
+        $lexwareData['rechnung']['positionen'][] = [
+            'artikel' => $item['name'],
+            'menge' => $item['amount'],
+            'preis' => $item['price']
+        ];
+    }
+    
+    // HTTP-Request an Lexware API
+    $curl = curl_init();
+    curl_setopt_array($curl, [
+        CURLOPT_URL => 'https://api.lexware.de/rechnungen',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => json_encode($lexwareData),
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . rex_config::get('project', 'lexware_api_token')
+        ]
+    ]);
+    
+    $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+    
+    // Fehlerbehandlung
+    if ($httpCode !== 200) {
+        rex_logger::logError('warehouse', 'Lexware API Error for Order #' . $order->getId() . ': ' . $response);
+    }
+});
+```
+
+**Beispiel für allgemeine Webhook-Integration:**
+
+```php
+rex_extension::register('WAREHOUSE_ORDER_CREATED', function(rex_extension_point $ep) {
+    /** @var \FriendsOfRedaxo\Warehouse\Order $order */
+    $order = $ep->getSubject();
+    
+    $webhookData = [
+        'event' => 'order.created',
+        'order_id' => $order->getId(),
+        'order_no' => $order->getOrderNo(),
+        'customer' => [
+            'name' => $order->getFirstname() . ' ' . $order->getLastname(),
+            'email' => $order->getEmail()
+        ],
+        'total' => $order->getOrderTotal(),
+        'items' => $order->getOrderJson(true)['items'] ?? []
+    ];
+    
+    // Webhook an mehrere Endpunkte senden
+    $webhookUrls = rex_config::get('project', 'webhook_urls', []);
+    foreach ($webhookUrls as $url) {
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($webhookData),
+            CURLOPT_HTTPHEADER => ['Content-Type: application/json']
+        ]);
+        
+        curl_exec($curl);
+        curl_close($curl);
+    }
+});
+```
+
+**Beispiel für SAP-Integration:**
+
+```php
+rex_extension::register('WAREHOUSE_ORDER_CREATED', function(rex_extension_point $ep) {
+    /** @var \FriendsOfRedaxo\Warehouse\Order $order */
+    $order = $ep->getSubject();
+    
+    // SAP RFC Verbindung (hier vereinfacht)
+    $sapData = [
+        'VBELN' => $order->getOrderNo(),  // Verkaufsbeleg
+        'KUNNR' => $order->getYcomUser()?->getId(), // Kundennummer
+        'NETWR' => $order->getOrderTotal(), // Nettowert
+        'AUDAT' => date('Ymd', strtotime($order->getCreatedate())), // Belegdatum
+    ];
+    
+    // RFC-Aufruf an SAP (vereinfacht)
+    try {
+        $rfc = new SAPRfc();
+        $rfc->call('BAPI_SALESORDER_CREATEFROMDAT2', $sapData);
+    } catch (Exception $e) {
+        rex_logger::logError('warehouse', 'SAP Integration failed for Order #' . $order->getId() . ': ' . $e->getMessage());
+    }
+});
+```
 
 ### `WAREHOUSE_ORDER_NUMBER`
 

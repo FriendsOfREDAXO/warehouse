@@ -5,17 +5,16 @@ namespace FriendsOfRedaxo\Warehouse;
 use rex_addon;
 use rex_config;
 use rex_csrf_token;
-use rex_ycom_auth;
+use rex_formatter;
+use rex_i18n;
+use rex_response;
 use rex_url;
+use rex_ycom_auth;
+use rex_yform;
+use rex_yform_list;
 use rex_yform_manager_collection;
 use rex_yform_manager_dataset;
 use rex_yform_manager_table;
-use rex_yform_list;
-use rex_extension_point;
-use rex_i18n;
-use rex_formatter;
-use rex_response;
-use rex_yform;
 
 class Order extends rex_yform_manager_dataset
 {
@@ -724,6 +723,8 @@ class Order extends rex_yform_manager_dataset
             ->run();
         return $addonDataPath;
     }
+
+
 
     /**
      * @return array<string, string>
