@@ -48,7 +48,7 @@ if ('' !== $func) {
 
             case 'update_shipping_status':
                 $new_status = rex_request('shipping_status', 'string');
-                if ($new_status && array_key_exists($new_status, Shipping::SHIPPING_STATUS_OPTIONS)) {
+                if ($new_status && array_key_exists($new_status, Shipping::getShippingStatusOptions())) {
                     $order->setValue('shipping_status', $new_status);
                     $order->save();
                     echo rex_view::success($addon->i18n('warehouse.order.details.success.shipping_status_updated'));
