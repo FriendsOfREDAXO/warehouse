@@ -58,7 +58,10 @@ class CartApi extends rex_api_function
                 'subtotal' => $cart::getSubTotal(),
                 'subtotal_formatted' => $cart::getSubTotalFormatted(),
                 'total' => $cart::getTotal(),
-                'total_formatted' => Warehouse::formatCurrency($cart::getTotal()),
+                'subtotal' => $cart->getSubTotal(),
+                'subtotal_formatted' => $cart->getSubTotalFormatted(),
+                'total' => $cart->getTotal(),
+                'total_formatted' => Warehouse::formatCurrency($cart->getTotal()),
                 'items_count' => $cart->count(),
             ],
             'items' => []
