@@ -148,7 +148,7 @@ class Session extends rex_request
      */
     public static function getShippingAddressData()
     {
-        return self::session(self::WAREHOUSE_SHIPPING_ADRESS_SESSION_KEY, 'array', []);
+        return self::session(self::WAREHOUSE_SHIPPING_ADDRESS_SESSION_KEY, 'array', []);
     }
     /**
      * Sets the shipping address in the session.
