@@ -239,7 +239,7 @@ class Cart
 
     public static function getCartTotalFormatted(): string
     {
-        return Warehouse::getCurrencySign() . ' ' . number_format(self::getCartTotal(), 2, ',', '');
+        return Warehouse::formatCurrency(self::getCartTotal());
     }
 
 
@@ -255,7 +255,7 @@ class Cart
     {
         $discount = self::getDiscountValue();
         if ($discount > 0) {
-            return Warehouse::getCurrencySign() . ' ' . number_format($discount, 2, ',', '');
+            return Warehouse::formatCurrency($discount);
         }
         return '';
     }
@@ -277,7 +277,7 @@ class Cart
 
     public static function getSubTotalFormatted(): string
     {
-        return Warehouse::getCurrencySign() . ' ' . number_format(self::getSubTotal(), 2, ',', '');
+        return Warehouse::formatCurrency(self::getSubTotal());
     }
 
     public static function getSubTotalNetto()
@@ -398,7 +398,7 @@ class Cart
      */
     public static function getSubTotalByModeFormatted(string $mode = null): string
     {
-        return Warehouse::getCurrencySign() . ' ' . number_format(self::getSubTotalByMode($mode), 2, ',', '');
+        return Warehouse::formatCurrency(self::getSubTotalByMode($mode));
     }
 
     /**
@@ -419,8 +419,7 @@ class Cart
 
     public static function getCartTotalByModeFormatted(string $mode = null): string
     {
-        // Format with EUR sign and two decimal places using PHPs built in currency formatting
-        return Warehouse::getCurrencySign() . ' ' . number_format(self::getCartTotalByMode($mode), 2, ',', '');
+        return Warehouse::formatCurrency(self::getCartTotalByMode($mode));
     }
 
     /**

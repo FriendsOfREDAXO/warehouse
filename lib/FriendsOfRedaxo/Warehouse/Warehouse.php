@@ -11,6 +11,7 @@ use rex_logger;
 use rex_fragment;
 use rex_path;
 use rex_yform_manager_dataset;
+use NumberFormatter;
 
 class Warehouse
 {
@@ -36,6 +37,25 @@ class Warehouse
     public static function getCurrency() :string
     {
         return rex_config::get('warehouse', 'currency', 'EUR');
+    }
+
+    /**
+     * Format a currency value using NumberFormatter
+     * @param float|null $value The value to format
+     * @param string $locale Locale for formatting (default: 'de_DE')
+     * @return string Formatted currency string
+     */
+    public static function formatCurrency(?float $value, string $locale = 'de_DE'): string
+    {
+        if ($value === null) {
+            return '';
+        }
+        
+        $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+        $currencyCode = self::getCurrency();
+        $formatted = $formatter->formatCurrency($value, $currencyCode);
+        
+        return $formatted !== false ? $formatted : '';
     }
     
     public static function getOrderAsText(): string
