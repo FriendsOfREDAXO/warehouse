@@ -27,7 +27,7 @@ if ($variants !== null) {
             'name' => $variant->getName(),
             'image' => $imageMedia ? [Domain::getCurrentUrl() . $imageMedia->getUrl()] : [],
             'description' => $shortText ? strip_tags($shortText) : '',
-            'sku' => $variant->getValue('sku'),
+            'sku' => $variant->getValue(ArticleVariant::SKU),
         'offers' => [
             '@type' => 'Offer',
             'url' => Domain::getCurrentUrl() . $variant->getUrl(),
