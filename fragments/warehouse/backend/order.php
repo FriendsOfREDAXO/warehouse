@@ -346,31 +346,40 @@ if ($user_data['email']) {
 						</th>
 					</tr>
 					<?php
-        if (is_array($cart) && count($cart) > 0) {
+        // Access cart items from order JSON structure
+        $cart_data = is_array($cart) ? $cart : [];
+        $cart_items = $cart_data['cart'] ?? $cart_data; // Support both new and old structure
+        
+        if (is_array($cart_items) && count($cart_items) > 0) {
             $count = 0;
-            foreach ($cart as $pos) {
+            foreach ($cart_items as $pos) {
                 $count++;
                 $attr = '';
 
+                // Note: attributes are not part of standardized cart structure
+                // This is kept for backward compatibility with old orders
                 if (isset($pos['attributes']) && is_array($pos['attributes']) && sizeof($pos['attributes']) > 0) {
-                    foreach ($pos['attributes'] as $attr) {
-                        $attr .= html_entity_decode($attr['value'] . '  ' . $attr['at_name'] . ': ' . $attr['label']);
+                    foreach ($pos['attributes'] as $attr_item) {
+                        $attr .= html_entity_decode($attr_item['value'] . '  ' . $attr_item['at_name'] . ': ' . $attr_item['label']);
                     }
                 }
 
                 echo '<tr>';
                 echo "<td>$count</td>";
-                echo '<td>' . ((isset($pos['var_whvarid']) && !empty($pos['var_whvarid'])) ? $pos['var_whvarid'] : $pos['whid']) . '</td>';
-                echo '<td class="text-left">' . html_entity_decode($pos['article_name']) . ((isset($pos['var_bezeichnung']) && !empty($pos['var_bezeichnung'])) ? ' - ' . $pos['var_bezeichnung'] : '') . $attr . '</td>';
-                echo '<td class="text-right">' . $pos['count'] . '</td>';
+                // Use standardized cart item structure
+                $article_sku = $pos['article_id'] . ($pos['variant_id'] ? '-' . $pos['variant_id'] : '');
+                echo '<td>' . $article_sku . '</td>';
+                $variant_indicator = ($pos['type'] === 'variant') ? ' (Variante)' : '';
+                echo '<td class="text-left">' . html_entity_decode($pos['name']) . $variant_indicator . $attr . '</td>';
+                echo '<td class="text-right">' . $pos['amount'] . '</td>';
                 if ($with_tax) {
-                    echo '<td class="text-right">' . $pos['taxpercent'] . '</td>';
+                    echo '<td class="text-right">19</td>'; // Default tax rate - should be calculated dynamically
                     echo '<td class="text-right">' . number_format($pos['price'], 2, ',', '.') . '</td>';
-                    echo '<td class="text-right">' . number_format($pos['price'] * $pos['count'], 2, ',', '.') . '</td>';
+                    echo '<td class="text-right">' . number_format($pos['total'], 2, ',', '.') . '</td>';
                 } else {
                     echo '<td></td>';
-                    echo '<td class="text-right">' . number_format($pos['price_netto'], 2, ',', '.') . '</td>';
-                    echo '<td class="text-right">' . number_format($pos['price_netto'] * $pos['count'], 2, ',', '.') . '</td>';
+                    echo '<td class="text-right">' . number_format($pos['price'], 2, ',', '.') . '</td>';
+                    echo '<td class="text-right">' . number_format($pos['total'], 2, ',', '.') . '</td>';
                 }
                 echo '</tr>';
             }

@@ -159,19 +159,19 @@ class Warehouse
 
         foreach ($cart->getItems() as $pos) {
             $return .= '<tr><td>';
-            if ($pos['var_whvarid']) {
-                $return .= mb_substr(html_entity_decode($pos['var_whvarid']), 0, 20) . '</td><td>';
-            } else {
-                $return .= mb_substr(html_entity_decode($pos['whid']), 0, 20) . '</td><td>';
-            }
+            // Use standardized cart item structure
+            $article_sku = $pos['article_id'] . ($pos['variant_id'] ? '-' . $pos['variant_id'] : '');
+            $return .= mb_substr(html_entity_decode($article_sku), 0, 20) . '</td><td>';
+            
             $return .= mb_substr(html_entity_decode($pos['name']), 0, 45);
-
-            if (is_array($pos['attributes'])) {
-                foreach ($pos['attributes'] as $attr) {
-                    $return .= '<br>';
-                    $return .= mb_substr(html_entity_decode($attr['value'] . '  ' . $attr['at_name'] . ': ' . $attr['label']), 0, 70);
-                }
+            
+            // Add variant indicator if this is a variant
+            if ($pos['type'] === 'variant') {
+                $return .= ' <small>(Variante)</small>';
             }
+
+            // Note: attributes are not part of the current standardized structure
+            // If needed, this should be handled through article/variant objects
 
             $return .= '<br>' . html_entity_decode('Steuer: ' . $pos['taxpercent'] . '% = ' . number_format($pos['taxval'], 2));
 

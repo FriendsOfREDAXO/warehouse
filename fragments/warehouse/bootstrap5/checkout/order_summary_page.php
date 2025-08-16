@@ -47,11 +47,11 @@ $shipping = Shipping::getCost();
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach ($cart_items as $uuid => $item) : ?>
+								<?php foreach ($cart_items as $item_key => $item) : ?>
 								<tr>
 									<td>
 										<div class="text-muted small">
-											<?= $item['id'] ?>
+											<?= $item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : '') ?>
 										</div>
 										<?= trim(html_entity_decode($item['name']), ' -') ?><br>
 										<small class="text-muted">
@@ -61,9 +61,8 @@ $shipping = Shipping::getCost();
 										</small>
 									</td>
 									<td>
-										<?php if (isset($item['variant_name']) && !empty($item['variant_name'])): ?>
-										<div class="text-muted small">&nbsp;</div>
-										<?= $item['variant_name'] ?>
+										<?php if ($item['type'] === 'variant'): ?>
+										<div class="text-muted small">Variante</div>
 										<?php endif; ?>
 									</td>
 									<?php if ($with_tax): ?>
