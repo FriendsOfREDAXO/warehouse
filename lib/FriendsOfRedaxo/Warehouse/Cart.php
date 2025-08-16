@@ -161,8 +161,11 @@ class Cart
             if ($items[$item_key]['amount'] <= 0) {
                 unset($items[$item_key]);
             } else {
-                // Recalculate total
+                // Recalculate total and tax amount
                 $items[$item_key]['total'] = $items[$item_key]['price'] * $items[$item_key]['amount'];
+                if (isset($items[$item_key]['gross_price'], $items[$item_key]['net_price'])) {
+                    $items[$item_key]['tax_amount'] = ($items[$item_key]['gross_price'] - $items[$item_key]['net_price']) * $items[$item_key]['amount'];
+                }
             }
         }
         
@@ -203,8 +206,19 @@ class Cart
             // Update quantity
             $items[$item_key]['amount'] += $quantity;
         } else {
-            // Add new item with current price
-            $price = $article_variant ? $article_variant->getPrice() : $article->getPrice();
+            // Get the item object (article or variant)
+            $item_object = $article_variant ?: $article;
+            
+            // Calculate prices and tax
+            $net_price = $item_object->getPrice('net');
+            $gross_price = $item_object->getPrice('gross');
+            $tax_rate = $article_variant ? $article_variant->getTax() : $article->getTax();
+            $tax_rate = $tax_rate !== null ? (float)$tax_rate : 0.0;
+            
+            // Use current global price mode to determine display price
+            $current_mode = Warehouse::getPriceInputMode();
+            $price = $current_mode === 'net' ? $net_price : $gross_price;
+            
             $name = $article_variant ? $article_variant->getName() : $article->getName();
             
             $items[$item_key] = [
@@ -213,14 +227,21 @@ class Cart
                 'variant_id' => $article_variant_id,
                 'name' => $name,
                 'price' => $price,
+                'net_price' => $net_price,
+                'gross_price' => $gross_price,
+                'tax_rate' => $tax_rate,
+                'tax_amount' => ($gross_price - $net_price) * $quantity,
                 'amount' => $quantity,
                 'total' => $price * $quantity,
                 'added_at' => time()
             ];
         }
 
-        // Recalculate total for existing items
+        // Recalculate totals for existing items
         $items[$item_key]['total'] = $items[$item_key]['price'] * $items[$item_key]['amount'];
+        $gross_price = $items[$item_key]['gross_price'] ?? 0.0;
+        $net_price = $items[$item_key]['net_price'] ?? 0.0;
+        $items[$item_key]['tax_amount'] = ($gross_price - $net_price) * $items[$item_key]['amount'];
 
         $this->update($items);
         return true;
@@ -299,8 +320,7 @@ class Cart
 
     public static function getTax()
     {
-        // TODO: Tax pro Warenkorb-Inhalt berechnen
-        return 0;
+        return self::getTaxTotalByMode();
     }
 
     public static function validateCart(): bool|string
@@ -433,26 +453,32 @@ class Cart
         $sum = 0;
         
         foreach ($items as $item) {
-            if (!isset($item['article_id'], $item['amount'])) {
+            if (!isset($item['amount'])) {
                 continue;
             }
             
-            if ($item['type'] === 'variant' && $item['variant_id']) {
-                $variant = ArticleVariant::get($item['variant_id']);
-                if (!$variant) {
-                    continue;
-                }
-                $net = $variant->getPrice('net');
-                $gross = $variant->getPrice('gross');
-                $sum += (($gross - $net) * (int)$item['amount']);
+            // Use stored tax amount if available, otherwise calculate dynamically
+            if (isset($item['tax_amount'])) {
+                $sum += (float)$item['tax_amount'];
             } else {
-                $article = Article::get($item['article_id']);
-                if (!$article) {
-                    continue;
+                // Fallback for backward compatibility - calculate dynamically
+                if ($item['type'] === 'variant' && $item['variant_id']) {
+                    $variant = ArticleVariant::get($item['variant_id']);
+                    if (!$variant) {
+                        continue;
+                    }
+                    $net = $variant->getPrice('net');
+                    $gross = $variant->getPrice('gross');
+                    $sum += (($gross - $net) * (int)$item['amount']);
+                } else {
+                    $article = Article::get($item['article_id']);
+                    if (!$article) {
+                        continue;
+                    }
+                    $net = $article->getPrice('net');
+                    $gross = $article->getPrice('gross');
+                    $sum += (($gross - $net) * (int)$item['amount']);
                 }
-                $net = $article->getPrice('net');
-                $gross = $article->getPrice('gross');
-                $sum += (($gross - $net) * (int)$item['amount']);
             }
         }
         return round($sum, 2);

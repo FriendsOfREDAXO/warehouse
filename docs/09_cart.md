@@ -557,6 +557,24 @@ fetch('?rex_api_call=warehouse_cart_api&action=modify&article_id=123&variant_id=
     .then(cart => console.log('Menge erhöht', cart));
 ```
 
+## Warenkorb-Verhalten
+
+### Flache Artikel-Struktur
+
+Seit Version 2.4.0 verwendet der Warenkorb eine konsequent flache Struktur, in der sowohl Artikel als auch Varianten als einzelne Einträge in der Items-Liste existieren. Dies vereinfacht die Handhabung und macht das Verhalten konsistenter.
+
+**Beispiel der flachen Struktur:**
+
+```
+* Artikel 1 Variante 1
+* Artikel 1 Variante 2  
+* Artikel 2
+* Artikel 3
+* Artikel 4 Variante 1
+```
+
+Jeder Eintrag ist ein eigenständiges Cart-Item mit einheitlichen Feldern, unabhängig davon, ob es sich um einen einfachen Artikel oder eine Variante handelt.
+
 ## Migration von älteren Versionen
 
 Falls Sie von einer älteren Cart-Version migrieren, beachten Sie folgende Änderungen:
@@ -565,6 +583,17 @@ Falls Sie von einer älteren Cart-Version migrieren, beachten Sie folgende Ände
 2. **Preisspeicherung**: Preise werden beim Hinzufügen gespeichert, nicht mehr dynamisch berechnet
 3. **Kundendaten**: Neue Methoden für Customer- und Address-Management
 4. **Variantensupport**: Verbesserte Unterstützung für Artikel mit Varianten
+5. **Einheitliche Feldnamen**: Alle Cart-Items verwenden jetzt die gleichen Feldnamen (`article_id`, `variant_id`, `name`, `amount`, `total`), unabhängig davon ob es sich um Artikel oder Varianten handelt
+
+### Wichtige Feldname-Änderungen:
+
+| Alt | Neu | Beschreibung |
+|-----|-----|-------------|
+| `id`, `whid` | `article_id` | ID des Hauptartikels |
+| `var_whvarid` | `variant_id` | ID der Variante (falls vorhanden) |
+| `count` | `amount` | Anzahl |
+| `article_name`, `var_bezeichnung` | `name` | Produktname |
+| `type` | `type` | Typ: 'article' oder 'variant' |
 
 ### Beispiel-Migration
 

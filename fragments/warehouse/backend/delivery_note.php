@@ -363,13 +363,16 @@ if ($user_data['email']) {
 
                 echo '<tr>';
                 echo "<td>$count</td>";
-                echo '<td>' . ((isset($pos['var_whvarid']) && !empty($pos['var_whvarid'])) ? $pos['var_whvarid'] : $pos['whid']) . '</td>';
-                echo '<td class="text-left">' . html_entity_decode($pos['article_name']) . ((isset($pos['var_bezeichnung']) && !empty($pos['var_bezeichnung'])) ? ' - ' . $pos['var_bezeichnung'] : '') . $attr . '</td>';
-                echo '<td class="text-right">' . $pos['count'] . '</td>';
+                // Use standardized cart item structure
+                $article_sku = $pos['article_id'] . ($pos['variant_id'] ? '-' . $pos['variant_id'] : '');
+                echo '<td>' . $article_sku . '</td>';
+                $variant_indicator = ($pos['type'] === 'variant') ? ' (Variante)' : '';
+                echo '<td class="text-left">' . html_entity_decode($pos['name']) . $variant_indicator . $attr . '</td>';
+                echo '<td class="text-right">' . $pos['amount'] . '</td>';
                 if ($with_tax) {
-                    echo '<td class="text-right">' . $pos['taxpercent'] . '</td>';
+                    echo '<td class="text-right">' . (isset($pos['tax_rate']) ? htmlspecialchars($pos['tax_rate']) : '19') . '</td>'; // Tax rate from cart item or fallback
                     echo '<td class="text-right">' . number_format($pos['price'], 2, ',', '.') . '</td>';
-                    echo '<td class="text-right">' . number_format($pos['price'] * $pos['count'], 2, ',', '.') . '</td>';
+                    echo '<td class="text-right">' . number_format($pos['total'], 2, ',', '.') . '</td>';
                 } else {
                     echo '<td></td>';
                     echo '<td class="text-right">' . number_format($pos['price_netto'], 2, ',', '.') . '</td>';
@@ -549,9 +552,12 @@ if ($user_data['email']) {
 
                 echo '<tr>';
                 echo "<td>$count</td>";
-                echo '<td>' . ((isset($pos['var_whvarid']) && !empty($pos['var_whvarid'])) ? $pos['var_whvarid'] : $pos['whid']) . '</td>';
-                echo '<td class="text-left">' . html_entity_decode($pos['article_name']) . ((isset($pos['var_bezeichnung']) && !empty($pos['var_bezeichnung'])) ? ' - ' . $pos['var_bezeichnung'] : '') . $attr . '</td>';
-                echo '<td class="text-right">' . $pos['count'] . '</td>';
+                // Use standardized cart item structure
+                $article_sku = $pos['article_id'] . ($pos['variant_id'] ? '-' . $pos['variant_id'] : '');
+                echo '<td>' . $article_sku . '</td>';
+                $variant_indicator = ($pos['type'] === 'variant') ? ' (Variante)' : '';
+                echo '<td class="text-left">' . html_entity_decode($pos['name']) . $variant_indicator . $attr . '</td>';
+                echo '<td class="text-right">' . $pos['amount'] . '</td>';
                 echo '<td class=""></td>';
                 /*
                 if ($with_tax) {
