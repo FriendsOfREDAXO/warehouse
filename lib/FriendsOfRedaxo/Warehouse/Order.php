@@ -5,17 +5,18 @@ namespace FriendsOfRedaxo\Warehouse;
 use rex_addon;
 use rex_config;
 use rex_csrf_token;
-use rex_ycom_auth;
+use rex_extension;
+use rex_extension_point;
+use rex_formatter;
+use rex_i18n;
+use rex_response;
 use rex_url;
+use rex_ycom_auth;
+use rex_yform;
+use rex_yform_list;
 use rex_yform_manager_collection;
 use rex_yform_manager_dataset;
 use rex_yform_manager_table;
-use rex_yform_list;
-use rex_extension_point;
-use rex_i18n;
-use rex_formatter;
-use rex_response;
-use rex_yform;
 
 class Order extends rex_yform_manager_dataset
 {
@@ -723,6 +724,23 @@ class Order extends rex_yform_manager_dataset
             ->setSaveAndSend(true)
             ->run();
         return $addonDataPath;
+    }
+
+    /**
+     * Override save method to trigger WAREHOUSE_ORDER_CREATED extension point
+     * @return bool
+     */
+    public function save(): bool
+    {
+        $isNew = !$this->hasValue('id') || $this->getValue('id') === null;
+        $result = parent::save();
+        
+        if ($result && $isNew) {
+            // Trigger extension point for newly created orders
+            rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_ORDER_CREATED', $this));
+        }
+        
+        return $result;
     }
 
     /**

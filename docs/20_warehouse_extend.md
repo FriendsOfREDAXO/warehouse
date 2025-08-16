@@ -31,6 +31,7 @@ Warehouse 2 bietet viele Extension Points, die genutzt werden können, um eigene
 5. **Eigene Versandarten** und -kosten
 6. **Eigene Zahlungsarten** und Zahlungsanbieter anstelle von PayPal, z.B. Stripe, Wallee, ...
 7. **Eigene E-Mail-Templates** für Bestellbestätigung, Versandbestätigung, ...
+8. **API-Integrationen** für externe Systeme wie sevdesk, Lexware, SAP, ...
 
 Momentan gibt es folgende Extension Points:
 
@@ -197,5 +198,110 @@ rex_extension::register('WAREHOUSE_DASHBOARD', function(rex_extension_point $ep)
     unset($layout['status_row']['shipping_orders']);
     
     return $layout;
+});
+```
+
+### `WAREHOUSE_ORDER_CREATED`
+
+Wird ausgelöst, wenn eine neue Bestellung erfolgreich in der Datenbank gespeichert wurde. Dies ermöglicht die Weiterverarbeitung von Bestellungen über externe APIs wie sevdesk, Lexware oder eigene SAP-Systeme. Das Subject ist die neu erstellte Order-Instanz.
+
+**Parameter:**
+- Subject: Die neu erstellte Order-Instanz
+- Keine zusätzlichen Parameter
+
+**Beispiel - Lexware Integration:**
+
+```php
+rex_extension::register('WAREHOUSE_ORDER_CREATED', function(rex_extension_point $ep) {
+    /** @var \FriendsOfRedaxo\Warehouse\Order $order */
+    $order = $ep->getSubject();
+    
+    try {
+        // Lexware API-Integration
+        $lexwareData = [
+            'kunde' => [
+                'name' => $order->getFirstname() . ' ' . $order->getLastname(),
+                'email' => $order->getEmail(),
+                'firma' => $order->getCompany(),
+                'adresse' => $order->getAddress(),
+                'plz' => $order->getZip(),
+                'ort' => $order->getCity(),
+                'land' => $order->getCountry()
+            ],
+            'rechnung' => [
+                'bestellnummer' => $order->getOrderNo(),
+                'betrag' => $order->getOrderTotal(),
+                'waehrung' => 'EUR',
+                'datum' => date('Y-m-d'),
+                'zahlungsart' => $order->getValue('payment_type')
+            ]
+        ];
+        
+        // HTTP-Request an Lexware API
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'https://api.lexware.de/v1/rechnungen',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($lexwareData),
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . rex_config::get('warehouse', 'lexware_api_token')
+            ]
+        ]);
+        
+        $response = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+        
+        if ($httpCode === 201) {
+            // Erfolgreich übertragen - Optional: Lexware-ID in der Bestellung speichern
+            $responseData = json_decode($response, true);
+            $order->setValue('lexware_invoice_id', $responseData['id'] ?? null);
+            $order->save();
+            
+            rex_logger::logInfo('warehouse', 'Bestellung ' . $order->getOrderNo() . ' erfolgreich an Lexware übertragen');
+        } else {
+            rex_logger::logError('warehouse', 'Fehler bei Lexware-Übertragung für Bestellung ' . $order->getOrderNo() . ': HTTP ' . $httpCode);
+        }
+    } catch (Exception $e) {
+        rex_logger::logError('warehouse', 'Fehler bei Lexware-Integration: ' . $e->getMessage());
+    }
+});
+```
+
+**Beispiel - Allgemeine API-Integration:**
+
+```php
+rex_extension::register('WAREHOUSE_ORDER_CREATED', function(rex_extension_point $ep) {
+    /** @var \FriendsOfRedaxo\Warehouse\Order $order */
+    $order = $ep->getSubject();
+    
+    // Bestellung an externes System weiterleiten
+    $apiEndpoint = rex_config::get('warehouse', 'external_api_endpoint');
+    $apiKey = rex_config::get('warehouse', 'external_api_key');
+    
+    if ($apiEndpoint && $apiKey) {
+        $orderData = [
+            'order_id' => $order->getId(),
+            'order_no' => $order->getOrderNo(),
+            'customer' => [
+                'firstname' => $order->getFirstname(),
+                'lastname' => $order->getLastname(),
+                'email' => $order->getEmail(),
+                'company' => $order->getCompany()
+            ],
+            'total' => $order->getOrderTotal(),
+            'items' => json_decode($order->getOrderJson(), true),
+            'created' => $order->getValue('createdate')
+        ];
+        
+        // Asynchrone Übertragung (empfohlen für bessere Performance)
+        rex_cronjob::addTask('warehouse_api_sync', [
+            'endpoint' => $apiEndpoint,
+            'api_key' => $apiKey,
+            'data' => $orderData
+        ]);
+    }
 });
 ```
