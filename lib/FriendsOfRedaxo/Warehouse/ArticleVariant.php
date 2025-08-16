@@ -51,6 +51,43 @@ class ArticleVariant extends rex_yform_manager_dataset
             'hidden' => 'translate:warehouse_article_variant.status.hidden',
         ];
 
+    // Single point of truth for field names
+    public const string ID = 'id';
+    public const string ARTICLE_ID = 'article_id';
+    public const string NAME = 'name';
+    public const string PRICE = 'price';
+    public const string BULK_PRICES = 'bulk_prices';
+    public const string WEIGHT = 'weight';
+    public const string STOCK = 'stock';
+    public const string PRIO = 'prio';
+    public const string AVAILABILITY_FIELD = 'availability';
+    public const string IMAGE = 'image';
+    public const string STATUS_FIELD = 'status';
+    public const string SKU = 'sku';
+    public const string SPECIFICATIONS = 'specifications';
+    public const string UUID = 'uuid';
+    public const string UPDATEDATE = 'updatedate';
+    public const string CREATEDATE = 'createdate';
+
+    public const array FIELD_CONFIG = [
+        self::ID => [],
+        self::ARTICLE_ID => [],
+        self::NAME => [],
+        self::PRICE => [],
+        self::BULK_PRICES => [],
+        self::WEIGHT => [],
+        self::STOCK => [],
+        self::PRIO => [],
+        self::AVAILABILITY_FIELD => [],
+        self::IMAGE => [],
+        self::STATUS_FIELD => [],
+        self::SKU => [],
+        self::SPECIFICATIONS => [],
+        self::UUID => [],
+        self::UPDATEDATE => [],
+        self::CREATEDATE => [],
+    ];
+
     /* Haupt-Artikel */
     /** @api */
     public function getArticle() : ?Article
@@ -274,9 +311,9 @@ class ArticleVariant extends rex_yform_manager_dataset
      */
     public function getBulkPrices() :array
     {
-        $bulk_prices = (array) $this->getValue('bulk_prices');
+        $bulk_prices = (array) $this->getValue(self::BULK_PRICES);
         if (!empty($bulk_prices)) {
-            $bulkPrices = json_decode($this->getValue('bulk_prices'), true);
+            $bulkPrices = json_decode($this->getValue(self::BULK_PRICES), true);
             if (is_array($bulkPrices)) {
                 return $bulkPrices;
             }

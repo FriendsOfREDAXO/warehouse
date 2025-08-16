@@ -1,12 +1,13 @@
-# Warehouse 2 - Shop-Add-on für REDAXO ^5.19 und YForm ^5 (Work in Progress)
+# Warehouse 2 - Shop-Add-on für REDAXO ^5.19 und YForm ^5
 
 Das Warehouse stellt Basisfunktionalitäten für einen Webshop in REDAXO zur Verfügung:
 
 * Produktdatenbank auf YForm-Basis
 * Kategorien, Artikel, Varianten und Attribute
 * Warenkorb
-* Bestellprozess inkl. PayPal SDK auf Basis der API v2
+* Bestellprozess inkl. PayPal SDK auf Basis des neuen Server-SDKs
 * Extension Points für eigene Anpassungen (z. B. Versandkostenberechnung)
+* E-Mail-Templates
 
 Die Ausgabe basiert auf Fragmenten, sodass der Shop sich in jede Umgebung einfügen lässt.
 
@@ -16,10 +17,10 @@ Die Ausgabe basiert auf Fragmenten, sodass der Shop sich in jede Umgebung einfü
 
 ### Voraussetzungen
 
-* REDAXO ^5.17
+* REDAXO ^5.19
 * PHP ^8.3
-* YForm ^4.1
-* YForm Field ^2.9
+* YForm ^5.0
+* YForm Field ^2.11
 * YRewrite ^2.9
 
 optional:
@@ -31,7 +32,8 @@ optional:
 Nicht vergessen:
 
 * PHP Mailer konfigurieren.
-* Für Paypal-Bestellungen in Warehouse Paypal-Einstellungen ergänzen.
+* Einmal alle Einstellungen durchgehen.
+* Das Warehouse-Modul hinzufügen.
 
 ## Weitere Features
 

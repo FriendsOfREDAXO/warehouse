@@ -2,6 +2,7 @@
 <?php
 /** @var rex_fragment $this */
 use FriendsOfRedaxo\Warehouse\Article;
+use FriendsOfRedaxo\Warehouse\ArticleVariant;
 
 /** @var Article $article */
 $article = $this->getVar('article');
@@ -42,7 +43,7 @@ $article = $this->getVar('article');
 					<?= $item->getShortText() ?>
 					<?= $item->getText() ?>
 					<?php
-                        $specifications_json = $item->getValue('specifications');
+                        $specifications_json = $item->getValue(ArticleVariant::SPECIFICATIONS);
 		    if ($specifications_json) {
 		        $specifications = json_decode($specifications_json, true);
 		        ?>
