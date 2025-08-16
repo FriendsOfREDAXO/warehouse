@@ -30,7 +30,7 @@ class Warehouse
     ];
 
     /**
-     * @deprecated Use Warehouse::getCurrency() instead
+     * @deprecated Use Warehouse::formatCurrency() instead
      */
     public static function getCurrencySign() :string
     {
