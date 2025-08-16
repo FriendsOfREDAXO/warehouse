@@ -2,7 +2,6 @@
 
 use FriendsOfRedaxo\Warehouse\Order;
 use FriendsOfRedaxo\Warehouse\Warehouse;
-use NumberFormatter;
 
 /** @var rex_fragment $this */
 /** @var Order $order */
