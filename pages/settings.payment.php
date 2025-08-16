@@ -127,6 +127,11 @@ $select->addOptions([
 $field->setLabel(rex_i18n::msg('warehouse.settings.payment.paypal_button_funding_source'));
 $field->setNotice(rex_i18n::msg('warehouse.settings.payment.paypal_button_funding_source.notice'));
 
+$field = $form->addCheckboxField('paypal_include_images');
+$field->setLabel(rex_i18n::msg('warehouse.settings.payment.paypal_include_images'));
+$field->addOption(rex_i18n::msg('warehouse.settings.payment.paypal_include_images.option'), "1");
+$field->setNotice(rex_i18n::msg('warehouse.settings.payment.paypal_include_images.notice'));
+
 
 $content = $form->get();
 

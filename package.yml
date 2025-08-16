@@ -159,6 +159,7 @@ default_config:
     paypal_button_layout: 'horizontal'
     paypal_button_height: ''
     paypal_button_funding_source: 'paypal'
+    paypal_include_images: 0
     
     # Versandkosten
     minimum_order_value: 0
