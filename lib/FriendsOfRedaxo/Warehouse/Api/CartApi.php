@@ -1,9 +1,13 @@
 <?php
 
-namespace FriendsOfRedaxo\Warehouse;
+namespace FriendsOfRedaxo\Warehouse\Api;
 
+use FriendsOfRedaxo\Warehouse\Article;
+use FriendsOfRedaxo\Warehouse\ArticleVariant;
+use FriendsOfRedaxo\Warehouse\Warehouse;
 use rex;
 use rex_api_function;
+use rex_request;
 use rex_response;
 
 class CartApi extends rex_api_function

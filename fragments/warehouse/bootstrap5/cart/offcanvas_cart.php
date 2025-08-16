@@ -130,10 +130,9 @@ $domain = Domain::getCurrent();
 
 		<div class="d-grid gap-2 mt-3">
 			<div class="d-flex justify-content-between">
-				<a class="btn btn-link text-danger" href="/?action=empty_cart"
-					onclick="return confirm('<?= Warehouse::getLabel('cart_empty_confirm') ?>');">
+				<button type="button" class="btn btn-link text-danger" id="empty-cart-btn">
 					<?= Warehouse::getLabel('cart_empty') ?>
-				</a>
+				</button>
 				<a class="btn btn-primary ms-auto"
 					href="<?= $domain?->getCheckoutUrl() ?? '' ?>">
 					<?= Warehouse::getLabel('next') ?>
@@ -153,6 +152,17 @@ $domain = Domain::getCurrent();
 <script nonce="<?= rex_response::getNonce() ?>">
 	// Handle offcanvas cart interactions
 	document.addEventListener('DOMContentLoaded', function() {
+		// Handle empty cart button
+		const emptyCartBtn = document.getElementById('empty-cart-btn');
+		if (emptyCartBtn) {
+			emptyCartBtn.addEventListener('click', function(e) {
+				e.preventDefault();
+				if (confirm('<?= rex_escape(Warehouse::getLabel('cart_empty_confirm')) ?>')) {
+					updateOffcanvasCartItem('empty');
+				}
+			});
+		}
+		
 		// Handle delete button clicks in offcanvas
 		document.querySelectorAll('#cart-offcanvas .cart-delete-btn').forEach(function(button) {
 			button.addEventListener('click', function(e) {
@@ -167,14 +177,18 @@ $domain = Domain::getCurrent();
 		});
 	});
 
-	function updateOffcanvasCartItem(action, articleId, variantId = null, amount = 1, mode = null) {
+	function updateOffcanvasCartItem(action, articleId = null, variantId = null, amount = 1, mode = null) {
 		// Build API URL
 		let url = `index.php?rex_api_call=warehouse_cart_api&action=${action}`;
-		url += `&article_id=${encodeURIComponent(articleId)}`;
+		if (articleId) {
+			url += `&article_id=${encodeURIComponent(articleId)}`;
+		}
 		if (variantId && variantId !== 'null' && variantId !== '') {
 			url += `&variant_id=${encodeURIComponent(variantId)}`;
 		}
-		url += `&amount=${encodeURIComponent(amount)}`;
+		if (amount && action !== 'empty') {
+			url += `&amount=${encodeURIComponent(amount)}`;
+		}
 		if (mode) {
 			url += `&mode=${encodeURIComponent(mode)}`;
 		}
