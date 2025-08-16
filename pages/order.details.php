@@ -186,7 +186,7 @@ $content .= '<select name="shipping_status" class="form-control" required>';
 $content .= '<option value="">Status wählen...</option>';
 foreach (Shipping::getShippingStatusOptions() as $key => $label) {
     $selected = ($order->getValue('shipping_status') === $key) ? 'selected' : '';
-    $content .= '<option value="' . $key . '" ' . $selected . '>' . rex_i18n::msg($label) . '</option>';
+    $content .= '<option value="' . $key . '" ' . $selected . '>' . $label . '</option>';
 }
 $content .= '</select>';
 $content .= '<span class="input-group-btn">';
