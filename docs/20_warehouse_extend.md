@@ -328,3 +328,43 @@ rex_extension::register('WAREHOUSE_DASHBOARD', function(rex_extension_point $ep)
     return $layout;
 });
 ```
+
+### `WAREHOUSE_ORDER_DETAIL_ACTIONS`
+
+Ermöglicht das Hinzufügen von zusätzlichen Aktions-Buttons zur Bestelldetailseite im Backend. Rückgabewert ist ein Array mit zusätzlichen Aktionen, die als Buttons angezeigt werden.
+
+**Parameter:**
+- `order`: Die aktuelle Bestellung (`Order`-Objekt)
+- `csrf`: CSRF-Token für sichere Formulare
+
+**Beispiel:**
+
+```php
+rex_extension::register('WAREHOUSE_ORDER_DETAIL_ACTIONS', function(rex_extension_point $ep) {
+    $actions = $ep->getSubject();
+    $order = $ep->getParam('order');
+    $csrf = $ep->getParam('csrf');
+    
+    // Beispiel: Button zum Versenden einer Bestätigungs-E-Mail
+    $actions['send_confirmation'] = [
+        'content' => '<a class="btn btn-info" href="' . 
+            rex_url::currentBackendPage([
+                'func' => 'send_confirmation_email', 
+                'data_id' => $order->getId()
+            ] + $csrf->getUrlParams()) . 
+            '" data-confirm="Bestätigungs-E-Mail für Bestellung ' . $order->getId() . ' versenden?">E-Mail versenden</a>'
+    ];
+    
+    // Beispiel: Button für externe Systeme
+    $actions['export_to_erp'] = [
+        'content' => '<a class="btn btn-secondary" href="' . 
+            rex_url::currentBackendPage([
+                'func' => 'export_to_erp', 
+                'data_id' => $order->getId()
+            ] + $csrf->getUrlParams()) . 
+            '" data-confirm="Bestellung ' . $order->getId() . ' an ERP-System übertragen?">An ERP übertragen</a>'
+    ];
+    
+    return $actions;
+});
+```
