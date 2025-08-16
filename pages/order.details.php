@@ -37,7 +37,7 @@ if ('' !== $func) {
         switch ($func) {
             case 'update_payment_status':
                 $new_status = rex_request('payment_status', 'string');
-                if ($new_status && array_key_exists($new_status, Payment::PAYMENT_STATUS_OPTIONS)) {
+                if ($new_status && array_key_exists($new_status, Payment::getPaymentStatusOptions())) {
                     $order->setValue('payment_status', $new_status);
                     $order->save();
                     echo rex_view::success($addon->i18n('warehouse.order.details.success.payment_status_updated'));
