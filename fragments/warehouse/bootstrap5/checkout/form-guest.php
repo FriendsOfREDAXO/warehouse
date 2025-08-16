@@ -119,7 +119,7 @@ $yform->setValueField('submit_once', ['send',Warehouse::getLabel('next'),'','','
 
 // Add JavaScript for dynamic shipping address fields
 $yform->setValueField('html', ['', '
-<script>
+<script nonce="<?= rex_request::nonce(); ?>">
 document.addEventListener("DOMContentLoaded", function() {
     const checkbox = document.getElementById("different_shipping_address");
     const shippingFields = document.getElementById("shipping-address-fields");
