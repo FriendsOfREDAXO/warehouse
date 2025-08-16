@@ -207,4 +207,21 @@ class Customer extends rex_yform_manager_dataset
         return null;
     }
 
+    public function saveInSession() {
+        $data = [
+            'id' => $this->getId(),
+            'email' => $this->getEmail(),
+            'salutation' => $this->getSalutation(),
+            'firstname' => $this->getFirstname(),
+            'lastname' => $this->getLastname(),
+            'company' => $this->getCompany(),
+            // 'department' => $this->getDepartment(),
+            'address' => $this->getAddress(),
+            'phone' => $this->getPhone(),
+            'zip' => $this->getZip(),
+            'city' => $this->getCity()
+        ];
+        // Save the customer data in the session
+        Session::setCustomer($data);
+    }
 }

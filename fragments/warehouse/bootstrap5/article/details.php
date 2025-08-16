@@ -74,10 +74,10 @@ if (Warehouse::isBulkPricesEnabled()) {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($bulkPrices as $price) : ?>
+                                <?php foreach ($bulkPrices as $bulkPrice) : ?>
                                     <tr>
-                                        <td><?= $price->getMinCount() ?> - <?= $price->getMaxCount() ?></td>
-                                        <td><?= $price->getPriceFormatted() ?></td>
+                                        <td><?= $bulkPrice['min'] ?> - <?= $bulkPrice['max'] ?></td>
+                                        <td><?= $bulkPrice['price'] ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -87,28 +87,30 @@ if (Warehouse::isBulkPricesEnabled()) {
 
                 <!-- / Staffelpreise -->
 
-                <!-- Preis -->
-                <div id="warehouse_art_price" data-price="<?= $article->getPrice() ?>">
-                    <?= $article->getPriceFormatted() ?>
-                </div>
-                <!-- / Preis -->
 
                 <div class="row g-3">
                     <div class="col-12">
                         <?= html_entity_decode($article->getText() ?? '') ?>
 
                     </div>
+                    
+                <!-- Preis -->
+                <div id="warehouse_art_price" data-price="<?= $article->getPrice() ?>">
+                    <span class="fs-3"><?= $article->getPriceFormatted() ?></span>
+                    <p class="text-small mb-0"><?= Warehouse::getLabel('tax') ?> <a href="#shipping_modal" data-bs-toggle="modal"><?= Warehouse::getLabel('shipping_costs') ?></a></p>
+                </div>
+                <!-- / Preis -->
+
                     <div class="col-12">
-                        <form action="" method="post" id="warehouse_form_detail">
+                        <form action="/index.php?rex_api_call=cart" method="post" id="warehouse_form_detail">
                             <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
                             <input type="hidden" name="action" value="add_to_cart">
-                            <p class="text-small mb-0">inkl. MwSt. zzgl. <a href="#shipping_modal" data-bs-toggle="modal"><?= Warehouse::getLabel('shipping_costs') ?></a></p>
                             <div class="input-group mb-3">
                                 <button class="btn btn-outline-primary switch_count" type="button" data-value="-1">[-]</button>
                                 <input name="order_count" type="number" min="1" , step="1" class="form-control" id="warehouse_count_<?= $article->getId() ?>" value="1">
                                 <button class="btn btn-outline-primary switch_count" type="button" data-value="+1">[+]</button>
                             </div>
-                            <button type="submit" name="submit" value="cart" class="btn btn-secondary"><?= Warehouse::getLabel('cart') ?></button>
+                            <button type="submit" name="submit" value="cart" class="btn btn-secondary"><?= Warehouse::getLabel('add_to_cart') ?></button>
                             <button type="submit" name="submit" value="checkout" class="btn btn-primary"><?= Warehouse::getLabel('checkout_instant') ?></button>
                         </form>
                     </div>
@@ -136,5 +138,51 @@ if (Warehouse::isBulkPricesEnabled()) {
                 }
             });
         });
+    });
+</script>
+<script nonce="<?= rex_response::getNonce() ?>">
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('warehouse_form_detail');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const articleId = formData.get('article_id');
+                const orderCount = formData.get('order_count');
+                // Optional: Variantenauswahl berücksichtigen
+                let variantId = null;
+                const activeVariant = document.querySelector('.nav-link.active[data-art_id]');
+                if (activeVariant) {
+                    variantId = activeVariant.getAttribute('data-art_id');
+                }
+                // Ziel-Action bestimmen
+                let action = 'add';
+                if (formData.get('submit') === 'checkout') {
+                    action = 'add'; // oder ggf. andere Logik
+                }
+                // API-URL zusammenbauen
+                let url = `index.php?rex_api_call=cart&action=${action}`;
+                url += `&article_id=${encodeURIComponent(articleId)}`;
+                if (variantId) {
+                    url += `&variant_id=${encodeURIComponent(variantId)}`;
+                }
+                url += `&amount=${encodeURIComponent(orderCount)}`;
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Optional: UI-Feedback, z.B. Button-Text ändern
+                    form.querySelector('button[type="submit"][name="submit"]:focus')?.blur();
+                })
+                .catch(() => {
+                    console.error('Fehler beim Hinzufügen zum Warenkorb.');
+                    alert('Fehler beim Hinzufügen zum Warenkorb.');
+                });
+            });
+        }
     });
 </script>

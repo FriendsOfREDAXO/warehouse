@@ -244,21 +244,12 @@ class Article extends rex_yform_manager_dataset
         if ($price === null) {
             return '';
         }
-        $formatted = $formatter->formatCurrency($price, Warehouse::getCurrencySign());
-        return $formatted !== false ? $formatted : '';
-    }
-
-    /* Preis-Text */
-    /** @api */
-    public function getPriceText() : ?string
-    {
-        return $this->getValue("price_text");
-    }
-    /** @api */
-    public function setPriceText(mixed $value) : self
-    {
-        $this->setValue("price_text", $value);
-        return $this;
+        $currencyCode = Warehouse::getCurrency();
+        $formatted = $formatter->formatCurrency($price, $currencyCode);
+        if ($formatted === false) {
+            return '';
+        }
+        return $formatted;
     }
 
     /* Steuer */

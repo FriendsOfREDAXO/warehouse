@@ -36,7 +36,7 @@ class Shipping
     public static function getCost() :float
     {
 
-        $cart = Cart::get();
+        $cart = Cart::create();
 
         $total_weight = $cart->totalWeight();
         $total_pieces = $cart->count();

@@ -7,10 +7,12 @@ use FriendsOfRedaxo\Warehouse\Checkout;
 use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Payment;
+use FriendsOfRedaxo\Warehouse\Session;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 $customer = Checkout::loadCustomerFromSession();
-$cart = Cart::loadCartFromSession();
+
+$cart = Session::getCartData();
 $domain = Domain::getCurrent();
 
 // Das Formular zur Bestellung wurde bereits ausgefüllt und der Nutzer möchte nun mit der Zahlung fortfahren

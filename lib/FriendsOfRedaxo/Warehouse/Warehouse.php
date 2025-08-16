@@ -40,7 +40,7 @@ class Warehouse
     
     public static function getOrderAsText(): string
     {
-        $cart = Cart::get();
+        $cart = Cart::create();
         $shipping = Shipping::getCost();
         $total = Cart::getTotal();
 
@@ -121,7 +121,7 @@ class Warehouse
 
     public static function getOrderAsHtml(): string
     {
-        $cart = Cart::get();
+        $cart = Cart::create();
         $shipping = Shipping::getCost();
         $total = $cart->getCartTotal();
         $return = '';
@@ -182,7 +182,7 @@ class Warehouse
     public static function getCustomerDataAsText(): string
     {
 
-        $user_data = Cart::get()->getCustomerData();
+        $user_data = Cart::create()->getCustomerData();
 
         $return = '';
 
@@ -386,7 +386,7 @@ class Warehouse
      */
     public static function getCart(): Cart
     {
-        return Cart::get();
+        return Cart::create();
     }
 
     /**
@@ -394,7 +394,7 @@ class Warehouse
      */
     public static function addToCart(int $article_id, ?int $variant_id = null, int $amount = 1): bool
     {
-        $cart = Cart::get();
+        $cart = Cart::create();
         return $cart->add($article_id, $variant_id, $amount);
     }
 
@@ -403,7 +403,7 @@ class Warehouse
      */
     public static function modifyCart(int $article_id, ?int $variant_id = null, int $amount = 1, string $mode = '='): void
     {
-        $cart = Cart::get();
+        $cart = Cart::create();
         $cart->modify($article_id, $variant_id, $amount, $mode);
     }
 
@@ -412,7 +412,7 @@ class Warehouse
      */
     public static function deleteArticleFromCart(int $article_id, ?int $variant_id = null): void
     {
-        $cart = Cart::get();
+        $cart = Cart::create();
         $cart->remove($article_id, $variant_id);
     }
 

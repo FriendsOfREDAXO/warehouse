@@ -8,14 +8,16 @@ use rex_extension;
 use rex_extension_point;
 use rex_i18n;
 use rex_ycom_auth;
+use rex_ycom_user;
 
 class Cart
 {
+    /**
+     * Warenkorb-Datenstruktur
+     * @var array<string, mixed>
+     */
     public $cart = [
         'items' => [],
-        'customer' => null,
-        'billing_address' => null,
-        'delivery_address' => null,
         'last_update' => 0
     ];
 
@@ -23,50 +25,33 @@ class Cart
     public function __construct()
     {
         $this->init();
-        
-        // Auto-detect customer from YCom if available and not already set
-        if ((!isset($this->cart['customer']) || !$this->cart['customer']) &&
-            (!isset($this->cart['customer_data']) || empty($this->cart['customer_data']))) {
-            $this->autoSetCustomerFromYCom();
-        }
     }
 
     public function init()
-    {
-        if (Warehouse::isDemoMode()) {
-            // Setze Demo-Warenkorb
-            $this->setDemoCart();
-            return;
-        }
-        
-        $session_cart = rex_session('warehouse_cart', 'array', null);
-        if ($session_cart === null) {
-            rex_set_session('warehouse_cart', $this->cart);
+    {        
+        $sessionCart = Session::getCartData();
+        if ($sessionCart === null) {
+            Session::setCart($this->cart);
         } else {
             // Merge with default structure to ensure all fields exist
-            $this->cart = array_merge($this->cart, $session_cart);
+            $this->cart = array_merge($this->cart, $sessionCart);
         }
     }
 
-    public static function loadCartFromSession(): self
+    /**
+     * Speichert den Warenkorb in der Session
+     */
+    public function saveToSession(): void
     {
-        $cart = new self();
-        $session_cart = rex_session('warehouse_cart', 'array', []);
-        if (empty($session_cart)) {
-            // Wenn der Warenkorb leer ist, initialisiere ihn
-            $cart->init();
-        } else {
-            // Merge with default structure
-            $cart->cart = array_merge($cart->cart, $session_cart);
-        }
-        return $cart;
-    }
-    public function saveCartToSession(): void
-    {
-        rex_set_session('warehouse_cart', $this->cart);
+        Session::setCart($this->cart);
     }
 
-    public static function get(): Cart
+    /**
+     * Erzeugt einen neuen Warenkorb
+     *
+     * @return Cart
+     */
+    public static function create(): Cart
     {
         return new self();
     }
@@ -98,7 +83,7 @@ class Cart
             return $weight;
         }
 
-        $cart = Cart::get();
+        $cart = Cart::create();
         foreach ($cart->getItems() as $item) {
             if ($item['type'] === 'variant' && $item['variant_id']) {
                 $variant = ArticleVariant::get($item['variant_id']);
@@ -131,7 +116,7 @@ class Cart
     // Berechne Gesamtsumme des Warenkorbs
     public static function getTotal()
     {
-        $cart = self::get();
+        $cart = self::create();
         $total = 0;
         foreach ($cart->getItems() as $item) {
             $total += $item['total'];
@@ -147,133 +132,8 @@ class Cart
     {
         $this->cart['items'] = $items;
         $this->cart['last_update'] = time();
-        rex_set_session('warehouse_cart', $this->cart);
+        Session::setCart($this->cart);
     }
-
-    /**
-     * Set customer data for the cart
-     */
-    public function setCustomer(?Customer $customer): void
-    {
-        $this->cart['customer'] = $customer ? $customer->getId() : null;
-        rex_set_session('warehouse_cart', $this->cart);
-    }
-
-    /**
-     * Get customer from cart
-     */
-    public function getCustomer(): ?Customer
-    {
-        if (!$this->cart['customer']) {
-            return null;
-        }
-        return Customer::get($this->cart['customer']);
-    }
-
-    /**
-     * Set billing address for the cart
-     */
-    public function setBillingAddress(?CustomerAddress $address): void
-    {
-        $this->cart['billing_address'] = $address ? $address->getId() : null;
-        rex_set_session('warehouse_cart', $this->cart);
-    }
-
-    /**
-     * Get billing address from cart
-     */
-    public function getBillingAddress(): ?CustomerAddress
-    {
-        if (!$this->cart['billing_address']) {
-            return null;
-        }
-        return CustomerAddress::get($this->cart['billing_address']);
-    }
-
-    /**
-     * Set delivery address for the cart (if different from billing)
-     */
-    public function setDeliveryAddress(?CustomerAddress $address): void
-    {
-        $this->cart['delivery_address'] = $address ? $address->getId() : null;
-        rex_set_session('warehouse_cart', $this->cart);
-    }
-
-    /**
-     * Get delivery address from cart
-     */
-    public function getDeliveryAddress(): ?CustomerAddress
-    {
-        if (!$this->cart['delivery_address']) {
-            return $this->getBillingAddress(); // Fall back to billing address
-        }
-        return CustomerAddress::get($this->cart['delivery_address']);
-    }
-
-    /**
-     * Check if delivery address is different from billing address
-     */
-    public function hasSeparateDeliveryAddress(): bool
-    {
-        return $this->cart['delivery_address'] !== null &&
-               $this->cart['delivery_address'] !== $this->cart['billing_address'];
-    }
-
-    /**
-     * Set customer data from array (for guest checkout)
-     */
-    public function setCustomerData(array $customer_data): void
-    {
-        $this->cart['customer_data'] = $customer_data;
-        rex_set_session('warehouse_cart', $this->cart);
-    }
-
-    /**
-     * Get customer data array (for guest checkout)
-     */
-    public function getCustomerData(): array
-    {
-        return $this->cart['customer_data'] ?? [];
-    }
-
-    /**
-     * Auto-set customer from YCom if available
-     */
-    public function autoSetCustomerFromYCom(): void
-    {
-        if (class_exists('rex_addon') && rex_addon::get('ycom')->isAvailable()) {
-            $ycom_user = rex_ycom_auth::getUser();
-            if ($ycom_user) {
-                // Try to find corresponding customer
-                $customer = Customer::query()->where('email', $ycom_user->getValue('email'))->findOne();
-                if ($customer) {
-                    $this->setCustomer($customer);
-                    
-                    // Also set billing address if available
-                    $billing_address = CustomerAddress::query()
-                        ->where('ycom_user_id', $ycom_user->getId())
-                        ->where('type', 'billing')
-                        ->findOne();
-                    if ($billing_address) {
-                        $this->setBillingAddress($billing_address);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Clear customer and address data
-     */
-    public function clearCustomerData(): void
-    {
-        $this->cart['customer'] = null;
-        $this->cart['customer_data'] = [];
-        $this->cart['billing_address'] = null;
-        $this->cart['delivery_address'] = null;
-        rex_set_session('warehouse_cart', $this->cart);
-    }
-
 
     public function modify(int $article_id, int $article_variant_id = null, int|false $quantity = false, string $mode = '='): void
     {
@@ -307,6 +167,7 @@ class Cart
         }
         
         $this->update($items);
+
     }
 
     public function remove(int $article_id, int $variant_id = null): void
@@ -405,7 +266,7 @@ class Cart
      */
     public static function getSubTotal(): float
     {
-        $cart = self::get();
+        $cart = self::create();
         $items = $cart->getItems();
         $sum = 0;
         foreach ($items as $item) {
@@ -434,68 +295,7 @@ class Cart
     {
         return self::getSubTotalNetto();
     }
-    public static function saveAsOrder(string $payment_id = ''): bool
-    {
-        $order = Order::create();
-        $cart = self::get();
 
-        $shipping = Shipping::getCost();
-        $user_data = rex_session('user_data', 'array', []);
-
-        // Get customer data from cart
-        $customer_data = $cart->getCustomerData();
-        $customer = $cart->getCustomer();
-        $billing_address = $cart->getBillingAddress();
-        $delivery_address = $cart->getDeliveryAddress();
-
-        $order->setOrderTotal(self::getCartTotal());
-        $order->setPaymentId($payment_id);
-        $order->setPaymentType($user_data['payment_type'] ?? '');
-        $order->setPaymentConfirm($user_data['payment_confirm'] ?? '');
-        $order->setOrderJson(json_encode([
-            'cart' => $cart->cart,
-            'user_data' => $user_data,
-            'customer_data' => $customer_data,
-            'billing_address' => $billing_address?->getData(),
-            'delivery_address' => $delivery_address?->getData()
-        ]));
-
-        $order->setCreateDate(date('Y-m-d H:i:s'));
-        $order->setOrderText(Warehouse::getOrderAsText());
-        
-        // Use customer data from cart or fallback to user_data
-        $order->setFirstname($customer_data['firstname'] ?? $user_data['firstname'] ?? '');
-        $order->setLastname($customer_data['lastname'] ?? $user_data['lastname'] ?? '');
-        $order->setAddress($customer_data['address'] ?? $user_data['address'] ?? '');
-        $order->setZip($customer_data['zip'] ?? $user_data['zip'] ?? '');
-        $order->setCity($customer_data['city'] ?? $user_data['city'] ?? '');
-        $order->setEmail($customer_data['email'] ?? $user_data['email'] ?? '');
-
-        // Set customer reference if available
-        if ($customer) {
-            $order->setValue('customer_id', $customer->getId());
-        }
-
-        if (class_exists('rex_addon') && rex_addon::get('ycom')->isAvailable()) {
-            $ycom_user = rex_ycom_auth::getUser();
-            if ($ycom_user) {
-                $order->setValue('ycom_user_id', $ycom_user->getId());
-            }
-        }
-
-        // Auto-assign order number before saving
-        Document::assignOrderNo($order);
-
-        return $order->save();
-    }
-
-
-    public static function empty()
-    {
-        rex_unset_session('warehouse_cart');
-        rex_unset_session('user_data');
-        rex_unset_session('warehouse_payment');
-    }
 
     public static function getTax()
     {
@@ -505,7 +305,7 @@ class Cart
 
     public static function validateCart(): bool|string
     {
-        $cart = self::get();
+        $cart = self::create();
         
         // Überprüfe, ob Warenkorb leer ist
         if ($cart->isEmpty()) {
@@ -564,43 +364,6 @@ class Cart
         return true;
     }
 
-    public function setDemoCart()
-    {
-        $demo_items = [
-            '123' => [
-                'type' => 'article',
-                'article_id' => 123,
-                'variant_id' => null,
-                'name' => 'Artikelname',
-                'price' => 19.99,
-                'amount' => 2,
-                'total' => 39.98,
-                'added_at' => time()
-            ],
-            '456_1' => [
-                'type' => 'variant',
-                'article_id' => 456,
-                'variant_id' => 1,
-                'name' => 'Anderer Artikel - Variante 1',
-                'price' => 29.99,
-                'amount' => 1,
-                'total' => 29.99,
-                'added_at' => time()
-            ],
-            '456_2' => [
-                'type' => 'variant',
-                'article_id' => 456,
-                'variant_id' => 2,
-                'name' => 'Anderer Artikel - Variante 2',
-                'price' => 34.99,
-                'amount' => 1,
-                'total' => 34.99,
-                'added_at' => time()
-            ]
-        ];
-        $this->update($demo_items);
-    }
-
     /**
      * Gibt die Zwischensumme (Summe aller Artikel) im gewünschten Modus zurück.
      * @param string|null $mode 'net' oder 'gross' (optional, sonst globaler Modus)
@@ -608,7 +371,7 @@ class Cart
      */
     public static function getSubTotalByMode(string $mode = null): float
     {
-        $cart = self::get();
+        $cart = self::create();
         $items = $cart->getItems();
         $sum = 0;
         
@@ -656,6 +419,7 @@ class Cart
 
     public static function getCartTotalByModeFormatted(string $mode = null): string
     {
+        // Format with EUR sign and two decimal places using PHPs built in currency formatting
         return Warehouse::getCurrencySign() . ' ' . number_format(self::getCartTotalByMode($mode), 2, ',', '');
     }
 
@@ -665,7 +429,7 @@ class Cart
      */
     public static function getTaxTotalByMode(): float
     {
-        $cart = self::get();
+        $cart = self::create();
         $items = $cart->getItems();
         $sum = 0;
         

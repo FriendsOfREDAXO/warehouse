@@ -7,7 +7,7 @@ use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Shipping;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
-$cart = Cart::get();
+$cart = Cart::create();
 $cart_items = $cart->getItems();
 $domain = Domain::getCurrent();
 ?>
