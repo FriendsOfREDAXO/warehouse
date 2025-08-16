@@ -207,6 +207,8 @@ default_config:
     label_shipping_costs_weight: 'Versandkosten nach Gewicht'
     label_total: 'Gesamtpreis'
     label_order_number: 'Bestellnummer'
+    label_add_to_order: 'Bestellen'
+    label_button_okay: 'Okay'
 
     # Customer / Personal data
     label_customer_firstname: 'Vorname'

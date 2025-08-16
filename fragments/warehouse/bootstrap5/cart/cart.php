@@ -105,7 +105,7 @@ if (!$cart_items || count($cart_items) === 0) {
 			<td></td>
 		</tr>
 		<tr>
-			<td class="align-left">Versand</td>
+			<td class="align-left"><?= Warehouse::getLabel('shipping_costs') ?></td>
 			<td></td>
 			<td></td>
 			<td class="align-right">

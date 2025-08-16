@@ -36,7 +36,7 @@ $shipping = Shipping::getCost();
 						<table class="table table-striped" id="table_order_summary">
 							<thead class="table-light">
 								<tr>
-									<th scope="col">Artikel</th>
+									<th scope="col"><?= Warehouse::getLabel('article') ?></th>
 									<th scope="col"><?= Warehouse::getLabel('product_description') ?></th>
 									<?php if ($with_tax): ?>
 									<th scope="col" class="text-end"><?= Warehouse::getLabel('tax_column') ?></th>

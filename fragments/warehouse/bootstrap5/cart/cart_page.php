@@ -138,7 +138,7 @@ $cart_items = $cart->getItems();
 						</div>
 					</div>
 					<div class="row">
-						<div class="col text-muted">Versand</div>
+						<div class="col text-muted"><?= Warehouse::getLabel('shipping_costs') ?></div>
 						<div class="col text">
 							<?= Warehouse::formatCurrency((float) Shipping::getCost()) ?>
 						</div>
@@ -160,7 +160,7 @@ $cart_items = $cart->getItems();
 		</div>
 		<div class="col-12">
 			<a href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>"
-				class="btn btn-primary">Weiter</a>
+				class="btn btn-primary"><?= Warehouse::getLabel('next') ?></a>
 		</div>
 		<?php endif ?>
 

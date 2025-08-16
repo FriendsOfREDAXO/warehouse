@@ -112,7 +112,7 @@ $domain = Domain::getCurrent();
 			</div>
 		</div>
 		<div class="row g-2">
-			<div class="col text-muted">Versand</div>
+			<div class="col text-muted"><?= Warehouse::getLabel('shipping_costs') ?></div>
 			<div class="col-auto">
 				<?= Warehouse::formatCurrency(Shipping::getCost()) ?>
 			</div>

@@ -81,6 +81,8 @@ $allFields = [
     ['label_tax_column', 'Steuer', 'text'],
     ['label_total_with_tax', 'Total inkl. MwSt.', 'text'],
     ['label_total_net', 'Total', 'text'],
+    ['label_add_to_order', 'Bestellen', 'text'],
+    ['label_button_okay', 'Okay', 'text'],
     // validation fields (text)
     ['label_validation_required_fields', 'Bitte füllen Sie alle markierten Felder aus', 'text'],
     ['label_validation_email_invalid', 'Bitte geben Sie eine gültige E-Mail Adresse ein', 'text'],
