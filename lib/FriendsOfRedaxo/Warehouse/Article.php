@@ -494,7 +494,7 @@ class Article extends rex_yform_manager_dataset
         if (!Warehouse::isVariantsEnabled()) {
             $removeFields[] = 'variant_ids';
         }
-        if (!Warehouse::isStockEnabled()) {
+        if (!Warehouse::isVariantsEnabled()) {
             $removeFields[] = 'stock';
         }
         if (!Warehouse::isSkuEnabled()) {
