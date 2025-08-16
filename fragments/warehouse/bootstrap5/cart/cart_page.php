@@ -6,7 +6,7 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
 use FriendsOfRedaxo\Warehouse\Cart;
 use FriendsOfRedaxo\Warehouse\Shipping;
 
-$cart = Cart::get();
+$cart = Cart::create();
 $cart_items = $cart->getItems();
 
 ?>

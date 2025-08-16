@@ -7,6 +7,7 @@ use FriendsOfRedaxo\Warehouse\Checkout;
 use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Payment;
+use FriendsOfRedaxo\Warehouse\Session;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 $customer = Customer::getCurrent() ?? Checkout::loadCustomerFromSession();
@@ -14,8 +15,8 @@ $customerAddress = $customer?->getAddress();
 $customer_shipping_address = $customer?->getShippingAddress();
 $allowedPaymentOptions = Payment::getAllowedPaymentOptions();
 
-$cart = Cart::loadCartFromSession();
-$payment = Payment::loadPaymentFromSession();
+$cart = Session::getCartData();
+$payment = Session::getPaymentData();
 $domain = Domain::getCurrent();
 
 $ycom_mode = Warehouse::getConfig('ycom_mode', 'guest_only');

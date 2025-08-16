@@ -187,18 +187,24 @@ class Payment
     /**
      * @return array<string, mixed>
      */
-    public static function loadPaymentFromSession(): array
+    public static function loadFromSession(): array
     {
-        $payment = rex_session('warehouse_payment', 'array', []);
+        $payment = Session::getPaymentData();
         if (empty($payment)) {
             return [];
         }
         return $payment;
     }
 
-    public function savePaymentToSession(): void
+    public function saveInSession(): void
     {
-        rex_set_session('warehouse_payment', $this);
+        $data = [
+            'payment_type' => $this->getPaymentType(),
+            'payment_direct_debit' => $this->getPaymentDirectDebit(),
+            'payment_paypal' => $this->getPaymentPaypal()
+        ];
+        Session::setPayment($data);
+
     }
 
 }

@@ -12,5 +12,5 @@ use FriendsOfRedaxo\Warehouse\Domain;
 	<i class="bi-icon bi-cart me-2"></i>
 	<?= rex_i18n::msg('warehouse.settings.label_cart') ?>
 	<span
-		class="badge bg-secondary ms-2"><?= Cart::get()->count() ?></span>
+		class="badge bg-secondary ms-2"><?= Cart::create()->count() ?></span>
 </a>

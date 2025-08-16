@@ -170,8 +170,10 @@ default_config:
     ### Labels
     # Cart
     label_cart: 'Warenkorb'
+    label_add_to_cart: 'Zum Warenkorb hinuzfügen'
     labeL_cart_empty: 'Der Warenkorb ist leer'
     label_article: 'Artikel'
+    label_tax: 'inkl. MwSt.'
     label_back_to_cart: 'Zurück zum Warenkorb'
     label_cart_empty: 'Der Warenkorb ist leer.'
     label_cart_empty_confirm: 'Sind Sie sicher, dass Sie den Warenkorb leeren möchten?'

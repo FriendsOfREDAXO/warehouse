@@ -16,6 +16,7 @@ use CoreInterfaces\Core\Response\ResponseInterface;
 use PaypalServerSdkLib\Http\ApiResponse;
 
 use FriendsOfRedaxo\Warehouse\PayPal;
+use FriendsOfRedaxo\Warehouse\Session;
 use FriendsOfRedaxo\Warehouse\Shipping;
 use PaypalServerSdkLib\PaypalServerSdkClientBuilder;
 use PaypalServerSdkLib\Authentication\ClientCredentialsAuthCredentialsBuilder;
@@ -146,7 +147,7 @@ class Order extends rex_api_function
         
         // Get dynamic currency and cart totals
         $currency = Warehouse::getCurrency();
-        $cart_data = Cart::loadCartFromSession();
+        $cart_data = Session::getCartData();
         $cart_total = Cart::getCartTotal(); // Total including shipping
         $cart_subtotal = Cart::getSubTotal(); // Items only, excluding shipping
         $shipping_cost = Shipping::getCost(); // Shipping costs

@@ -5,14 +5,15 @@ use FriendsOfRedaxo\Warehouse\Cart;
 use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Payment;
+use FriendsOfRedaxo\Warehouse\Session;
 use FriendsOfRedaxo\Warehouse\Shipping;
 
 /** @var array $customer */
 $customer = $this->getVar('customer', []);
 /** @var Cart $cart */
-$cart = Cart::loadCartFromSession();
+$cart = Session::getCartData();
 /** @var array $payment */
-$payment = Payment::loadPaymentFromSession();
+$payment = Payment::loadFromSession();
 /** @var Domain $domain */
 $domain = Domain::getCurrent();
 

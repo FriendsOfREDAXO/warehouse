@@ -5,6 +5,7 @@
 use FriendsOfRedaxo\Warehouse\Api\Cart;
 use FriendsOfRedaxo\Warehouse\PayPal;
 use FriendsOfRedaxo\Warehouse\Api\Order;
+use FriendsOfRedaxo\Warehouse\Warehouse;
 use PaypalServerSdkLib\Authentication\ClientCredentialsAuthCredentialsBuilder;
 use PaypalServerSdkLib\Environment;
 use PaypalServerSdkLib\PaypalServerSdkClientBuilder;
@@ -43,7 +44,7 @@ Order::createOrder([]); // For debugging purposes, remove in production
 ?>
 
 <script nonce="<?= rex_response::getNonce() ?>"
-	src="https://www.paypal.com/sdk/js?client-id=<?= PayPal::getClientId() ?>&buyer-country=DE&currency=EUR&components=buttons&enable-funding=card&disable-funding=venmo,paylater"
+	src="https://www.paypal.com/sdk/js?client-id=<?= PayPal::getClientId() ?>&buyer-country=DE&currency=<?= Warehouse::getCurrency() ?>&components=buttons&enable-funding=card&disable-funding=venmo,paylater"
 	data-sdk-integration-source="developer-studio"></script>
 <script nonce="<?= rex_response::getNonce() ?>"
 	src="/assets/addons/warehouse/js/paypal-frontend.js"></script>
