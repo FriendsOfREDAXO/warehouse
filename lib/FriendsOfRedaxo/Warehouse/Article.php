@@ -245,6 +245,20 @@ class Article extends rex_yform_manager_dataset
         return $this;
     }
             
+    /* SKU */
+    /** @api */
+    public function getSku() : string
+    {
+        $sku = $this->getValue(self::SKU);
+        return $sku !== null && $sku !== '' ? (string)$sku : (string)$this->getId();
+    }
+    /** @api */
+    public function setSku(mixed $value) : self
+    {
+        $this->setValue(self::SKU, $value);
+        return $this;
+    }
+            
     /* Preis */
     /** @api
      * Gibt den Preis zurück, netto oder brutto je nach Modus.
@@ -480,8 +494,11 @@ class Article extends rex_yform_manager_dataset
         if (!Warehouse::isVariantsEnabled()) {
             $removeFields[] = 'variant_ids';
         }
-        if (!Warehouse::isVariantsEnabled()) {
+        if (!Warehouse::isStockEnabled()) {
             $removeFields[] = 'stock';
+        }
+        if (!Warehouse::isSkuEnabled()) {
+            $removeFields[] = 'sku';
         }
 
         foreach ($removeFields as $field) {

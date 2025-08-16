@@ -161,7 +161,7 @@ class Order extends rex_api_function
                 (string) $item['amount']
             )
                 ->description($item['name'])
-                ->sku($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : ''))
+                ->sku($item['sku'] ?? ($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : '')))
                 ->build();
         }
         

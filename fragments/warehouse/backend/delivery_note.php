@@ -363,8 +363,8 @@ if ($user_data['email']) {
 
                 echo '<tr>';
                 echo "<td>$count</td>";
-                // Use standardized cart item structure
-                $article_sku = $pos['article_id'] . ($pos['variant_id'] ? '-' . $pos['variant_id'] : '');
+                // Use SKU if available, otherwise fallback to generated pattern
+                $article_sku = $pos['sku'] ?? ($pos['article_id'] . ($pos['variant_id'] ? '-' . $pos['variant_id'] : ''));
                 echo '<td>' . $article_sku . '</td>';
                 $variant_indicator = ($pos['type'] === 'variant') ? ' (Variante)' : '';
                 echo '<td class="text-left">' . html_entity_decode($pos['name']) . $variant_indicator . $attr . '</td>';
@@ -552,8 +552,8 @@ if ($user_data['email']) {
 
                 echo '<tr>';
                 echo "<td>$count</td>";
-                // Use standardized cart item structure
-                $article_sku = $pos['article_id'] . ($pos['variant_id'] ? '-' . $pos['variant_id'] : '');
+                // Use SKU if available, otherwise fallback to generated pattern
+                $article_sku = $pos['sku'] ?? ($pos['article_id'] . ($pos['variant_id'] ? '-' . $pos['variant_id'] : ''));
                 echo '<td>' . $article_sku . '</td>';
                 $variant_indicator = ($pos['type'] === 'variant') ? ' (Variante)' : '';
                 echo '<td class="text-left">' . html_entity_decode($pos['name']) . $variant_indicator . $attr . '</td>';

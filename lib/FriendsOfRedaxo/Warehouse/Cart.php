@@ -220,12 +220,14 @@ class Cart
             $price = $current_mode === 'net' ? $net_price : $gross_price;
             
             $name = $article_variant ? $article_variant->getName() : $article->getName();
+            $sku = $article_variant ? $article_variant->getSku() : $article->getSku();
             
             $items[$item_key] = [
                 'type' => $article_variant ? 'variant' : 'article',
                 'article_id' => $article_id,
                 'variant_id' => $article_variant_id,
                 'name' => $name,
+                'sku' => $sku,
                 'price' => $price,
                 'net_price' => $net_price,
                 'gross_price' => $gross_price,
