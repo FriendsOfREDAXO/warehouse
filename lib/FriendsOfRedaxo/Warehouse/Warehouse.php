@@ -11,7 +11,7 @@ use rex_logger;
 use rex_fragment;
 use rex_path;
 use rex_yform_manager_dataset;
-use NumberFormatter;
+use \NumberFormatter;
 
 class Warehouse
 {
