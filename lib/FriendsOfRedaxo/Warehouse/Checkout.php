@@ -103,20 +103,46 @@ class Checkout
     {
         $value_pool = $params->params['value_pool']['email'];
         $customer_session = [];
+        $billing_address = [];
+        $shipping_address = [];
+        
         foreach ($value_pool as $field => $value) {
-            // Wenn es ein Feld mit 'to_' startet
-            if (str_starts_with($field, 'to_')) {
-                // Entferne 'to_' vom Feldnamen
-                $new_field = substr($field, 3);
-                // Speichere den Wert im Session-Array
-                $customer_session[$new_field] = $value;
-            } else {
-                // Andernfalls speichere den Wert direkt
+            // Handle billing address fields
+            if (str_starts_with($field, 'billing_address_')) {
+                $new_field = substr($field, 16); // Remove 'billing_address_' prefix
+                $billing_address[$new_field] = $value;
+            }
+            // Handle shipping address fields  
+            elseif (str_starts_with($field, 'shipping_address_')) {
+                $new_field = substr($field, 17); // Remove 'shipping_address_' prefix
+                $shipping_address[$new_field] = $value;
+            }
+            // Legacy: Handle 'to_' prefix for shipping fields (backwards compatibility)
+            elseif (str_starts_with($field, 'to_')) {
+                $new_field = substr($field, 3); // Remove 'to_' prefix
+                $shipping_address[$new_field] = $value;
+            }
+            // Handle regular customer fields
+            else {
                 $customer_session[$field] = $value;
             }
         }
 
+        // Save customer data to legacy session for backwards compatibility
         rex_set_session('user_data', $customer_session);
+        
+        // Save customer data using Session class
+        Session::setCustomer($customer_session);
+        
+        // Save billing address if provided
+        if (!empty($billing_address)) {
+            Session::setBillingAddress($billing_address);
+        }
+        
+        // Save shipping address if provided
+        if (!empty($shipping_address)) {
+            Session::setShippingAddress($shipping_address);
+        }
     }
 
     public static function loadCustomerFromSession(): ?Customer
