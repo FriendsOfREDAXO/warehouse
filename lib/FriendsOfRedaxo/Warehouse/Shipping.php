@@ -85,7 +85,7 @@ class Shipping
 
     public static function getCostFormatted() :string
     {
-        return Warehouse::getCurrencySign() . ' ' . number_format(self::getCost(), 2, ',', '.');
+        return Warehouse::formatCurrency(self::getCost());
     }
     
     /**

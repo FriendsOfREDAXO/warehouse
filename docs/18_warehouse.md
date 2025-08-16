@@ -106,18 +106,43 @@ echo Warehouse::getLabel('add_to_cart'); // "In den Warenkorb"
 
 ## Währungsfunktionen
 
-### `getCurrencySign()`
+### `formatCurrency(float|null $value, string $locale = 'de_DE')`
 
-Gibt das Währungssymbol basierend auf der konfigurierten Währung zurück.
+Formatiert einen Betrag als Währung unter Verwendung von PHP's NumberFormatter.
 
-**Rückgabe:** String - Währungssymbol
+**Parameter:**
+- `$value` (float|null): Der zu formatierende Betrag
+- `$locale` (string): Locale für die Formatierung (Standard: 'de_DE')
+
+**Rückgabe:** String - Formatierter Währungsstring
 
 ```php
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
-$currencySign = Warehouse::getCurrencySign();
-echo "Preis: 19,95 " . $currencySign; // "Preis: 19,95 €"
+echo Warehouse::formatCurrency(19.95); // "19,95 €"
+echo Warehouse::formatCurrency(1234.56); // "1.234,56 €"
+echo Warehouse::formatCurrency(null); // ""
 ```
+
+### `getCurrency()`
+
+Gibt den konfigurierten Währungscode zurück.
+
+**Rückgabe:** String - Währungscode (z.B. "EUR", "USD")
+
+```php
+use FriendsOfRedaxo\Warehouse\Warehouse;
+
+$currency = Warehouse::getCurrency(); // "EUR"
+```
+
+### `getCurrencySign()` *(Deprecated)*
+
+**@deprecated** Verwenden Sie stattdessen `formatCurrency()` für vollständige Währungsformatierung oder `getCurrency()` für den Währungscode.
+
+Gibt das Währungssymbol basierend auf der konfigurierten Währung zurück.
+
+**Rückgabe:** String - Währungssymbol
 
 ## Feature-Management
 
@@ -383,7 +408,7 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
 use FriendsOfRedaxo\Warehouse\Cart;
 
 // Konfiguration abrufen
-$currency = Warehouse::getCurrencySign();
+$currency = Warehouse::getCurrency();
 $labels = [
     'cart' => Warehouse::getLabel('cart'),
     'checkout' => Warehouse::getLabel('checkout'),

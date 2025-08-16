@@ -29,6 +29,9 @@ class Warehouse
         'guest_only' => 'warehouse.ycom_mode.guest_only',
     ];
 
+    /**
+     * @deprecated Use Warehouse::getCurrency() instead
+     */
     public static function getCurrencySign() :string
     {
         return PayPal::CURRENCY_SIGNS[self::getCurrency()];
@@ -68,8 +71,8 @@ class Warehouse
         $return .= mb_str_pad('Art. Nr.', 20, ' ', STR_PAD_RIGHT);
         $return .= mb_str_pad('Artikel', 45, ' ', STR_PAD_RIGHT);
         $return .= mb_str_pad('Anzahl', 7, ' ', STR_PAD_LEFT);
-        $return .= mb_str_pad(Warehouse::getCurrencySign(), 10, ' ', STR_PAD_LEFT);
-        $return .= mb_str_pad(Warehouse::getCurrencySign(), 10, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad(Warehouse::getCurrency(), 10, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad(Warehouse::getCurrency(), 10, ' ', STR_PAD_LEFT);
         $return .= PHP_EOL;
         $return .= str_repeat('-', 92);
         $return .= PHP_EOL;
@@ -150,8 +153,8 @@ class Warehouse
         $return .= 'Art. Nr.</th><th>';
         $return .= 'Artikel</th><th style="text-align:right">';
         $return .= 'Anzahl</th><th style="text-align:right">';
-        $return .= Warehouse::getCurrencySign() . '</th><th style="text-align:right">';
-        $return .= Warehouse::getCurrencySign() . '</th></tr></head><tbody>';
+        $return .= Warehouse::getCurrency() . '</th><th style="text-align:right">';
+        $return .= Warehouse::getCurrency() . '</th></tr></head><tbody>';
 
 
         foreach ($cart->getItems() as $pos) {

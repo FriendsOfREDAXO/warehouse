@@ -119,7 +119,6 @@ default_config:
     store_country_code: "DE"
 
     currency: "EUR"
-    currency_symbol: "€"
     country_codes: "DE"
     cart_mode: "cart"
     editor: ''
