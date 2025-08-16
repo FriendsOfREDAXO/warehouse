@@ -161,7 +161,7 @@ if (Warehouse::isBulkPricesEnabled()) {
                     action = 'add'; // oder ggf. andere Logik
                 }
                 // API-URL zusammenbauen
-                let url = `index.php?rex_api_call=cart&action=${action}`;
+                let url = `index.php?rex_api_call=warehouse_cart_api&action=${action}`;
                 url += `&article_id=${encodeURIComponent(articleId)}`;
                 if (variantId) {
                     url += `&variant_id=${encodeURIComponent(variantId)}`;
