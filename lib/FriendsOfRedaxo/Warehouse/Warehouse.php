@@ -90,22 +90,32 @@ class Warehouse
             $return .= mb_str_pad(number_format($item['total'], 2), 10, ' ', STR_PAD_LEFT);
             $return .= PHP_EOL;
             
-            // Calculate tax for this item
+            // Calculate tax for this item using stored values or dynamic calculation
             $tax_amount = 0;
             $tax_rate = 0;
-            if ($item['type'] === 'variant' && $item['variant_id']) {
-                $variant = ArticleVariant::get($item['variant_id']);
-                if ($variant) {
-                    $tax_rate = $variant->getTax();
-                    $net_price = $variant->getPrice('net');
-                    $tax_amount = ($item['price'] - $net_price) * $item['amount'];
-                }
+            
+            if (isset($item['tax_amount'], $item['tax_rate'])) {
+                // Use stored values from cart
+                $tax_amount = (float)$item['tax_amount'];
+                $tax_rate = (float)$item['tax_rate'];
             } else {
-                $article = Article::get($item['article_id']);
-                if ($article) {
-                    $tax_rate = $article->getTax();
-                    $net_price = $article->getPrice('net');
-                    $tax_amount = ($item['price'] - $net_price) * $item['amount'];
+                // Fallback: dynamic calculation for backward compatibility
+                if ($item['type'] === 'variant' && $item['variant_id']) {
+                    $variant = ArticleVariant::get($item['variant_id']);
+                    if ($variant) {
+                        $tax_rate = (float)($variant->getTax() ?? 0);
+                        $net_price = $variant->getPrice('net');
+                        $gross_price = $variant->getPrice('gross');
+                        $tax_amount = ($gross_price - $net_price) * $item['amount'];
+                    }
+                } else {
+                    $article = Article::get($item['article_id']);
+                    if ($article) {
+                        $tax_rate = (float)($article->getTax() ?? 0);
+                        $net_price = $article->getPrice('net');
+                        $gross_price = $article->getPrice('gross');
+                        $tax_amount = ($gross_price - $net_price) * $item['amount'];
+                    }
                 }
             }
             
@@ -159,27 +169,31 @@ class Warehouse
 
         foreach ($cart->getItems() as $pos) {
             $return .= '<tr><td>';
-            if ($pos['var_whvarid']) {
-                $return .= mb_substr(html_entity_decode($pos['var_whvarid']), 0, 20) . '</td><td>';
-            } else {
-                $return .= mb_substr(html_entity_decode($pos['whid']), 0, 20) . '</td><td>';
-            }
+            // Use standardized cart item structure
+            $article_sku = $pos['article_id'] . ($pos['variant_id'] ? '-' . $pos['variant_id'] : '');
+            $return .= mb_substr(html_entity_decode($article_sku), 0, 20) . '</td><td>';
+            
             $return .= mb_substr(html_entity_decode($pos['name']), 0, 45);
-
-            if (is_array($pos['attributes'])) {
-                foreach ($pos['attributes'] as $attr) {
-                    $return .= '<br>';
-                    $return .= mb_substr(html_entity_decode($attr['value'] . '  ' . $attr['at_name'] . ': ' . $attr['label']), 0, 70);
-                }
+            
+            // Add variant indicator if this is a variant
+            if ($pos['type'] === 'variant') {
+                $return .= ' <small>(Variante)</small>';
             }
 
-            $return .= '<br>' . html_entity_decode('Steuer: ' . $pos['taxpercent'] . '% = ' . number_format($pos['taxval'], 2));
+            // Note: attributes are not part of the current standardized structure
+            // If needed, this should be handled through article/variant objects
+
+            // Display tax information using standardized fields
+            $tax_rate = isset($pos['tax_rate']) ? (float)$pos['tax_rate'] : 0;
+            $tax_amount = isset($pos['tax_amount']) ? (float)$pos['tax_amount'] : 0;
+            $return .= '<br>' . html_entity_decode('Steuer: ' . number_format($tax_rate, 1) . '% = ' . number_format($tax_amount, 2));
 
             $return .= '</td><td style="text-align:right">';
 
             $return .= $pos['amount'] . '</td><td style="text-align:right">';
-            $return .= number_format($pos['price_netto'], 2) . '</td><td style="text-align:right">';
-            $return .= number_format($pos['price_netto'] * $pos['amount'], 2) . '</td></tr>';
+            $net_price = isset($pos['net_price']) ? (float)$pos['net_price'] : (float)$pos['price'];
+            $return .= number_format($net_price, 2) . '</td><td style="text-align:right">';
+            $return .= number_format($net_price * $pos['amount'], 2) . '</td></tr>';
         }
         $return .= '<tr class="topline"><td></td><td>Summe</td><td></td><td></td><td style="text-align:right">';
         $return .= number_format($cart->getSubTotalNetto(), 2) . '</td></tr>';

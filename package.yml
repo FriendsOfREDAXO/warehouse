@@ -1,5 +1,5 @@
 package: warehouse
-version: '2.4.0-dev'
+version: '2.4.0'
 author: FriendsOfREDAXO
 supportpage: https://github.com/FriendsOfREDAXO/warehouse
 
@@ -104,13 +104,13 @@ requires:
         version: '>=8.3,<9'
     packages:
         structure: '^2.0'
-        yform: '>=4.1,<6'
-        yform_field: '^2.11.1'
+        yform: '>=5,<6' # Wegen eines Problems mit dem uuid-Feld wird >=5.0.0 benötigt
+        yform_field: '^2.12.0'
 
 conflicts:
     packages:
-        pdfout: '<=9.9.9,>=12.0.0'
-        url: '^1'
+        yform: '<5.0.0'
+        url: '<2.0.0,>=3.0.0'
 
 default_config:
 

@@ -100,17 +100,6 @@ if (rex_config::get('warehouse', 'editor') == '') {
 $addon->includeFile(__DIR__ . '/install/structure.php');
 
 
-// Patch Addon YForm - kopiere uuid.php in die YForm Addon - wenn Version <= 5.0.0
-// Sonst funktioniert das Klonen mit UUID nicht
-// https://github.com/yakamara/yform/commit/df79eff090ad0460c655c2f852b17e6aec53987a
-// https://github.com/yakamara/yform/pull/1517
-if (rex_version::compare(rex_addon::get('yform')->getVersion(), '5.0.0', '<=')) {
-    $yform = rex_addon::get('yform');
-    $source = __DIR__ . '/install/patch/uuid.php';
-    $target = $yform->getPath('lib/yForm/value/uuid.php');
-    rex_file::copy($source, $target);
-}
-
 // Wenn Warehouse 1.x installiert ist, dann abbrechen - es ist keine Migration vorgesehen.
 if (rex_addon::get('warehouse')->isAvailable() && rex_version::compare(rex_addon::get('warehouse')->getVersion(), '2.0.0', '<')) {
     rex_view::error('Warehouse ' . rex_addon::get('warehouse')->getVersion() .' ist bereits installiert. Ein Upgrade ist nicht vorgesehen und kann zu unvorhersehbaren Fehlern führen. Bitte deinstalliere Warehouse und installiere die aktuelle Version.');
