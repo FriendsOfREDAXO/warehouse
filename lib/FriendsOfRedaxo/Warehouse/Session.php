@@ -231,7 +231,7 @@ class Session extends rex_request
                         ->where('type', 'billing')
                         ->findOne();
                     if ($billing_address) {
-                        self::setBillingAddress($billing_address);
+                        self::setBillingAddress($billing_address->toArray());
                     }
                 }
             }
