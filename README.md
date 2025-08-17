@@ -105,7 +105,7 @@ MIT-Lizenz, siehe [LICENSE.md](https://github.com/FriendsOfREDAXO/warehouse/blob
 
 ### Projekt-Leads
 
-[Alexander Walther](https://github.com/alxndr-w), [Thomas Rotzek](https://github.com/rotzek)
+[Thomas Rotzek](https://github.com/rotzek)
 
 ### Credits
 
