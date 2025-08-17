@@ -1,7 +1,6 @@
 <?php
 
 use Alexplusde\Tracks\Editor;
-
 /** @var rex_addon $this */
 
 // Überprüfe aktuell installierte Version von Warehouse
