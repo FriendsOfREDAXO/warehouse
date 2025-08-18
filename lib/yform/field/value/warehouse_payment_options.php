@@ -37,7 +37,7 @@ class rex_yform_value_warehouse_payment_options extends rex_yform_value_abstract
     {
         return [
             'type' => 'value',
-            'name' => 'radio',
+            'name' => 'warehouse_payment_options',
             'values' => [
                 'name' => ['type' => 'name',   'label' => rex_i18n::msg('yform_values_defaults_name')],
                 'label' => ['type' => 'text',    'label' => rex_i18n::msg('yform_values_defaults_label')],
