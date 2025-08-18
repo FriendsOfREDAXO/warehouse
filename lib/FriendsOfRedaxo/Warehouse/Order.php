@@ -5,6 +5,7 @@ namespace FriendsOfRedaxo\Warehouse;
 use rex_addon;
 use rex_config;
 use rex_csrf_token;
+use rex_extension_point;
 use rex_formatter;
 use rex_i18n;
 use rex_response;
@@ -35,12 +36,10 @@ class Order extends rex_yform_manager_dataset
     public const string PAYMENT_ID = 'payment_id';
     public const string PAYPAL_CONFIRM_TOKEN = 'paypal_confirm_token';
     public const string PAYMENT_CONFIRM = 'payment_confirm';
-    public const string ORDER_TEXT = 'order_text';
     public const string ORDER_JSON = 'order_json';
     public const string ORDER_TOTAL = 'order_total';
     public const string YCOM_USER_ID = 'ycom_user_id';
     public const string PAYMENT_TYPE = 'payment_type';
-    public const string PAYED = 'payed';
     public const string IMPORTED = 'imported';
     public const string IS_READ = 'is_read';
     public const string UPDATEDATE = 'updatedate';
@@ -84,12 +83,10 @@ class Order extends rex_yform_manager_dataset
         self::PAYMENT_ID => [],
         self::PAYPAL_CONFIRM_TOKEN => [],
         self::PAYMENT_CONFIRM => [],
-        self::ORDER_TEXT => [],
         self::ORDER_JSON => [],
         self::ORDER_TOTAL => [],
         self::YCOM_USER_ID => [],
         self::PAYMENT_TYPE => [],
-        self::PAYED => [],
         self::IMPORTED => [],
         self::IS_READ => [],
         self::UPDATEDATE => [],
@@ -578,7 +575,7 @@ class Order extends rex_yform_manager_dataset
                 $order_total = $list->getValue(self::ORDER_TOTAL);
                 $payment_confirm = $list->getValue(self::PAYMENT_CONFIRM);
                 $payment_type = $list->getValue(self::PAYMENT_TYPE);
-                $payed = $list->getValue(self::PAYED);
+                $payed = $list->getValue(self::PAYMENT_STATUS) === Payment::PAYMENT_STATUS_COMPLETED ;
 
                 $return = '';
 
