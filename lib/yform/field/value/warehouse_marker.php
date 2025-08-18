@@ -4,8 +4,9 @@ class rex_yform_value_warehouse_marker extends rex_yform_value_abstract
 {
     public function enterObject(): void
     {
+
         $marker_value = $this->getValue();
-        if("" !== $marker_value) {
+        if(!empty($marker_value)) {
             $marker_value = (string) "Y";
         }
 
