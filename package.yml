@@ -105,7 +105,7 @@ requires:
     packages:
         structure: '^2.0'
         yform: '>=5,<6' # Wegen eines Problems mit dem uuid-Feld wird >=5.0.0 benötigt
-        yform_field: '^2.12.0'
+        yform_field: '>=2.12.0,<4'
 
 conflicts:
     packages:
