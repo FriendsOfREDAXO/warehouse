@@ -10,12 +10,14 @@ use rex_yform_manager_dataset;
 use rex_yform;
 use rex_addon;
 use rex_api_function;
+use rex_article;
 use rex_be_controller;
 use rex_extension_point;
 use rex_fragment;
 use rex_request;
 use rex_response;
 use rex_view;
+use rex_yrewrite;
 use Url\Url;
 
 /** @var rex_addon $this */
@@ -29,20 +31,25 @@ if (rex_addon::get('yform')->isAvailable() && !rex::isSafeMode()) {
     rex_yform_manager_dataset::setModelClass('rex_ycom_user', Customer::class);
     rex_yform_manager_dataset::setModelClass('rex_warehouse_customer_address', CustomerAddress::class);
 }
-rex_extension::register('PACKAGES_INCLUDED', function () {
-    if (rex_addon::get('yform')->isAvailable() && !rex::isSafeMode()) {
+
+rex_extension::register('PACKAGES_INCLUDED', function (rex_extension_point $ep) {
+    if (rex_addon::get('ycom')->isAvailable() && !rex::isSafeMode()) {
         rex_yform_manager_dataset::setModelClass('rex_ycom_user', Customer::class);
     }
 });
 
-
-rex_yform::addTemplatePath($this->getPath('ytemplates'));
-
+rex_extension::register('PACKAGES_INCLUDED', function (rex_extension_point $ep) {
+    if (rex_addon::get('yform')->isAvailable() && !rex::isSafeMode()) {
+        rex_yform::addTemplatePath($this->getPath('ytemplates'));
+    }
+});
 
 // Nur, wenn auf Backend-Seiten des Warehouse-Addons
 if (rex::isBackend() && rex_be_controller::getCurrentPagePart(1) == 'warehouse') {
     // CSS im Backend laden
     rex_view::addCssFile($this->getAssetsUrl('css/backend.css'));
+    // JS im Backend laden
+    rex_view::addJsFile($this->getAssetsUrl('js/backend.js'));
 }
 
 
@@ -61,42 +68,44 @@ if (rex::isFrontend()) {
         }
     }
 
+}
+
     rex_extension::register('PACKAGES_INCLUDED', function () {
 
         if (rex_addon::get('url')->isAvailable()) {
+            
             $manager = Url::resolveCurrent();
             if ($manager) {
-                $profile = $manager->getProfile();
-                $seo = $manager->getSeo();
+                \rex_extension::register('URL_SEO_TAGS', function(\rex_extension_point $ep) use ($manager) {
+                    $tags = $ep->getSubject();
 
-                $data_id = (int) $manager->getDatasetId();
-                if ($profile && $profile->getTableName() == rex::getTable('warehouse_article')) {
-                    $warehouse_prop['sitemode'] = 'article';
-                    $warehouse_prop['seo_title'] = $seo['title'] . "👀👀";
-                } elseif ($profile && $profile->getTableName() == rex::getTable('warehouse_category')) {
-                    $warehouse_prop['sitemode'] = 'category';
-                    $warehouse_prop['seo_title'] = $seo['title'] . "👀";
-                    $warehouse_prop['path'] = Warehouse::getCategoryPath($data_id);
-                }
-                $curl = Domain::getCurrentUrl() . rex_request::server('REQUEST_URI');
-                rex_set_session('current_page', $curl);
+                    $titleValues = [];
+                    $article = rex_article::get($manager->getArticleId());
+                    $title = strip_tags($tags['title']);
+
+                    if ($manager->getSeoTitle()) {
+                        $titleValues[] = $manager->getSeoTitle();
+                    }
+                    if ($article) {
+                        $domain = rex_yrewrite::getDomainByArticleId($article->getId());
+                        $title = $domain->getTitle();
+                        $titleValues[] = $article->getName();
+                    }
+                    if (count($titleValues)) {
+                        $title = "abc" . rex_escape(str_replace('%T', implode(' / ', $titleValues), $title));
+                    }
+                    if ('' !== rex::getServerName()) {
+                        $title = "xyz" . rex_escape(str_replace('%SN', rex::getServerName(), $title));
+                    }
+
+                    $tags['title'] = sprintf('<title>%s</title>', $title);
+                    $ep->setSubject($tags);
+                });
             }
         }
     });
-}
 
-if (rex::isBackend()) {
-    rex_extension::register('YFORM_DATA_LIST', Article::epYformDataList(...));
-    rex_extension::register('YFORM_DATA_LIST', Category::epYformDataList(...));
-    rex_extension::register('YFORM_DATA_LIST', Order::epYformDataList(...));
-    rex_extension::register('YFORM_DATA_LIST_ACTION_BUTTONS', Order::epYformDataListActionButtons(...));
-}
-
-/* Javascript-Assets */
-if (rex::isBackend() && rex::getUser()) {
-    rex_view::addJsFile($this->getAssetsUrl('js/backend.js'));
-}
-
+    
 /* quick_navigation Suche */
 if (rex::isBackend() && rex::getUser() && rex_addon::get('quick_navigation')->isAvailable()) {
     \FriendsOfRedaxo\QuickNavigation\Button\ButtonRegistry::registerButton(new QuickNavigationButton(), 5);
@@ -136,11 +145,16 @@ rex_extension::register('WAREHOUSE_TAX_OTIONS', function (rex_extension_point $e
     return $taxes;
 });
 
-// API verfügbar machen
-rex_api_function::register('warehouse_order', Api\Order::class);
-rex_api_function::register('warehouse_cart_api', Api\CartApi::class);
+// APIs verfügbar machen
+rex_api_function::register('WAREHOUSE_ORDER', Api\Order::class);
+rex_api_function::register('WAREHOUSE_CART_API', Api\CartApi::class);
 
-// WAREHOUSE_ORDER_CREATED extension point
+// YFORM-EPs registrieren
+rex_extension::register('YFORM_DATA_LIST', Article::epYformDataList(...));
+rex_extension::register('YFORM_DATA_LIST', Category::epYformDataList(...));
+rex_extension::register('YFORM_DATA_LIST', Order::epYformDataList(...));
+rex_extension::register('YFORM_DATA_LIST_ACTION_BUTTONS', Order::epYformDataListActionButtons(...));
+
 rex_extension::register('YFORM_DATA_ADDED', function (rex_extension_point $ep) {
     $table = $ep->getParam('table');
     if ($table && $table->getTableName() === rex::getTable('warehouse_order')) {

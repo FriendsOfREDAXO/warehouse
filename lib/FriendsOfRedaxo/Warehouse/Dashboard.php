@@ -155,7 +155,7 @@ class Dashboard
     public function getUnpaidOrdersSection(): string
     {
         $unpaid_orders = Order::query()
-            ->where('payed', 0)
+            ->where(Order::PAYMENT_STATUS, PAYMENT::PAYMENT_STATUS_PENDING)
             ->find();
 
         $unpaid_count = count($unpaid_orders);
@@ -181,7 +181,7 @@ class Dashboard
     public function getShippingOrdersSection(): string
     {
         $paid_unshipped_orders = Order::query()
-            ->where('payed', 1)
+            ->where(Order::PAYMENT_STATUS, PAYMENT::PAYMENT_STATUS_COMPLETED)
             ->where('shipping_status', Shipping::SHIPPING_STATUS_NOT_SHIPPED)
             ->find();
 
