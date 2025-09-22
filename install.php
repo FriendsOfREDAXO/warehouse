@@ -126,7 +126,7 @@ if (rex_addon::get('media_manager')->isAvailable()) {
 
             // Get the created profile ID
             $media_manager_type_id = rex_sql::factory()->getArray('SELECT `id` FROM ' . rex::getTable('media_manager_type') . ' WHERE `name` = :name', [':name' => $profile_name]);
-            $profile_id = $media_manager_type_id[0]['id'];
+            $profile_id = rex_sql::factory()->getVar('SELECT `id` FROM ' . rex::getTable('media_manager_type') . ' WHERE `name` = :name', [':name' => $profile_name]);
 
             // Add resize effect to the profile
             $sql = rex_sql::factory();
