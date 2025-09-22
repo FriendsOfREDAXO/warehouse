@@ -103,7 +103,13 @@ if (rex_addon::get('media_manager')->isAvailable()) {
                 $profile_exists = true;
                 break;
             }
-        }
+    // Fetch all existing profile names in one query
+    $existing_profiles = rex_sql::factory()->getArray('SELECT `name` FROM ' . rex::getTable('media_manager_type'));
+    $existing_profile_names = array_column($existing_profiles, 'name');
+
+    foreach ($profiles as $profile_name => $profile_config) {
+        // Check if profile already exists
+        $profile_exists = in_array($profile_name, $existing_profile_names, true);
 
         if (!$profile_exists) {
             // Create media manager type (profile)
