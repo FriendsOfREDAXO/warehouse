@@ -139,7 +139,25 @@ if (rex_addon::get('media_manager')->isAvailable()) {
             $sql->setValue('createuser', 'warehouse');
             $sql->setValue('updatedate', date('Y-m-d H:i:s'));
             $sql->setValue('updateuser', 'warehouse');
-            $sql->insert();
+            $profile_id = rex_sql::factory()->getVar('SELECT `id` FROM ' . rex::getTable('media_manager_type') . ' WHERE `name` = :name', [':name' => $profile_name]);
+            if ($profile_id !== null) {
+
+                // Add resize effect to the profile
+                $sql = rex_sql::factory();
+                $sql->setTable(rex::getTable('media_manager_type_effect'));
+                $sql->setValue('type_id', $profile_id);
+                $sql->setValue('effect', 'resize');
+                $sql->setValue('parameters', $profile_config['effect_parameters']);
+                $sql->setValue('priority', 1);
+                $sql->setValue('createdate', date('Y-m-d H:i:s'));
+                $sql->setValue('createuser', 'warehouse');
+                $sql->setValue('updatedate', date('Y-m-d H:i:s'));
+                $sql->setValue('updateuser', 'warehouse');
+                $sql->insert();
+            } else {
+                // Handle error: profile id not found
+                rex_logger::factory()->error('Could not retrieve media manager type id for profile: ' . $profile_name);
+            }
         }
     }
 }
