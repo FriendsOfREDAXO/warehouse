@@ -611,3 +611,34 @@ foreach ($cart_items as $item_key => $item) {
     }
 }
 ```
+
+## Automatische Aktualisierung der Warenkorb-Anzeige
+
+Ab Version 2.1.1 wird der Warenkorb-Button in der Navigation automatisch aktualisiert, wenn Artikel hinzugefügt, geändert oder entfernt werden - ohne dass die Seite neu geladen werden muss.
+
+### Verwendung im Template
+
+Um die automatische Aktualisierung zu nutzen, fügen Sie das Attribut `data-warehouse-cart-count` zu jedem Element hinzu, das die Artikelanzahl anzeigen soll:
+
+```html
+<span class="badge" data-warehouse-cart-count><?= Cart::create()->count() ?></span>
+```
+
+Alle Elemente mit diesem Attribut werden automatisch aktualisiert, wenn sich der Warenkorb ändert. Dies funktioniert auf allen Seiten, auf denen die Warenkorb-JavaScript-Funktionen geladen sind (cart_page, offcanvas_cart, cart).
+
+### Technische Details
+
+Die Aktualisierung erfolgt durch eine globale JavaScript-Funktion `updateGlobalCartCount(itemsCount)`, die automatisch von allen Warenkorb-Update-Funktionen aufgerufen wird:
+
+```javascript
+function updateGlobalCartCount(itemsCount) {
+    document.querySelectorAll('[data-warehouse-cart-count]').forEach(element => {
+        element.textContent = itemsCount;
+    });
+}
+```
+
+Diese Funktion wird in folgenden Fragmenten eingebunden:
+- `fragments/warehouse/bootstrap5/cart/cart_page.php`
+- `fragments/warehouse/bootstrap5/cart/offcanvas_cart.php`
+- `fragments/warehouse/bootstrap5/cart/cart.php`
