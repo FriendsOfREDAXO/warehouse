@@ -221,7 +221,7 @@
         if (cartData.cart && cartData.cart.items) {
             const currentItemKeys = Object.keys(cartData.cart.items);
             container.querySelectorAll('[data-warehouse-item-key]').forEach(element => {
-                const itemKey = element.dataset.warehouseItemKey;
+                const itemKey = element.getAttribute('data-warehouse-item-key');
                 if (itemKey && !currentItemKeys.includes(itemKey)) {
                     const itemContainer = element.closest('.card-body');
                     if (itemContainer) {
@@ -311,7 +311,7 @@
         if (cartData.cart && cartData.cart.items) {
             const currentItemKeys = Object.keys(cartData.cart.items);
             container.querySelectorAll('[data-warehouse-item-key]').forEach(element => {
-                const itemKey = element.dataset.warehouseItemKey;
+                const itemKey = element.getAttribute('data-warehouse-item-key');
                 if (itemKey && !currentItemKeys.includes(itemKey)) {
                     const listItem = element.closest('li');
                     if (listItem) {
@@ -434,7 +434,7 @@
         if (cartData.cart && cartData.cart.items) {
             const currentItemKeys = Object.keys(cartData.cart.items);
             container.querySelectorAll('[data-warehouse-item-key]').forEach(element => {
-                const itemKey = element.dataset.warehouseItemKey;
+                const itemKey = element.getAttribute('data-warehouse-item-key');
                 if (itemKey && !currentItemKeys.includes(itemKey)) {
                     const tableRow = element.closest('tr');
                     if (tableRow) {
