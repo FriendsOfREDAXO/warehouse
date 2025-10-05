@@ -132,7 +132,7 @@ class Warehouse
             
             // First line with all columns
             $return .= mb_str_pad(mb_substr($article_number, 0, 12), 12, ' ', STR_PAD_RIGHT);
-            $return .= mb_str_pad(mb_substr($article_name_lines[0], 0, 32), 32, ' ', STR_PAD_RIGHT);
+            $return .= mb_str_pad($article_name_lines[0], 32, ' ', STR_PAD_RIGHT);
             $return .= mb_str_pad($item['amount'], 6, ' ', STR_PAD_LEFT);
             $return .= mb_str_pad(number_format($item['price'], 2), 10, ' ', STR_PAD_LEFT);
             $return .= mb_str_pad(number_format($item['total'], 2), 10, ' ', STR_PAD_LEFT);
