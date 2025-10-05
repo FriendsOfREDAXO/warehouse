@@ -614,31 +614,165 @@ foreach ($cart_items as $item_key => $item) {
 
 ## Automatische Aktualisierung der Warenkorb-Anzeige
 
-Ab Version 2.1.1 wird der Warenkorb-Button in der Navigation automatisch aktualisiert, wenn Artikel hinzugefügt, geändert oder entfernt werden - ohne dass die Seite neu geladen werden muss.
+Ab Version 2.2.0 verwendet das Warehouse-Addon ein zentralisiertes JavaScript-System für alle Warenkorb-Interaktionen. Die gesamte JavaScript-Funktionalität ist in der Datei `/assets/js/init.js` konsolidiert, wodurch inline-Scripts vermieden und die Wartbarkeit verbessert wird.
 
-### Verwendung im Template
+### Frontend-Integration
 
-Um die automatische Aktualisierung zu nutzen, fügen Sie das Attribut `data-warehouse-cart-count` zu jedem Element hinzu, das die Artikelanzahl anzeigen soll:
+Um die JavaScript-Funktionalität zu nutzen, binden Sie die `init.js` in Ihrem Template ein:
+
+```php
+<script src="<?= rex_url::addonAssets('warehouse', 'js/init.js') ?>" nonce="<?= rex_response::getNonce() ?>"></script>
+```
+
+Die Fragmente `cart_page.php`, `offcanvas_cart.php`, `cart.php`, `article/details.php` und `checkout/form-guest.php` binden dieses Script automatisch ein.
+
+### Verwendung von data-warehouse-* Attributen
+
+Das System verwendet konsistent `data-warehouse-*` Attribute für alle Selektoren. Dies ermöglicht eine klare Trennung zwischen Styling (CSS-Klassen) und Funktionalität (data-Attribute).
+
+#### Warenkorb-Anzahl anzeigen
+
+Um die Artikelanzahl im Warenkorb anzuzeigen (z.B. in der Navigation), fügen Sie das Attribut `data-warehouse-cart-count` hinzu:
 
 ```html
 <span class="badge" data-warehouse-cart-count><?= Cart::create()->count() ?></span>
 ```
 
-Alle Elemente mit diesem Attribut werden automatisch aktualisiert, wenn sich der Warenkorb ändert. Dies funktioniert auf allen Seiten, auf denen die Warenkorb-JavaScript-Funktionen geladen sind (cart_page, offcanvas_cart, cart).
+Alle Elemente mit diesem Attribut werden automatisch aktualisiert, wenn sich der Warenkorb ändert - ohne dass die Seite neu geladen werden muss.
+
+#### Artikel zum Warenkorb hinzufügen
+
+Formular mit data-Attributen für die Artikeldetailseite:
+
+```html
+<div data-warehouse-article-detail>
+    <form data-warehouse-add-form>
+        <input type="hidden" name="article_id" value="123">
+        <input type="number" name="order_count" value="1" data-warehouse-quantity-input>
+        <button type="submit">In den Warenkorb</button>
+    </form>
+</div>
+```
+
+#### Mengenselektor mit +/- Buttons
+
+```html
+<div data-warehouse-article-detail>
+    <button data-warehouse-quantity-switch="-1" 
+            data-warehouse-quantity-input="quantity_input_id">-</button>
+    <input id="quantity_input_id" type="number" value="1" data-warehouse-quantity-input>
+    <button data-warehouse-quantity-switch="+1" 
+            data-warehouse-quantity-input="quantity_input_id">+</button>
+</div>
+```
+
+#### Warenkorb-Seite mit Mengenänderung
+
+Die Warenkorb-Seite verwendet folgende Attribute:
+
+```html
+<div data-warehouse-cart-page>
+    <!-- Mengenänderung -->
+    <button data-warehouse-cart-quantity="modify" 
+            data-warehouse-mode="-" 
+            data-warehouse-article-id="123" 
+            data-warehouse-variant-id="" 
+            data-warehouse-amount="1">-</button>
+    
+    <input data-warehouse-cart-input
+           data-warehouse-article-id="123" 
+           data-warehouse-variant-id=""
+           data-warehouse-item-key="item_123"
+           value="2">
+    
+    <button data-warehouse-cart-quantity="modify" 
+            data-warehouse-mode="+" 
+            data-warehouse-article-id="123" 
+            data-warehouse-variant-id="" 
+            data-warehouse-amount="1">+</button>
+    
+    <!-- Artikel entfernen -->
+    <button data-warehouse-cart-delete
+            data-warehouse-article-id="123" 
+            data-warehouse-variant-id=""
+            data-warehouse-confirm="Artikel wirklich entfernen?">
+        Entfernen
+    </button>
+    
+    <!-- Preisanzeige -->
+    <div data-warehouse-item-total="item_123">49,99 €</div>
+    <div data-warehouse-cart-subtotal>99,98 €</div>
+</div>
+```
+
+#### Offcanvas-Warenkorb
+
+```html
+<div data-warehouse-offcanvas-cart 
+     data-warehouse-empty-message="Ihr Warenkorb ist leer">
+    <div data-warehouse-offcanvas-body>
+        <!-- Warenkorb-Inhalt -->
+        <span data-warehouse-item-amount="item_123">2</span>
+        <span data-warehouse-item-price="item_123">24,99 €</span>
+        <span data-warehouse-item-total="item_123">49,98 €</span>
+        
+        <!-- Löschen-Button -->
+        <button data-warehouse-cart-delete
+                data-warehouse-article-id="123"
+                data-warehouse-variant-id=""
+                data-warehouse-confirm="Artikel entfernen?">×</button>
+        
+        <!-- Warenkorb leeren -->
+        <button data-warehouse-cart-empty
+                data-warehouse-confirm="Warenkorb leeren?">
+            Warenkorb leeren
+        </button>
+        
+        <div data-warehouse-offcanvas-subtotal>99,98 €</div>
+    </div>
+</div>
+```
+
+#### Checkout-Formular mit abweichender Lieferadresse
+
+```html
+<form data-warehouse-checkout-form>
+    <input type="checkbox" data-warehouse-shipping-toggle>
+    
+    <div data-warehouse-shipping-fields 
+         data-warehouse-has-data="false" 
+         style="display: none;">
+        <!-- Lieferadress-Felder -->
+    </div>
+</form>
+```
 
 ### Technische Details
 
-Die Aktualisierung erfolgt durch eine globale JavaScript-Funktion `updateGlobalCartCount(itemsCount)`, die automatisch von allen Warenkorb-Update-Funktionen aufgerufen wird:
+Die Aktualisierung erfolgt durch eine globale JavaScript-Funktion `updateGlobalCartCount(itemsCount)`, die automatisch von allen Warenkorb-Update-Funktionen aufgerufen wird. Diese Funktion ist auch global verfügbar für benutzerdefinierte Erweiterungen:
 
 ```javascript
-function updateGlobalCartCount(itemsCount) {
-    document.querySelectorAll('[data-warehouse-cart-count]').forEach(element => {
-        element.textContent = itemsCount;
-    });
+// Manuelles Aktualisieren der Warenkorb-Anzahl
+if (window.updateGlobalCartCount) {
+    window.updateGlobalCartCount(5); // Setzt Anzahl auf 5
 }
 ```
 
-Diese Funktion wird in folgenden Fragmenten eingebunden:
-- `fragments/warehouse/bootstrap5/cart/cart_page.php`
-- `fragments/warehouse/bootstrap5/cart/offcanvas_cart.php`
-- `fragments/warehouse/bootstrap5/cart/cart.php`
+Die zentrale JavaScript-Datei `/assets/js/init.js` enthält:
+- Globale Warenkorb-Anzahl-Aktualisierung
+- Cart API-Kommunikation
+- Währungsformatierung
+- Handler für Warenkorb-Seite, Offcanvas-Cart und Warenkorb-Tabelle
+- Handler für Artikeldetails mit Staffelpreisen
+- Handler für Checkout-Formulare
+
+### Vorteile des data-Attribut-Systems
+
+1. **Mehrfachverwendung**: Elemente können mehrfach auf derselben Seite vorkommen (z.B. Warenkorb-Anzahl in Kopf- und Fußzeile)
+2. **Klare Trennung**: Styling (CSS-Klassen) und Funktionalität (data-Attribute) sind getrennt
+3. **Wartbarkeit**: Zentrale JavaScript-Datei statt inline-Scripts in jedem Fragment
+4. **Sicherheit**: Verwendung von Nonces für Script-Tags, kein inline-CSS oder inline-JS
+5. **Konsistenz**: Einheitliches Namensschema (`data-warehouse-*`) für alle Selektoren
+6. **Performance**: JavaScript wird nur einmal geladen und gecacht
+
+Alle Warenkorb-Fragmente sind bereits für dieses System konfiguriert und verwenden die standardisierten data-Attribute.
