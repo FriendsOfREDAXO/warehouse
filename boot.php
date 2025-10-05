@@ -114,7 +114,8 @@ if (rex::isFrontend()) {
 
                 // Pattern sucht das <li> mit der passenden Klasse und ersetzt den gesamten <a>...</a> Inhalt
                 // Verwende ein nicht-lazy Pattern, damit nur der <a> innerhalb des passenden <li> ersetzt wird
-                $pattern = '/(<li\s+class="rex-article-' . preg_quote((string) $cartArtId, '/') . '[^"]*".*?>\s*)<a\b[^>]*>.*?<\/a>(\s*<\/li>)/s';
+                // Pattern erlaubt rex-article-{id} an beliebiger Stelle im class-Attribut und beliebige Attribute vor class
+                $pattern = '/(<li\b[^>]*?\bclass="[^"]*?\brex-article-' . preg_quote((string) $cartArtId, '/') . '\b[^"]*"[^>]*?>\s*)<a\b[^>]*>.*?<\/a>(\s*<\/li>)/s';
 
                 // Ersetze den kompletten <a>...</a> durch den Button-Fragment
                 $replacement = '$1' . $checkout_button . '$2';
