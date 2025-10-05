@@ -152,6 +152,7 @@ if (!$cart_items || count($cart_items) === 0) {
 			element.textContent = itemsCount;
 		});
 	}
+	window.updateGlobalCartCount = updateGlobalCartCount;
 
 	// Handle cart table interactions with JavaScript and API calls
 	document.addEventListener('DOMContentLoaded', function() {
