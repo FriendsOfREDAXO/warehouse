@@ -12,14 +12,14 @@ $cart_items = $cart->getItems();
 $domain = Domain::getCurrent();
 ?>
 <!-- cart/offcanvas_cart.php -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="cart-offcanvas">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cart-offcanvas" data-warehouse-offcanvas-cart data-warehouse-empty-message="<?= Warehouse::getLabel('cart_is_empty'); ?>">
 	<div class="offcanvas-header">
 		<h5 class="offcanvas-title">
 			<?= Warehouse::getLabel('cart') ?>
 		</h5>
 		<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	</div>
-	<div class="offcanvas-body">
+	<div class="offcanvas-body" data-warehouse-offcanvas-body>
 		<?php if ($cart_items && count($cart_items) > 0) { ?>
 		<ul class="list-group list-group-flush">
 			<?php foreach ($cart_items as $item_key => $item) { ?>
@@ -47,21 +47,22 @@ $domain = Domain::getCurrent();
 							<small class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
 						<?php endif; ?>
 						<div class="mt-1 row g-2 align-items-center">
-							<div class="col-auto fw-bolder small item-total" data-item-key="<?= $item_key ?>">
+							<div class="col-auto fw-bolder small" data-warehouse-item-total="<?= $item_key ?>">
 								<?= Warehouse::formatCurrency($item['total']) ?>
 							</div>
 							<div class="col-auto text-muted small">
-								<span class="item-amount" data-item-key="<?= $item_key ?>"><?= $item['amount'] ?></span>
+								<span data-warehouse-item-amount="<?= $item_key ?>"><?= $item['amount'] ?></span>
 								&times;
-								<span class="item-price" data-item-key="<?= $item_key ?>"><?= Warehouse::formatCurrency($item['price']) ?></span>
+								<span data-warehouse-item-price="<?= $item_key ?>"><?= Warehouse::formatCurrency($item['price']) ?></span>
 							</div>
 						</div>
 					</div>
 					<div class="col-auto">
-						<button type="button" class="btn btn-link text-danger cart-delete-btn p-0" 
-							data-action="delete" 
-							data-article-id="<?= $item['article_id'] ?>" 
-							data-variant-id="<?= $item['variant_id'] ?>" 
+						<button type="button" class="btn btn-link text-danger p-0" 
+							data-warehouse-cart-delete
+							data-warehouse-article-id="<?= $item['article_id'] ?>" 
+							data-warehouse-variant-id="<?= $item['variant_id'] ?>"
+							data-warehouse-confirm="<?= rex_i18n::msg('warehouse.cart_remove_confirm', '') ?>" 
 							title="Remove">
 							<i class="bi bi-x-circle-fill"></i>
 						</button>
@@ -76,7 +77,7 @@ $domain = Domain::getCurrent();
 				<div class="col text-muted h4">
 					<?= Warehouse::getLabel('cart_subtotal') ?>
 				</div>
-				<div class="col-auto h4 fw-bolder" id="offcanvas-cart-subtotal">
+				<div class="col-auto h4 fw-bolder" data-warehouse-offcanvas-subtotal>
 					<?= Warehouse::formatCurrency(Cart::getSubTotal()) ?>
 				</div>
 			</div>
@@ -130,7 +131,9 @@ $domain = Domain::getCurrent();
 
 		<div class="d-grid gap-2 mt-3">
 			<div class="d-flex justify-content-between">
-				<button type="button" class="btn btn-link text-danger" id="empty-cart-btn">
+				<button type="button" class="btn btn-link text-danger" 
+					data-warehouse-cart-empty
+					data-warehouse-confirm="<?= rex_escape(Warehouse::getLabel('cart_empty_confirm')) ?>">
 					<?= Warehouse::getLabel('cart_empty') ?>
 				</button>
 				<a class="btn btn-primary ms-auto"
@@ -149,140 +152,4 @@ $domain = Domain::getCurrent();
 </div>
 <!-- / cart/offcanvas_cart.php -->
 
-<script nonce="<?= rex_response::getNonce() ?>">
-	// Global function to update cart count in navigation
-	function updateGlobalCartCount(itemsCount) {
-		document.querySelectorAll('[data-warehouse-cart-count]').forEach(element => {
-			element.textContent = itemsCount;
-		});
-	}
-
-	// Handle offcanvas cart interactions
-	document.addEventListener('DOMContentLoaded', function() {
-		// Handle empty cart button
-		const emptyCartBtn = document.getElementById('empty-cart-btn');
-		if (emptyCartBtn) {
-			emptyCartBtn.addEventListener('click', function(e) {
-				e.preventDefault();
-				if (confirm('<?= rex_escape(Warehouse::getLabel('cart_empty_confirm')) ?>')) {
-					updateOffcanvasCartItem('empty');
-				}
-			});
-		}
-		
-		// Handle delete button clicks in offcanvas
-		document.querySelectorAll('#cart-offcanvas .cart-delete-btn').forEach(function(button) {
-			button.addEventListener('click', function(e) {
-				e.preventDefault();
-				const articleId = this.dataset.articleId;
-				const variantId = this.dataset.variantId;
-
-				if (confirm('<?= rex_i18n::msg('warehouse.cart_remove_confirm', '') ?>')) {
-					updateOffcanvasCartItem('delete', articleId, variantId);
-				}
-			});
-		});
-	});
-
-	function updateOffcanvasCartItem(action, articleId = null, variantId = null, amount = 1, mode = null) {
-		// Build API URL
-		let url = `index.php?rex-api-call=warehouse_cart_api&action=${action}`;
-		if (articleId) {
-			url += `&article_id=${encodeURIComponent(articleId)}`;
-		}
-		if (variantId && variantId !== 'null' && variantId !== '') {
-			url += `&variant_id=${encodeURIComponent(variantId)}`;
-		}
-		if (amount && action !== 'empty') {
-			url += `&amount=${encodeURIComponent(amount)}`;
-		}
-		if (mode) {
-			url += `&mode=${encodeURIComponent(mode)}`;
-		}
-
-		fetch(url, {
-			method: 'POST',
-			headers: {
-				'X-Requested-With': 'XMLHttpRequest'
-			}
-		})
-		.then(response => response.json())
-		.then(data => {
-			if (data.success) {
-				updateOffcanvasCartDisplay(data);
-			} else {
-				console.error('Offcanvas cart update failed:', data);
-				alert('Fehler beim Aktualisieren des Warenkorbs.');
-			}
-		})
-		.catch(error => {
-			console.error('Offcanvas cart update error:', error);
-			alert('Fehler beim Aktualisieren des Warenkorbs.');
-		});
-	}
-
-	function updateOffcanvasCartDisplay(cartData) {
-		// Update global cart count in navigation
-		if (cartData.totals && cartData.totals.items_count !== undefined) {
-			updateGlobalCartCount(cartData.totals.items_count);
-		}
-
-		// Update item quantities and totals in offcanvas
-		Object.entries(cartData.items).forEach(([itemKey, item]) => {
-			// Update item amount
-			const itemAmount = document.querySelector(`#cart-offcanvas .item-amount[data-item-key="${itemKey}"]`);
-			if (itemAmount) {
-				itemAmount.textContent = item.amount;
-			}
-
-			// Update item total with tier pricing
-			const itemTotal = document.querySelector(`#cart-offcanvas .item-total[data-item-key="${itemKey}"]`);
-			if (itemTotal && item.current_total !== undefined) {
-				const formatter = new Intl.NumberFormat('de-DE', {
-					style: 'currency',
-					currency: 'EUR'
-				});
-				itemTotal.textContent = formatter.format(item.current_total);
-			}
-
-			// Update item price
-			const itemPrice = document.querySelector(`#cart-offcanvas .item-price[data-item-key="${itemKey}"]`);
-			if (itemPrice && item.current_price !== undefined) {
-				const formatter = new Intl.NumberFormat('de-DE', {
-					style: 'currency',
-					currency: 'EUR'
-				});
-				itemPrice.textContent = formatter.format(item.current_price);
-			}
-		});
-
-		// Update offcanvas subtotal
-		const subtotalElement = document.getElementById('offcanvas-cart-subtotal');
-		if (subtotalElement && cartData.totals && cartData.totals.subtotal_formatted) {
-			subtotalElement.textContent = cartData.totals.subtotal_formatted;
-		}
-
-		// Remove deleted items from offcanvas DOM
-		if (cartData.cart && cartData.cart.items) {
-			const currentItemKeys = Object.keys(cartData.cart.items);
-			document.querySelectorAll('#cart-offcanvas [data-item-key]').forEach(element => {
-				const itemKey = element.dataset.itemKey;
-				if (itemKey && !currentItemKeys.includes(itemKey)) {
-					// Find and remove the entire list item
-					const listItem = element.closest('li');
-					if (listItem) {
-						listItem.remove();
-					}
-				}
-			});
-		}
-
-		// If cart is empty, show empty message
-		if (cartData.totals && cartData.totals.items_count === 0) {
-			const cartContent = document.querySelector('#cart-offcanvas .offcanvas-body');
-			if (cartContent) {
-				cartContent.innerHTML = '<div class="alert alert-info"><?= Warehouse::getLabel('cart_is_empty'); ?></div>';
-			}
-		}
-	}
-</script>
+<script src="<?= rex_url::addonAssets('warehouse', 'js/init.js') ?>" nonce="<?= rex_response::getNonce() ?>"></script>
