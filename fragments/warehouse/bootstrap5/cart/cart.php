@@ -146,6 +146,13 @@ if (!$cart_items || count($cart_items) === 0) {
 </div>
 
 <script nonce="<?= rex_response::getNonce() ?>" type="module">
+	// Global function to update cart count in navigation
+	function updateGlobalCartCount(itemsCount) {
+		document.querySelectorAll('[data-warehouse-cart-count]').forEach(element => {
+			element.textContent = itemsCount;
+		});
+	}
+
 	// Handle cart table interactions with JavaScript and API calls
 	document.addEventListener('DOMContentLoaded', function() {
 		// Handle quantity button clicks
@@ -243,6 +250,11 @@ if (!$cart_items || count($cart_items) === 0) {
 	}
 
 	function updateCartTableDisplay(cartData) {
+		// Update global cart count in navigation
+		if (cartData.totals && cartData.totals.items_count !== undefined) {
+			updateGlobalCartCount(cartData.totals.items_count);
+		}
+
 		// Update item quantities and totals in table
 		Object.entries(cartData.items).forEach(([itemKey, item]) => {
 			// Update quantity display
