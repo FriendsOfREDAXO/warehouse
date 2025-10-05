@@ -31,6 +31,7 @@ $yform->setObjectparams('form_ytemplate', 'bootstrap5,bootstrap');
 $yform->setObjectparams('form_class', 'rex-yform warehouse_checkout');
 $yform->setObjectparams('form_anchor', 'form-checkout');
 $yform->setObjectparams('real_field_names', true);
+$yform->setObjectparams('form_attributes', ['data-warehouse-checkout-form' => '']);
 
 $yform->setValueField('html', ['', '<section><div class="row">']);
 
@@ -68,10 +69,10 @@ $yform->setValueField('html', ['', '</div>']);
 // Shipping Address Section
 $yform->setValueField('html', ['', '<div class="col-md-6">']);
 $yform->setValueField('html', ['', '<div class="mb-3">']);
-$yform->setValueField('checkbox', ['different_shipping_address', 'Abweichende Lieferadresse verwenden', '1', '', ['class' => 'form-check-input', 'id' => 'different_shipping_address']]);
+$yform->setValueField('checkbox', ['different_shipping_address', 'Abweichende Lieferadresse verwenden', '1', '', ['class' => 'form-check-input', 'data-warehouse-shipping-toggle' => '']]);
 $yform->setValueField('html', ['', '</div>']);
 
-$yform->setValueField('html', ['', '<div id="shipping-address-fields" style="display: none;">']);
+$yform->setValueField('html', ['', '<div data-warehouse-shipping-fields data-warehouse-has-data="' . (!empty($shipping_data) ? 'true' : 'false') . '" style="display: none;">']);
 $yform->setValueField('html', ['', '<h4>' . Warehouse::getLabel('address_shipping') . '</h4>']);
 
 $yform->setValueField('text', ['shipping_address_firstname', Warehouse::getLabel('customer_firstname'), $shipping_data['firstname'] ?? $customer_shipping_address?->getName() ?? '', '']);
@@ -117,40 +118,6 @@ if (count($allowedPaymentOptions) > 1) {
 $yform->setValueField('html', ['', '</div></div>']); // close row and col
 $yform->setValueField('submit_once', ['send',Warehouse::getLabel('next'),'','','','button']);
 
-// Add JavaScript for dynamic shipping address fields
-$yform->setValueField('html', ['', '
-<script nonce="<?= rex_request::nonce(); ?>">
-document.addEventListener("DOMContentLoaded", function() {
-    const checkbox = document.getElementById("different_shipping_address");
-    const shippingFields = document.getElementById("shipping-address-fields");
-    
-    if (checkbox && shippingFields) {
-        checkbox.addEventListener("change", function() {
-            if (this.checked) {
-                shippingFields.style.display = "block";
-            } else {
-                shippingFields.style.display = "none";
-                // Clear shipping address fields when hidden
-                const shippingInputs = shippingFields.querySelectorAll("input, textarea");
-                shippingInputs.forEach(input => {
-                    if (input.type !== "hidden") {
-                        input.value = "";
-                    }
-                });
-            }
-        });
-        
-        // Check if shipping data exists and show fields
-        const hasShippingData = ' . (empty($shipping_data) ? 'false' : 'true') . ';
-        if (hasShippingData) {
-            checkbox.checked = true;
-            shippingFields.style.display = "block";
-        }
-    }
-});
-</script>
-']);
-
 $yform->setValueField('html', ['','</section>']);
 
 $yform->setActionField('callback', ['FriendsOfRedaxo\Warehouse\Checkout::saveCustomerInSession']);
@@ -162,3 +129,5 @@ $form = $yform->getForm();
 $fragment = new rex_fragment();
 $fragment->setVar('form', $form);
 echo $fragment->parse('warehouse/bootstrap5/checkout/checkout_page.php');
+?>
+<script src="<?= rex_url::addonAssets('warehouse', 'js/init.js') ?>" nonce="<?= rex_response::getNonce() ?>"></script>
