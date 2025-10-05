@@ -125,7 +125,6 @@ class Warehouse
         foreach ($cart->getItems() as $item) {
             // Use SKU if available, otherwise fallback to generated pattern
             $article_number = $item['sku'] ?? ($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : ''));
-            $article_number = html_entity_decode($article_number);
             
             // Wrap article name if needed
             $article_name_lines = self::wrapText($item['name'], 32, 12);
