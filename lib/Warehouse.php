@@ -60,6 +60,49 @@ class Warehouse
         
         return $formatted !== false ? $formatted : '';
     }
+
+    /**
+     * Wrap text to fit within a maximum width, preserving column alignment
+     * @param string $text Text to wrap
+     * @param int $maxWidth Maximum width per line
+     * @param int $indent Indentation for continuation lines
+     * @return array Array of lines
+     */
+    private static function wrapText(string $text, int $maxWidth, int $indent = 0): array
+    {
+        $text = html_entity_decode($text);
+        
+        if (mb_strlen($text) <= $maxWidth) {
+            return [$text];
+        }
+        
+        $lines = [];
+        $words = explode(' ', $text);
+        $currentLine = '';
+        
+        foreach ($words as $word) {
+            $testLine = $currentLine === '' ? $word : $currentLine . ' ' . $word;
+            
+            if (mb_strlen($testLine) <= $maxWidth) {
+                $currentLine = $testLine;
+            } else {
+                if ($currentLine !== '') {
+                    $lines[] = $currentLine;
+                    $currentLine = str_repeat(' ', $indent) . $word;
+                } else {
+                    // Word itself is too long, truncate it
+                    $lines[] = mb_substr($word, 0, $maxWidth);
+                    $currentLine = '';
+                }
+            }
+        }
+        
+        if ($currentLine !== '') {
+            $lines[] = $currentLine;
+        }
+        
+        return $lines;
+    }
     
     public static function getOrderAsText(): string
     {
@@ -68,25 +111,39 @@ class Warehouse
         $total = Cart::getTotal();
 
         $return = '';
-        $return .= mb_str_pad('Art. Nr.', 20, ' ', STR_PAD_RIGHT);
-        $return .= mb_str_pad('Artikel', 45, ' ', STR_PAD_RIGHT);
-        $return .= mb_str_pad('Anzahl', 7, ' ', STR_PAD_LEFT);
-        $return .= mb_str_pad(Warehouse::getCurrency(), 10, ' ', STR_PAD_LEFT);
-        $return .= mb_str_pad(Warehouse::getCurrency(), 10, ' ', STR_PAD_LEFT);
+        // Adjusted column widths to fit within 72 characters
+        // Art. Nr. (12) + Artikel (32) + Anzahl (6) + Price (10) + Total (10) + spaces (2) = 72
+        $return .= mb_str_pad('Art. Nr.', 12, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad('Artikel', 32, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad('Anz.', 6, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad('€', 10, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad('€', 10, ' ', STR_PAD_LEFT);
         $return .= PHP_EOL;
-        $return .= str_repeat('-', 92);
+        $return .= str_repeat('-', 72);
         $return .= PHP_EOL;
 
         foreach ($cart->getItems() as $item) {
             // Use SKU if available, otherwise fallback to generated pattern
             $article_number = $item['sku'] ?? ($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : ''));
+            $article_number = html_entity_decode($article_number);
             
-            $return .= mb_str_pad(mb_substr(html_entity_decode($article_number), 0, 20), 20, ' ', STR_PAD_RIGHT);
-            $return .= mb_str_pad(mb_substr(html_entity_decode($item['name']), 0, 45), 45, ' ', STR_PAD_RIGHT);
-            $return .= mb_str_pad($item['amount'], 7, ' ', STR_PAD_LEFT);
+            // Wrap article name if needed
+            $article_name_lines = self::wrapText($item['name'], 32, 12);
+            
+            // First line with all columns
+            $return .= mb_str_pad(mb_substr($article_number, 0, 12), 12, ' ', STR_PAD_RIGHT);
+            $return .= mb_str_pad(mb_substr($article_name_lines[0], 0, 32), 32, ' ', STR_PAD_RIGHT);
+            $return .= mb_str_pad($item['amount'], 6, ' ', STR_PAD_LEFT);
             $return .= mb_str_pad(number_format($item['price'], 2), 10, ' ', STR_PAD_LEFT);
             $return .= mb_str_pad(number_format($item['total'], 2), 10, ' ', STR_PAD_LEFT);
             $return .= PHP_EOL;
+            
+            // Additional lines for wrapped article names (if any)
+            for ($i = 1; $i < count($article_name_lines); $i++) {
+                $return .= str_repeat(' ', 12);
+                $return .= mb_str_pad($article_name_lines[$i], 32, ' ', STR_PAD_RIGHT);
+                $return .= PHP_EOL;
+            }
             
             // Calculate tax for this item using stored values or dynamic calculation
             $tax_amount = 0;
@@ -117,32 +174,33 @@ class Warehouse
                 }
             }
             
-            $return .= str_repeat(' ', 20);
-            $return .= mb_substr(html_entity_decode('Steuer: ' . $tax_rate . '% = ' . number_format($tax_amount, 2)), 0, 70);
+            $return .= str_repeat(' ', 12);
+            $return .= mb_substr(html_entity_decode('Steuer: ' . $tax_rate . '% = ' . number_format($tax_amount, 2)), 0, 60);
             $return .= PHP_EOL;
         }
-        $return .= str_repeat('-', 92);
+        $return .= str_repeat('-', 72);
         $return .= PHP_EOL;
-        $return .= mb_str_pad('Summe', 55, ' ', STR_PAD_RIGHT);
-        $return .= mb_str_pad(number_format(Cart::getSubTotal(), 2), 37, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad('Summe', 52, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad(number_format(Cart::getSubTotal(), 2), 20, ' ', STR_PAD_LEFT);
         $return .= PHP_EOL;
-        $return .= mb_str_pad('Mehrwertsteuer', 55, ' ', STR_PAD_RIGHT);
-        $return .= mb_str_pad(number_format(Cart::getTaxTotalByMode(), 2), 37, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad('Mehrwertsteuer', 52, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad(number_format(Cart::getTaxTotalByMode(), 2), 20, ' ', STR_PAD_LEFT);
         $return .= PHP_EOL;
         if (Cart::getDiscountValue()) {
-            $return .= mb_str_pad(rex_config::get("warehouse", "global_discount_text"), 55, ' ', STR_PAD_RIGHT);
-            $return .= mb_str_pad(number_format(Cart::getDiscountValue(), 2), 37, ' ', STR_PAD_LEFT);
+            $discount_text = rex_config::get("warehouse", "global_discount_text");
+            $return .= mb_str_pad(mb_substr($discount_text, 0, 52), 52, ' ', STR_PAD_RIGHT);
+            $return .= mb_str_pad(number_format(Cart::getDiscountValue(), 2), 20, ' ', STR_PAD_LEFT);
             $return .= PHP_EOL;
         }
-        $return .= mb_str_pad('Versand', 55, ' ', STR_PAD_RIGHT);
-        $return .= mb_str_pad(number_format($shipping, 2), 37, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad('Versand', 52, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad(number_format($shipping, 2), 20, ' ', STR_PAD_LEFT);
         $return .= PHP_EOL;
-        $return .= str_repeat('-', 92);
+        $return .= str_repeat('-', 72);
         $return .= PHP_EOL;
-        $return .= mb_str_pad('Total', 55, ' ', STR_PAD_RIGHT);
-        $return .= mb_str_pad(number_format($total, 2), 37, ' ', STR_PAD_LEFT);
+        $return .= mb_str_pad('Total', 52, ' ', STR_PAD_RIGHT);
+        $return .= mb_str_pad(number_format($total, 2), 20, ' ', STR_PAD_LEFT);
         $return .= PHP_EOL;
-        $return .= str_repeat('=', 92);
+        $return .= str_repeat('=', 72);
         $return .= PHP_EOL;
 
         return $return;

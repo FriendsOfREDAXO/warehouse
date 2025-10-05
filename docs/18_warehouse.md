@@ -195,18 +195,20 @@ echo '<pre>' . $orderText . '</pre>';
 **Ausgabe-Beispiel:**
 
 ```
-Art. Nr.            Artikel                              Anzahl   €        €
-------------------------------------------------------------------------------------
-WH-001              Beispiel-Artikel                          2    19,95    39,90
-                    Steuer: 19% = 7,58
-------------------------------------------------------------------------------------
-Summe                                                                       39,90
-Mehrwertsteuer                                                               7,58
-Versand                                                                      4,95
-------------------------------------------------------------------------------------
-Total                                                                       52,43
-====================================================================================
+Art. Nr.    Artikel                          Anz.         €         €
+------------------------------------------------------------------------
+WH-001      Beispiel-Artikel                    2      19,95     39,90
+            Steuer: 19% = 7,58
+------------------------------------------------------------------------
+Summe                                                            39,90
+Mehrwertsteuer                                                    7,58
+Versand                                                           4,95
+------------------------------------------------------------------------
+Total                                                            52,43
+========================================================================
 ```
+
+**Hinweis:** Die Textausgabe ist auf maximal 72 Zeichen pro Zeile begrenzt (wie für Plain-Text-E-Mails empfohlen). Lange Artikelnamen werden automatisch umgebrochen, ohne die Spaltenausrichtung zu beeinträchtigen.
 
 ### `getOrderAsHtml()`
 
