@@ -10,7 +10,7 @@ use FriendsOfRedaxo\Warehouse\Shipping;
 
 /** @var array $customer */
 $customer = $this->getVar('customer', []);
-/** @var Cart $cart */
+/** @var array $cart */
 $cart = Session::getCartData();
 /** @var array $payment */
 $payment = Payment::loadFromSession();
@@ -18,7 +18,7 @@ $payment = Payment::loadFromSession();
 $domain = Domain::getCurrent();
 
 // Variablen für die Anzeige definieren
-$cart_items = $cart->getItems();
+$cart_items = $cart['items'] ?? [];
 $with_tax = Warehouse::getPriceInputMode() === 'gross';
 $shipping = Shipping::getCost();
 

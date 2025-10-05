@@ -88,7 +88,6 @@ rex_sql_table::get(rex::getTable('warehouse_order'))
     ->ensureColumn(new rex_sql_column('imported', 'tinyint(1)', false, '0'))
     ->ensureColumn(new rex_sql_column('is_read', 'tinyint(1)', false, '0'))
     ->ensureColumn(new rex_sql_column('updatedate', 'datetime'))
-    ->ensureIndex(new rex_sql_index('order_no', ['order_no']))
     ->ensureIndex(new rex_sql_index('ycom_user_id', ['ycom_user_id']))
     ->ensureIndex(new rex_sql_index('firstname_lastname_company_email', ['firstname', 'lastname', 'company', 'email'], rex_sql_index::FULLTEXT))
     ->ensure();

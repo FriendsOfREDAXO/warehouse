@@ -14,11 +14,12 @@ $customer = $this->getVar('customer');
 $cart = Session::getCartData();
 $payment = Session::getPaymentData();
 $domain = Domain::getCurrent();
+$warehouse_cart_text = '';
 
 $this->subfragment('warehouse/bootstrap5/checkout/order_summary_page.php');
 
 $yform = new rex_yform();
-$yform->setObjectparams('form_action', $domain?->getCheckoutUrl(['continue_with' => 'order']) ?? '');
+$yform->setObjectparams('form_action', $domain?->getCheckoutUrl(['continue_with' => 'summary']) ?? '');
 $yform->setObjectparams('form_class', 'rex-yform wh-form summary');
 $yform->setObjectparams('form_anchor', 'formular');
 $yform->setObjectparams('form_ytemplate', 'bootstrap5,bootstrap');
@@ -33,7 +34,7 @@ $yform->setValidateField('empty', ['agb', Warehouse::getLabel('validation_agb_re
 $yform->setValueField('privacy_policy', ['privacy_policy', Warehouse::getLabel('legal_privacy_policy'), '0,1', '0']);
 $yform->setValidateField('empty', ['privacy_policy', Warehouse::getLabel('validation_privacy_required')]);
 
-$yform->setValueField('submit_once', ['send', Warehouse::getLabel('label_checkout_submit_order'), 'Wird bearbeitet...', '[no_db]', '', 'btn btn-primary mt-3']);
+$yform->setValueField('submit_once', ['send', Warehouse::getLabel('label_checkout_submit_order'), Warehouse::getLabel('label_checkout_submit_order_wait'), '[no_db]', '', 'btn btn-primary mt-3']);
 /*
 if (in_array($customer['payment_type'],['invoice','prepayment','direct_debit'])) {
     $yform->setActionField('callback', ['FriendsOfRedaxo\Warehouse\Warehouse::save_order']);

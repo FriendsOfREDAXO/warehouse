@@ -16,32 +16,32 @@ class CartApi extends rex_api_function
 
     public function execute(): void
     {
-        // index.php?rex_api_call=warehouse_cart_api&action=set&article_id=1&variant_id=1&amount=1
+        // index.php?rex-api-call=warehouse_cart_api&action=set&article_id=1&variant_id=1&amount=1
         if (rex_request('action', 'string') == 'set') {
             Warehouse::modifyCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null), rex_request('amount', 'int'), 'set');
         }
-        // index.php?rex_api_call=warehouse_cart_api&action=add&article_id=1&variant_id=1&amount=1
+        // index.php?rex-api-call=warehouse_cart_api&action=add&article_id=1&variant_id=1&amount=1
         if (rex_request('action', 'string') == 'add') {
             Warehouse::addToCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null), rex_request('amount', 'int'));
         }
-        // index.php?rex_api_call=warehouse_cart_api&action=modify&article_id=1&variant_id=1&amount=1&mode=add
-        // index.php?rex_api_call=warehouse_cart_api&action=modify&article_id=1&variant_id=1&amount=1&mode=remove
-        // index.php?rex_api_call=warehouse_cart_api&action=modify&article_id=1&variant_id=1&amount=1&mode=set
+        // index.php?rex-api-call=warehouse_cart_api&action=modify&article_id=1&variant_id=1&amount=1&mode=add
+        // index.php?rex-api-call=warehouse_cart_api&action=modify&article_id=1&variant_id=1&amount=1&mode=remove
+        // index.php?rex-api-call=warehouse_cart_api&action=modify&article_id=1&variant_id=1&amount=1&mode=set
         if (rex_request('action', 'string') == 'modify') {
             Warehouse::modifyCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null), rex_request('amount', 'int'), rex_request('mode', 'string', '+'));
         }
 
-        // index.php?rex_api_call=warehouse_cart_api&action=remove&article_id=1&variant_id=1&amount=1&mode=remove
+        // index.php?rex-api-call=warehouse_cart_api&action=remove&article_id=1&variant_id=1&amount=1&mode=remove
         if (rex_request('action', 'string') == 'remove') {
             Warehouse::modifyCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null), rex_request('amount', 'int', 1), rex_request('mode', 'string', '='));
         }
 
-        // index.php?rex_api_call=warehouse_cart_api&action=delete&article_id=1&variant_id=1
+        // index.php?rex-api-call=warehouse_cart_api&action=delete&article_id=1&variant_id=1
         if (rex_request('action', 'string') == 'delete') {
             Warehouse::deleteArticleFromCart(rex_request('article_id', 'int'), rex_request('variant_id', 'int', null));
         }
 
-        // index.php?rex_api_call=warehouse_cart_api&action=empty
+        // index.php?rex-api-call=warehouse_cart_api&action=empty
         if (rex_request('action', 'string') == 'empty') {
             Warehouse::emptyCart();
         }
@@ -83,17 +83,6 @@ class CartApi extends rex_api_function
                 if ($article) {
                     $itemInfo['bulk_prices'] = $article->getBulkPrices();
                     if ($item['amount'] > 0) {
-                        $itemInfo['current_price'] = $variant->getPriceForQuantity($item['amount']) / $item['amount'];
-                    } else {
-                        $itemInfo['current_price'] = null;
-                    }
-                    $itemInfo['current_total'] = $variant->getPriceForQuantity($item['amount']);
-                }
-            } else {
-                $article = Article::get($item['article_id']);
-                if ($article) {
-                    $itemInfo['bulk_prices'] = $article->getBulkPrices();
-                    if ($item['amount'] > 0) {
                         $itemInfo['current_price'] = $article->getPriceForQuantity($item['amount']) / $item['amount'];
                     } else {
                         $itemInfo['current_price'] = null;
@@ -108,6 +97,7 @@ class CartApi extends rex_api_function
         $responseJson = json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
         rex_response::cleanOutputBuffers();
+        rex_response::setStatus(rex_response::HTTP_OK);
         rex_response::sendContent($responseJson, 'application/json');
         exit;
     }

@@ -181,4 +181,77 @@ class Customer extends rex_yform_manager_dataset
         // Save the customer data in the session
         Session::setCustomer($data);
     }
+    
+    /** @api */
+    public function getCompany(): ?string
+    {
+        return $this->getValue("company");
+    }
+    /** @api */
+    public function setCompany(mixed $value): self
+    {
+        $this->setValue("company", $value);
+        return $this;
+    }
+
+    /** @api */
+    public function getDepartment(): ?string
+    {
+        return $this->getValue("department");
+    }
+    /** @api */
+    public function setDepartment(mixed $value): self
+    {
+        $this->setValue("department", $value);
+        return $this;
+    }
+
+    /** @api */
+    public function getAddress(): ?string
+    {
+        return $this->getValue("address");
+    }
+    /** @api */
+    public function setAddress(mixed $value): self
+    {
+        $this->setValue("address", $value);
+        return $this;
+    }
+
+    /** @api */
+    public function getZip(): ?string
+    {
+        return $this->getValue("zip");
+    }
+    /** @api */
+    public function setZip(mixed $value): self
+    {
+        $this->setValue("zip", $value);
+        return $this;
+    }
+
+    /** @api */
+    public function getCity(): ?string
+    {
+        return $this->getValue("city");
+    }
+    /** @api */
+    public function setCity(mixed $value): self
+    {
+        $this->setValue("city", $value);
+        return $this;
+    }
+
+    /** @api */
+    public function getPhone(): ?string
+    {
+        return $this->getValue("phone");
+    }
+    /** @api */
+    public function setPhone(mixed $value): self
+    {
+        $this->setValue("phone", $value);
+        return $this;
+    }
+
 }
