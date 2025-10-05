@@ -85,7 +85,7 @@ foreach ($results as $result) {
             break;
         case 'category':
             $category = Category::get($result['id']);
-            $frontend_url = $category?->getUrl() ?? '';
+            $frontend_url = @$category?->getUrl() ?? '';
             break;
     }
 
