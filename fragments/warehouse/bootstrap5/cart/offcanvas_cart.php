@@ -150,6 +150,13 @@ $domain = Domain::getCurrent();
 <!-- / cart/offcanvas_cart.php -->
 
 <script nonce="<?= rex_response::getNonce() ?>">
+	// Global function to update cart count in navigation
+	function updateGlobalCartCount(itemsCount) {
+		document.querySelectorAll('[data-warehouse-cart-count]').forEach(element => {
+			element.textContent = itemsCount;
+		});
+	}
+
 	// Handle offcanvas cart interactions
 	document.addEventListener('DOMContentLoaded', function() {
 		// Handle empty cart button
@@ -215,6 +222,11 @@ $domain = Domain::getCurrent();
 	}
 
 	function updateOffcanvasCartDisplay(cartData) {
+		// Update global cart count in navigation
+		if (cartData.totals && cartData.totals.items_count !== undefined) {
+			updateGlobalCartCount(cartData.totals.items_count);
+		}
+
 		// Update item quantities and totals in offcanvas
 		Object.entries(cartData.items).forEach(([itemKey, item]) => {
 			// Update item amount

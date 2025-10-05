@@ -189,6 +189,13 @@ $cart_items = $cart->getItems();
 	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
+	// Global function to update cart count in navigation
+	function updateGlobalCartCount(itemsCount) {
+		document.querySelectorAll('[data-warehouse-cart-count]').forEach(element => {
+			element.textContent = itemsCount;
+		});
+	}
+
 	// Cart interaction handlers
 	document.addEventListener('DOMContentLoaded', function() {
 		// Handle quantity button clicks
@@ -283,6 +290,11 @@ $cart_items = $cart->getItems();
 	}
 
 	function updateCartDisplay(cartData) {
+		// Update global cart count in navigation
+		if (cartData.totals && cartData.totals.items_count !== undefined) {
+			updateGlobalCartCount(cartData.totals.items_count);
+		}
+
 		// Update item quantities and totals
 		Object.entries(cartData.items).forEach(([itemKey, item]) => {
 			// Update quantity input
