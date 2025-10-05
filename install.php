@@ -68,6 +68,7 @@ if (rex_addon::get('yform')->isAvailable()) {
     rex_yform_manager_table::deleteCache();
 }
 
+
 if (rex_addon::get('url')->isAvailable()) {
     // $addon->includeFile(__DIR__ . '/install/url/url_profile_article.php');
     // $addon->includeFile(__DIR__ . '/install/url/url_profile_category.php');
@@ -78,6 +79,7 @@ if (rex_addon::get('mediapool')->isAvailable()) {
 }
 
 // Media Manager Profile creation for warehouse
+/* Disabled for now
 if (rex_addon::get('media_manager')->isAvailable()) {
     $profiles = [
         'warehouse_category' => [
@@ -106,6 +108,8 @@ if (rex_addon::get('media_manager')->isAvailable()) {
     // Fetch all existing profile names in one query
     $existing_profiles = rex_sql::factory()->getArray('SELECT `name` FROM ' . rex::getTable('media_manager_type'));
     $existing_profile_names = array_column($existing_profiles, 'name');
+        }
+    }        
 
     foreach ($profiles as $profile_name => $profile_config) {
         // Check if profile already exists
@@ -140,6 +144,7 @@ if (rex_addon::get('media_manager')->isAvailable()) {
             $sql->setValue('updatedate', date('Y-m-d H:i:s'));
             $sql->setValue('updateuser', 'warehouse');
             $profile_id = rex_sql::factory()->getVar('SELECT `id` FROM ' . rex::getTable('media_manager_type') . ' WHERE `name` = :name', [':name' => $profile_name]);
+
             if ($profile_id !== null) {
 
                 // Add resize effect to the profile
@@ -161,6 +166,7 @@ if (rex_addon::get('media_manager')->isAvailable()) {
         }
     }
 }
+*/
 
 if (rex_addon::get('ycom')->isAvailable() && '' == rex_config::get('warehouse', 'ycom_mode')) {
     rex_config::set('warehouse', 'ycom_mode', 'choose');

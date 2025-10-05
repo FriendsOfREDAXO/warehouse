@@ -344,7 +344,7 @@ class PayPal
         return rex_config::get('warehouse', 'sandboxmode', self::MODE_SANDBOX) ? self::MODE_SANDBOX : self::MODE_LIVE;
     }
 
-    public static function getEnvironment(): Environment
+    public static function getEnvironment(): string
     {
         return self::getMode() === self::MODE_LIVE ? Environment::PRODUCTION : Environment::SANDBOX;
     }

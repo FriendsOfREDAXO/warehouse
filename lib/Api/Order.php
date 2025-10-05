@@ -50,7 +50,7 @@ use PaypalServerSdkLib\Models\CallbackEvents;
 use PaypalServerSdkLib\Models\OAuthToken;
 use PaypalServerSdkLib\Models\Builders\OrderApplicationContextBuilder;
 use PaypalServerSdkLib\Models\Builders\NameBuilder;
-use PaypalServerSdkLib\Models\Builders\AddressPortableBuilder;
+use PaypalServerSdkLib\Models\Builders\AddressBuilder;
 use PaypalServerSdkLib\Models\Builders\PayerBuilder;
 use PaypalServerSdkLib\Models\Builders\PhoneWithTypeBuilder;
 use PaypalServerSdkLib\Models\Builders\PhoneNumberBuilder;
@@ -79,7 +79,7 @@ class Order extends rex_api_function
         if (rex_get('action', 'string') === 'order') {
 
             $cart = new Cart(); // Load cart from session
-            
+
             // Use real cart data instead of test data
             try {
                 $orderResponse = self::createOrder();
@@ -104,7 +104,7 @@ class Order extends rex_api_function
 
         exit;
     }
-        
+
     /**
      * @param ApiResponse $response
      * @return array{jsonResponse: mixed, httpStatusCode: mixed}
@@ -140,21 +140,21 @@ class Order extends rex_api_function
             ->environment(PayPal::getEnvironment())
             ->build();
 
-        
+
         // Get dynamic currency and cart totals
         $currency = Warehouse::getCurrency();
         $cart = new Cart(); // Load cart from session
-        
+
         // Validate cart is not empty
         if ($cart->isEmpty()) {
             throw new Exception('Cart is empty - cannot create PayPal order');
         }
-        
+
         $cart_total = Cart::getCartTotal(); // Total including shipping
         $cart_subtotal = Cart::getSubTotal(); // Items only, excluding shipping
         $shipping_cost = Shipping::getCost(); // Shipping costs
         $cart_items = $cart->getItems(); // Get items from Cart object
-        
+
         // Build PayPal items from cart
         $paypal_items = [];
         foreach ($cart_items as $item) {
@@ -164,66 +164,72 @@ class Order extends rex_api_function
                 (string) $item['amount']
             )
                 ->description($item['name'])
-              ->sku($item['sku'] ?? ($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : '')))
-                
+                ->sku($item['sku'] ?? ($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : '')));
+
             // Add image URL if setting is enabled and image is available
             if (PayPal::shouldIncludeImages() && !empty($item['image'])) {
                 $itemBuilder->imageUrl($item['image']);
             }
-                
+
             $paypal_items[] = $itemBuilder->build();
         }
-        
+
         $breakdown = AmountBreakdownBuilder::init()
             ->itemTotal(
                 MoneyBuilder::init($currency, number_format($cart_subtotal, 2, '.', ''))->build()
             );
-        
+
         // Add shipping if there are shipping costs
         if ($shipping_cost > 0) {
             $breakdown->shipping(
                 MoneyBuilder::init($currency, number_format($shipping_cost, 2, '.', ''))->build()
             );
         }
-        
+
         // Get customer data and addresses from session
         $customer = Session::getCustomerData();
         $shippingAddress = Session::getShippingAddressData();
         $billingAddress = Session::getBillingAddressData();
-        
+
         // Build shipping details - use shipping address if provided, otherwise use billing address
         $shipping = null;
         $addressToUse = !empty($shippingAddress) ? $shippingAddress : $billingAddress;
-        
+
         if (!empty($addressToUse)) {
             // Try to get name from the specific address first, then fall back to customer data
             $shippingName = ($addressToUse['firstname'] ?? '') . ' ' . ($addressToUse['lastname'] ?? '');
             if (empty(trim($shippingName))) {
                 $shippingName = ($customer['firstname'] ?? '') . ' ' . ($customer['lastname'] ?? '');
             }
-            
+
+            // Split full name into given name and surname because the SDK's NameBuilder
+            // provides givenName() and surname() methods (no fullName()).
+            $trimmedName = trim($shippingName);
+
+            // ShippingDetailsBuilder expects a ShippingName object. Use the
+            // ShippingNameBuilder which provides a fullName() setter.
             $shipping = ShippingDetailsBuilder::init()
-                ->name(NameBuilder::init()->fullName(trim($shippingName))->build())
-                ->address(AddressPortableBuilder::init()
-                    ->addressLine1($addressToUse['address'] ?? '')
-                    ->adminArea2($addressToUse['city'] ?? '') // Stadt
-                    ->postalCode($addressToUse['zip'] ?? '')
-                    ->countryCode($addressToUse['country'] ?? PayPal::getStoreCountryCode())
-                    ->build()
+                ->name(\PaypalServerSdkLib\Models\Builders\ShippingNameBuilder::init()->fullName($trimmedName)->build())
+                ->address(
+                    AddressBuilder::init($addressToUse['country'] ?? PayPal::getStoreCountryCode())
+                        ->addressLine1($addressToUse['address'] ?? '')
+                        ->adminArea2($addressToUse['city'] ?? '') // Stadt
+                        ->postalCode($addressToUse['zip'] ?? '')
+                        ->build()
                 )
                 ->build();
         }
-        
+
         // Build payer information from customer data
         $payer = null;
         if (!empty($customer)) {
             $payerBuilder = PayerBuilder::init();
-            
+
             // Add email address
             if (!empty($customer['email'])) {
                 $payerBuilder->emailAddress($customer['email']);
             }
-            
+
             // Add name information
             $firstName = $customer['firstname'] ?? '';
             $lastName = $customer['lastname'] ?? '';
@@ -237,21 +243,21 @@ class Order extends rex_api_function
                 }
                 $payerBuilder->name($nameBuilder->build());
             }
-            
+
             // Add phone information if available
             if (!empty($customer['phone'])) {
                 $phoneNumber = PhoneNumberBuilder::init($customer['phone'])->build();
                 $phoneWithType = PhoneWithTypeBuilder::init($phoneNumber)->build();
                 $payerBuilder->phone($phoneWithType);
             }
-            
+
             $payer = $payerBuilder->build();
         }
-        
+
         // Create application context with return URLs
         $return_url = PayPal::getSuccessPageUrl() ?: '';
         $cancel_url = PayPal::getErrorPageUrl() ?: '';
-        
+
         $applicationContext = OrderApplicationContextBuilder::init()
             ->brandName(PayPal::getStoreName() ?: 'Shop')
             ->locale('de-DE')
@@ -261,7 +267,7 @@ class Order extends rex_api_function
             ->returnUrl($return_url)
             ->cancelUrl($cancel_url)
             ->build();
-        
+
         $orderRequestBuilder = OrderRequestBuilder::init("CAPTURE", [
             PurchaseUnitRequestBuilder::init(
                 AmountWithBreakdownBuilder::init($currency, number_format($cart_total, 2, '.', ''))
@@ -274,17 +280,17 @@ class Order extends rex_api_function
                 ->shipping($shipping) // Add shipping details
                 ->build(),
         ])
-        ->applicationContext($applicationContext); // Add application context
-        
+            ->applicationContext($applicationContext); // Add application context
+
         // Add payer information if available
         if ($payer !== null) {
             $orderRequestBuilder->payer($payer);
         }
-        
-        $collect =[
+
+        $collect = [
             "body" => $orderRequestBuilder->build(),
         ];
-    
+
 
         $getOrdersController = $client->getOrdersController();
         $apiResponse = $getOrdersController->createOrder($collect);
@@ -325,24 +331,24 @@ class Order extends rex_api_function
         // Save the order to the database using Session data
         $capture = json_decode($apiResponse->getBody(), true);
         $payment_id = $capture['payer']['payer_id'] ?? $orderID;
-        
+
         // Use Session::saveAsOrder to properly save with customer data, addresses, and cart items
         $saved = Session::saveAsOrder($payment_id);
-        
+
         if ($saved) {
             // Update the saved order with PayPal specific data
-            $order = Order::query()
+            $order = WarehouseOrder::query()
                 ->where('payment_id', $payment_id)
                 ->orderBy('id', 'DESC')
                 ->findOne();
-                
+
             if ($order) {
                 $order->setValue('paypal_id', $capture['id'] ?? '')
                     ->setOrderJson($apiResponse->getBody())
                     ->setValue('payment_status', Payment::PAYMENT_STATUS_COMPLETED)
                     ->setOrderTotal($capture['purchase_units'][0]['payments']['captures'][0]['amount']['value'] ?? 0)
                     ->setValue('shipping_status', Shipping::SHIPPING_STATUS_NOT_SHIPPED);
-                
+
                 $order->save();
             } else {
                 throw new Exception('Failed to find saved order after Session::saveAsOrder');
@@ -351,9 +357,7 @@ class Order extends rex_api_function
             throw new Exception('Failed to save order via Session::saveAsOrder');
         }
 
-        
-        return self::handleResponse($apiResponse);
-    
-    }
 
+        return self::handleResponse($apiResponse);
+    }
 }

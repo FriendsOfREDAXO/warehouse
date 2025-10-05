@@ -472,7 +472,7 @@ $cart = Cart::get();
                 <td><?= $item['amount'] ?>x</td>
                 <td><?= number_format($item['total'], 2) ?>€</td>
                 <td>
-                    <a href="?rex_api_call=warehouse_cart_api&action=delete&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>">
+                    <a href="?rex-api-call=warehouse_cart_api&action=delete&article_id=<?= $item['article_id'] ?>&variant_id=<?= $item['variant_id'] ?>">
                         Entfernen
                     </a>
                 </td>
@@ -542,17 +542,17 @@ Der Warenkorb kann über AJAX-Aufrufe verwaltet werden:
 
 ```javascript
 // Artikel hinzufügen
-fetch('?rex_api_call=warehouse_cart_api&action=add&article_id=123&variant_id=456&amount=2')
+fetch('?rex-api-call=warehouse_cart_api&action=add&article_id=123&variant_id=456&amount=2')
     .then(response => response.json())
     .then(cart => console.log('Warenkorb aktualisiert', cart));
 
 // Artikel entfernen
-fetch('?rex_api_call=warehouse_cart_api&action=delete&article_id=123&variant_id=456')
+fetch('?rex-api-call=warehouse_cart_api&action=delete&article_id=123&variant_id=456')
     .then(response => response.json())
     .then(cart => console.log('Artikel entfernt', cart));
 
 // Menge ändern
-fetch('?rex_api_call=warehouse_cart_api&action=modify&article_id=123&variant_id=456&amount=1&mode=+')
+fetch('?rex-api-call=warehouse_cart_api&action=modify&article_id=123&variant_id=456&amount=1&mode=+')
     .then(response => response.json())
     .then(cart => console.log('Menge erhöht', cart));
 ```

@@ -196,7 +196,7 @@ if (!$cart_items || count($cart_items) === 0) {
 
 	function updateCartTableItem(action, articleId, variantId = null, amount = 1, mode = null) {
 		// Build API URL
-		let url = `index.php?rex_api_call=warehouse_cart_api&action=${action}`;
+		let url = `index.php?rex-api-call=warehouse_cart_api&action=${action}`;
 		url += `&article_id=${encodeURIComponent(articleId)}`;
 		if (variantId && variantId !== 'null' && variantId !== '') {
 			url += `&variant_id=${encodeURIComponent(variantId)}`;

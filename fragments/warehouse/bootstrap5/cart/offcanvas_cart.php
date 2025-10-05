@@ -186,7 +186,7 @@ $domain = Domain::getCurrent();
 
 	function updateOffcanvasCartItem(action, articleId = null, variantId = null, amount = 1, mode = null) {
 		// Build API URL
-		let url = `index.php?rex_api_call=warehouse_cart_api&action=${action}`;
+		let url = `index.php?rex-api-call=warehouse_cart_api&action=${action}`;
 		if (articleId) {
 			url += `&article_id=${encodeURIComponent(articleId)}`;
 		}
