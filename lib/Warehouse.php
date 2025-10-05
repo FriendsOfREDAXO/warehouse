@@ -188,9 +188,16 @@ class Warehouse
         $return .= PHP_EOL;
         if (Cart::getDiscountValue()) {
             $discount_text = rex_config::get("warehouse", "global_discount_text");
-            $return .= mb_str_pad(mb_substr($discount_text, 0, 52), 52, ' ', STR_PAD_RIGHT);
-            $return .= mb_str_pad(number_format(Cart::getDiscountValue(), 2), 20, ' ', STR_PAD_LEFT);
-            $return .= PHP_EOL;
+            $discount_lines = self::wrapText($discount_text, 52);
+            foreach ($discount_lines as $i => $line) {
+                $return .= mb_str_pad($line, 52, ' ', STR_PAD_RIGHT);
+                if ($i === 0) {
+                    $return .= mb_str_pad(number_format(Cart::getDiscountValue(), 2), 20, ' ', STR_PAD_LEFT);
+                } else {
+                    $return .= str_repeat(' ', 20);
+                }
+                $return .= PHP_EOL;
+            }
         }
         $return .= mb_str_pad('Versand', 52, ' ', STR_PAD_RIGHT);
         $return .= mb_str_pad(number_format($shipping, 2), 20, ' ', STR_PAD_LEFT);
