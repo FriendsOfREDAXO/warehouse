@@ -153,19 +153,19 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 						<div class="col text-muted">Zwischensumme
 							(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 						</div>
-						<div class="col">
+						<div class="col" data-warehouse-cart-subtotal-by-mode>
 							<?= Warehouse::formatCurrency($cart::getSubTotalByMode(Warehouse::getPriceInputMode())) ?>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col text-muted">MwSt.</div>
-						<div class="col">
+						<div class="col" data-warehouse-cart-tax>
 							<?= Warehouse::formatCurrency($cart::getTaxTotalByMode()) ?>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col text-muted"><?= Warehouse::getLabel('shipping_costs') ?></div>
-						<div class="col text">
+						<div class="col text" data-warehouse-cart-shipping>
 							<?= Warehouse::formatCurrency((float) Shipping::getCost()) ?>
 						</div>
 					</div>
@@ -175,7 +175,7 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 						<div class="col text-muted"><?= Warehouse::getLabel('total') ?>
 							(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 						</div>
-						<div class="col text-lead fw-bolder" data-warehouse-cart-subtotal>
+						<div class="col text-lead fw-bolder" data-warehouse-cart-total>
 							<?= Warehouse::formatCurrency($cart::getCartTotalByMode(Warehouse::getPriceInputMode())) ?>
 						</div>
 					</div>
