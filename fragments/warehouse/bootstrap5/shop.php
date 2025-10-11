@@ -17,9 +17,9 @@ if (!rex_addon::get('warehouse')->isAvailable() || !rex_addon::get('url')->isAva
 
 $manager = Url\Url::resolveCurrent();
 
-$containerClass = Warehouse::getConfig('container_class', 'container');
-$containerStart = $containerClass ? '<div class="' . htmlspecialchars($containerClass) . '">' : '';
-$containerEnd = $containerClass ? '</div>' : '';
+$containerClass = trim(Warehouse::getConfig('container_class', 'container')) ?: 'container';
+$containerStart = '<div class="' . htmlspecialchars($containerClass) . '">';
+$containerEnd = '</div>';
 
 echo $containerStart;
 
