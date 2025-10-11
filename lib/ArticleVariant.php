@@ -44,6 +44,10 @@ class ArticleVariant extends rex_yform_manager_dataset
             'PreSale',
         ];
 
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_HIDDEN = 'hidden';
+
     public const STATUS =
         [
             'active' => 'translate:warehouse_article_variant.status.active',
@@ -224,6 +228,25 @@ class ArticleVariant extends rex_yform_manager_dataset
     public function setSku(mixed $value) : self
     {
         $this->setValue(self::SKU, $value);
+        return $this;
+    }
+
+    /** Status */
+    /** @api */
+    public function getStatus() : ?string
+    {
+        return $this->getValue(self::STATUS_FIELD);
+    }
+
+    public function getStatusLabel() : ?string
+    {
+        return rex_i18n::rawMsg(self::STATUS[$this->getStatus()] ?? '');
+    }
+
+    /** @api */
+    public function setStatus(string $param) : mixed
+    {
+        $this->setValue(self::STATUS_FIELD, $param);
         return $this;
     }
 

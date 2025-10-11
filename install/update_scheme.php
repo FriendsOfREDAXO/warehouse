@@ -134,3 +134,17 @@ if (rex_addon::get('ycom')->isAvailable() && rex_config::get('warehouse', 'ycom_
         ->ensureColumn(new rex_sql_column('lastname', 'varchar(191)', false, ''), 'firstname')
         ->ensure();
 }
+
+// Migrate existing status values from integer to string format
+// This handles the transition from tinyint(1) with value 0 to varchar with 'draft', 'active', 'hidden'
+$sql = rex_sql::factory();
+
+// Update warehouse_article status values
+$sql->setQuery("UPDATE " . rex::getTable('warehouse_article') . " SET status = 'draft' WHERE status = '0' OR status = '' OR status IS NULL");
+$sql->setQuery("UPDATE " . rex::getTable('warehouse_article') . " SET status = 'active' WHERE status = '1'");
+
+// Update warehouse_article_variant status values
+$sql->setQuery("UPDATE " . rex::getTable('warehouse_article_variant') . " SET status = 'draft' WHERE status = '' OR status IS NULL");
+
+// Update warehouse_category status values (should already be correct, but ensure no empty values)
+$sql->setQuery("UPDATE " . rex::getTable('warehouse_category') . " SET status = 'draft' WHERE status = '' OR status IS NULL");
