@@ -147,8 +147,8 @@
                 "choice_attributes": "",
                 "choice_label": "",
                 "choices": "FriendsOfRedaxo\\Warehouse\\Article::getStatusOptions",
-                "db_type": "tinyint(1)",
-                "default": "0",
+                "db_type": "varchar(191)",
+                "default": "draft",
                 "expanded": "0",
                 "group_attributes": "",
                 "group_by": "",
@@ -166,19 +166,6 @@
                 "table_name": "rex_warehouse_article",
                 "type_id": "value",
                 "type_name": "choice_status"
-            },
-            {
-                "db_type": "",
-                "label": "",
-                "list_hidden": 1,
-                "message": "",
-                "name": "status",
-                "not_required": "",
-                "prio": 10,
-                "search": 0,
-                "table_name": "rex_warehouse_article",
-                "type_id": "validate",
-                "type_name": "empty"
             },
             {
                 "attributes": "",
@@ -311,7 +298,7 @@
             },
             {
                 "db_type": "none",
-                "html": "    <\/div>\r\n    <div class=\"col-12 col-md-6\">",
+                "html": "    </div>\r\n    <div class=\"col-12 col-md-6\">",
                 "label": "",
                 "list_hidden": 0,
                 "name": "html_col_2",
@@ -346,7 +333,7 @@
             },
             {
                 "db_type": "none",
-                "html": "    <\/div>\r\n<\/div>",
+                "html": "    </div>\r\n</div>",
                 "label": "",
                 "list_hidden": 0,
                 "name": "html_col_end",
@@ -401,7 +388,7 @@
             },
             {
                 "db_type": "none",
-                "html": "<\/div>\r\n<div class=\"col-md-6\">",
+                "html": "</div>\r\n<div class=\"col-md-6\">",
                 "label": "",
                 "list_hidden": 0,
                 "name": "html_row_2_col_2",
@@ -430,7 +417,7 @@
             },
             {
                 "db_type": "none",
-                "html": "<\/div>",
+                "html": "</div>",
                 "label": "",
                 "list_hidden": 0,
                 "name": "html_row_2_col_end",
@@ -443,7 +430,7 @@
             },
             {
                 "db_type": "none",
-                "html": "<\/div>",
+                "html": "</div>",
                 "label": "",
                 "list_hidden": 0,
                 "name": "html_row_end",

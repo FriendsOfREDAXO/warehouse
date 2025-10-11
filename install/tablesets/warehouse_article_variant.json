@@ -177,7 +177,7 @@
                 "choice_label": "",
                 "choices": "FriendsOfRedaxo\\Warehouse\\ArticleVariant::getStatusOptions",
                 "db_type": "varchar(191)",
-                "default": "",
+                "default": "draft",
                 "expanded": "0",
                 "group_attributes": "",
                 "group_by": "",
