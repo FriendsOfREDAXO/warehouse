@@ -231,7 +231,7 @@ class ArticleVariant extends rex_yform_manager_dataset
         return $this;
     }
 
-    /* Status */
+    /** Status */
     /** @api */
     public function getStatus() : ?string
     {
