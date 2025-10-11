@@ -17,6 +17,12 @@ if (!rex_addon::get('warehouse')->isAvailable() || !rex_addon::get('url')->isAva
 
 $manager = Url\Url::resolveCurrent();
 
+$containerClass = trim(Warehouse::getConfig('container_class', 'container')) ?: 'container';
+$containerStart = '<div class="' . htmlspecialchars($containerClass) . '">';
+$containerEnd = '</div>';
+
+echo $containerStart;
+
 if ($manager) {
     $profile = $manager->getProfile();
     $dataset = $manager->getDataset();
@@ -38,5 +44,6 @@ if ($manager) {
     echo Warehouse::parse('category/list.php');
 }
 
+echo $containerEnd;
 
 echo Warehouse::parse('cart/offcanvas_cart.php');

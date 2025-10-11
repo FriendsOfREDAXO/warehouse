@@ -82,6 +82,10 @@ $field = $form->addInputField('text', 'framework', null, ['class' => 'form-contr
 $field->setLabel(rex_i18n::msg('warehouse.settings.framework'));
 $field->setNotice(rex_i18n::msg('warehouse.settings.framework.notice'));
 
+$field = $form->addInputField('text', 'container_class', null, ['class' => 'form-control']);
+$field->setLabel(rex_i18n::msg('warehouse.settings.container_class'));
+$field->setNotice(rex_i18n::msg('warehouse.settings.container_class.notice'));
+
 $content = $form->get();
 
 $fragment = new rex_fragment();

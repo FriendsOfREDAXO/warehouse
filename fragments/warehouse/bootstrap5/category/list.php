@@ -9,7 +9,7 @@ use FriendsOfRedaxo\Warehouse\ArticleVariant;
 $categories = Category::findRootCategories('active');
 ?>
 
-<section class="container">
+<section>
 	<?php
 
 foreach ($categories as $category) {
