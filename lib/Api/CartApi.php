@@ -4,6 +4,7 @@ namespace FriendsOfRedaxo\Warehouse\Api;
 
 use FriendsOfRedaxo\Warehouse\Article;
 use FriendsOfRedaxo\Warehouse\ArticleVariant;
+use FriendsOfRedaxo\Warehouse\Shipping;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 use rex;
 use rex_api_function;
@@ -48,6 +49,7 @@ class CartApi extends rex_api_function
 
         // Gebe den Cart als JSON zurück mit zusätzlichen Informationen
         $cart = Warehouse::getCart();
+        $priceMode = Warehouse::getPriceInputMode();
         $response = [
             'success' => true,
             'cart' => [
@@ -57,11 +59,16 @@ class CartApi extends rex_api_function
             'totals' => [
                 'subtotal' => $cart::getSubTotal(),
                 'subtotal_formatted' => $cart->getSubTotalFormatted(),
+                'subtotal_by_mode' => $cart::getSubTotalByMode($priceMode),
+                'subtotal_by_mode_formatted' => $cart::getSubTotalByModeFormatted($priceMode),
+                'tax_total' => $cart::getTaxTotalByMode(),
+                'tax_total_formatted' => Warehouse::formatCurrency($cart::getTaxTotalByMode()),
+                'shipping_costs' => (float) Shipping::getCost(),
+                'shipping_costs_formatted' => Warehouse::formatCurrency((float) Shipping::getCost()),
                 'total' => $cart::getTotal(),
-                'subtotal' => $cart->getSubTotal(),
-                'subtotal_formatted' => $cart->getSubTotalFormatted(),
-                'total' => $cart->getTotal(),
                 'total_formatted' => Warehouse::formatCurrency($cart->getTotal()),
+                'cart_total_by_mode' => $cart::getCartTotalByMode($priceMode),
+                'cart_total_by_mode_formatted' => $cart::getCartTotalByModeFormatted($priceMode),
                 'items_count' => $cart->count(),
             ],
             'items' => []
