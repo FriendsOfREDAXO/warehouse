@@ -339,7 +339,7 @@
             "list_sortorder": "ASC",
             "mass_deletion": 0,
             "mass_edit": 0,
-            "name": "translate:warehouse_settings_domain",
+            "name": "translate:warehouse_settings_domain.tablename",
             "schema_overwrite": 1,
             "search": 1,
             "status": 1,
