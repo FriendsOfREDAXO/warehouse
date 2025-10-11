@@ -10,7 +10,7 @@ $cart = Cart::create();
 $cart_items = $cart->getItems();
 
 $containerClass = Warehouse::getConfig('container_class', 'container');
-$containerClass = $containerClass ? htmlspecialchars($containerClass) : 'container';
+$containerClass = ($containerClass === null || $containerClass === false) ? 'container' : htmlspecialchars($containerClass);
 
 ?>
 <div class="<?= $containerClass ?>" data-warehouse-cart-page>
