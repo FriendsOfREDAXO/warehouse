@@ -483,3 +483,143 @@ Achte auf folgende Regeln:
 5. In einem PR wird die Versionsnummer `version` gemäß Semantic Versioning in der `package.yml` erhöht - je nachdem, ob es ein Bugfix/Patch, Minor Update mit neuen Funktionen oder Major Update ohne Rückwärtskompatibilität handelt. Mache in deinem PR einen Vorschlag, was ausgehend vom main-Repository die nächste Versionsnummer wäre.
 
 Es gibt keinen Build-Prozess, sodass du den Code selbst testen kannst. Es ist nicht über composer, yarn oder einen anderen Pakete-Manager verfügbar.
+
+## Code-Qualität und Linting
+
+Dieses Projekt verwendet PHP-CS-Fixer für Code-Style-Prüfungen.
+
+### PHP-CS-Fixer ausführen
+
+**Voraussetzungen:**
+- Composer muss installiert sein
+- Dependencies müssen installiert sein: `composer install`
+
+**Linting-Befehle:**
+
+```bash
+# Code-Style prüfen (Dry-Run, ohne Änderungen vorzunehmen)
+composer cs-dry
+
+# Code-Style automatisch korrigieren
+composer cs-fix
+```
+
+**Wichtig:** Führe immer `composer cs-fix` vor dem Commit aus, um sicherzustellen, dass der Code den Coding-Standards entspricht.
+
+### Code-Style-Regeln
+
+Die Regeln basieren auf der REDAXO PHP-CS-Fixer-Konfiguration (`redaxo/php-cs-fixer-config`), die folgende Standards durchsetzt:
+- PSR-12 Coding Standard
+- REDAXO-spezifische Konventionen
+- Strict Types Declaration
+- Konsistente Code-Formatierung
+
+## Testing und Validation
+
+### Manuelle Tests
+
+Da es keinen automatisierten Test-Suite gibt, müssen Änderungen manuell getestet werden:
+
+1. **Installation in REDAXO-Testumgebung:**
+   - Kopiere das Add-on in den REDAXO `addons/` Ordner
+   - Installiere das Add-on über das Backend
+   - Prüfe, ob alle Abhängigkeiten erfüllt sind
+
+2. **Funktionale Tests:**
+   - Teste alle geänderten Funktionen im Frontend und Backend
+   - Prüfe die Warenkorb-Funktionalität
+   - Teste den Checkout-Prozess
+   - Validiere die Bestellabwicklung
+   - Prüfe PayPal-Integration (Sandbox-Modus)
+
+3. **Browser-Tests:**
+   - Teste in verschiedenen Browsern (Chrome, Firefox, Safari)
+   - Prüfe responsive Design auf mobilen Geräten
+   - Validiere JavaScript-Funktionalität
+
+4. **Backend-Tests:**
+   - Teste alle Backend-Seiten (Order, Settings, Docs)
+   - Prüfe YForm-Tabellen und Formulare
+   - Validiere Setup-Funktionen
+
+### Dokumentations-Validierung
+
+Nach Code-Änderungen:
+1. Prüfe, ob die Dokumentation in `/docs/` noch aktuell ist
+2. Aktualisiere betroffene Markdown-Dateien
+3. Teste die Dokumentationsanzeige im Backend unter "Warehouse → Docs"
+
+## Entwicklungs-Workflow
+
+### Typischer Workflow für eine Code-Änderung:
+
+1. **Verstehen der Anforderung:**
+   - Lies das Issue sorgfältig
+   - Prüfe Stack Traces und Fehlermeldungen
+   - Stelle Nachfragen, wenn Informationen fehlen
+
+2. **Code-Änderungen vornehmen:**
+   - Mache minimale, gezielte Änderungen
+   - Achte auf Rückwärtskompatibilität
+   - Verwende Type Hints und moderne PHP-Syntax
+
+3. **Code-Style prüfen:**
+   ```bash
+   composer cs-fix
+   ```
+
+4. **Manuelle Tests durchführen:**
+   - Installiere das Add-on in einer Test-REDAXO-Instanz
+   - Teste alle betroffenen Funktionen
+   - Prüfe Frontend und Backend
+
+5. **Dokumentation aktualisieren:**
+   - Aktualisiere relevante `/docs/*.md` Dateien
+   - Prüfe `docs/00_documentation_overview.md` auf Vollständigkeit
+
+6. **Version aktualisieren:**
+   - Erhöhe die Version in `package.yml` nach Semantic Versioning
+   - PATCH (2.0.1): Bugfixes
+   - MINOR (2.1.0): Neue Features (rückwärtskompatibel)
+   - MAJOR (3.0.0): Breaking Changes
+
+7. **Commit und PR:**
+   - Schreibe aussagekräftige Commit-Messages
+   - Beschreibe alle Änderungen im PR
+   - Verlinke relevante Issues
+
+## Wie Code-Änderungen zu verifizieren sind
+
+### Vor dem Commit:
+
+1. **Linting:**
+   ```bash
+   composer cs-dry  # Prüfen
+   composer cs-fix  # Korrigieren
+   ```
+
+2. **Dateien prüfen:**
+   - Wurden nur relevante Dateien geändert?
+   - Keine ungewollten Änderungen an vendor/, node_modules/, etc.?
+   - `.gitignore` korrekt konfiguriert?
+
+3. **Code-Review:**
+   - Sind alle Änderungen minimal und fokussiert?
+   - Wurde Type Hinting verwendet?
+   - Sind Security-Best-Practices beachtet (kein XSS, SQL-Injection, etc.)?
+   - Verwenden Fragmente `data-warehouse-*` Attribute statt Inline-JS?
+
+### Nach dem Commit:
+
+1. **GitHub Actions überprüfen:**
+   - Warten auf CI/CD Pipeline-Ergebnisse (falls vorhanden)
+   - Prüfe auf Fehler oder Warnungen
+
+2. **Dokumentation:**
+   - Ist die Dokumentation aktuell?
+   - Sind alle neuen Features dokumentiert?
+   - Sind Code-Beispiele korrekt?
+
+3. **Version:**
+   - Wurde die Version in `package.yml` korrekt erhöht?
+   - Entspricht die Versionserhöhung der Art der Änderung?
