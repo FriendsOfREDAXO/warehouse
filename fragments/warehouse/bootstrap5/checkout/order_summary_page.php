@@ -22,9 +22,12 @@ $cart_items = $cart['items'] ?? [];
 $with_tax = Warehouse::getPriceInputMode() === 'gross';
 $shipping = Shipping::getCost();
 
+$containerClass = Warehouse::getConfig('container_class', 'container');
+$containerClass = $containerClass ? htmlspecialchars($containerClass) : 'container';
+
 ?>
 
-<div class="container">
+<div class="<?= $containerClass ?>">
 	<div class="row">
 		<div class="col-12">
 			<div class="card">

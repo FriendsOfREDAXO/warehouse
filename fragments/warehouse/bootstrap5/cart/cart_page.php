@@ -9,8 +9,11 @@ use FriendsOfRedaxo\Warehouse\Shipping;
 $cart = Cart::create();
 $cart_items = $cart->getItems();
 
+$containerClass = Warehouse::getConfig('container_class', 'container');
+$containerClass = $containerClass ? htmlspecialchars($containerClass) : 'container';
+
 ?>
-<div class="container" data-warehouse-cart-page>
+<div class="<?= $containerClass ?>" data-warehouse-cart-page>
 	<div class="row">
 		<div class="col-12 col-md-8">
 			<div class="card">

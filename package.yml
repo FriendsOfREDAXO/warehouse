@@ -123,6 +123,7 @@ default_config:
     cart_mode: "cart"
     editor: ''
     framework: 'bootstrap5'
+    container_class: 'container'
     ycom_mode: 'guest_only'
     price_input_mode: 'net' # 'net' oder 'gross' – legt fest, ob Preiseingabe netto oder brutto ist
     delivery_note_number: 1

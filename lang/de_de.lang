@@ -407,6 +407,9 @@ warehouse.order.details.success.delivery_note_generated = Lieferschein wurde erf
 warehouse.settings.framework = Gewünschtes Ausgabe-Framework
 warehouse.settings.framework.notice = Derzeit wird nur Bootstrap 5 unterstützt. <code>bootstrap5</code> ist der Standard-Wert. Du kannst auch den Ordner <code>src/addons/warehouse/fragments/bootstrap5</code> nach <code>src/addons/project/fragments/bootstrap5</code> kopieren und anpassen. Weitere Informationen dazu in den Docs.
 
+warehouse.settings.container_class = CSS-Container-Klasse
+warehouse.settings.container_class.notice = Optional eine CSS-Container-Klasse definieren, z.B. <code>container</code>, <code>container-fluid</code>, <code>container-lg</code> usw. Standardmäßig wird <code>container</code> verwendet. Lasse das Feld leer, wenn kein Container verwendet werden soll.
+
 warehouse.settings.shipping_conditions_text = Versandkosten-Bedingungen
 warehouse.settings.shipping_conditions_text.notice = Text, der unter den Versandkosten angezeigt wird. Z.B. "Versandkostenfrei ab 50 Euro Bestellwert." oder "Versandkosten nach Gewicht gestaffelt."
 
