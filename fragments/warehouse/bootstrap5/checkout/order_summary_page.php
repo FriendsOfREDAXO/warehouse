@@ -23,7 +23,7 @@ $with_tax = Warehouse::getPriceInputMode() === 'gross';
 $shipping = Shipping::getCost();
 
 $containerClass = Warehouse::getConfig('container_class', 'container');
-$containerClass = $containerClass ? htmlspecialchars($containerClass) : 'container';
+$containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($containerClass);
 
 ?>
 
