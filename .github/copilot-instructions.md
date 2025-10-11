@@ -506,6 +506,8 @@ composer cs-fix
 
 **Wichtig:** Führe immer `composer cs-fix` vor dem Commit aus, um sicherzustellen, dass der Code den Coding-Standards entspricht.
 
+**Hinweis:** Bei Pull Requests wird automatisch eine GitHub Action ausgeführt (`.github/workflows/code-style.yml`), die PHP-CS-Fixer anwendet und Code-Style-Fixes automatisch committed. Dennoch sollten Änderungen lokal vor dem Push geprüft werden.
+
 ### Code-Style-Regeln
 
 Die Regeln basieren auf der REDAXO PHP-CS-Fixer-Konfiguration (`redaxo/php-cs-fixer-config`), die folgende Standards durchsetzt:
@@ -612,8 +614,10 @@ Nach Code-Änderungen:
 ### Nach dem Commit:
 
 1. **GitHub Actions überprüfen:**
-   - Warten auf CI/CD Pipeline-Ergebnisse (falls vorhanden)
-   - Prüfe auf Fehler oder Warnungen
+   - Die Workflow `.github/workflows/code-style.yml` wird automatisch bei Push/PR ausgeführt
+   - PHP-CS-Fixer wird automatisch angewendet und Fixes werden committed
+   - Prüfe den Workflow-Status im "Actions"-Tab des Repositories
+   - Bei Fehlern werden diese im PR angezeigt
 
 2. **Dokumentation:**
    - Ist die Dokumentation aktuell?
