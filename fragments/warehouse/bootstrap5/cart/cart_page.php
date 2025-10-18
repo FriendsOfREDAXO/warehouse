@@ -150,32 +150,32 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 			<div class="card">
 				<div class="card-body">
 					<div class="row">
-						<div class="col text-muted">Zwischensumme
+						<label for="cart-page-subtotal-output" class="col text-muted">Zwischensumme
 							(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
-						</div>
-						<output class="col" data-warehouse-cart-subtotal-by-mode>
+						</label>
+						<output id="cart-page-subtotal-output" class="col" data-warehouse-cart-subtotal-by-mode>
 							<?= Warehouse::formatCurrency($cart::getSubTotalByMode(Warehouse::getPriceInputMode())) ?>
 						</output>
 					</div>
 					<div class="row">
-						<div class="col text-muted">MwSt.</div>
-						<output class="col" data-warehouse-cart-tax>
+						<label for="cart-page-tax-output" class="col text-muted">MwSt.</label>
+						<output id="cart-page-tax-output" class="col" data-warehouse-cart-tax>
 							<?= Warehouse::formatCurrency($cart::getTaxTotalByMode()) ?>
 						</output>
 					</div>
 					<div class="row">
-						<div class="col text-muted"><?= Warehouse::getLabel('shipping_costs') ?></div>
-						<output class="col text" data-warehouse-cart-shipping>
+						<label for="cart-page-shipping-output" class="col text-muted"><?= Warehouse::getLabel('shipping_costs') ?></label>
+						<output id="cart-page-shipping-output" class="col text" data-warehouse-cart-shipping>
 							<?= Warehouse::formatCurrency((float) Shipping::getCost()) ?>
 						</output>
 					</div>
 				</div>
 				<div class="card-body">
 					<div class="row align-items-center">
-						<div class="col text-muted"><?= Warehouse::getLabel('total') ?>
+						<label for="cart-page-total-output" class="col text-muted"><?= Warehouse::getLabel('total') ?>
 							(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
-						</div>
-						<output class="col text-lead fw-bolder" data-warehouse-cart-total>
+						</label>
+						<output id="cart-page-total-output" class="col text-lead fw-bolder" data-warehouse-cart-total>
 							<?= Warehouse::formatCurrency($cart::getCartTotalByMode(Warehouse::getPriceInputMode())) ?>
 						</output>
 					</div>
