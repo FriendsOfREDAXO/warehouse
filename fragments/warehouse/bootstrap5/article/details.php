@@ -105,17 +105,18 @@ if (Warehouse::isBulkPricesEnabled()) {
                 <div class="row g-3">
                     <div class="col-12">
                         <?= html_entity_decode($article->getText() ?? '') ?>
-
                     </div>
                     
-                <!-- Preis -->
-                <div data-warehouse-price-display 
-                     data-warehouse-base-price="<?= $article->getPrice() ?>"
-                     data-warehouse-bulk-prices='<?= json_encode($bulkPrices) ?>'>
-                    <span data-warehouse-price-value class="fs-3"><?= $article->getPriceFormatted() ?></span>
-                    <p class="text-small mb-0"><?= Warehouse::getLabel('tax') ?> <a href="#shipping_modal" data-bs-toggle="modal"><?= Warehouse::getLabel('shipping_costs') ?></a></p>
-                </div>
-                <!-- / Preis -->
+                    <div class="col-12">
+                        <!-- Preis -->
+                        <div data-warehouse-price-display 
+                             data-warehouse-base-price="<?= $article->getPrice() ?>"
+                             data-warehouse-bulk-prices='<?= json_encode($bulkPrices) ?>'>
+                            <span data-warehouse-price-value class="fs-3"><?= $article->getPriceFormatted() ?></span>
+                            <p class="text-small mb-0"><?= Warehouse::getLabel('tax') ?> <a href="#shipping_modal" data-bs-toggle="modal"><?= Warehouse::getLabel('shipping_costs') ?></a></p>
+                        </div>
+                        <!-- / Preis -->
+                    </div>
 
                     <div class="col-12">
                         <form data-warehouse-add-form data-warehouse-checkout-url="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>">
