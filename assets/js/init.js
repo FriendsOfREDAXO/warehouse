@@ -122,8 +122,8 @@
         if (!cartPageContainer) return;
         
         // Skip if already initialized to prevent duplicate event listeners
-        if (cartPageContainer.dataset.warehouseInitialized === 'true') return;
-        cartPageContainer.dataset.warehouseInitialized = 'true';
+        if (cartPageContainer.hasAttribute('data-warehouse-initialized')) return;
+        cartPageContainer.setAttribute('data-warehouse-initialized', '');
 
         // Initialize tooltips if Bootstrap is available
         if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
@@ -277,8 +277,8 @@
         if (!offcanvasCart) return;
         
         // Skip if already initialized to prevent duplicate event listeners
-        if (offcanvasCart.dataset.warehouseInitialized === 'true') return;
-        offcanvasCart.dataset.warehouseInitialized = 'true';
+        if (offcanvasCart.hasAttribute('data-warehouse-initialized')) return;
+        offcanvasCart.setAttribute('data-warehouse-initialized', '');
 
         // Handle empty cart button
         const emptyCartBtn = offcanvasCart.querySelector('[data-warehouse-cart-empty]');
@@ -375,8 +375,8 @@
         if (!cartTable) return;
         
         // Skip if already initialized to prevent duplicate event listeners
-        if (cartTable.dataset.warehouseInitialized === 'true') return;
-        cartTable.dataset.warehouseInitialized = 'true';
+        if (cartTable.hasAttribute('data-warehouse-initialized')) return;
+        cartTable.setAttribute('data-warehouse-initialized', '');
 
         // Handle quantity button clicks
         cartTable.querySelectorAll('[data-warehouse-cart-quantity]').forEach(button => {
@@ -498,8 +498,8 @@
         if (!articleDetail) return;
         
         // Skip if already initialized to prevent duplicate event listeners
-        if (articleDetail.dataset.warehouseInitialized === 'true') return;
-        articleDetail.dataset.warehouseInitialized = 'true';
+        if (articleDetail.hasAttribute('data-warehouse-initialized')) return;
+        articleDetail.setAttribute('data-warehouse-initialized', '');
 
         // Handle quantity switcher buttons
         const quantityButtons = articleDetail.querySelectorAll('[data-warehouse-quantity-switch]');
@@ -605,8 +605,8 @@
         if (!checkoutForm) return;
         
         // Skip if already initialized to prevent duplicate event listeners
-        if (checkoutForm.dataset.warehouseInitialized === 'true') return;
-        checkoutForm.dataset.warehouseInitialized = 'true';
+        if (checkoutForm.hasAttribute('data-warehouse-initialized')) return;
+        checkoutForm.setAttribute('data-warehouse-initialized', '');
 
         // Handle different shipping address toggle
         const shippingToggle = checkoutForm.querySelector('[data-warehouse-shipping-toggle]');
