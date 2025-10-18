@@ -46,7 +46,7 @@ $domain = Domain::getCurrent();
 						<?php if ($item['type'] === 'variant'): ?>
 							<small class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
 						<?php endif; ?>
-						<div class="mt-1 row g-2 align-items-center">
+						<div class="mt-1 row g-0 align-items-center">
 							<div class="col-auto fw-bolder small" data-warehouse-item-total="<?= $item_key ?>">
 								<?= Warehouse::formatCurrency($item['total']) ?>
 							</div>

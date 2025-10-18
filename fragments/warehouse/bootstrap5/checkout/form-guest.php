@@ -40,7 +40,7 @@ $yform->setValueField('html', ['', '<div class="col-md-6">']);
 $yform->setValueField('html', ['', '<h4>' . Warehouse::getLabel('address_billing') . '</h4>']);
 
 // Firstname + Lastname in one row
-$yform->setValueField('html', ['', '<div class="row">']);
+$yform->setValueField('html', ['', '<div class="row g-0">']);
 $yform->setValueField('html', ['', '<div class="col-md-6">']);
 $yform->setValueField('text', ['billing_address_firstname', Warehouse::getLabel('customer_firstname') . '*', $billing_data[Customer::FIRSTNAME] ?? $customer?->getFirstname() ?? '', '', ['required' => 'required']]);
 $yform->setValidateField('empty', ['billing_address_firstname', Warehouse::getLabel('validation_required_fields')]);
@@ -52,7 +52,7 @@ $yform->setValueField('html', ['', '</div>']);
 $yform->setValueField('html', ['', '</div>']);
 
 // Company + Department in one row
-$yform->setValueField('html', ['', '<div class="row">']);
+$yform->setValueField('html', ['', '<div class="row g-0">']);
 $yform->setValueField('html', ['', '<div class="col-md-6">']);
 $yform->setValueField('text', ['billing_address_company', Warehouse::getLabel('customer_company'), $billing_data[Customer::COMPANY] ?? $customer?->getCompany() ?? '', '']);
 $yform->setValueField('html', ['', '</div>']);
@@ -65,7 +65,7 @@ $yform->setValueField('text', ['billing_address_address', Warehouse::getLabel('a
 $yform->setValidateField('empty', ['billing_address_address', Warehouse::getLabel('validation_required_fields')]);
 
 // ZIP + City in one row
-$yform->setValueField('html', ['', '<div class="row">']);
+$yform->setValueField('html', ['', '<div class="row g-0">']);
 $yform->setValueField('html', ['', '<div class="col-md-6">']);
 $yform->setValueField('text', ['billing_address_zip', Warehouse::getLabel('address_zip') . '*', $billing_data[Customer::ZIP] ?? $customer?->getZip() ?? '', '', ['required' => 'required']]);
 $yform->setValidateField('empty', ['billing_address_zip', Warehouse::getLabel('validation_required_fields')]);

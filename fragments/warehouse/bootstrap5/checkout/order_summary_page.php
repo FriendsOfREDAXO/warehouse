@@ -49,7 +49,7 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 								<?php foreach ($cart_items as $item_key => $item) : ?>
 								<tr>
 									<td>
-										<div class="row align-items-center">
+										<div class="row align-items-center g-0">
 											<div class="col-auto">
 												<?php if (isset($item['image']) && $item['image']) : ?>
 												<img src="<?= rex_url::media($item['image']) ?>" alt="<?= htmlspecialchars(html_entity_decode($item['name']), ENT_QUOTES, 'UTF-8') ?>" class="img-fluid" style="max-width: 80px;">
