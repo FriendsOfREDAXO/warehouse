@@ -9,7 +9,7 @@ if (configDiv) {
     }
 }
 
-const successUrl = configDiv ? configDiv.getAttribute("data-warehouse-paypal-success-url") : null;
+const successUrl = configDiv ? configDiv.getAttribute("data-warehouse-paypal-success-page-url") : null;
 const cancelUrl = configDiv ? configDiv.getAttribute("data-warehouse-paypal-cancel-url") : null;
 const errorCreateOrderMsg = configDiv ? configDiv.getAttribute("data-warehouse-paypal-error-create-order") : "Could not initiate PayPal Checkout";
 const errorCaptureOrderMsg = configDiv ? configDiv.getAttribute("data-warehouse-paypal-error-capture-order") : "Sorry, your transaction could not be processed";
