@@ -27,12 +27,12 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 				<?php } ?>
 				<?php if (!$cart->isEmpty()) : ?>
 				<div class="card-header text-uppercase text-muted text-center text-small d-none d-md-block">
-					<div class="row row-cols-1 row-cols-md-2">
+					<div class="row row-cols-1 row-cols-md-2 g-0">
 						<div class="col">
 							<?= Warehouse::getLabel('article') ?>
 						</div>
 						<div class="col">
-							<div class="row row-cols-auto">
+							<div class="row row-cols-auto g-0">
 								<div class="col">
 									<?= Warehouse::getLabel('price') ?>
 								</div>
@@ -55,7 +55,7 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 
 						<!-- Product cell-->
 						<div class="col">
-							<div class="row">
+							<div class="row g-0">
 								<div class="col-12 col-md-4">
 									<?php if (isset($item['image']) && $item['image']) : ?>
 									<a class=""
@@ -82,7 +82,7 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 						</div>
 						<!-- Other cells-->
 						<div class="col">
-							<div class="row row-cols-1 row-cols-sm-auto text-center">
+							<div class="row row-cols-1 row-cols-sm-auto text-center g-0">
 								<div class="col">
 									<div class="text-muted d-md-none">
 										<?= Warehouse::getLabel('price') ?>

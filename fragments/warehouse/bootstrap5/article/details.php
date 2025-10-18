@@ -32,9 +32,7 @@ if (Warehouse::isBulkPricesEnabled()) {
 
 
 ?>
-<div class="row" data-warehouse-article-detail>
-    <div class="col-12">
-        <div class="row g-4">
+<div class="row g-4" data-warehouse-article-detail>
             <div class="col-12 col-md-4">
                 <div class="card-body p-0">
                     <?php if ($article->getImageAsMedia()) : ?>
@@ -144,7 +142,5 @@ if (Warehouse::isBulkPricesEnabled()) {
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
 <script src="<?= rex_url::addonAssets('warehouse', 'js/init.js') ?>" nonce="<?= rex_response::getNonce() ?>"></script>

@@ -19,7 +19,8 @@ $article = $this->getVar('article');
 		<?php endif ?>
 		<?= $article->getCategory()?->getText() ?>
 	</div>
-	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+</div>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 		<?php foreach ($article->getVariants() ?? [] as $item) : ?>
 		<div class="col">
 			<div class="mt-3">
@@ -83,6 +84,5 @@ $article = $this->getVar('article');
 			</div>
 		</div>
 		<?php endforeach ?>
-	</div>
 </div>
 <!-- END article_with_variants -->
