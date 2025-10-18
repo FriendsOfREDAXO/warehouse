@@ -59,7 +59,8 @@ $articles = $category->getArticles('active', 48, 0);
 								class="fw-bold"><?= $article->getPriceFormatted() ?></span>
 						</div>
 						<a href="<?= rex_getUrl('', '', ['art_id' => $article->getId(), 'action' => 'add_to_cart', 'order_count' => 1]) ?>"
-							class="btn btn-sm btn-outline-secondary mb-md-2">In den Warenkorb</a>
+							class="btn btn-sm btn-outline-secondary mb-md-2"
+							data-warehouse-success-text="<?= rex_escape(Warehouse::getLabel('add_to_cart_success')) ?>"><?= Warehouse::getLabel('add_to_cart') ?></a>
 					</div>
 				</div>
 			</div>

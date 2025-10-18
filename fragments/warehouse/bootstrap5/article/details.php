@@ -10,6 +10,13 @@ $article = $this->getVar('article');
 if (!$article instanceof Article) {
     return;
 }
+
+// Include frontend CSS once per page
+static $frontendCssIncluded = false;
+if (!$frontendCssIncluded) {
+    echo '<link rel="stylesheet" href="' . rex_url::addonAssets('warehouse', 'css/frontend.css') . '">';
+    $frontendCssIncluded = true;
+}
 /** @var Category $category */
 $category = $article->getCategory();
 $variants = [];
@@ -128,7 +135,7 @@ if (Warehouse::isBulkPricesEnabled()) {
                                         data-warehouse-quantity-switch="+1"
                                         data-warehouse-quantity-input="warehouse_count_<?= $article->getId() ?>">[+]</button>
                             </div>
-                            <button type="submit" name="submit" value="cart" class="btn btn-secondary"><?= Warehouse::getLabel('add_to_cart') ?></button>
+                            <button type="submit" name="submit" value="cart" class="btn btn-secondary" data-warehouse-success-text="<?= Warehouse::getLabel('add_to_cart_success') ?>"><?= Warehouse::getLabel('add_to_cart') ?></button>
                             <?php if (Warehouse::getConfig('instant_checkout_enabled', 1)) : ?>
                             <button type="submit" name="submit" value="checkout" class="btn btn-primary"><?= Warehouse::getLabel('checkout_instant') ?></button>
                             <?php endif; ?>

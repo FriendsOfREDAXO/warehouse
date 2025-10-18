@@ -34,6 +34,22 @@
     // Make globally available for backward compatibility
     window.updateGlobalCartCount = updateGlobalCartCount;
 
+    /**
+     * Animates the cart button in the header with a zoom effect
+     */
+    function animateCartButton() {
+        const cartButtons = document.querySelectorAll('[data-warehouse-cart-count]');
+        cartButtons.forEach(button => {
+            const parentElement = button.closest('a, button');
+            if (parentElement) {
+                parentElement.classList.add('warehouse-cart-zoom');
+                setTimeout(() => {
+                    parentElement.classList.remove('warehouse-cart-zoom');
+                }, 400);
+            }
+        });
+    }
+
     // ========================================
     // Cart API Communication
     // ========================================
@@ -650,6 +666,9 @@
 
                     // Determine if instant checkout was clicked
                     const isInstantCheckout = submitValue === 'checkout';
+                    
+                    // Get the clicked submit button
+                    const clickedButton = e.submitter || Array.from(detailForm.querySelectorAll('button[type="submit"]')).find(btn => btn.value === submitValue);
 
                     updateCart('add', articleId, variantId, orderCount, null,
                         (data) => {
@@ -663,10 +682,30 @@
                                     console.error('Warehouse: Checkout URL not configured in form data attribute');
                                 }
                             } else {
-                                // Optional: Show success feedback
-                                const submitBtn = detailForm.querySelector('button[type="submit"]:focus');
-                                if (submitBtn) {
-                                    submitBtn.blur();
+                                // Show success feedback on the add to cart button
+                                if (clickedButton && clickedButton.getAttribute('value') === 'cart') {
+                                    const originalText = clickedButton.textContent;
+                                    const successText = clickedButton.dataset.warehouseSuccessText || 'Zum Warenkorb hinzugefügt';
+                                    
+                                    // Change button text and style
+                                    clickedButton.textContent = successText;
+                                    clickedButton.classList.add('warehouse-btn-success-feedback');
+                                    clickedButton.disabled = true;
+                                    
+                                    // Animate cart button in header
+                                    animateCartButton();
+                                    
+                                    // Reset button after 2 seconds
+                                    setTimeout(() => {
+                                        clickedButton.textContent = originalText;
+                                        clickedButton.classList.remove('warehouse-btn-success-feedback');
+                                        clickedButton.disabled = false;
+                                    }, 2000);
+                                }
+                                
+                                // Blur the button
+                                if (clickedButton) {
+                                    clickedButton.blur();
                                 }
                             }
                         }
@@ -751,6 +790,64 @@
     }
 
     // ========================================
+    // Add to Cart Links (for category list view)
+    // ========================================
+    
+    function initAddToCartLinks() {
+        // Find all links that have action=add_to_cart in their href
+        const addToCartLinks = document.querySelectorAll('a[href*="action=add_to_cart"]');
+        
+        addToCartLinks.forEach(link => {
+            // Skip if already initialized
+            if (link.hasAttribute(INIT_ATTR)) return;
+            
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Parse URL to extract parameters
+                const url = new URL(this.href, window.location.origin);
+                const params = new URLSearchParams(url.search);
+                
+                const artId = params.get('art_id');
+                const orderCount = params.get('order_count') || 1;
+                
+                if (artId) {
+                    // Show loading state on the link
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+                    this.classList.add('disabled');
+                    
+                    // Call API to add to cart
+                    updateCart('add', artId, null, orderCount, null,
+                        (data) => {
+                            // Reset link state
+                            this.innerHTML = originalText;
+                            this.classList.remove('disabled');
+                            
+                            // Optional: Show success feedback if configured
+                            const successText = this.dataset.warehouseSuccessText;
+                            if (successText) {
+                                this.innerHTML = successText;
+                                setTimeout(() => {
+                                    this.innerHTML = originalText;
+                                }, 1500);
+                            }
+                        },
+                        (error) => {
+                            // Reset link state on error
+                            this.innerHTML = originalText;
+                            this.classList.remove('disabled');
+                        }
+                    );
+                }
+            });
+            
+            // Mark as initialized
+            link.setAttribute(INIT_ATTR, 'true');
+        });
+    }
+
+    // ========================================
     // Initialize All Components
     // ========================================
     
@@ -760,6 +857,7 @@
         initCartTable();
         initArticleDetail();
         initCheckoutForm();
+        initAddToCartLinks();
     }
 
     // Run on DOMContentLoaded

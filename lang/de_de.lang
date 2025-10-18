@@ -495,6 +495,9 @@ warehouse.settings.label_back_to_address = Zurück zur Adresseingabe
 warehouse.settings.label_back_to_payment = Zurück zur Zahlungsauswahl
 warehouse.settings.label_continue_to_payment = Weiter zur Zahlung
 warehouse.settings.label_continue_to_summary = Weiter zur Bestellübersicht
+warehouse.settings.label_add_to_cart = In den Warenkorb
+warehouse.settings.label_add_to_cart_success = Hinzugefügt!
+warehouse.settings.label_add_to_order = In die Bestellung
 
 warehouse.settings.label_payment_options = Bezahloptionen
 warehouse.settings.label_paymentoptions = {0}
