@@ -490,6 +490,9 @@ warehouse.settings.label_cart_subtotal = Zwischensumme
 warehouse.settings.label_cart_total = Summe
 warehouse.settings.label_cart_total_weight = Gesamtgewicht
 warehouse.settings.label_next = Weiter
+warehouse.settings.label_add_to_cart = In den Warenkorb
+warehouse.settings.label_add_to_cart_success = Hinzugefügt!
+warehouse.settings.label_add_to_order = In die Bestellung
 
 warehouse.settings.label_payment_options = Bezahloptionen
 warehouse.settings.label_paymentoptions = {0}
