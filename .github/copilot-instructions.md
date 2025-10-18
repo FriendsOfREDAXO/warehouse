@@ -90,11 +90,11 @@ git commit -m "Feature: Description"  # Commit with message
 
 2. **Install in REDAXO**:
    ```bash
-   # Copy add-on to REDAXO (from warehouse directory)
+   # Copy add-on to REDAXO (run from warehouse directory)
    cp -r . /path/to/redaxo/redaxo/src/addons/warehouse/
    
-   # Or with explicit source path:
-   # cp -r /path/to/warehouse/* /path/to/redaxo/redaxo/src/addons/warehouse/
+   # Or with explicit source path (includes hidden files):
+   # rsync -a /path/to/warehouse/ /path/to/redaxo/redaxo/src/addons/warehouse/
    
    # Then in REDAXO Backend:
    # AddOns → Warehouse → Install
@@ -667,8 +667,8 @@ Die Regeln basieren auf der REDAXO PHP-CS-Fixer-Konfiguration (`redaxo/php-cs-fi
 
 #### 1. Installation Testing
 ```bash
-# Add-on in REDAXO-Testumgebung kopieren
-cp -r /path/to/warehouse/* /path/to/redaxo/redaxo/src/addons/warehouse/
+# Add-on in REDAXO-Testumgebung kopieren (inkl. versteckter Dateien)
+rsync -a /path/to/warehouse/ /path/to/redaxo/redaxo/src/addons/warehouse/
 
 # Im REDAXO Backend:
 # - AddOns → Warehouse → Installieren
@@ -745,8 +745,8 @@ composer cs-dry
 # Add-on in Test-REDAXO installieren (aus dem warehouse Verzeichnis)
 cp -r . /path/to/redaxo/redaxo/src/addons/warehouse/
 
-# Oder mit explizitem Quellpfad:
-# cp -r /path/to/warehouse/* /path/to/redaxo/redaxo/src/addons/warehouse/
+# Oder mit rsync (empfohlen, inkl. versteckter Dateien):
+# rsync -a /path/to/warehouse/ /path/to/redaxo/redaxo/src/addons/warehouse/
 
 # Im REDAXO Backend:
 # - AddOns → Warehouse → Re-installieren oder Update
