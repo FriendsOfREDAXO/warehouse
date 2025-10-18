@@ -50,7 +50,7 @@ if (rex_addon::get('yform')->isAvailable() && rex_addon::get('tracks')->isAvaila
     } else {
 
         // Domain-Profil existiert bereits
-        echo rex_view::error('Es existiert bereits ein Domain-Profil. Bitte löschen Sie dieses, um die Struktur und das Domain-Profil erneut zu initialisieren.');
+        Logger::log('install', 'Es existiert bereits ein Domain-Profil. Bitte löschen Sie dieses, um die Struktur und das Domain-Profil erneut zu initialisieren.');
 
     }
 }
