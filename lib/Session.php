@@ -179,17 +179,17 @@ class Session extends rex_request
         $order->setCreateDate(date('Y-m-d H:i:s'));
         
         // Use customer data from cart or fallback to user_data
-        $order->setFirstname($customer['firstname'] ?? '');
-        $order->setLastname($customer['lastname'] ?? '');
-        $order->setAddress($customer['address']  ?? '');
-        $order->setZip($customer['zip'] ?? '');
-        $order->setCity($customer['city'] ?? '');
-        $order->setEmail($customer['email'] ?? '');
+        $order->setFirstname($customer[Customer::FIRSTNAME] ?? '');
+        $order->setLastname($customer[Customer::LASTNAME] ?? '');
+        $order->setAddress($customer[Customer::ADDRESS]  ?? '');
+        $order->setZip($customer[Customer::ZIP] ?? '');
+        $order->setCity($customer[Customer::CITY] ?? '');
+        $order->setEmail($customer[Customer::EMAIL] ?? '');
 
         if (class_exists('rex_addon') && rex_addon::get('ycom')->isAvailable()) {
             $ycom_user = rex_ycom_auth::getUser();
             if ($ycom_user) {
-                $order->setValue('ycom_user_id', $ycom_user->getId());
+                $order->setValue(Order::YCOM_USER_ID, $ycom_user->getId());
             }
         }
 

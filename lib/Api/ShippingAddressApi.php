@@ -37,12 +37,12 @@ class ShippingAddressApi extends rex_api_function
     private function saveShippingAddress(): void
     {
         $shippingData = [
-            'firstname' => rex_request('shipping_address_firstname', 'string', ''),
-            'lastname' => rex_request('shipping_address_lastname', 'string', ''),
-            'company' => rex_request('shipping_address_company', 'string', ''),
-            'address' => rex_request('shipping_address_address', 'string', ''),
-            'zip' => rex_request('shipping_address_zip', 'string', ''),
-            'city' => rex_request('shipping_address_city', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::FIRSTNAME => rex_request('shipping_address_firstname', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::LASTNAME => rex_request('shipping_address_lastname', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::COMPANY => rex_request('shipping_address_company', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::ADDRESS => rex_request('shipping_address_address', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::ZIP => rex_request('shipping_address_zip', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::CITY => rex_request('shipping_address_city', 'string', ''),
             'country' => rex_request('shipping_address_country', 'string', ''),
         ];
 

@@ -37,16 +37,16 @@ class BillingAddressApi extends rex_api_function
     private function saveBillingAddress(): void
     {
         $billingData = [
-            'firstname' => rex_request('billing_address_firstname', 'string', ''),
-            'lastname' => rex_request('billing_address_lastname', 'string', ''),
-            'company' => rex_request('billing_address_company', 'string', ''),
-            'department' => rex_request('billing_address_department', 'string', ''),
-            'address' => rex_request('billing_address_address', 'string', ''),
-            'zip' => rex_request('billing_address_zip', 'string', ''),
-            'city' => rex_request('billing_address_city', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::FIRSTNAME => rex_request('billing_address_firstname', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::LASTNAME => rex_request('billing_address_lastname', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::COMPANY => rex_request('billing_address_company', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::DEPARTMENT => rex_request('billing_address_department', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::ADDRESS => rex_request('billing_address_address', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::ZIP => rex_request('billing_address_zip', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::CITY => rex_request('billing_address_city', 'string', ''),
             'country' => rex_request('billing_address_country', 'string', ''),
-            'email' => rex_request('billing_address_email', 'string', ''),
-            'phone' => rex_request('billing_address_phone', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::EMAIL => rex_request('billing_address_email', 'string', ''),
+            \FriendsOfRedaxo\Warehouse\Customer::PHONE => rex_request('billing_address_phone', 'string', ''),
         ];
 
         // Filter empty values

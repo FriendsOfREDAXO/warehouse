@@ -39,30 +39,30 @@ $yform->setValueField('html', ['', '<section><div class="row">']);
 $yform->setValueField('html', ['', '<div class="col-md-6">']);
 $yform->setValueField('html', ['', '<h4>' . Warehouse::getLabel('address_billing') . '</h4>']);
 
-$yform->setValueField('text', ['billing_address_firstname', Warehouse::getLabel('customer_firstname') . '*', $billing_data['firstname'] ?? $customer?->getFirstname() ?? '', '', ['required' => 'required']]);
+$yform->setValueField('text', ['billing_address_firstname', Warehouse::getLabel('customer_firstname') . '*', $billing_data[Customer::FIRSTNAME] ?? $customer?->getFirstname() ?? '', '', ['required' => 'required']]);
 $yform->setValidateField('empty', ['billing_address_firstname', Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', ['billing_address_lastname', Warehouse::getLabel('customer_lastname') . '*', $billing_data['lastname'] ?? $customer?->getLastname() ?? '', '', ['required' => 'required']]);
+$yform->setValueField('text', ['billing_address_lastname', Warehouse::getLabel('customer_lastname') . '*', $billing_data[Customer::LASTNAME] ?? $customer?->getLastname() ?? '', '', ['required' => 'required']]);
 $yform->setValidateField('empty', ['billing_address_lastname', Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', ['billing_address_company', Warehouse::getLabel('customer_company'), $billing_data['company'] ?? $customer?->getCompany() ?? '', '']);
+$yform->setValueField('text', ['billing_address_company', Warehouse::getLabel('customer_company'), $billing_data[Customer::COMPANY] ?? $customer?->getCompany() ?? '', '']);
 
-$yform->setValueField('text', ['billing_address_department', Warehouse::getLabel('customer_department'), $billing_data['department'] ?? $customer?->getDepartment() ?? '', '']);
+$yform->setValueField('text', ['billing_address_department', Warehouse::getLabel('customer_department'), $billing_data[Customer::DEPARTMENT] ?? $customer?->getDepartment() ?? '', '']);
 
-$yform->setValueField('text', ['billing_address_address', Warehouse::getLabel('address_address') . '*', $billing_data['address'] ?? $customer?->getAddress() ?? '', '', ['required' => 'required']]);
+$yform->setValueField('text', ['billing_address_address', Warehouse::getLabel('address_address') . '*', $billing_data[Customer::ADDRESS] ?? $customer?->getAddress() ?? '', '', ['required' => 'required']]);
 $yform->setValidateField('empty', ['billing_address_address', Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', ['billing_address_zip', Warehouse::getLabel('address_zip') . '*', $billing_data['zip'] ?? $customer?->getZip() ?? '', '', ['required' => 'required']]);
+$yform->setValueField('text', ['billing_address_zip', Warehouse::getLabel('address_zip') . '*', $billing_data[Customer::ZIP] ?? $customer?->getZip() ?? '', '', ['required' => 'required']]);
 $yform->setValidateField('empty', ['billing_address_zip', Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', ['billing_address_city', Warehouse::getLabel('address_city') . '*', $billing_data['city'] ?? $customer?->getCity() ?? '', '', ['required' => 'required']]);
+$yform->setValueField('text', ['billing_address_city', Warehouse::getLabel('address_city') . '*', $billing_data[Customer::CITY] ?? $customer?->getCity() ?? '', '', ['required' => 'required']]);
 $yform->setValidateField('empty', ['billing_address_city', Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', ['billing_address_email', Warehouse::getLabel('customer_email') . '*', $billing_data['email'] ?? $customer?->getEmail() ?? '', '', ['required' => 'required']]);
+$yform->setValueField('text', ['billing_address_email', Warehouse::getLabel('customer_email') . '*', $billing_data[Customer::EMAIL] ?? $customer?->getEmail() ?? '', '', ['required' => 'required']]);
 $yform->setValidateField('empty', ['billing_address_email', Warehouse::getLabel('validation_required_fields')]);
 $yform->setValidateField('type', ['billing_address_email', 'email', Warehouse::getLabel('validation_email_invalid')]);
 
-$yform->setValueField('text', ['billing_address_phone', Warehouse::getLabel('customer_phone'), $billing_data['phone'] ?? $customer?->getPhone() ?? '', '']);
+$yform->setValueField('text', ['billing_address_phone', Warehouse::getLabel('customer_phone'), $billing_data[Customer::PHONE] ?? $customer?->getPhone() ?? '', '']);
 
 $yform->setValueField('html', ['', '</div>']);
 
@@ -75,17 +75,17 @@ $yform->setValueField('html', ['', '</div>']);
 $yform->setValueField('html', ['', '<div data-warehouse-shipping-fields data-warehouse-has-data="' . (!empty($shipping_data) ? 'true' : 'false') . '" style="display: none;">']);
 $yform->setValueField('html', ['', '<h4>' . Warehouse::getLabel('address_shipping') . '</h4>']);
 
-$yform->setValueField('text', ['shipping_address_firstname', Warehouse::getLabel('customer_firstname'), $shipping_data['firstname'] ?? $customer_shipping_address?->getName() ?? '', '']);
+$yform->setValueField('text', ['shipping_address_firstname', Warehouse::getLabel('customer_firstname'), $shipping_data[Customer::FIRSTNAME] ?? $customer_shipping_address?->getName() ?? '', '']);
 
-$yform->setValueField('text', ['shipping_address_lastname', Warehouse::getLabel('customer_lastname'), $shipping_data['lastname'] ?? '', '']);
+$yform->setValueField('text', ['shipping_address_lastname', Warehouse::getLabel('customer_lastname'), $shipping_data[Customer::LASTNAME] ?? '', '']);
 
-$yform->setValueField('text', ['shipping_address_company', Warehouse::getLabel('customer_company'), $shipping_data['company'] ?? $customer_shipping_address?->getCompany() ?? '', '']);
+$yform->setValueField('text', ['shipping_address_company', Warehouse::getLabel('customer_company'), $shipping_data[Customer::COMPANY] ?? $customer_shipping_address?->getCompany() ?? '', '']);
 
-$yform->setValueField('text', ['shipping_address_address', Warehouse::getLabel('address_address'), $shipping_data['address'] ?? $customer_shipping_address?->getStreet() ?? '', '']);
+$yform->setValueField('text', ['shipping_address_address', Warehouse::getLabel('address_address'), $shipping_data[Customer::ADDRESS] ?? $customer_shipping_address?->getStreet() ?? '', '']);
 
-$yform->setValueField('text', ['shipping_address_zip', Warehouse::getLabel('address_zip'), $shipping_data['zip'] ?? $customer_shipping_address?->getZip() ?? '', '']);
+$yform->setValueField('text', ['shipping_address_zip', Warehouse::getLabel('address_zip'), $shipping_data[Customer::ZIP] ?? $customer_shipping_address?->getZip() ?? '', '']);
 
-$yform->setValueField('text', ['shipping_address_city', Warehouse::getLabel('address_city'), $shipping_data['city'] ?? $customer_shipping_address?->getCity() ?? '', '']);
+$yform->setValueField('text', ['shipping_address_city', Warehouse::getLabel('address_city'), $shipping_data[Customer::CITY] ?? $customer_shipping_address?->getCity() ?? '', '']);
 
 $yform->setValueField('html', ['', '</div>']); // close shipping fields
 
