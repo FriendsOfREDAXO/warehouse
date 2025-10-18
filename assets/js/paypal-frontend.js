@@ -56,9 +56,15 @@ function showPayPalErrorModal(message, detailedError = null) {
             modalBody.appendChild(details);
         }
         
-        // Show the modal using Bootstrap 5
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
+        // Show the modal using Bootstrap 5, if available
+        if (window.bootstrap && typeof window.bootstrap.Modal === "function") {
+            const modal = new window.bootstrap.Modal(modalElement);
+            modal.show();
+        } else {
+            // Fallback if Bootstrap's JS is not available
+            console.error("PayPal Error (Bootstrap modal unavailable):", message, detailedError);
+            alert(message);
+        }
     } else {
         // Fallback if modal is not available
         console.error("PayPal Error:", message, detailedError);
