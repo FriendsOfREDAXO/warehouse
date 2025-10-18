@@ -21,7 +21,7 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 				<?php if ($cart->isEmpty()) { ?>
 				<div class="card-body">
 					<p class="text-center">
-						<?= rex_i18n::msg('warehouse.cart_empty') ?>
+						<?= Warehouse::getLabel('cart_empty') ?>
 					</p>
 				</div>
 				<?php } ?>
