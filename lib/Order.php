@@ -696,7 +696,7 @@ class Order extends rex_yform_manager_dataset
 
         // Get current domain and add its data as hidden fields
         $domain = Domain::getCurrent();
-        if ($domain) {
+        if (null !== $domain) {
             $yform->setValueField('hidden', ['domain_id', $domain->getId()]);
             $yform->setValueField('hidden', ['email_from_email', $domain->getEmailFromEmail() ?? '']);
             $yform->setValueField('hidden', ['email_from_name', $domain->getEmailFromName() ?? '']);

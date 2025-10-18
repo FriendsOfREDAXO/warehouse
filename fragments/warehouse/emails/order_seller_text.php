@@ -5,6 +5,7 @@ namespace FriendsOfRedaxo\Warehouse;
 /** @var rex_fragment $this */
 
 $order_id = $this->getVar('order_id', null);
+// Available for future use: domain settings and email sender information
 $domain_id = $this->getVar('domain_id', null);
 $email_from_email = $this->getVar('email_from_email', '');
 $email_from_name = $this->getVar('email_from_name', '');
@@ -17,13 +18,13 @@ if (!$order) {
 ?>
 Wir haben folgende Bestellung erhalten:
 
-<?php echo Warehouse::getOrderAsText($order_id); ?>
+<?= Warehouse::getOrderAsText($order_id) ?>
 
 
-<?php echo Warehouse::getCustomerDataAsText($order_id); ?>
+<?= Warehouse::getCustomerDataAsText($order_id) ?>
 
 
-<?php if ($order->getPaymentId() == "prepayment") : ?>
+<?php if ('prepayment' == $order->getPaymentId()) : ?>
 Gewünschte Zahlungsweise: Vorkasse
 <?php endif ?>
 
