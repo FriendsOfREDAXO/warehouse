@@ -69,8 +69,8 @@ data-warehouse-amount="1"
 data-warehouse-original-text="+">+</button>
 </div>
 </td>
-<td class="align-right" data-warehouse-item-total="<?= $item_key ?>">
-<?= Warehouse::formatCurrency($item['total']) ?>
+<td class="align-right">
+<output data-warehouse-item-total="<?= $item_key ?>"><?= Warehouse::formatCurrency($item['total']) ?></output>
 </td>
 <td>
 <button type="button" class="btn btn-outline-danger btn-sm px-2 py-0"
@@ -82,46 +82,54 @@ data-warehouse-confirm="<?= rex_escape(Warehouse::getLabel('cart_remove_item_con
 		<?php endforeach; ?>
 		<!-- Netto/Brutto-Ausgabe im Tabellen-Cart -->
 		<tr>
-			<td class="align-left">Zwischensumme
-				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
+			<td class="align-left">
+				<label for="cart-subtotal-output">Zwischensumme
+					(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
+				</label>
 			</td>
 			<td></td>
 			<td></td>
-			<td class="align-right" data-warehouse-table-subtotal data-warehouse-cart-subtotal-by-mode>
-				<?= Cart::getSubTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="align-left">MwSt.</td>
-			<td></td>
-			<td></td>
-			<td class="align-right" data-warehouse-cart-tax>
-				<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
+			<td class="align-right">
+				<output id="cart-subtotal-output" data-warehouse-table-subtotal data-warehouse-cart-subtotal-by-mode><?= Cart::getSubTotalByModeFormatted(Warehouse::getPriceInputMode()) ?></output>
 			</td>
 			<td></td>
 		</tr>
 		<tr>
 			<td class="align-left">
-				<?= Warehouse::getLabel('shipping_costs') ?>
+				<label for="cart-tax-output">MwSt.</label>
+			</td>
+			<td></td>
+			<td></td>
+			<td class="align-right">
+				<output id="cart-tax-output" data-warehouse-cart-tax><?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?></output>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="align-left">
+				<label for="cart-shipping-output">
+					<?= Warehouse::getLabel('shipping_costs') ?>
+				</label>
 				<a class="text-decoration-none" href="#" data-bs-toggle="modal"
 					data-bs-target="#warehouseShippingCostModal">ℹ️</a>
 			</td>
 			<td></td>
 			<td></td>
-			<td class="align-right" data-warehouse-cart-shipping>
-				<?= Shipping::getCostFormatted() ?>
+			<td class="align-right">
+				<output id="cart-shipping-output" data-warehouse-cart-shipping><?= Shipping::getCostFormatted() ?></output>
 			</td>
 			<td></td>
 		</tr>
 		<tr>
-			<td class="align-left"><?= Warehouse::getLabel('total') ?>
-				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
+			<td class="align-left">
+				<label for="cart-total-output"><?= Warehouse::getLabel('total') ?>
+					(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
+				</label>
 			</td>
 			<td></td>
 			<td></td>
-			<td class="align-right fw-bolder" data-warehouse-cart-total>
-				<?= Cart::getCartTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
+			<td class="align-right fw-bolder">
+				<output id="cart-total-output" data-warehouse-cart-total><?= Cart::getCartTotalByModeFormatted(Warehouse::getPriceInputMode()) ?></output>
 			</td>
 			<td></td>
 		</tr>
