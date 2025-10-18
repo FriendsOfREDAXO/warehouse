@@ -32,12 +32,12 @@ $shipping_data = Session::getShippingAddressData();
                 <div class="row align-items-center">
                     <div class="col-auto">
                         <?php if (isset($item['image']) && $item['image']) : ?>
-                        <img src="/images/products/<?= $item['image'] ?>" alt="<?= $item['name'] ?>" class="img-fluid" style="max-width: 80px;">
+                        <img src="/images/products/<?= htmlspecialchars($item['image'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars(html_entity_decode($item['name']), ENT_QUOTES, 'UTF-8') ?>" class="img-fluid" style="max-width: 80px;">
                         <?php endif ?>
                     </div>
                     <div class="col">
                         <div class="text-muted small">
-                            <?= $item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : '') ?>
+                            <?= htmlspecialchars($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : ''), ENT_QUOTES, 'UTF-8') ?>
                         </div>
                         <div><?= html_entity_decode($item['name']) ?></div>
                         <?php if ($item['type'] === 'variant'): ?>
@@ -46,7 +46,7 @@ $shipping_data = Session::getShippingAddressData();
                         <?php if (isset($item['attributes']) && count($item['attributes']) > 0): ?>
                             <?php $attr_text = []; ?>
                             <?php foreach ($item['attributes'] as $attr) : ?>
-                                <?php $attr_text[] = $attr['value'] ?>
+                                <?php $attr_text[] = htmlspecialchars($attr['value'], ENT_QUOTES, 'UTF-8') ?>
                             <?php endforeach ?>
                             <small class="text-muted d-block"><?= implode(' - ', $attr_text) ?></small>
                         <?php endif; ?>
