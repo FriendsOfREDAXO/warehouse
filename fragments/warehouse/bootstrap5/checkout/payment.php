@@ -33,29 +33,29 @@ $continue_to_summary_url = $domain?->getCheckoutUrl(['continue_with' => 'summary
             <a class="btn btn-outline-secondary"
                 href="<?= htmlspecialchars($back_to_address_url, ENT_QUOTES, 'UTF-8') ?>">
                 <i class="bi bi-arrow-left"></i>
-                <?= htmlspecialchars(rex_i18n::msg('warehouse.settings.label_back_to_address'), ENT_QUOTES, 'UTF-8') ?>
+                <?= htmlspecialchars(Warehouse::getLabel('back_to_address'), ENT_QUOTES, 'UTF-8') ?>
             </a>
             <a class="btn btn-primary"
                 href="<?= htmlspecialchars($continue_to_summary_url, ENT_QUOTES, 'UTF-8') ?>">
-                <?= htmlspecialchars(rex_i18n::msg('warehouse.settings.label_continue_to_summary'), ENT_QUOTES, 'UTF-8') ?>
+                <?= htmlspecialchars(Warehouse::getLabel('continue_to_summary'), ENT_QUOTES, 'UTF-8') ?>
                 <i class="bi bi-arrow-right"></i>
             </a>
         </div>
     </section>
     <section class="col-12">
         <h2><?= htmlspecialchars(Warehouse::getLabel('checkout_payment'), ENT_QUOTES, 'UTF-8') ?></h2>
-        <p><?= htmlspecialchars(rex_i18n::msg('warehouse.settings.label_payment_info_saved'), ENT_QUOTES, 'UTF-8') ?></p>
+        <p><?= htmlspecialchars(Warehouse::getLabel('payment_info_saved'), ENT_QUOTES, 'UTF-8') ?></p>
     </section>
     <section class="col-12 my-3">
         <div class="d-flex justify-content-between align-items-center">
             <a class="btn btn-outline-secondary"
                 href="<?= htmlspecialchars($back_to_address_url, ENT_QUOTES, 'UTF-8') ?>">
                 <i class="bi bi-arrow-left"></i>
-                <?= htmlspecialchars(rex_i18n::msg('warehouse.settings.label_back_to_address'), ENT_QUOTES, 'UTF-8') ?>
+                <?= htmlspecialchars(Warehouse::getLabel('back_to_address'), ENT_QUOTES, 'UTF-8') ?>
             </a>
             <a class="btn btn-primary"
                 href="<?= htmlspecialchars($continue_to_summary_url, ENT_QUOTES, 'UTF-8') ?>">
-                <?= htmlspecialchars(rex_i18n::msg('warehouse.settings.label_continue_to_summary'), ENT_QUOTES, 'UTF-8') ?>
+                <?= htmlspecialchars(Warehouse::getLabel('continue_to_summary'), ENT_QUOTES, 'UTF-8') ?>
                 <i class="bi bi-arrow-right"></i>
             </a>
         </div>
