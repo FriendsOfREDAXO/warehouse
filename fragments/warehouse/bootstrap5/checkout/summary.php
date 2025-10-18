@@ -15,6 +15,21 @@ $cart = Session::getCartData();
 $payment = Session::getPaymentData();
 $domain = Domain::getCurrent();
 $warehouse_cart_text = '';
+$ycom_mode = Warehouse::getConfig('ycom_mode', 'guest_only');
+
+?>
+<div class="row">
+    <section class="col-12 my-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <a class="btn btn-outline-secondary"
+                href="<?= $domain?->getCheckoutUrl(['continue_as' => $ycom_mode === 'guest_only' ? 'guest' : rex_get('continue_as', 'string', 'guest')]) ?? '' ?>">
+                <i class="bi bi-arrow-left"></i>
+                <?= Warehouse::getLabel('back_to_address') ?>
+            </a>
+        </div>
+    </section>
+</div>
+<?php
 
 $this->subfragment('warehouse/bootstrap5/checkout/order_summary_page.php');
 
@@ -28,6 +43,9 @@ $yform->setObjectparams('real_field_names', true);
 
 // Bestellübersicht anzeigen
 $yform->setValueField('html', ['', $warehouse_cart_text]);
+
+// Add back navigation button before form content
+$yform->setValueField('html', ['', '<div class="row"><section class="col-12 my-3"><div class="d-flex justify-content-between align-items-center"><a class="btn btn-outline-secondary" href="' . ($domain?->getCheckoutUrl(['continue_as' => $ycom_mode === 'guest_only' ? 'guest' : rex_get('continue_as', 'string', 'guest')]) ?? '') . '"><i class="bi bi-arrow-left"></i> ' . Warehouse::getLabel('back_to_address') . '</a></div></section></div>']);
 
 $yform->setValueField('privacy_policy', ['agb', Warehouse::getLabel('legal_agb_privacy'), '0,1', '0']);
 $yform->setValidateField('empty', ['agb', Warehouse::getLabel('validation_agb_required')]);

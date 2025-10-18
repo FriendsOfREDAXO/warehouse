@@ -10,6 +10,15 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
 $domain = Domain::getCurrent();
 ?>
 <div class="row">
+    <section class="col-12 my-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <a class="btn btn-outline-secondary"
+                href="<?= $domain?->getCartArtUrl() ?? '' ?>">
+                <i class="bi bi-arrow-left"></i>
+                <?= Warehouse::getLabel('back_to_cart') ?>
+            </a>
+        </div>
+    </section>
     <section class="col-12 text-center">
         <h1><?= Warehouse::getLabel('checkout'); ?></h1>
         <p><?= Warehouse::getLabel('checkout_choose'); ?></p>
@@ -41,6 +50,14 @@ $domain = Domain::getCurrent();
                 </div>
             </div>
         </div>
-</div>
-</section>
+    </section>
+    <section class="col-12 my-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <a class="btn btn-outline-secondary"
+                href="<?= $domain?->getCartArtUrl() ?? '' ?>">
+                <i class="bi bi-arrow-left"></i>
+                <?= Warehouse::getLabel('back_to_cart') ?>
+            </a>
+        </div>
+    </section>
 </div>
