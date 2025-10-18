@@ -639,7 +639,7 @@ warehouse.payment_status.pending = ⌛ In afwachting
 warehouse.payment_status.completed = ✅ Voltooid
 warehouse.payment_status.failed = ❌ Mislukt
 warehouse.payment_status.cancelled = ❌ Geannuleerd
-warehouse.payment_status.refunded = ✅ Terugbet aald
+warehouse.payment_status.refunded = ✅ Terugbetaald
 
 # PayPal Error Handling
 warehouse.paypal.error_modal_title = Betaling mislukt
