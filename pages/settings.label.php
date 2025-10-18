@@ -133,13 +133,26 @@ foreach ($allFields as [$name, $label, $type]) {
         $field = $form->addInputField('text', $name, null, ['class' => 'form-control']);
         $field->setLabel($label);
     }
-    if (strpos($name, 'cart_') !== false || $name === 'label_add_to_cart' || $name === 'label_add_to_cart_success') {
+    // Explicit field mappings for special cases
+    $explicitMappings = [
+        'label_add_to_cart' => 'cart',
+        'label_add_to_cart_success' => 'cart',
+        'label_back' => 'checkout',
+        'label_back_to_address' => 'checkout',
+        'label_back_to_payment' => 'checkout',
+        'label_continue_to_payment' => 'checkout',
+        'label_continue_to_summary' => 'checkout',
+    ];
+    
+    if (isset($explicitMappings[$name])) {
+        $formFields[$explicitMappings[$name]][] = $field;
+    } elseif (strpos($name, 'cart_') !== false) {
         $formFields['cart'][] = $field;
-    } elseif (strpos($name, 'checkout_') !== false || $name === 'label_back' || $name === 'label_back_to_address' || $name === 'label_back_to_payment' || $name === 'label_continue_to_payment' || $name === 'label_continue_to_summary') {
+    } elseif (strpos($name, 'checkout_') !== false) {
         $formFields['checkout'][] = $field;
     } elseif (strpos($name, 'customer_') !== false) {
         $formFields['customer'][] = $field;
-    } elseif (strpos($name, 'address_') !== false && $name !== 'label_back_to_address') {
+    } elseif (strpos($name, 'address_') !== false) {
         $formFields['address'][] = $field;
     } elseif (strpos($name, 'product_') !== false || strpos($name, 'order_') !== false || strpos($name, 'tax_') !== false || strpos($name, 'total_') !== false || strpos($name, 'validation_') !== false || strpos($name, 'legal_') !== false) {
         $formFields['product'][] = $field;
@@ -147,7 +160,7 @@ foreach ($allFields as [$name, $label, $type]) {
         $formFields['shipping'][] = $field;
     } elseif (strpos($name, 'paymentoptions_') !== false) {
         $formFields['paymentoptions'][] = $field;
-    } elseif (strpos($name, 'payment_') !== false && $name !== 'label_back_to_payment' && $name !== 'label_continue_to_payment') {
+    } elseif (strpos($name, 'payment_') !== false) {
         $formFields['payment'][] = $field;
     } else {
         $formFields['other'][] = $field;
