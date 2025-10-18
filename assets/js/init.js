@@ -138,7 +138,7 @@
             // Initialize tooltips if Bootstrap is available
             if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
                 const tooltipTriggerList = cartPageContainer.querySelectorAll('[data-bs-toggle="tooltip"]');
-                [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+                [...tooltipTriggerList].forEach(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
             }
 
             // Handle quantity button clicks
