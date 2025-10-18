@@ -1,0 +1,649 @@
+# V1
+warehouse_iso_code = ISO-kod
+warehouse_iso2 = ISO-kod2
+warehouse_iso3 = ISO-kod3
+warehouse_is_eu = EU-land
+warehouse_shipping_zone = Leveranszon
+warehouse_phone_code = Landskod
+warehouse_shipping_calculation_mode = Beräkning
+
+warehouse_tax_ust_ident = Skatt [Moms-ID]
+warehouse_tax_disable_by_ust_ident = Skattefrihet med moms-ID
+warehouse_tax = Skatt
+warehouse_tax_tax_disable = Allmän skattefrihet
+
+# v2.0.0
+warehouse.title = Butik
+warehouse_module = Warehouse - Butik
+
+warehouse.module.title = Rubrik
+warehouse.module.description = Text
+warehouse.module.select.default = Vänligen välj
+
+# V2.0.0
+# Permissions
+warehouse = Warehouse: Åtkomst till alla områden
+warehouse[settings] = Warehouse: Inställningar
+warehouse[shipping] = Warehouse: Leveransinställningar
+
+# V2.0.0
+# Backend Pages
+
+warehouse_order_dashboard = Instrumentpanel
+warehouse_order = Beställningar
+warehouse_order_list = Beställningar
+warehouse_order_details = Beställningsdetaljer
+warehouse_customer = Registrerade kunder
+warehouse_customer_address = Leveransadresser
+warehouse_article = Artiklar
+warehouse_article_variant = Varianter
+warehouse_category = Kategorier
+warehouse_search = Sök
+warehouse_country = Länder
+warehouse_shipping = Leverans
+warehouse_settings = Administration
+warehouse_settings_shop = Inställningar
+warehouse_settings_payment = Betalning
+warehouse_settings_general = Allmänna inställningar
+warehouse_settings_domain = Domänprofiler
+warehouse_settings_tax = Skatter
+warehouse_settings_log = Logg
+warehouse_settings_discount = Rabatter
+warehouse_settings_documents = Dokument
+warehouse_settings_label = Text
+warehouse_settings_setup = Installation
+warehouse_docs = Hjälp
+
+warehouse_docs.README = Intro
+warehouse_docs.warehouse_article = Artiklar
+warehouse_docs.warehouse_article_variant = Varianter
+warehouse_docs.warehouse_category = Kategorier
+warehouse_docs.order = Beställningar
+warehouse_docs.settings.setup = Installation
+warehouse_docs.settings.general = Allmänna inställningar
+warehouse_docs.settings.shipping = Leverans
+warehouse_docs.settings.payment = Betalning
+warehouse_docs.settings.domain = Domän
+warehouse_docs.settings.discount = Rabatter
+warehouse_docs.customer = Kunder (YCom)
+warehouse_docs.domain = Domän
+warehouse_docs.search = Sök
+warehouse_docs.shipping = Leverans
+warehouse_docs.warehouse_extend = Utöka Warehouse
+ 
+
+# Warehouse Settings: General Settings
+
+warehouse.settings.general.info = Välkommen till Warehouse 2.0 - några grundinställningar har ställts in vid installationen. Bekanta dig med ändringarna från Warehouse 1.0 i hjälpavsnittet.
+
+warehouse.settings.editor = WYSIWYG-editor
+warehouse.settings.editor.notice = t.ex. <code>class="form-control redactor-editor--default"</code>
+
+warehouse.settings.currency = Valuta
+warehouse.settings.currency_symbol = Valutasymbol (t.ex. kr)
+warehouse.settings.currency_symbol.notice = <code>rex_config::get("warehouse","currency_symbol")</code>
+
+warehouse.settings.tax_options = Skattesatser
+warehouse.settings.tax_options.notice = Möjliga skattesatser för val i artiklar och varianter. Standard: <code>19,7,0</code> för 19%, 7% och 0% skattesats. Använd förlängningspunkten <code>WAREHOUSE_TAX_OPTIONS</code> för att ändra skattesatserna.
+
+warehouse.settings.shipping_allowed = Tillåtna länder för leverans
+
+warehouse.settings.cart_mode = Efter kundvagnsåtgärd
+warehouse.settings.cart_mode.notice = Kundvagnssidan kan öppnas eller föregående artikelsida. Om artikelsidan öppnas läggs showcart=1 till som get-parameter.
+
+warehouse.settings.instant_checkout_enabled = Aktivera "Köp nu"-knapp
+warehouse.settings.instant_checkout_enabled.notice = Om aktiverad visas en "Köp nu"-knapp på artikelsidor som leder direkt till kassan.
+warehouse.settings.yes = Ja
+warehouse.settings.no = Nej
+
+warehouse.ycom_modes.enforce = Beställning endast med kundkonto
+warehouse.ycom_modes.choose = Kunden väljer
+warehouse.ycom_modes.guest_only = Gästläge (Inget kundkonto krävs)
+
+warehouse.settings.enable_features = Ytterligare alternativ för artiklar och varianter
+warehouse.settings.enable_features.bulk_prices = Fråga efter bulkpriser
+warehouse.settings.enable_features.weight = Fråga efter artikelvikt
+warehouse.settings.enable_features.variants = Tillåt varianter
+warehouse.settings.enable_features.stock = Hantera lager
+warehouse.settings.enable_features.sku = Hantera SKU (artikelnummer)
+
+warehouse.settings.fallback_category_image = Standard kategoribild
+warehouse.settings.fallback_category_image.notice = Används när ingen bild finns tillgänglig för kategorin.
+
+warehouse.settings.fallback_article_image = Standard artikelbild
+warehouse.settings.fallback_article_image.notice = Används när ingen bild finns tillgänglig för artikeln eller varianten.
+
+warehouse.settings.invoice_number = Fakturanummer
+warehouse.settings.invoice_number.notice = Löpande nummer för nästa faktura. Ökas automatiskt vid skapande av faktura. Använd förlängningspunkten <code>WAREHOUSE_INVOICE_NUMBER</code> för att ändra nummreringen.
+warehouse.settings.delivery_note_number = Följesedelsnummer
+warehouse.settings.delivery_note_number.notice = Löpande nummer för nästa följesedel. Ökas automatiskt vid skapande av följesedel. Använd förlängningspunkten <code>WAREHOUSE_DELIVERY_NOTE_NUMBER</code> för att ändra nummreringen.
+warehouse.settings.order_number = Beställningsnummer
+warehouse.settings.order_number.notice = Löpande nummer för nästa beställning. Ökas automatiskt vid skapande av beställning. Använd förlängningspunkten <code>WAREHOUSE_ORDER_NUMBER</code> för att ändra nummreringen.
+
+# Warehouse Settings: Shipping costs
+
+warehouse.settings.shipping = Fraktkostnader
+warehouse.settings.shipping_fee = Fraktkostnader
+warehouse.settings.free_shipping_from = Fri frakt från
+warehouse.settings.minimum_order_value = Minsta beställningsvärde
+warehouse.settings.shipping_calculation_mode = Avancerade fraktkostnader
+warehouse.settings.shipping_calculation_mode.options.default = ingen (standard)
+warehouse.settings.shipping_calculation_mode.options.quantity = ANTAL: Trappstegade fraktkostnader efter antal
+warehouse.settings.shipping_calculation_mode.options.weight = VIKT: Trappstegade fraktkostnader efter vikt
+warehouse.settings.shipping_calculation_mode.options.order_total = BESTÄLLNINGSSUMMA: Trappstegade fraktkostnader efter beställningssumma
+
+# Warehouse Settings: Domain
+
+warehouse_settings_domain.fieldset_art_ids = Sidor
+warehouse_settings_domain.yrewrite_domain_id = Domän
+warehouse_settings_domain.cart_art_id = Kundvagn
+warehouse_settings_domain.checkout_art_id = Kassa
+warehouse_settings_domain.shippinginfo_art_id = Fraktinfo
+warehouse_settings_domain.order_art_id = Beställning
+warehouse_settings_domain.address_art_id = Adress
+warehouse_settings_domain.payment_error_art_id = Betalningsfel
+warehouse_settings_domain.thankyou_art_id = Tack
+
+warehouse_settings_domain.fieldset_email = E-postinställningar
+warehouse_settings_domain.email_template_customer = E-postmall till kund
+warehouse_settings_domain.email_template_seller = E-postmall till säljare
+warehouse_settings_domain.email_signature = E-postsignatur
+warehouse_settings_domain.order_email = Mottagare-e-post för beställningar
+warehouse_settings_domain.order_email.notice = Separera flera mottagare med kommatecken
+
+warehouse_settings_domain.fieldset_sepa = SEPA-överföring
+warehouse_settings_domain.sepa_account_holder_name = Kontoinnehavare
+warehouse_settings_domain.sepa_bank_name = Banknamn
+warehouse_settings_domain.sepa_bic = BIC
+warehouse_settings_domain.sepa_iban = IBAN
+
+warehouse_settings_domain.fieldset_end = 🔚
+
+# Warehouse Settings: Discounts
+
+warehouse.discount_info = Rabatter stöds för närvarande inte. Delta i utvecklingen på <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> för utveckling av ett avancerat rabattsystem bestående av: Fast rabatt, Fri frakt, Kampanjperioder, Kupongkoder och rabatter för vissa YCom-grupper.
+
+# YForm Tables: Table names
+
+warehouse_article.tablename = 📦 Artiklar
+warehouse_article_variant.tablename = 📦 Varianter
+warehouse_category.tablename = 📦 Kategorier
+warehouse_order.tablename = 📦 Beställningar
+# warehouse_country.tablename = 📦 Länder
+# warehouse_shipping.tablename = 📦 Leverans
+warehouse_settings_domain.tablename = 📦 Domäninställningar
+warehouse_customer_address.tablename = 📦 Adresser
+
+# YForm Table "Articles": Labels
+
+warehouse_article.name = Namn
+warehouse_article.category_id = Kategori
+warehouse_article.status = Status
+warehouse_article_status.active = 🟢 Aktiv
+warehouse_article_status.draft = 🟡 Utkast
+warehouse_article_status.hidden = 🔴 Dold
+warehouse_article.prio = Ordning
+warehouse_article.weight = Vikt
+warehouse_article.image = Bild
+warehouse_article.gallery = Galleri
+warehouse_article.short_text = Kort text
+warehouse_article.short_text.notice = Denna text används som teaser och även för SEO och bör därför inte vara längre än 160 tecken.
+warehouse_article.text = Text
+warehouse_article.price = Pris
+warehouse_article.price_text = Pristext
+warehouse_article.tax = Skatt
+warehouse.article.tax.none = Standard
+warehouse_article.createdate = Skapad
+warehouse_article.updatedate = Senast ändrad
+warehouse_article.variant_ids = Varianter
+warehouse_article.availability = Tillgänglighet
+warehouse_article.uuid = UUID
+warehouse_article.bulk_prices = Bulkpriser
+warehouse_article.stock = Lager
+warehouse_article.sku = SKU
+warehouse_article.sku.notice = Artikelnummer - om tomt används ID
+
+# YForm Table "Categories": Labels
+
+warehouse_category.status = Status
+warehouse_category.status.active = 🟢 Aktiv
+warehouse_category.status.draft = 🟡 Utkast
+warehouse_category.status.hidden = 🔴 Dold
+warehouse_category.name = Namn
+warehouse_category.teaser = Teaser
+warehouse_category.link_intern = Intern länk
+warehouse_category.prio = Ordning
+warehouse_category.image = Bild
+warehouse_category.text = Text
+warehouse_category.createdate = Skapad
+warehouse_category.updatedate = Senast ändrad
+warehouse_category.parent_id = Överordnad kategori
+warehouse_category.uuid = UUID
+
+# YForm Table "Article Variants": Labels
+
+warehouse_article_variant.article_id = Huvudartikel
+warehouse_article_variant.name = Namn
+warehouse_article_variant.price = Pris
+warehouse_article_variant.bulk_prices = Bulkpriser
+warehouse_article_variant.weight = Vikt
+warehouse_article_variant.bulk_prices.amount = Antal
+warehouse_article_variant.bulk_prices.price = Pris
+warehouse_article_variant.bulk_prices.weight = Vikt
+warehouse_article_varaint.stock = Lager
+warehouse_article_variant.prio = Ordning
+warehouse_article_variant.availability = Tillgänglighet
+warehouse_article_variant.status = Status
+warehouse_article_variant.status.active = 🟢 Aktiv
+warehouse_article_variant.status.draft = 🟡 Utkast
+warehouse_article_variant.status.hidden = 🔴 Dold
+warehouse_article_variant.image = Bild
+warehouse_article_variant.sku = SKU
+warehouse_article_variant.sku.notice = Artikelnummer - om tomt används ID
+warehouse_article_variant.uuid = UUID
+warehouse_article_variant.createdate = Skapad
+warehouse_article_variant.updatedate = Senast ändrad
+
+
+# YForm Table "Countries": Labels
+
+warehouse_country.code = Kod
+warehouse_country.name = Namn
+warehouse_country.mode = Läge
+warehouse_country.status = Status
+warehouse_country.prio = Ordning
+warehouse_country.tax = Skatt
+
+# YForm Table "Order": Labels
+
+warehouse_order.salutation = Hälsning
+warehouse_order.firstname = Förnamn
+warehouse_order.lastname = Efternamn
+warehouse_order.company = Företag
+warehouse_order.address = Adress
+warehouse_order.zip = Postnummer
+warehouse_order.city = Stad
+warehouse_order.country = Land
+warehouse_order.email = E-post
+warehouse_order.createdate = Beställningsdatum
+warehouse_order.paypal_id = PayPal-ID
+warehouse_order.payment_id = Betalnings-ID
+warehouse_order.paypal_confirm_token = PayPal-bekräftelsetoken
+warehouse_order.payment_confirm = Betalningsbekräftelse
+warehouse_order.order_no = Beställningsnummer
+warehouse_order.order_text = Beställningstext
+warehouse_order.order_json = Beställnings-JSON
+warehouse_order.order_total = Beställningssumma
+warehouse_order.ycom_user_id = YCom-användar-ID
+warehouse_order.payment_type = Betalningstyp
+warehouse_order.payed = Betald
+warehouse_order.not_payed = Ej betald
+warehouse_order.imported = Importerad
+warehouse_order.is_read = Läst
+warehouse_order.updatedate = Beställning startad...
+warehouse_order.payment_status = Betalningsstatus
+warehouse_order.payment_status.select = Välj betalningsstatus
+warehouse_order.shipping_status = Leveransstatus
+warehouse_order.shipping_status.select = Välj leveransstatus
+warehouse_order.buyer = Köpare
+warehouse_order.custom_order_id = Anpassat beställnings-ID
+
+# YForm Table "Shipping": Labels
+
+warehouse_shipping.name = Namn
+warehouse_shipping.mode = Läge
+warehouse_shipping.params = Parametrar
+
+# Warehouse Articles and Variants: Status
+
+warehouse_article.status.active = 🟢 Aktiv
+warehouse_article.status.draft = 🟡 Utkast
+warehouse_article.status.hidden = 🔴 Dold
+
+# Warehouse Articles and Variants: Availability
+
+warehouse_article.availability.BackOrder = 🟡 Restorder
+warehouse_article.availability.Discontinued = 🟡 Utgående
+warehouse_article.availability.InStock = 🟢 I lager
+warehouse_article.availability.InStoreOnly = 🟡 Endast i butik
+warehouse_article.availability.LimitedAvailability = 🟡 Begränsad tillgänglighet
+warehouse_article.availability.MadeToOrder = 🟡 Tillverkas på beställning
+warehouse_article.availability.OnlineOnly = 🟢 Endast online
+warehouse_article.availability.OutOfStock = 🔴 Ej i lager
+warehouse_article.availability.PreOrder = 🟢 Förbeställning
+warehouse_article.availability.PreSale = 🟢 Förköp
+warehouse_article.availability.Reserved = 🔴 Reserverad
+warehouse_article.availability.SoldOut = 🔴 Slutsåld
+
+warehouse_article_variant.availability.BackOrder = 🟡 Restorder
+warehouse_article_variant.availability.Discontinued = 🟡 Utgående
+warehouse_article_variant.availability.InStock = 🟢 I lager
+warehouse_article_variant.availability.InStoreOnly = 🟡 Endast i butik
+warehouse_article_variant.availability.LimitedAvailability = 🟡 Begränsad tillgänglighet
+warehouse_article_variant.availability.MadeToOrder = 🟡 Tillverkas på beställning
+warehouse_article_variant.availability.OnlineOnly = 🟢 Endast online
+warehouse_article_variant.availability.OutOfStock = 🔴 Ej i lager
+warehouse_article_variant.availability.PreOrder = 🟢 Förbeställning
+warehouse_article_variant.availability.PreSale = 🟢 Förköp
+warehouse_article_variant.availability.Reserved = 🔴 Reserverad
+warehouse_article_variant.availability.SoldOut = 🔴 Slutsåld
+
+warehouse.search.results = {0} poster hittades.
+warehouse.search.no_results = Inga poster hittades.
+
+warehouse.search.description = Sök i artiklar, kategorier och beställningar. Tips: Du kan också filtrera via <code>+</code>, <code>-</code>, t.ex. <code>+röd</code> för alla artiklar med ordet "röd" eller <code>+Max -Johansson</code> för alla beställningar från "Max" utan "Johansson".
+
+
+warehouse_quicknavigation_search_button = Sök
+warehouse_quicknavigation_search_placeholder = Ange sökterm
+
+warehouse_article.icon_label = Artikel
+warehouse_article_variant.icon_label = Variant
+warehouse_category.icon_label = Kategori
+warehouse_order.icon_label = Beställning
+
+# Warehouse Log
+warehouse.log.activated = Loggning har aktiverats.
+warehouse.log.deactivated = Loggning har inaktiverats.
+warehouse.log.warning_logisinactive = Loggning är för närvarande <b>inaktiverad</b>. <a href="{0}">Aktivera loggning</a>
+warehouse.log.warning_logisactive = Loggning är för närvarande <b>aktiv</b>. <a href="{0}">Inaktivera loggning</a>
+warehouse.log.time = Tid
+warehouse.log.ip = IP
+warehouse.log.user_id = Användar-ID
+warehouse.log.event = Händelse
+warehouse.log.params = Parametrar
+warehouse.log.user_ip = Användar-IP
+warehouse.log.type = Typ
+warehouse.log.email = E-post
+warehouse.log.delete_log_msg = Vill du verkligen radera loggen?
+warehouse.log.title = Loggfil: {0}
+
+# Warehouse Settings - Shipping
+
+warehouse.settings = Leveransinställningar
+warehouse.settings.shipping_costs = Fraktkostnader
+warehouse.settings.minimum_order_value = Minsta beställningsvärde
+warehouse.settings.shipping_fee = Fraktkostnader
+warehouse.settings.free_shipping_from = Fri frakt från
+warehouse.settings.shipping_calculation_mode = Beräkning av fraktkostnader
+
+warehouse.settings.shipping_calculation_mode.options.default = Fast pris (Standard)
+warehouse.settings.shipping_calculation_mode.options.quantity = Antal
+warehouse.settings.shipping_calculation_mode.options.weight = Vikt
+warehouse.settings.shipping_calculation_mode.options.order_total = Beställningssumma
+
+# Warehouse PayPal
+
+warehouse.settings.payment = Betalningsinställningar
+
+warehouse.settings.payment.store_name = Butiksnamn
+warehouse.settings.payment.store_name.notice = t.ex. <code>Anders Andersson AB</code>, överförs bland annat till PayPal.
+
+warehouse.settings.payment.store_country_code = Butikens landskod
+warehouse.settings.payment.store_country_code.notice = t.ex. <code>sv-SE</code> - överförs bland annat till PayPal.
+
+warehouse.settings.payment.paypal_client_id = PayPal Klient-ID
+warehouse.settings.payment.paypal_secret = PayPal Secret
+
+warehouse.settings.payment.sandboxmode = PayPal Sandbox
+warehouse.settings.payment.sandboxmode.option = Aktivera PayPal Sandbox (testbeställningar)
+
+warehouse.settings.payment.paypal_sandbox_client_id = PayPal Sandbox Klient-ID
+warehouse.settings.payment.paypal_sandbox_secret = PayPal Sandbox Secret
+
+warehouse.settings.payment.paypal_getparams = Ytterligare GET-parametrar för PayPal
+warehouse.settings.payment.paypal_getparams.notice = t.ex. för att använda underhåll under utveckling. Ange som JSON i formen <code>{"key1":"value1","key2":"value2"}</code>.
+
+warehouse.settings.payment.info = För närvarande stöds endast PayPal som betalningsleverantör. Delta i vidareutveckling på GitHub på <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a>.
+
+warehouse.settings.cart_mode.cart = Visa kundvagn
+warehouse.settings.cart_mode.page = Visa produktsida
+
+warehouse.order.details.error.no_data_id = Välj först en beställning från översikten eller sökningen.
+warehouse.order.details.error.order_not_found = Den begärda beställningen hittades inte.
+warehouse.order.details.error.invalid_payment_status = Ogiltig betalningsstatus.
+warehouse.order.details.error.invalid_shipping_status = Ogiltig leveransstatus.
+warehouse.order.details.error.invoice_generation_failed = Fel vid generering av faktura.
+warehouse.order.details.error.delivery_note_generation_failed = Fel vid generering av följesedel.
+warehouse.order.details.success.payment_status_updated = Betalningsstatus har uppdaterats.
+warehouse.order.details.success.shipping_status_updated = Leveransstatus har uppdaterats.
+warehouse.order.details.success.invoice_generated = Faktura har genererats.
+warehouse.order.details.success.delivery_note_generated = Följesedel har genererats.
+
+warehouse.settings.framework = Önskat output-ramverk
+warehouse.settings.framework.notice = För närvarande stöds endast Bootstrap 5. <code>bootstrap5</code> är standardvärdet. Du kan också kopiera mappen <code>src/addons/warehouse/fragments/bootstrap5</code> till <code>src/addons/project/fragments/bootstrap5</code> och anpassa den. Mer information i dokumentationen.
+
+warehouse.settings.container_class = CSS-containerklass
+warehouse.settings.container_class.notice = Definiera valfritt en CSS-containerklass, t.ex. <code>container</code>, <code>container-fluid</code>, <code>container-lg</code> osv. <code>container</code> används som standard. Lämna fältet tomt om ingen container ska användas.
+
+warehouse.settings.shipping_conditions_text = Villkor för fraktkostnader
+warehouse.settings.shipping_conditions_text.notice = Text som visas under fraktkostnaderna. T.ex. "Fri frakt från 50 euro beställningsvärde." eller "Fraktkostnader trappstegade efter vikt."
+
+
+warehouse.settings.label_cart = Kundvagn
+warehouse.settings.label_cart_empty = Kundvagnen är tom.
+
+warehouse.payment_options.prepayment = Förskottsbetalning
+warehouse.payment_options.invoice   = Faktura
+warehouse.payment_options.paypal    = PayPal
+warehouse.payment_options.direct_debit  = Direktdebitering
+
+
+warehouse_customer_address.ycom_user_id = YCom-användar-ID
+warehouse_customer_address.salutation = Hälsning
+warehouse_customer_address.type = Typ
+warehouse_customer_address.company = Företag
+warehouse_customer_address.name = Namn
+warehouse_customer_address.street = Gata
+warehouse_customer_address.zip = Postnummer
+warehouse_customer_address.city = Stad
+warehouse_customer_address.country = Land
+
+warehouse.customer_address.type = Typ
+warehouse.customer_address.type.private = Privat
+warehouse.customer_address.type.company = Företag
+warehouse.customer_address.type.shipping = Leverans
+warehouse.customer_address.type.billing = Fakturering
+warehouse.customer_address.type.other = Annat
+
+warehouse_customer_address.validate.unique.ycom_user_id_and_type = Kombinationen av YCom-användar-ID och adresstyp får endast förekomma en gång. Vänligen kontrollera din inmatning.
+
+
+warehouse.settings.ycom_mode = Kundkonto
+warehouse.settings.ycom_mode.notice = Kräver YCom-tillägg. OBS: Om YCom-tillägget installerades senare måste Warehouse-tillägget installeras om.
+warehouse.settings.ycom_mode.guest_only = Gästläge (inget kundkonto krävs)
+warehouse.settings.ycom_mode.choose = Kunden väljer om ett kundkonto ska skapas
+warehouse.settings.ycom_mode.enforce_account = Kundkonto krävs
+
+
+warehouse.settings.label_cart_empty_confirm = Är du säker på att du vill tömma kundvagnen?
+warehouse.settings.label_back_to_cart = Tillbaka till kundvagnen
+warehouse.settings.label_checkout = Kassa
+warehouse.settings.label_payment_type = Betalningsalternativ
+warehouse.settings.label_remove_from_cart = Ta bort
+warehouse.settings.label_cart_remove_item_confirm = Är du säker på att du vill ta bort den valda artikeln?
+warehouse.settings.label_article = Artikel
+warehouse.settings.label_price = Enhetspris
+warehouse.settings.label_quantity = Antal
+warehouse.settings.label_total = Totalpris
+warehouse.settings.label_shipping_costs = Fraktkostnader
+warehouse.settings.label_shipping_costs_free = Fri frakt
+warehouse.settings.label_shipping_costs_weight = Fraktkostnader efter vikt
+warehouse.settings.label_checkout = Kassa
+warehouse.settings.label_checkout_instant = Köp nu
+warehouse.settings.label_checkout_address = Adress
+warehouse.settings.label_checkout_payment = Betalningsmetod
+warehouse.settings.label_checkout_choose = Välj hur du vill fortsätta:
+warehouse.settings.label_checkout_guest = Fortsätt som gäst
+warehouse.settings.label_checkout_guest_text = Köp utan registrering. Du måste ange dina uppgifter på nytt vid varje beställning.
+warehouse.settings.label_checkout_guest_continue = Beställ som gäst
+warehouse.settings.label_checkout_login = Fortsätt med kundkonto
+warehouse.settings.label_checkout_login_text = Logga in eller skapa ett kundkonto för snabbare framtida beställningar.
+warehouse.settings.label_checkout_login_email = E-postadress
+warehouse.settings.label_checkout_login_password = Lösenord
+warehouse.settings.label_checkout_login_submit = Logga in
+warehouse.settings.label_checkout_register_text = Har du inget kundkonto än? Registrera dig nu.
+warehouse.settings.label_checkout_submit_order = Köp nu
+warehouse.settings.label_checkout_submit_order = Genomför beställning
+warehouse.settings.label_checkout_submit_order_wait = Vänligen vänta...
+warehouse.settings.label_cart_subtotal = Delsumma
+warehouse.settings.label_cart_total = Totalt
+warehouse.settings.label_cart_total_weight = Total vikt
+warehouse.settings.label_next = Nästa
+warehouse.settings.label_add_to_cart = Lägg till i kundvagn
+warehouse.settings.label_add_to_cart_success = Tillagd!
+warehouse.settings.label_add_to_order = Lägg till i beställning
+
+warehouse.settings.label_payment_options = Betalningsalternativ
+warehouse.settings.label_paymentoptions = {0}
+warehouse.settings.label_paymentoptions_notice = Anmärkning för {0}
+warehouse.settings.label_paymentoptions_image = Logotyp {0}
+warehouse.payment_options.invoice = Faktura
+warehouse.payment_options.prepayment = Förskottsbetalning
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Direktdebitering
+
+# PayPal Button Style Configuration
+
+warehouse.settings.payment.paypal_style = PayPal-knappstil
+
+warehouse.settings.payment.paypal_button_shape = Knappform
+warehouse.settings.payment.paypal_button_shape.notice = Välj formen på PayPal-knappen.
+warehouse.settings.payment.paypal_button_shape.rect = Rektangulär
+warehouse.settings.payment.paypal_button_shape.pill = Pillform
+
+warehouse.settings.payment.paypal_button_size = Knappstorlek
+warehouse.settings.payment.paypal_button_size.notice = Välj storleken på PayPal-knappen.
+warehouse.settings.payment.paypal_button_size.small = Liten
+warehouse.settings.payment.paypal_button_size.medium = Medium
+warehouse.settings.payment.paypal_button_size.large = Stor
+warehouse.settings.payment.paypal_button_size.responsive = Responsiv
+
+warehouse.settings.payment.paypal_button_color = Knappfärg
+warehouse.settings.payment.paypal_button_color.notice = Välj färgen på PayPal-knappen.
+warehouse.settings.payment.paypal_button_color.gold = Guld
+warehouse.settings.payment.paypal_button_color.blue = Blå
+warehouse.settings.payment.paypal_button_color.silver = Silver
+warehouse.settings.payment.paypal_button_color.black = Svart
+warehouse.settings.payment.paypal_button_color.white = Vit
+
+warehouse.settings.payment.paypal_button_label = Knappetikett
+warehouse.settings.payment.paypal_button_label.notice = Välj etiketten på PayPal-knappen.
+warehouse.settings.payment.paypal_button_label.paypal = PayPal
+warehouse.settings.payment.paypal_button_label.checkout = Kassa
+warehouse.settings.payment.paypal_button_label.pay = Betala
+warehouse.settings.payment.paypal_button_label.buynow = Köp nu
+warehouse.settings.payment.paypal_button_label.installment = Avbetalning
+warehouse.settings.payment.paypal_button_label.donate = Donera
+
+warehouse.settings.payment.paypal_button_layout = Knapplayout
+warehouse.settings.payment.paypal_button_layout.notice = Välj layouten på PayPal-knappen.
+warehouse.settings.payment.paypal_button_layout.horizontal = Horisontell
+warehouse.settings.payment.paypal_button_layout.vertical = Vertikal
+
+warehouse.settings.payment.paypal_button_height = Knapphöjd
+warehouse.settings.payment.paypal_button_height.notice = Ange höjden på PayPal-knappen i pixlar (valfritt).
+
+warehouse.settings.payment.paypal_button_funding_source = Föredragen betalningskälla
+warehouse.settings.payment.paypal_button_funding_source.notice = Välj den föredragna betalningskällan för PayPal-knappen.
+warehouse.settings.payment.paypal_button_funding_source.paypal = PayPal
+warehouse.settings.payment.paypal_button_funding_source.credit = Kreditkort
+
+warehouse.settings.payment.paypal_include_images = Överför produktbilder till PayPal-beställning
+warehouse.settings.payment.paypal_include_images.option = Överför produktbilder till PayPal
+warehouse.settings.payment.paypal_include_images.notice = Om aktiverad överförs produktbilder som URL:er till PayPal. Bilderna överförs i liten storlek (rex_media_small).
+
+# Setup Page
+warehouse.setup.repair_tables = Reparera tabeller
+warehouse.setup.repair_tables_info = Reparerar databasstrukturen och importerar om YForm-tabelluppsättningarna.
+warehouse.setup.repair_tables_button = Reparera tabeller
+warehouse.setup.repair_tables_confirm = Är du säker på att du vill reparera tabellerna? Denna process kan inte ångras.
+
+warehouse.setup.install_structure = Skapa struktur
+warehouse.setup.install_structure_info = Skapar butiksstrukturen med kategorier och domänprofil. Endast möjligt om det inte redan finns en domänprofil.
+warehouse.setup.install_structure_button = Skapa struktur
+warehouse.setup.install_structure_confirm = Är du säker på att du vill skapa butiksstrukturen?
+
+warehouse.setup.install_url_profiles = Skapa URL-profiler
+warehouse.setup.install_url_profiles_info = Installerar URL-profilerna för artiklar, kategorier och beställningar.
+warehouse.setup.install_url_profiles_button = Skapa URL-profiler
+warehouse.setup.install_url_profiles_confirm = Är du säker på att du vill skapa URL-profilerna?
+
+warehouse.setup.import_demo = Importera demodata
+warehouse.setup.import_demo_info = Importerar demoartiklar, kategorier och beställningar för testsyften.
+warehouse.setup.import_demo_button = Importera demodata
+warehouse.setup.import_demo_confirm = Är du säker på att du vill importera demodatan? Befintliga data kan skrivas över.
+
+warehouse.setup.reset_shop = Återställ butik
+warehouse.setup.reset_shop_info = Raderar all demodata och återställer butiken till sitt ursprungliga tillstånd.
+warehouse.setup.reset_shop_button = Återställ butik
+warehouse.setup.reset_shop_confirm = Är du VERKLIGEN säker på att du vill återställa butiken? Alla artiklar, kategorier och beställningar kommer att raderas!
+
+warehouse.setup.install_module = Installera Warehouse-modul
+warehouse.setup.install_module_info = Installerar eller uppdaterar Warehouse-modulen för frontend-output.
+
+warehouse.setup.success_tables_repaired = Tabeller har reparerats och tabelluppsättningar importerats.
+warehouse.setup.success_structure_installed = Butiksstrukturen har skapats.
+warehouse.setup.success_url_profiles_installed = URL-profiler har installerats.
+warehouse.setup.success_demo_imported = Demodata har importerats.
+warehouse.setup.success_shop_reset = Butiken har återställts.
+
+# Setup Error Messages
+warehouse.setup.error_repair_tables = Fel vid reparation av tabeller: {0}
+warehouse.setup.error_domain_exists = En domänprofil finns redan. Strukturen kan endast skapas om det inte redan finns en domänprofil.
+warehouse.setup.error_install_structure = Fel vid skapande av struktur: {0}
+warehouse.setup.error_url_addon_unavailable = URL-tillägget är inte tillgängligt. Vänligen installera URL-tillägget.
+warehouse.setup.error_install_url_profiles = Fel vid installation av URL-profiler: {0}
+warehouse.setup.error_import_demo = Fel vid import av demodata: {0}
+warehouse.setup.error_reset_shop = Fel vid återställning av butik: {0}
+
+# Module and Email Template Messages
+warehouse.setup.module_updated = Modulen "{0}" har uppdaterats.
+warehouse.setup.module_created = Modulen har skapats på "{0}".
+warehouse.setup.email_template_updated = E-postmallen "{0}" har uppdaterats.
+warehouse.setup.email_template_created = E-postmallen "{0}" har skapats.
+warehouse.setup.module_button = Modul {0} {1}
+warehouse.setup.email_template_button = Mall {0} {1}
+warehouse.setup.module_update = uppdatera
+warehouse.setup.module_install = installera
+warehouse.setup.install_email_templates = Installera eller uppdatera e-postmallar
+
+warehouse.order.dashboard.recent_orders = Senaste beställningar
+warehouse.order.dashboard.orders_by_month = Beställningar per månad
+warehouse.order.dashboard.date = Datum
+warehouse.order.dashboard.month = Månad
+warehouse.order.dashboard.total = Totalt belopp
+warehouse.order.dashboard.recent_customers = Senaste kunder
+warehouse.order.dashboard.customer.name = Namn
+warehouse.order.dashboard.customer.email = E-post
+
+warehouse.settings.payment.allowed_payment_options = Tillåtna betalningsmetoder
+warehouse.payment_options.prepayment = Förskottsbetalning
+warehouse.payment_options.invoice = Faktura
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Direktdebitering
+
+warehouse.settings.documents.info = Dokument stöds för närvarande inte. Delta i utvecklingen på <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> för utveckling av dokumentskapande, bestående av nummerserier, orderbekräftelse-PDF, faktura-PDF, följesedel-PDF och e-faktura.
+warehouse.settings.documents.pdfout_version = Vänligen installera PDFout i version 10.x eller högre för att skapa dokument. Version 9.x stöds inte längre.
+
+
+warehouse.order.shipping_status.shipped = Skickad
+warehouse.order.shipping_status.not_shipped = Ej skickad
+warehouse.order.shipping_status.partially_shipped = Delvis skickad
+warehouse.order.shipping_status.returned = Returnerad
+warehouse.order.shipping_status.lost = Förlorad
+warehouse.order.shipping_status.cancelled = Avbruten
+
+warehouse.payment_status = Betalningsstatus
+warehouse.payment_status.pending = ⌛ Väntande
+warehouse.payment_status.completed = ✅ Slutförd
+warehouse.payment_status.failed = ❌ Misslyckad
+warehouse.payment_status.cancelled = ❌ Avbruten
+warehouse.payment_status.refunded = ✅ Återbetald
+
+# PayPal Error Handling
+warehouse.paypal.error_modal_title = Betalningen misslyckades
+warehouse.paypal.error_modal_close = Stäng
+warehouse.paypal.error_technical_details = Tekniska detaljer
+warehouse.paypal.error_create_order = Det uppstod ett problem vid initiering av PayPal-betalningen. Vänligen försök igen eller välj en annan betalningsmetod.
+warehouse.paypal.error_capture_order = Din betalning kunde inte slutföras. Vänligen försök igen eller välj en annan betalningsmetod.

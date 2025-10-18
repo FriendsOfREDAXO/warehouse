@@ -1,0 +1,649 @@
+# V1
+warehouse_iso_code = ISO Code
+warehouse_iso2 = ISO Code2
+warehouse_iso3 = ISO Code3
+warehouse_is_eu = EU Country
+warehouse_shipping_zone = Shipping Zone
+warehouse_phone_code = Country Code
+warehouse_shipping_calculation_mode = Calculation
+
+warehouse_tax_ust_ident = Tax [VAT ID]
+warehouse_tax_disable_by_ust_ident = Tax exempt with VAT ID
+warehouse_tax = Tax
+warehouse_tax_tax_disable = Tax exempt generally
+
+# v2.0.0
+warehouse.title = Shop
+warehouse_module = Warehouse - Shop
+
+warehouse.module.title = Heading
+warehouse.module.description = Text
+warehouse.module.select.default = Please select
+
+# V2.0.0
+# Permissions
+warehouse = Warehouse: Access to all areas
+warehouse[settings] = Warehouse: Settings
+warehouse[shipping] = Warehouse: Shipping Settings
+
+# V2.0.0
+# Backend Pages
+
+warehouse_order_dashboard = Dashboard
+warehouse_order = Orders
+warehouse_order_list = Orders
+warehouse_order_details = Order Details
+warehouse_customer = Registered Customers
+warehouse_customer_address = Delivery Addresses
+warehouse_article = Articles
+warehouse_article_variant = Variants
+warehouse_category = Categories
+warehouse_search = Search
+warehouse_country = Countries
+warehouse_shipping = Shipping
+warehouse_settings = Administration
+warehouse_settings_shop = Settings
+warehouse_settings_payment = Payment
+warehouse_settings_general = General Settings
+warehouse_settings_domain = Domain Profiles
+warehouse_settings_tawarehouse_article_variant.weightx = Taxes
+warehouse_settings_log = Log
+warehouse_settings_discount = Discounts
+warehouse_settings_documents = Documents
+warehouse_settings_label = Text
+warehouse_settings_setup = Setup
+warehouse_docs = Help
+
+warehouse_docs.README = Intro
+warehouse_docs.warehouse_article = Articles
+warehouse_docs.warehouse_article_variant = Variants
+warehouse_docs.warehouse_category = Categories
+warehouse_docs.order = Orders
+warehouse_docs.settings.setup = Setup
+warehouse_docs.settings.general = General Settings
+warehouse_docs.settings.shipping = Shipping
+warehouse_docs.settings.payment = Payment
+warehouse_docs.settings.domain = Domain
+warehouse_docs.settings.discount = Discounts
+warehouse_docs.customer = Customers (YCom)
+warehouse_docs.domain = Domain
+warehouse_docs.search = Search
+warehouse_docs.shipping = Shipping
+warehouse_docs.warehouse_extend = Extend Warehouse
+ 
+
+# Warehouse Settings: General Settings
+
+warehouse.settings.general.info = Welcome to Warehouse 2.0 - some basic settings have been set during installation. Familiarize yourself with the changes from Warehouse 1.0 in the help section.
+
+warehouse.settings.editor = WYSIWYG Editor
+warehouse.settings.editor.notice = e.g. <code>class="form-control redactor-editor--default"</code>
+
+warehouse.settings.currency = Currency
+warehouse.settings.currency_symbol = Currency Symbol (e.g. €)
+warehouse.settings.currency_symbol.notice = <code>rex_config::get("warehouse","currency_symbol")</code>
+
+warehouse.settings.tax_options = Tax Rates
+warehouse.settings.tax_options.notice = Possible tax rates for selection in articles and variants. Default: <code>19,7,0</code> for 19%, 7% and 0% tax rate. Use the extension point <code>WAREHOUSE_TAX_OPTIONS</code> to change the tax rates.
+
+warehouse.settings.shipping_allowed = Countries allowed for delivery
+
+warehouse.settings.cart_mode = After cart action
+warehouse.settings.cart_mode.notice = Either the cart page can be opened or the previous article page. If the article page is opened, showcart=1 is appended as a get parameter.
+
+warehouse.settings.instant_checkout_enabled = Enable "Buy Now" button
+warehouse.settings.instant_checkout_enabled.notice = If enabled, a "Buy Now" button will be displayed on article pages that leads directly to checkout.
+warehouse.settings.yes = Yes
+warehouse.settings.no = No
+
+warehouse.ycom_modes.enforce = Order only with customer account
+warehouse.ycom_modes.choose = Customer chooses
+warehouse.ycom_modes.guest_only = Guest mode (No customer account required)
+
+warehouse.settings.enable_features = Additional options for articles and variants
+warehouse.settings.enable_features.bulk_prices = Query bulk prices
+warehouse.settings.enable_features.weight = Query article weight
+warehouse.settings.enable_features.variants = Allow variants
+warehouse.settings.enable_features.stock = Manage stock
+warehouse.settings.enable_features.sku = Manage SKU (article number)
+
+warehouse.settings.fallback_category_image = Fallback category image
+warehouse.settings.fallback_category_image.notice = Used when no image is available for the category.
+
+warehouse.settings.fallback_article_image = Fallback article image
+warehouse.settings.fallback_article_image.notice = Used when no image is available for the article or variant.
+
+warehouse.settings.invoice_number = Invoice number
+warehouse.settings.invoice_number.notice = Running number for the next invoice. Automatically incremented when creating an invoice. Use the extension point <code>WAREHOUSE_INVOICE_NUMBER</code> to change the numbering.
+warehouse.settings.delivery_note_number = Delivery note number
+warehouse.settings.delivery_note_number.notice = Running number for the next delivery note. Automatically incremented when creating a delivery note. Use the extension point <code>WAREHOUSE_DELIVERY_NOTE_NUMBER</code> to change the numbering.
+warehouse.settings.order_number = Order number
+warehouse.settings.order_number.notice = Running number for the next order. Automatically incremented when creating an order. Use the extension point <code>WAREHOUSE_ORDER_NUMBER</code> to change the numbering.
+
+# Warehouse Settings: Shipping costs
+
+warehouse.settings.shipping = Shipping costs
+warehouse.settings.shipping_fee = Shipping costs
+warehouse.settings.free_shipping_from = Free shipping from
+warehouse.settings.minimum_order_value = Minimum order value
+warehouse.settings.shipping_calculation_mode = Advanced shipping costs
+warehouse.settings.shipping_calculation_mode.options.default = none (default)
+warehouse.settings.shipping_calculation_mode.options.quantity = QUANTITY: Staggered shipping costs by quantity
+warehouse.settings.shipping_calculation_mode.options.weight = WEIGHT: Staggered shipping costs by weight
+warehouse.settings.shipping_calculation_mode.options.order_total = ORDER TOTAL: Staggered shipping costs by order total
+
+# Warehouse Settings: Domain
+
+warehouse_settings_domain.fieldset_art_ids = Pages
+warehouse_settings_domain.yrewrite_domain_id = Domain
+warehouse_settings_domain.cart_art_id = Shopping Cart
+warehouse_settings_domain.checkout_art_id = Checkout
+warehouse_settings_domain.shippinginfo_art_id = Shipping Info
+warehouse_settings_domain.order_art_id = Order
+warehouse_settings_domain.address_art_id = Address
+warehouse_settings_domain.payment_error_art_id = Payment Error
+warehouse_settings_domain.thankyou_art_id = Thank You
+
+warehouse_settings_domain.fieldset_email = Email Settings
+warehouse_settings_domain.email_template_customer = Email template to customer
+warehouse_settings_domain.email_template_seller = Email template to seller
+warehouse_settings_domain.email_signature = Email signature
+warehouse_settings_domain.order_email = Recipient email for orders
+warehouse_settings_domain.order_email.notice = Separate multiple recipients with commas
+
+warehouse_settings_domain.fieldset_sepa = SEPA Transfer
+warehouse_settings_domain.sepa_account_holder_name = Account Holder
+warehouse_settings_domain.sepa_bank_name = Bank Name
+warehouse_settings_domain.sepa_bic = BIC
+warehouse_settings_domain.sepa_iban = IBAN
+
+warehouse_settings_domain.fieldset_end = 🔚
+
+# Warehouse Settings: Discounts
+
+warehouse.discount_info = Discounts are currently not supported. Participate in the development at <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> for the development of an advanced discount system consisting of: Flat discount, Free shipping, Promotional periods, Voucher codes and discounts for certain YCom groups.
+
+# YForm Tables: Table names
+
+warehouse_article.tablename = 📦 Articles
+warehouse_article_variant.tablename = 📦 Variants
+warehouse_category.tablename = 📦 Categories
+warehouse_order.tablename = 📦 Orders
+# warehouse_country.tablename = 📦 Countries
+# warehouse_shipping.tablename = 📦 Shipping
+warehouse_settings_domain.tablename = 📦 Domain Settings
+warehouse_customer_address.tablename = 📦 Addresses
+
+# YForm Table "Articles": Labels
+
+warehouse_article.name = Name
+warehouse_article.category_id = Category
+warehouse_article.status = Status
+warehouse_article_status.active = 🟢 Active
+warehouse_article_status.draft = 🟡 Draft
+warehouse_article_status.hidden = 🔴 Hidden
+warehouse_article.prio = Order
+warehouse_article.weight = Weight
+warehouse_article.image = Image
+warehouse_article.gallery = Gallery
+warehouse_article.short_text = Short Text
+warehouse_article.short_text.notice = This text is used as a teaser and also for SEO and should therefore not be longer than 160 characters.
+warehouse_article.text = Text
+warehouse_article.price = Price
+warehouse_article.price_text = Price Text
+warehouse_article.tax = Tax
+warehouse_article.tax.none = Default
+warehouse_article.createdate = Created on
+warehouse_article.updatedate = Last modified
+warehouse_article.variant_ids = Variants
+warehouse_article.availability = Availability
+warehouse_article.uuid = UUID
+warehouse_article.bulk_prices = Bulk Prices
+warehouse_article.stock = Stock
+warehouse_article.sku = SKU
+warehouse_article.sku.notice = Article number - if empty, the ID is used
+
+# YForm Table "Categories": Labels
+
+warehouse_category.status = Status
+warehouse_category.status.active = 🟢 Active
+warehouse_category.status.draft = 🟡 Draft
+warehouse_category.status.hidden = 🔴 Hidden
+warehouse_category.name = Name
+warehouse_category.teaser = Teaser
+warehouse_category.link_intern = Internal Link
+warehouse_category.prio = Order
+warehouse_category.image = Image
+warehouse_category.text = Text
+warehouse_category.createdate = Created on
+warehouse_category.updatedate = Last modified
+warehouse_category.parent_id = Parent Category
+warehouse_category.uuid = UUID
+
+# YForm Table "Article Variants": Labels
+
+warehouse_article_variant.article_id = Main Article
+warehouse_article_variant.name = Name
+warehouse_article_variant.price = Price
+warehouse_article_variant.bulk_prices = Bulk Prices
+warehouse_article_variant.weight = Weight
+warehouse_article_variant.bulk_prices.amount = Quantity
+warehouse_article_variant.bulk_prices.price = Price
+warehouse_article_variant.bulk_prices.weight = Weight
+warehouse_article_variant.stock = Stock
+warehouse_article_variant.prio = Order
+warehouse_article_variant.availability = Availability
+warehouse_article_variant.status = Status
+warehouse_article_variant.status.active = 🟢 Active
+warehouse_article_variant.status.draft = 🟡 Draft
+warehouse_article_variant.status.hidden = 🔴 Hidden
+warehouse_article_variant.image = Image
+warehouse_article_variant.sku = SKU
+warehouse_article_variant.sku.notice = Article number - if empty, the ID is used
+warehouse_article_variant.uuid = UUID
+warehouse_article_variant.createdate = Created on
+warehouse_article_variant.updatedate = Last modified
+
+
+# YForm Table "Countries": Labels
+
+warehouse_country.code = Code
+warehouse_country.name = Name
+warehouse_country.mode = Mode
+warehouse_country.status = Status
+warehouse_country.prio = Order
+warehouse_country.tax = Tax
+
+# YForm Table "Order": Labels
+
+warehouse_order.salutation = Salutation
+warehouse_order.firstname = First Name
+warehouse_order.lastname = Last Name
+warehouse_order.company = Company
+warehouse_order.address = Address
+warehouse_order.zip = Postal Code
+warehouse_order.city = City
+warehouse_order.country = Country
+warehouse_order.email = Email
+warehouse_order.createdate = Order Date
+warehouse_order.paypal_id = PayPal ID
+warehouse_order.payment_id = Payment ID
+warehouse_order.paypal_confirm_token = PayPal Confirmation Token
+warehouse_order.payment_confirm = Payment Confirmation
+warehouse_order.order_no = Order Number
+warehouse_order.order_text = Order Text
+warehouse_order.order_json = Order JSON
+warehouse_order.order_total = Order Total
+warehouse_order.ycom_user_id = YCom User ID
+warehouse_order.payment_type = Payment Type
+warehouse_order.payed = Paid
+warehouse_order.not_payed = Not Paid
+warehouse_order.imported = Imported
+warehouse_order.is_read = Read
+warehouse_order.updatedate = Order started at...
+warehouse_order.payment_status = Payment Status
+warehouse_order.payment_status.select = Select Payment Status
+warehouse_order.shipping_status = Shipping Status
+warehouse_order.shipping_status.select = Select Shipping Status
+warehouse_order.buyer = Buyer
+warehouse_order.custom_order_id = Custom Order ID
+
+# YForm Table "Shipping": Labels
+
+warehouse_shipping.name = Name
+warehouse_shipping.mode = Mode
+warehouse_shipping.params = Parameters
+
+# Warehouse Articles and Variants: Status
+
+warehouse_article.status.active = 🟢 Active
+warehouse_article.status.draft = 🟡 Draft
+warehouse_article.status.hidden = 🔴 Hidden
+
+# Warehouse Articles and Variants: Availability
+
+warehouse_article.availability.BackOrder = 🟡 Back Order
+warehouse_article.availability.Discontinued = 🟡 Discontinued
+warehouse_article.availability.InStock = 🟢 In Stock
+warehouse_article.availability.InStoreOnly = 🟡 In Store Only
+warehouse_article.availability.LimitedAvailability = 🟡 Limited Availability
+warehouse_article.availability.MadeToOrder = 🟡 Made to Order
+warehouse_article.availability.OnlineOnly = 🟢 Online Only
+warehouse_article.availability.OutOfStock = 🔴 Out of Stock
+warehouse_article.availability.PreOrder = 🟢 Pre-Order
+warehouse_article.availability.PreSale = 🟢 Pre-Sale
+warehouse_article.availability.Reserved = 🔴 Reserved
+warehouse_article.availability.SoldOut = 🔴 Sold Out
+
+warehouse_article_variant.availability.BackOrder = 🟡 Back Order
+warehouse_article_variant.availability.Discontinued = 🟡 Discontinued
+warehouse_article_variant.availability.InStock = 🟢 In Stock
+warehouse_article_variant.availability.InStoreOnly = 🟡 In Store Only
+warehouse_article_variant.availability.LimitedAvailability = 🟡 Limited Availability
+warehouse_article_variant.availability.MadeToOrder = 🟡 Made to Order
+warehouse_article_variant.availability.OnlineOnly = 🟢 Online Only
+warehouse_article_variant.availability.OutOfStock = 🔴 Out of Stock
+warehouse_article_variant.availability.PreOrder = 🟢 Pre-Order
+warehouse_article_variant.availability.PreSale = 🟢 Pre-Sale
+warehouse_article_variant.availability.Reserved = 🔴 Reserved
+warehouse_article_variant.availability.SoldOut = 🔴 Sold Out
+
+warehouse.search.results = {0} entries found.
+warehouse.search.no_results = No entries found.
+
+warehouse.search.description = Search in articles, categories and orders. Tip: You can also filter via <code>+</code>, <code>-</code>, e.g. <code>+red</code> for all articles with the word "red" or <code>+Max -Smith</code> for all orders from "Max" without "Smith".
+
+
+warehouse_quicknavigation_search_button = Search
+warehouse_quicknavigation_search_placeholder = Enter search term
+
+warehouse_article.icon_label = Article
+warehouse_article_variant.icon_label = Variant
+warehouse_category.icon_label = Category
+warehouse_order.icon_label = Order
+
+# Warehouse Log
+warehouse.log.activated = Logging has been activated.
+warehouse.log.deactivated = Logging has been deactivated.
+warehouse.log.warning_logisinactive = Logging is currently <b>disabled</b>. <a href="{0}">Activate logging</a>
+warehouse.log.warning_logisactive = Logging is currently <b>active</b>. <a href="{0}">Deactivate logging</a>
+warehouse.log.time = Time
+warehouse.log.ip = IP
+warehouse.log.user_id = User ID
+warehouse.log.event = Event
+warehouse.log.params = Parameters
+warehouse.log.user_ip = User IP
+warehouse.log.type = Type
+warehouse.log.email = Email
+warehouse.log.delete_log_msg = Do you really want to delete the log?
+warehouse.log.title = Log file: {0}
+
+# Warehouse Settings - Shipping
+
+warehouse.settings = Shipping Settings
+warehouse.settings.shipping_costs = Shipping Costs
+warehouse.settings.minimum_order_value = Minimum Order Value
+warehouse.settings.shipping_fee = Shipping Costs
+warehouse.settings.free_shipping_from = Free Shipping From
+warehouse.settings.shipping_calculation_mode = Shipping Cost Calculation
+
+warehouse.settings.shipping_calculation_mode.options.default = Flat Rate (Default)
+warehouse.settings.shipping_calculation_mode.options.quantity = Quantity
+warehouse.settings.shipping_calculation_mode.options.weight = Weight
+warehouse.settings.shipping_calculation_mode.options.order_total = Order Total
+
+# Warehouse PayPal
+
+warehouse.settings.payment = Payment Settings
+
+warehouse.settings.payment.store_name = Shop Name
+warehouse.settings.payment.store_name.notice = e.g. <code>John Doe Ltd</code>, transmitted to PayPal among others.
+
+warehouse.settings.payment.store_country_code = Shop Country Code
+warehouse.settings.payment.store_country_code.notice = e.g. <code>en-GB</code> - transmitted to PayPal among others.
+
+warehouse.settings.payment.paypal_client_id = PayPal Client ID
+warehouse.settings.payment.paypal_secret = PayPal Secret
+
+warehouse.settings.payment.sandboxmode = PayPal Sandbox
+warehouse.settings.payment.sandboxmode.option = Enable PayPal Sandbox (test orders)
+
+warehouse.settings.payment.paypal_sandbox_client_id = PayPal Sandbox Client ID
+warehouse.settings.payment.paypal_sandbox_secret = PayPal Sandbox Secret
+
+warehouse.settings.payment.paypal_getparams = PayPal Additional GET Parameters for PayPal
+warehouse.settings.payment.paypal_getparams.notice = e.g. to use Maintenance during development. Specify as JSON in the form <code>{"key1":"value1","key2":"value2"}</code>.
+
+warehouse.settings.payment.info = Currently only PayPal is supported as a payment provider. Participate in further development on GitHub at <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a>.
+
+warehouse.settings.cart_mode.cart = Show shopping cart
+warehouse.settings.cart_mode.page = Show product page
+
+warehouse.order.details.error.no_data_id = Please first select an order from the overview or search.
+warehouse.order.details.error.order_not_found = The requested order was not found.
+warehouse.order.details.error.invalid_payment_status = Invalid payment status.
+warehouse.order.details.error.invalid_shipping_status = Invalid shipping status.
+warehouse.order.details.error.invoice_generation_failed = Error generating invoice.
+warehouse.order.details.error.delivery_note_generation_failed = Error generating delivery note.
+warehouse.order.details.success.payment_status_updated = Payment status successfully updated.
+warehouse.order.details.success.shipping_status_updated = Shipping status successfully updated.
+warehouse.order.details.success.invoice_generated = Invoice successfully generated.
+warehouse.order.details.success.delivery_note_generated = Delivery note successfully generated.
+
+warehouse.settings.framework = Desired Output Framework
+warehouse.settings.framework.notice = Currently only Bootstrap 5 is supported. <code>bootstrap5</code> is the default value. You can also copy the folder <code>src/addons/warehouse/fragments/bootstrap5</code> to <code>src/addons/project/fragments/bootstrap5</code> and customize it. More information in the docs.
+
+warehouse.settings.container_class = CSS Container Class
+warehouse.settings.container_class.notice = Optionally define a CSS container class, e.g. <code>container</code>, <code>container-fluid</code>, <code>container-lg</code> etc. <code>container</code> is used by default. Leave the field empty if no container should be used.
+
+warehouse.settings.shipping_conditions_text = Shipping Cost Conditions
+warehouse.settings.shipping_conditions_text.notice = Text displayed below the shipping costs. E.g. "Free shipping from 50 Euro order value." or "Shipping costs staggered by weight."
+
+
+warehouse.settings.label_cart = Shopping Cart
+warehouse.settings.label_cart_empty = The shopping cart is empty.
+
+warehouse.payment_options.prepayment = Prepayment
+warehouse.payment_options.invoice   = Invoice
+warehouse.payment_options.paypal    = PayPal
+warehouse.payment_options.direct_debit  = Direct Debit
+
+
+warehouse_customer_address.ycom_user_id = YCom User ID
+warehouse_customer_address.salutation = Salutation
+warehouse_customer_address.type = Type
+warehouse_customer_address.company = Company
+warehouse_customer_address.name = Name
+warehouse_customer_address.street = Street
+warehouse_customer_address.zip = Postal Code
+warehouse_customer_address.city = City
+warehouse_customer_address.country = Country
+
+warehouse.customer_address.type = Type
+warehouse.customer_address.type.private = Private
+warehouse.customer_address.type.company = Company
+warehouse.customer_address.type.shipping = Shipping
+warehouse.customer_address.type.billing = Billing
+warehouse.customer_address.type.other = Other
+
+warehouse_customer_address.validate.unique.ycom_user_id_and_type = The combination of YCom User ID and address type may only occur once. Please check your input.
+
+
+warehouse.settings.ycom_mode = Customer Account
+warehouse.settings.ycom_mode.notice = Requires the YCom add-on. Note: If the YCom add-on was installed later, the Warehouse add-on must be reinstalled.
+warehouse.settings.ycom_mode.guest_only = Guest mode (no customer account required)
+warehouse.settings.ycom_mode.choose = Customer chooses whether to create a customer account
+warehouse.settings.ycom_mode.enforce_account = Customer account required
+
+
+warehouse.settings.label_cart_empty_confirm = Are you sure you want to empty the shopping cart?
+warehouse.settings.label_back_to_cart = Back to Shopping Cart
+warehouse.settings.label_checkout = Checkout
+warehouse.settings.label_payment_type = Payment Options
+warehouse.settings.label_remove_from_cart = Remove
+warehouse.settings.label_cart_remove_item_confirm = Are you sure you want to remove the selected item?
+warehouse.settings.label_article = Article
+warehouse.settings.label_price = Unit Price
+warehouse.settings.label_quantity = Quantity
+warehouse.settings.label_total = Total Price
+warehouse.settings.label_shipping_costs = Shipping Costs
+warehouse.settings.label_shipping_costs_free = Free Shipping
+warehouse.settings.label_shipping_costs_weight = Shipping Costs by Weight
+warehouse.settings.label_checkout = Checkout
+warehouse.settings.label_checkout_instant = Buy Now
+warehouse.settings.label_checkout_address = Address
+warehouse.settings.label_checkout_payment = Payment Method
+warehouse.settings.label_checkout_choose = Choose how you want to proceed:
+warehouse.settings.label_checkout_guest = Continue as Guest
+warehouse.settings.label_checkout_guest_text = Purchase without registration. You will need to re-enter your details with each order.
+warehouse.settings.label_checkout_guest_continue = Order as Guest
+warehouse.settings.label_checkout_login = Continue with Customer Account
+warehouse.settings.label_checkout_login_text = Log in or create a customer account for faster future orders.
+warehouse.settings.label_checkout_login_email = Email Address
+warehouse.settings.label_checkout_login_password = Password
+warehouse.settings.label_checkout_login_submit = Log In
+warehouse.settings.label_checkout_register_text = Don't have a customer account yet? Register now.
+warehouse.settings.label_checkout_submit_order = Buy Now
+warehouse.settings.label_checkout_submit_order = Place Order
+warehouse.settings.label_checkout_submit_order_wait = Please wait...
+warehouse.settings.label_cart_subtotal = Subtotal
+warehouse.settings.label_cart_total = Total
+warehouse.settings.label_cart_total_weight = Total Weight
+warehouse.settings.label_next = Next
+warehouse.settings.label_add_to_cart = Add to Cart
+warehouse.settings.label_add_to_cart_success = Added!
+warehouse.settings.label_add_to_order = Add to Order
+
+warehouse.settings.label_payment_options = Payment Options
+warehouse.settings.label_paymentoptions = {0}
+warehouse.settings.label_paymentoptions_notice = Note for {0}
+warehouse.settings.label_paymentoptions_image = Logo {0}
+warehouse.payment_options.invoice = Invoice
+warehouse.payment_options.prepayment = Prepayment
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Direct Debit
+
+# PayPal Button Style Configuration
+
+warehouse.settings.payment.paypal_style = PayPal Button Style
+
+warehouse.settings.payment.paypal_button_shape = Button Shape
+warehouse.settings.payment.paypal_button_shape.notice = Select the shape of the PayPal button.
+warehouse.settings.payment.paypal_button_shape.rect = Rectangular
+warehouse.settings.payment.paypal_button_shape.pill = Pill Shape
+
+warehouse.settings.payment.paypal_button_size = Button Size
+warehouse.settings.payment.paypal_button_size.notice = Select the size of the PayPal button.
+warehouse.settings.payment.paypal_button_size.small = Small
+warehouse.settings.payment.paypal_button_size.medium = Medium
+warehouse.settings.payment.paypal_button_size.large = Large
+warehouse.settings.payment.paypal_button_size.responsive = Responsive
+
+warehouse.settings.payment.paypal_button_color = Button Color
+warehouse.settings.payment.paypal_button_color.notice = Select the color of the PayPal button.
+warehouse.settings.payment.paypal_button_color.gold = Gold
+warehouse.settings.payment.paypal_button_color.blue = Blue
+warehouse.settings.payment.paypal_button_color.silver = Silver
+warehouse.settings.payment.paypal_button_color.black = Black
+warehouse.settings.payment.paypal_button_color.white = White
+
+warehouse.settings.payment.paypal_button_label = Button Label
+warehouse.settings.payment.paypal_button_label.notice = Select the label of the PayPal button.
+warehouse.settings.payment.paypal_button_label.paypal = PayPal
+warehouse.settings.payment.paypal_button_label.checkout = Checkout
+warehouse.settings.payment.paypal_button_label.pay = Pay
+warehouse.settings.payment.paypal_button_label.buynow = Buy Now
+warehouse.settings.payment.paypal_button_label.installment = Installment
+warehouse.settings.payment.paypal_button_label.donate = Donate
+
+warehouse.settings.payment.paypal_button_layout = Button Layout
+warehouse.settings.payment.paypal_button_layout.notice = Select the layout of the PayPal button.
+warehouse.settings.payment.paypal_button_layout.horizontal = Horizontal
+warehouse.settings.payment.paypal_button_layout.vertical = Vertical
+
+warehouse.settings.payment.paypal_button_height = Button Height
+warehouse.settings.payment.paypal_button_height.notice = Specify the height of the PayPal button in pixels (optional).
+
+warehouse.settings.payment.paypal_button_funding_source = Preferred Payment Source
+warehouse.settings.payment.paypal_button_funding_source.notice = Select the preferred payment source for the PayPal button.
+warehouse.settings.payment.paypal_button_funding_source.paypal = PayPal
+warehouse.settings.payment.paypal_button_funding_source.credit = Credit Card
+
+warehouse.settings.payment.paypal_include_images = Transfer Product Images to PayPal Order
+warehouse.settings.payment.paypal_include_images.option = Transfer Product Images to PayPal
+warehouse.settings.payment.paypal_include_images.notice = If enabled, product images are transferred as URLs to PayPal. The images are transferred in small size (rex_media_small).
+
+# Setup Page
+warehouse.setup.repair_tables = Repair Tables
+warehouse.setup.repair_tables_info = Repairs the database structure and re-imports the YForm tablesets.
+warehouse.setup.repair_tables_button = Repair Tables
+warehouse.setup.repair_tables_confirm = Are you sure you want to repair the tables? This process cannot be undone.
+
+warehouse.setup.install_structure = Create Structure
+warehouse.setup.install_structure_info = Creates the shop structure with categories and domain profile. Only possible if no domain profile exists yet.
+warehouse.setup.install_structure_button = Create Structure
+warehouse.setup.install_structure_confirm = Are you sure you want to create the shop structure?
+
+warehouse.setup.install_url_profiles = Create URL Profiles
+warehouse.setup.install_url_profiles_info = Installs the URL profiles for articles, categories and orders.
+warehouse.setup.install_url_profiles_button = Create URL Profiles
+warehouse.setup.install_url_profiles_confirm = Are you sure you want to create the URL profiles?
+
+warehouse.setup.import_demo = Import Demo Data
+warehouse.setup.import_demo_info = Imports demo articles, categories and orders for testing purposes.
+warehouse.setup.import_demo_button = Import Demo Data
+warehouse.setup.import_demo_confirm = Are you sure you want to import the demo data? Existing data may be overwritten.
+
+warehouse.setup.reset_shop = Reset Shop
+warehouse.setup.reset_shop_info = Deletes all demo data and resets the shop to its initial state.
+warehouse.setup.reset_shop_button = Reset Shop
+warehouse.setup.reset_shop_confirm = Are you REALLY sure you want to reset the shop? All articles, categories and orders will be deleted!
+
+warehouse.setup.install_module = Install Warehouse Module
+warehouse.setup.install_module_info = Installs or updates the Warehouse module for frontend output.
+
+warehouse.setup.success_tables_repaired = Tables successfully repaired and tablesets imported.
+warehouse.setup.success_structure_installed = Shop structure successfully created.
+warehouse.setup.success_url_profiles_installed = URL profiles successfully installed.
+warehouse.setup.success_demo_imported = Demo data successfully imported.
+warehouse.setup.success_shop_reset = Shop successfully reset.
+
+# Setup Error Messages
+warehouse.setup.error_repair_tables = Error repairing tables: {0}
+warehouse.setup.error_domain_exists = A domain profile already exists. The structure can only be created if no domain profile exists yet.
+warehouse.setup.error_install_structure = Error creating structure: {0}
+warehouse.setup.error_url_addon_unavailable = The URL addon is not available. Please install the URL addon.
+warehouse.setup.error_install_url_profiles = Error installing URL profiles: {0}
+warehouse.setup.error_import_demo = Error importing demo data: {0}
+warehouse.setup.error_reset_shop = Error resetting shop: {0}
+
+# Module and Email Template Messages
+warehouse.setup.module_updated = Module "{0}" has been updated.
+warehouse.setup.module_created = Module has been created at "{0}".
+warehouse.setup.email_template_updated = Email template "{0}" has been updated.
+warehouse.setup.email_template_created = Email template "{0}" has been created.
+warehouse.setup.module_button = Module {0} {1}
+warehouse.setup.email_template_button = Template {0} {1}
+warehouse.setup.module_update = update
+warehouse.setup.module_install = install
+warehouse.setup.install_email_templates = Install or update email templates
+
+warehouse.order.dashboard.recent_orders = Recent Orders
+warehouse.order.dashboard.orders_by_month = Orders by Month
+warehouse.order.dashboard.date = Date
+warehouse.order.dashboard.month = Month
+warehouse.order.dashboard.total = Total Amount
+warehouse.order.dashboard.recent_customers = Recent Customers
+warehouse.order.dashboard.customer.name = Name
+warehouse.order.dashboard.customer.email = Email
+
+warehouse.settings.payment.allowed_payment_options = Allowed Payment Methods
+warehouse.payment_options.prepayment = Prepayment
+warehouse.payment_options.invoice = Invoice
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Direct Debit
+
+warehouse.settings.documents.info = Documents are currently not supported. Participate in the development at <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> for the development of document creation, consisting of number ranges, order confirmation PDF, invoice PDF, delivery note PDF and electronic invoice.
+warehouse.settings.documents.pdfout_version = Please install PDFout in version 10.x or higher to create documents. Version 9.x is no longer supported.
+
+
+warehouse.order.shipping_status.shipped = Shipped
+warehouse.order.shipping_status.not_shipped = Not Shipped
+warehouse.order.shipping_status.partially_shipped = Partially Shipped
+warehouse.order.shipping_status.returned = Returned
+warehouse.order.shipping_status.lost = Lost
+warehouse.order.shipping_status.cancelled = Cancelled
+
+warehouse.payment_status = Payment Status
+warehouse.payment_status.pending = ⌛ Pending
+warehouse.payment_status.completed = ✅ Completed
+warehouse.payment_status.failed = ❌ Failed
+warehouse.payment_status.cancelled = ❌ Cancelled
+warehouse.payment_status.refunded = ✅ Refunded
+
+# PayPal Error Handling
+warehouse.paypal.error_modal_title = Payment Failed
+warehouse.paypal.error_modal_close = Close
+warehouse.paypal.error_technical_details = Technical Details
+warehouse.paypal.error_create_order = There was a problem initializing the PayPal payment. Please try again or choose a different payment method.
+warehouse.paypal.error_capture_order = Your payment could not be completed. Please try again or choose a different payment method.
