@@ -15,6 +15,12 @@ $cart = Session::getCartData();
 $payment = Session::getPaymentData();
 $domain = Domain::getCurrent();
 $warehouse_cart_text = '';
+$ycom_mode = Warehouse::getConfig('ycom_mode', 'guest_only');
+
+$back_url = $domain?->getCheckoutUrl(['continue_as' => $ycom_mode === 'guest_only' ? 'guest' : rex_get('continue_as', 'string', 'guest')]) ?? '';
+$back_button_html = '<div class="d-flex justify-content-start mb-3"><a class="btn btn-outline-secondary" href="' . htmlspecialchars($back_url, ENT_QUOTES, 'UTF-8') . '"><i class="bi bi-arrow-left"></i> ' . htmlspecialchars(Warehouse::getLabel('back_to_address'), ENT_QUOTES, 'UTF-8') . '</a></div>';
+
+echo $back_button_html;
 
 $this->subfragment('warehouse/bootstrap5/checkout/order_summary_page.php');
 
@@ -33,6 +39,9 @@ $yform->setValueField('privacy_policy', ['agb', Warehouse::getLabel('legal_agb_p
 $yform->setValidateField('empty', ['agb', Warehouse::getLabel('validation_agb_required')]);
 $yform->setValueField('privacy_policy', ['privacy_policy', Warehouse::getLabel('legal_privacy_policy'), '0,1', '0']);
 $yform->setValidateField('empty', ['privacy_policy', Warehouse::getLabel('validation_privacy_required')]);
+
+// Add back button at bottom before submit
+$yform->setValueField('html', ['', $back_button_html]);
 
 $yform->setValueField('submit_once', ['send', Warehouse::getLabel('label_checkout_submit_order'), Warehouse::getLabel('label_checkout_submit_order_wait'), '[no_db]', '', 'btn btn-primary mt-3']);
 /*
