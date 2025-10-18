@@ -30,7 +30,7 @@ Hier im Anhang finden Sie die Rechnung, die gesetzlich vorgeschriebene Belehrung
 
 Wir bestätigen Ihre Bestellung wie folgt:
 
-<?php echo Warehouse::getOrderAsText(); ?>
+<?php echo Warehouse::getOrderAsText($order_id); ?>
 
 
 <?php echo Warehouse::getCustomerDataAsText($order_id); ?>
