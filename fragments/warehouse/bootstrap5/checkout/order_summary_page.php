@@ -219,6 +219,8 @@ echo Warehouse::getLabel('paymentoptions_' . ($customerData['payment_type'] ?? '
 
 
 <?php
-echo "paypal";
-echo $this->getSubfragment('warehouse/bootstrap5/paypal/paypal-button.php');
+// Only show PayPal button if PayPal was selected as payment method
+if (isset($customerData['payment_type']) && $customerData['payment_type'] === 'paypal') {
+    echo $this->getSubfragment('warehouse/bootstrap5/paypal/paypal-button.php');
+}
 ?>
