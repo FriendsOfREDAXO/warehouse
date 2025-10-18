@@ -120,9 +120,47 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 		</div>
 	</div>
 
-	<!-- Lieferadresse -->
+	<!-- Rechnungsadresse -->
 	<div class="row mt-4">
-		<div class="col-12">
+		<div class="col-12 col-md-6">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="mb-0"><?= Warehouse::getLabel('address_billing') ?></h3>
+				</div>
+				<div class="card-body">
+					<address>
+						<?php
+// Get billing address from session
+$billingAddress = Session::getBillingAddressData();
+
+// Fallback to customer data if billing address is not set
+if (empty($billingAddress)) {
+    $customerData = is_array($customer) ? $customer : [];
+    if (empty($customerData)) {
+        $customerData = rex_session('user_data', 'array', []);
+    }
+    $billingAddress = $customerData;
+}
+
+$billing_company_name = (isset($billingAddress['company']) && !empty($billingAddress['company'])) ? $billingAddress['company'] . ' ' . ($billingAddress['department'] ?? '') .'<br>': '';
+$billing_vat_id = (isset($billingAddress['ust']) && !empty($billingAddress['ust'])) ? 'Ust. Identnummer: ' . $billingAddress['ust'] .'<br>': '';
+$billing_title = (isset($billingAddress['title']) && !empty($billingAddress['title'])) ? ' ' . $billingAddress['title'] .' ': ' ';
+
+echo "<strong>";
+echo ($billingAddress['salutation'] ?? '') . $billing_title . ($billingAddress['firstname'] ?? '') . ' ' . ($billingAddress['lastname'] ?? '');
+echo "</strong><br>";
+echo $billing_company_name . $billing_vat_id;
+echo ($billingAddress['address'] ?? '') . ' ' . ($billingAddress['housenumber'] ?? '') . '<br>';
+echo ($billingAddress['zip'] ?? '') . ' ' . ($billingAddress['city'] ?? '') . '<br>';
+echo($billingAddress['country'] ?? '');
+?>
+					</address>
+				</div>
+			</div>
+		</div>
+
+		<!-- Lieferadresse -->
+		<div class="col-12 col-md-6">
 			<div class="card">
 				<div class="card-header">
 					<h3 class="mb-0"><?= Warehouse::getLabel('address_shipping') ?></h3>
@@ -130,24 +168,24 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 				<div class="card-body">
 					<address>
 						<?php
-                        // Customer-Daten korrekt laden
-                        $customerData = is_array($customer) ? $customer : [];
-if (empty($customerData)) {
-    // Fallback: Daten aus Session laden
-    $customerData = rex_session('user_data', 'array', []);
+// Get shipping address from session
+$shippingAddress = Session::getShippingAddressData();
+
+// If no separate shipping address, use billing address
+if (empty($shippingAddress)) {
+    $shippingAddress = $billingAddress;
 }
 
-$firma = (isset($customerData['company']) && !empty($customerData['company'])) ? $customerData['company'] . ' ' . ($customerData['department'] ?? '') .'<br>': '';
-$ust = (isset($customerData['ust']) && !empty($customerData['ust'])) ? 'Ust. Identnummer: ' . $customerData['ust'] .'<br>': '';
-$title = (isset($customerData['title']) && !empty($customerData['title'])) ? ' ' . $customerData['title'] .' ': ' ';
+$shipping_company_name = (isset($shippingAddress['company']) && !empty($shippingAddress['company'])) ? $shippingAddress['company'] . ' ' . ($shippingAddress['department'] ?? '') .'<br>': '';
+$shipping_title = (isset($shippingAddress['title']) && !empty($shippingAddress['title'])) ? ' ' . $shippingAddress['title'] .' ': ' ';
 
 echo "<strong>";
-echo ($customerData['salutation'] ?? '') . $title . ($customerData['firstname'] ?? '') . ' ' . ($customerData['lastname'] ?? '');
+echo ($shippingAddress['salutation'] ?? '') . $shipping_title . ($shippingAddress['firstname'] ?? '') . ' ' . ($shippingAddress['lastname'] ?? '');
 echo "</strong><br>";
-echo $firma . $ust;
-echo ($customerData['address'] ?? '') . ' ' . ($customerData['housenumber'] ?? '') . '<br>';
-echo ($customerData['zip'] ?? '') . ' ' . ($customerData['city'] ?? '') . '<br>';
-echo($customerData['country'] ?? '');
+echo $shipping_company_name;
+echo ($shippingAddress['address'] ?? '') . ' ' . ($shippingAddress['housenumber'] ?? '') . '<br>';
+echo ($shippingAddress['zip'] ?? '') . ' ' . ($shippingAddress['city'] ?? '') . '<br>';
+echo($shippingAddress['country'] ?? '');
 ?>
 					</address>
 				</div>
@@ -165,7 +203,14 @@ echo($customerData['country'] ?? '');
 					</h3>
 				</div>
 				<div class="card-body">
-					<?= Warehouse::getLabel('paymentoptions_' . ($customerData['payment_type'] ?? '')) ?>
+					<?php
+// Get payment type from customer data or session
+$customerData = is_array($customer) ? $customer : [];
+if (empty($customerData)) {
+    $customerData = rex_session('user_data', 'array', []);
+}
+echo Warehouse::getLabel('paymentoptions_' . ($customerData['payment_type'] ?? ''));
+?>
 				</div>
 			</div>
 		</div>

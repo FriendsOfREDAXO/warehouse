@@ -56,6 +56,7 @@ $allFields = [
     ['label_checkout_login_submit', rex_i18n::msg('warehouse.settings.label_checkout_login_submit'), 'text'],
     ['label_checkout_register_text', rex_i18n::msg('warehouse.settings.label_checkout_register_text'), 'text'],
     ['label_checkout_submit_order', rex_i18n::msg('warehouse.settings.label_checkout_submit_order'), 'text'],
+    ['label_checkout_submit_order_wait', rex_i18n::msg('warehouse.settings.label_checkout_submit_order_wait'), 'text'],
     // customer fields (text)
     ['label_customer_firstname', 'Vorname', 'text'],
     ['label_customer_lastname', 'Nachname', 'text'],
@@ -93,6 +94,7 @@ $allFields = [
     ['label_legal_privacy_policy', 'Ich habe die Datenschutzbestimmungen gelesen.', 'text'],
     // payment options (text)
     ['label_payment_options', rex_i18n::msg('warehouse.settings.label_payment_options'), 'text'],
+    ['label_payment_type', rex_i18n::msg('warehouse.settings.label_payment_type'), 'text'],
     // shipping (text)
     ['label_shipping_costs', rex_i18n::msg('warehouse.settings.label_shipping_costs'), 'text'],
     ['label_shipping_costs_free', rex_i18n::msg('warehouse.settings.label_shipping_costs_free'), 'text'],

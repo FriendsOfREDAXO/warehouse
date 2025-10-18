@@ -390,7 +390,7 @@ class Cart
         
         // Überprüfe, ob Warenkorb leer ist
         if ($cart->isEmpty()) {
-            return rex_i18n::msg('warehouse.cart_empty');
+            return Warehouse::getLabel('cart_empty');
         }
         
         // Überprüfe, ob Mindestbestellwert erreicht ist
