@@ -7,7 +7,17 @@ class rex_yform_value_warehouse_payment_options extends rex_yform_value_abstract
 {
     public function enterObject(): void
     {
-        $options = Payment::getPaymentOptions();
+        $payment_options = Payment::getPaymentOptions();
+        
+        // Transform simple array into structured array with backend-defined labels, notices, and images
+        $options = [];
+        foreach ($payment_options as $key => $label) {
+            $options[$key] = [
+                'label' => Warehouse::getLabel('paymentoptions_' . $key) ?: rex_i18n::msg($label),
+                'description' => Warehouse::getLabel('paymentoptions_' . $key . '_notice') ?: '',
+                'logo' => Warehouse::getConfig('label_paymentoptions_' . $key . '_image') ?: '',
+            ];
+        }
 
         if (!array_key_exists($this->getValue(), $options)) {
             $this->setValue('');
@@ -18,7 +28,7 @@ class rex_yform_value_warehouse_payment_options extends rex_yform_value_abstract
         }
 
         $this->params['value_pool']['email'][$this->getName()] = $this->getValue();
-        $this->params['value_pool']['email'][$this->getName() . '_LABEL'] = self::getLabelForValue($options, (string) $this->getValue());
+        $this->params['value_pool']['email'][$this->getName() . '_LABEL'] = self::getLabelForValue($payment_options, (string) $this->getValue());
 
         if ($this->saveInDb()) {
             $this->params['value_pool']['sql'][$this->getName()] = $this->getValue();
