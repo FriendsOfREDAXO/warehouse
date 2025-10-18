@@ -15,39 +15,76 @@ $shipping_data = Session::getShippingAddressData();
 ?>
 
 <h2><?= Warehouse::getLabel('order_summary') ?></h2>
-<table class="table table-striped table-sm w-100" id="table_order_summary">
-    <thead>
+<div class="table-responsive">
+<table class="table" id="table_order_summary">
+    <thead class="table-light">
         <tr>
-            <th></th>
-            <th class="text-right"><?= Warehouse::getCurrency() ?></th>
+            <th scope="col"><?= Warehouse::getLabel('article') ?></th>
+            <th scope="col" class="text-end"><?= Warehouse::getLabel('price') ?></th>
+            <th scope="col" class="text-end"><?= Warehouse::getLabel('quantity') ?></th>
+            <th scope="col" class="text-end"><?= Warehouse::getLabel('total') ?></th>
         </tr>
     </thead>
+    <tbody>
     <?php foreach ($this->cart as $item) : ?>
         <tr>
             <td>
-                <?= trim(html_entity_decode($item['name']), ' -') ?><br>
-                <?php $attr_text = []; ?>
-                <?php foreach ($item['attributes'] as $attr) : ?>
-                    <?php $attr_text[] = $attr['value'] ?>
-                <?php endforeach ?>
-                <?= implode(' - ', $attr_text). ($attr_text ? '<br>' : '') ?>
-                
-                
-                
-                <?= $item['amount'] ?> x à <?= number_format($item['price'], 2) ?>
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <?php if (isset($item['image']) && $item['image']) : ?>
+                        <img src="/images/products/<?= $item['image'] ?>" alt="<?= $item['name'] ?>" class="img-fluid" style="max-width: 80px;">
+                        <?php endif ?>
+                    </div>
+                    <div class="col">
+                        <div class="text-muted small">
+                            <?= $item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : '') ?>
+                        </div>
+                        <div><?= html_entity_decode($item['name']) ?></div>
+                        <?php if ($item['type'] === 'variant'): ?>
+                        <small class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
+                        <?php endif; ?>
+                        <?php if (isset($item['attributes']) && count($item['attributes']) > 0): ?>
+                            <?php $attr_text = []; ?>
+                            <?php foreach ($item['attributes'] as $attr) : ?>
+                                <?php $attr_text[] = $attr['value'] ?>
+                            <?php endforeach ?>
+                            <small class="text-muted d-block"><?= implode(' - ', $attr_text) ?></small>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </td>
-            <td class="uk-text-right"><?= number_format($item['total'], 2) ?></td>
+            <td class="text-end"><?= number_format($item['price'], 2) ?></td>
+            <td class="text-end"><?= $item['amount'] ?></td>
+            <td class="text-end"><?= number_format($item['total'], 2) ?></td>
         </tr>
     <?php endforeach ?>
+    
+    <!-- Zwischensumme -->
     <tr>
-        <td><?= Warehouse::getLabel('shipping_costs') ?> <?= $billing_data['country'] ?? $user_data['country'] ?? '' ?></td>
-        <td class="uk-text-right"><?= number_format((float) FriendsOfRedaxo\Warehouse\Shipping::getCost(), 2) ?></td>
+        <td colspan="3" class="border-top">
+            <strong>Zwischensumme</strong>
+        </td>
+        <td class="text-end border-top">
+            <?= number_format(array_sum(array_column($this->cart, 'total')), 2) ?>
+        </td>
     </tr>
+    
+    <!-- Versandkosten -->
     <tr>
-        <td><?= Warehouse::getLabel('total') ?></td>
-        <td class="uk-text-right"><?= Cart::getCartTotalFormatted() ?></td>
+        <td colspan="3">
+            <strong><?= Warehouse::getLabel('shipping_costs') ?> <?= $billing_data['country'] ?? $user_data['country'] ?? '' ?></strong>
+        </td>
+        <td class="text-end"><?= number_format((float) FriendsOfRedaxo\Warehouse\Shipping::getCost(), 2) ?></td>
     </tr>
+    
+    <!-- Gesamtsumme -->
+    <tr class="table-info">
+        <td colspan="3" class="fw-bold"><?= Warehouse::getLabel('total') ?></td>
+        <td class="text-end fw-bold"><?= Cart::getCartTotalFormatted() ?></td>
+    </tr>
+    </tbody>
 </table>
+</div>
 
 <div class="row">
     <div class="col-md-6">
