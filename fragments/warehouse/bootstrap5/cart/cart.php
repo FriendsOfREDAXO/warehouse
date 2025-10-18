@@ -79,19 +79,6 @@ data-warehouse-variant-id="<?= $item['variant_id'] ?>"
 data-warehouse-confirm="<?= rex_escape(Warehouse::getLabel('cart_remove_item_confirm')) ?>"><?= Warehouse::getLabel('remove_from_cart') ?></button>
 </td>
 		<?php endforeach; ?>
-		<tr>
-			<td class="align-left">
-				<?= Warehouse::getLabel('shipping_costs'); ?>
-				<a class="text-decoration-none" href="#" data-bs-toggle="modal"
-					data-bs-target="#warehouseShippingCostModal">ℹ️</a>
-			</td>
-			<td></td>
-			<td></td>
-			<td class="align-right">
-				<?= Shipping::getCostFormatted() ?>
-			</td>
-			<td></td>
-		</tr>
 		<!-- Netto/Brutto-Ausgabe im Tabellen-Cart -->
 		<tr>
 			<td class="align-left">Zwischensumme
@@ -99,7 +86,7 @@ data-warehouse-confirm="<?= rex_escape(Warehouse::getLabel('cart_remove_item_con
 			</td>
 			<td></td>
 			<td></td>
-			<td class="align-right" data-warehouse-table-subtotal>
+			<td class="align-right" data-warehouse-table-subtotal data-warehouse-cart-subtotal-by-mode>
 				<?= Cart::getSubTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
 			</td>
 			<td></td>
@@ -108,16 +95,20 @@ data-warehouse-confirm="<?= rex_escape(Warehouse::getLabel('cart_remove_item_con
 			<td class="align-left">MwSt.</td>
 			<td></td>
 			<td></td>
-			<td class="align-right">
+			<td class="align-right" data-warehouse-cart-tax>
 				<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
 			</td>
 			<td></td>
 		</tr>
 		<tr>
-			<td class="align-left"><?= Warehouse::getLabel('shipping_costs') ?></td>
+			<td class="align-left">
+				<?= Warehouse::getLabel('shipping_costs') ?>
+				<a class="text-decoration-none" href="#" data-bs-toggle="modal"
+					data-bs-target="#warehouseShippingCostModal">ℹ️</a>
+			</td>
 			<td></td>
 			<td></td>
-			<td class="align-right">
+			<td class="align-right" data-warehouse-cart-shipping>
 				<?= Shipping::getCostFormatted() ?>
 			</td>
 			<td></td>
@@ -128,7 +119,7 @@ data-warehouse-confirm="<?= rex_escape(Warehouse::getLabel('cart_remove_item_con
 			</td>
 			<td></td>
 			<td></td>
-			<td class="align-right fw-bolder">
+			<td class="align-right fw-bolder" data-warehouse-cart-total>
 				<?= Cart::getCartTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
 			</td>
 			<td></td>
