@@ -121,9 +121,9 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 									<div class="text-muted d-md-none">
 										<?= Warehouse::getLabel('total') ?>
 									</div>
-									<div data-warehouse-item-total="<?= $item_key ?>">
+									<output data-warehouse-item-total="<?= $item_key ?>">
 										<?= Warehouse::formatCurrency($item['total']) ?>
-									</div>
+									</output>
 								</div>
 								<div class="col">
 									<button type="button" class="btn btn-link text-danger" 
@@ -153,21 +153,21 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 						<div class="col text-muted">Zwischensumme
 							(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 						</div>
-						<div class="col" data-warehouse-cart-subtotal-by-mode>
+						<output class="col" data-warehouse-cart-subtotal-by-mode>
 							<?= Warehouse::formatCurrency($cart::getSubTotalByMode(Warehouse::getPriceInputMode())) ?>
-						</div>
+						</output>
 					</div>
 					<div class="row">
 						<div class="col text-muted">MwSt.</div>
-						<div class="col" data-warehouse-cart-tax>
+						<output class="col" data-warehouse-cart-tax>
 							<?= Warehouse::formatCurrency($cart::getTaxTotalByMode()) ?>
-						</div>
+						</output>
 					</div>
 					<div class="row">
 						<div class="col text-muted"><?= Warehouse::getLabel('shipping_costs') ?></div>
-						<div class="col text" data-warehouse-cart-shipping>
+						<output class="col text" data-warehouse-cart-shipping>
 							<?= Warehouse::formatCurrency((float) Shipping::getCost()) ?>
-						</div>
+						</output>
 					</div>
 				</div>
 				<div class="card-body">
@@ -175,9 +175,9 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 						<div class="col text-muted"><?= Warehouse::getLabel('total') ?>
 							(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 						</div>
-						<div class="col text-lead fw-bolder" data-warehouse-cart-total>
+						<output class="col text-lead fw-bolder" data-warehouse-cart-total>
 							<?= Warehouse::formatCurrency($cart::getCartTotalByMode(Warehouse::getPriceInputMode())) ?>
-						</div>
+						</output>
 					</div>
 					<a class="btn btn-primary mt-3 w-100"
 						href="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>">checkout</a>

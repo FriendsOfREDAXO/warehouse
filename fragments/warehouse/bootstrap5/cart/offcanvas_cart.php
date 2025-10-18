@@ -47,9 +47,9 @@ $domain = Domain::getCurrent();
 							<small class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
 						<?php endif; ?>
 						<div class="mt-1 row g-2 align-items-center">
-							<div class="col-auto fw-bolder small" data-warehouse-item-total="<?= $item_key ?>">
+							<output class="col-auto fw-bolder small" data-warehouse-item-total="<?= $item_key ?>">
 								<?= Warehouse::formatCurrency($item['total']) ?>
-							</div>
+							</output>
 							<div class="col-auto text-muted small">
 								<span data-warehouse-item-amount="<?= $item_key ?>"><?= $item['amount'] ?></span>
 								&times;
@@ -77,9 +77,9 @@ $domain = Domain::getCurrent();
 				<div class="col text-muted h4">
 					<?= Warehouse::getLabel('cart_subtotal') ?>
 				</div>
-				<div class="col-auto h4 fw-bolder" data-warehouse-offcanvas-subtotal>
+				<output class="col-auto h4 fw-bolder" data-warehouse-offcanvas-subtotal>
 					<?= Warehouse::formatCurrency(Cart::getSubTotal()) ?>
-				</div>
+				</output>
 			</div>
 			<div class="row g-2">
 				<div class="col text-muted">
@@ -104,29 +104,29 @@ $domain = Domain::getCurrent();
 			<div class="col text-muted h4">Zwischensumme
 				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 			</div>
-			<div class="col-auto h4 fw-bolder" data-warehouse-offcanvas-subtotal-by-mode>
+			<output class="col-auto h4 fw-bolder" data-warehouse-offcanvas-subtotal-by-mode>
 				<?= Warehouse::formatCurrency(Cart::getSubTotalByMode(Warehouse::getPriceInputMode())) ?>
-			</div>
+			</output>
 		</div>
 		<div class="row g-2">
 			<div class="col text-muted">MwSt.</div>
-			<div class="col-auto" data-warehouse-offcanvas-tax>
+			<output class="col-auto" data-warehouse-offcanvas-tax>
 				<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
-			</div>
+			</output>
 		</div>
 		<div class="row g-2">
 			<div class="col text-muted"><?= Warehouse::getLabel('shipping_costs') ?></div>
-			<div class="col-auto" data-warehouse-offcanvas-shipping>
+			<output class="col-auto" data-warehouse-offcanvas-shipping>
 				<?= Warehouse::formatCurrency(Shipping::getCost()) ?>
-			</div>
+			</output>
 		</div>
 		<div class="row g-2 align-items-center">
 			<div class="col text-muted"><?= Warehouse::getLabel('total') ?>
 				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 			</div>
-			<div class="col-auto h5 fw-bolder" data-warehouse-offcanvas-total>
+			<output class="col-auto h5 fw-bolder" data-warehouse-offcanvas-total>
 				<?= Warehouse::formatCurrency(Cart::getCartTotalByMode(Warehouse::getPriceInputMode())) ?>
-			</div>
+			</output>
 		</div>
 
 		<div class="d-grid gap-2 mt-3">
