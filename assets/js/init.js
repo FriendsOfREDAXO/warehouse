@@ -486,7 +486,7 @@
                 // Update minus button disabled state based on quantity
                 const row = container.querySelector(`[data-article-key="${itemKey}"]`);
                 if (row) {
-                    const minusButton = row.querySelector('[data-warehouse-mode="-"]');
+                    const minusButton = row.querySelector('[data-warehouse-cart-quantity="modify"][data-warehouse-original-text="-"]');
                     if (minusButton) {
                         if (item.amount <= 1) {
                             minusButton.setAttribute('disabled', 'disabled');
