@@ -123,7 +123,7 @@
         
         // Skip if already initialized to prevent duplicate event listeners
         if (cartPageContainer.hasAttribute('data-warehouse-initialized')) return;
-        cartPageContainer.setAttribute('data-warehouse-initialized', '');
+        cartPageContainer.setAttribute('data-warehouse-initialized', 'true');
 
         // Initialize tooltips if Bootstrap is available
         if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
@@ -278,7 +278,7 @@
         
         // Skip if already initialized to prevent duplicate event listeners
         if (offcanvasCart.hasAttribute('data-warehouse-initialized')) return;
-        offcanvasCart.setAttribute('data-warehouse-initialized', '');
+        offcanvasCart.setAttribute('data-warehouse-initialized', 'true');
 
         // Handle empty cart button
         const emptyCartBtn = offcanvasCart.querySelector('[data-warehouse-cart-empty]');
@@ -376,7 +376,7 @@
         
         // Skip if already initialized to prevent duplicate event listeners
         if (cartTable.hasAttribute('data-warehouse-initialized')) return;
-        cartTable.setAttribute('data-warehouse-initialized', '');
+        cartTable.setAttribute('data-warehouse-initialized', 'true');
 
         // Handle quantity button clicks
         cartTable.querySelectorAll('[data-warehouse-cart-quantity]').forEach(button => {
@@ -499,7 +499,7 @@
         
         // Skip if already initialized to prevent duplicate event listeners
         if (articleDetail.hasAttribute('data-warehouse-initialized')) return;
-        articleDetail.setAttribute('data-warehouse-initialized', '');
+        articleDetail.setAttribute('data-warehouse-initialized', 'true');
 
         // Handle quantity switcher buttons
         const quantityButtons = articleDetail.querySelectorAll('[data-warehouse-quantity-switch]');
@@ -606,7 +606,7 @@
         
         // Skip if already initialized to prevent duplicate event listeners
         if (checkoutForm.hasAttribute('data-warehouse-initialized')) return;
-        checkoutForm.setAttribute('data-warehouse-initialized', '');
+        checkoutForm.setAttribute('data-warehouse-initialized', 'true');
 
         // Handle different shipping address toggle
         const shippingToggle = checkoutForm.querySelector('[data-warehouse-shipping-toggle]');
