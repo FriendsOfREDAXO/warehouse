@@ -637,3 +637,9 @@ warehouse.payment_status.completed = ✅ Abgeschlossen
 warehouse.payment_status.failed = ❌ Fehlgeschlagen
 warehouse.payment_status.cancelled = ❌ Abgebrochen
 warehouse.payment_status.refunded = ✅ Erstattet
+
+# PayPal Error Handling
+warehouse.paypal.error_modal_title = Zahlung fehlgeschlagen
+warehouse.paypal.error_modal_close = Schließen
+warehouse.paypal.error_create_order = Es gab ein Problem bei der Initialisierung der PayPal-Zahlung. Bitte versuchen Sie es erneut oder wählen Sie eine andere Zahlungsmethode.
+warehouse.paypal.error_capture_order = Ihre Zahlung konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut oder wählen Sie eine andere Zahlungsmethode.

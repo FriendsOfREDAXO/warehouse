@@ -11,6 +11,35 @@ if (configDiv) {
 
 const successUrl = configDiv ? configDiv.getAttribute("data-warehouse-paypal-success-url") : null;
 const cancelUrl = configDiv ? configDiv.getAttribute("data-warehouse-paypal-cancel-url") : null;
+const errorCreateOrderMsg = configDiv ? configDiv.getAttribute("data-warehouse-paypal-error-create-order") : "Could not initiate PayPal Checkout";
+const errorCaptureOrderMsg = configDiv ? configDiv.getAttribute("data-warehouse-paypal-error-capture-order") : "Sorry, your transaction could not be processed";
+
+// Function to show error modal
+function showPayPalErrorModal(message, detailedError = null) {
+    const modalElement = document.getElementById("paypalErrorModal");
+    const modalBody = document.getElementById("paypalErrorModalBody");
+    
+    if (modalElement && modalBody) {
+        // Set the error message
+        let errorHtml = `<p>${message}</p>`;
+        
+        // Add detailed error in a collapsed section for debugging
+        if (detailedError) {
+            console.error("PayPal Error Details:", detailedError);
+            errorHtml += `<details class="mt-3"><summary class="text-muted small">Technische Details</summary><pre class="small mt-2 p-2 bg-light border rounded">${detailedError}</pre></details>`;
+        }
+        
+        modalBody.innerHTML = errorHtml;
+        
+        // Show the modal using Bootstrap 5
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+    } else {
+        // Fallback if modal is not available
+        console.error("PayPal Error:", message, detailedError);
+        alert(message);
+    }
+}
 
 const paypalButtons = window.paypal.Buttons({
     style: {
@@ -48,7 +77,8 @@ const paypalButtons = window.paypal.Buttons({
             throw new Error(errorMessage);
         } catch (error) {
             console.error(error);
-            resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
+            showPayPalErrorModal(errorCreateOrderMsg, error.message || error.toString());
+            throw error; // Re-throw to prevent PayPal from proceeding
         }
     },
     async onApprove(data, actions) {
@@ -95,9 +125,7 @@ const paypalButtons = window.paypal.Buttons({
 
         } catch (error) {
             console.error(error);
-            resultMessage(
-                `Sorry, your transaction could not be processed...<br><br>${error}`
-            );
+            showPayPalErrorModal(errorCaptureOrderMsg, error.message || error.toString());
         }
     },
 });
