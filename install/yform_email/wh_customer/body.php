@@ -1,24 +1,13 @@
-Sehr geehrter Kunde
+<?php
+/** @var rex_yform $yform */
 
-Wir bedanken uns bei Ihnen für die Bestellung in unserem Webshop. Hiermit senden wir Ihnen die Bestellbestätigung. Wir
-werden Ihre Bestellung so schnell als möglich bearbeiten.
+// Get order_id from form field value
+$order_id = 0;
+$order_id_field = $yform->getValueField('order_id');
+if ($order_id_field) {
+    $order_id = (int) $order_id_field->getValue();
+}
 
-Wenn Sie Fragen zum Stand ihrer Bestellung haben, wenden Sie sich gerne an uns.
-
-<?php echo FriendsOfRedaxo\Warehouse\Warehouse::getOrderAsText(); ?>
-
-<?php echo FriendsOfRedaxo\Warehouse\Warehouse::getCustomerDataAsText(); ?>
-
-<?php if ("REX_YFORM_DATA[field=payment_type]" == "prepayment") : ?>
-Bitte überweisen Sie den Betrag auf das Konto
-Wolfgang Bund
-IBAN: DE19 6835 0048 0001 7140 21
-BIC: SKLODE66XXX
-<?php endif ?>
-
-Warehouse am Tressower See
-Wolfgang Bund
-Am Tressower See 1
-23966 Tressow
-
-Diese Mail wurde automatisch erstellt - bitte nicht antworten.
+echo rex_fragment::factory('warehouse/emails/order_customer_text.php')->parse([
+    'order_id' => $order_id,
+]);

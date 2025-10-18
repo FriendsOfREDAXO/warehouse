@@ -66,6 +66,67 @@ if (rex_addon::get('yform')->isAvailable()) {
     warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_customer_address.json');
     //    warehouse_import_tableset(__DIR__ . '/install/tablesets/warehouse_ycom_user.json');
     rex_yform_manager_table::deleteCache();
+
+    /**
+     * Helper function to install or update YForm email templates.
+     *
+     * @param string $template_key
+     * @return void
+     */
+    function warehouse_install_email_template($template_key)
+    {
+        $body = rex_file::get(__DIR__ . '/install/yform_email/' . $template_key . '/body.php');
+        $body_html = rex_file::get(__DIR__ . '/install/yform_email/' . $template_key . '/body_html.php');
+        $metadata_file = __DIR__ . '/install/yform_email/' . $template_key . '/metadata.yml';
+
+        if ($body === null && $body_html === null) {
+            return;
+        }
+
+        $meta = [];
+        if (file_exists($metadata_file)) {
+            $meta = rex_string::yamlDecode(rex_file::get($metadata_file) ?? '') ?? [];
+        }
+
+        // Set template name from key if not in metadata
+        if (!isset($meta['name'])) {
+            $meta['name'] = $template_key;
+        }
+
+        // Check if template already exists
+        $existing = rex_sql::factory()->getArray(
+            'SELECT id FROM ' . rex::getTable('yform_email_template') . ' WHERE `name` = :name',
+            ['name' => $meta['name']]
+        );
+
+        $sql = rex_sql::factory();
+        $sql->setTable(rex::getTable('yform_email_template'));
+
+        if ($body !== null) {
+            $sql->setValue('body', $body);
+        }
+        if ($body_html !== null) {
+            $sql->setValue('body_html', $body_html);
+        }
+
+        // Set metadata fields
+        foreach ($meta as $key => $value) {
+            $sql->setValue($key, $value);
+        }
+
+        if (!empty($existing)) {
+            // Update existing template
+            $sql->setWhere('`name` = :name', ['name' => $meta['name']]);
+            $sql->update();
+        } else {
+            // Insert new template
+            $sql->insert();
+        }
+    }
+
+    // Install email templates for customer and seller
+    warehouse_install_email_template('wh_customer');
+    warehouse_install_email_template('wh_order');
 }
 
 
