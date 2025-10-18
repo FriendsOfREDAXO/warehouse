@@ -24,36 +24,38 @@ $ycom_mode = Warehouse::getConfig('ycom_mode', 'guest_only');
 // 4. Zahlung per Lastschrift - Formular zur Lastschrift-Zahlung anzeigen
 
 // For now, we automatically redirect to summary, but first show a page with navigation
+$back_to_address_url = $domain?->getCheckoutUrl(['continue_as' => $ycom_mode === 'guest_only' ? 'guest' : rex_get('continue_as', 'string', 'guest')]) ?? '';
+$continue_to_summary_url = $domain?->getCheckoutUrl(['continue_with' => 'summary']) ?? '';
 ?>
 <div class="row">
     <section class="col-12 my-3">
         <div class="d-flex justify-content-between align-items-center">
             <a class="btn btn-outline-secondary"
-                href="<?= $domain?->getCheckoutUrl(['continue_as' => $ycom_mode === 'guest_only' ? 'guest' : rex_get('continue_as', 'string', 'guest')]) ?? '' ?>">
+                href="<?= htmlspecialchars($back_to_address_url, ENT_QUOTES, 'UTF-8') ?>">
                 <i class="bi bi-arrow-left"></i>
-                <?= Warehouse::getLabel('back_to_address') ?>
+                <?= htmlspecialchars(Warehouse::getLabel('back_to_address'), ENT_QUOTES, 'UTF-8') ?>
             </a>
             <a class="btn btn-primary"
-                href="<?= $domain?->getCheckoutUrl(['continue_with' => 'summary']) ?? '' ?>">
-                <?= Warehouse::getLabel('continue_to_summary') ?>
+                href="<?= htmlspecialchars($continue_to_summary_url, ENT_QUOTES, 'UTF-8') ?>">
+                <?= htmlspecialchars(Warehouse::getLabel('continue_to_summary'), ENT_QUOTES, 'UTF-8') ?>
                 <i class="bi bi-arrow-right"></i>
             </a>
         </div>
     </section>
     <section class="col-12">
-        <h2><?= Warehouse::getLabel('checkout_payment') ?></h2>
+        <h2><?= htmlspecialchars(Warehouse::getLabel('checkout_payment'), ENT_QUOTES, 'UTF-8') ?></h2>
         <p>Zahlungsinformationen wurden gespeichert.</p>
     </section>
     <section class="col-12 my-3">
         <div class="d-flex justify-content-between align-items-center">
             <a class="btn btn-outline-secondary"
-                href="<?= $domain?->getCheckoutUrl(['continue_as' => $ycom_mode === 'guest_only' ? 'guest' : rex_get('continue_as', 'string', 'guest')]) ?? '' ?>">
+                href="<?= htmlspecialchars($back_to_address_url, ENT_QUOTES, 'UTF-8') ?>">
                 <i class="bi bi-arrow-left"></i>
-                <?= Warehouse::getLabel('back_to_address') ?>
+                <?= htmlspecialchars(Warehouse::getLabel('back_to_address'), ENT_QUOTES, 'UTF-8') ?>
             </a>
             <a class="btn btn-primary"
-                href="<?= $domain?->getCheckoutUrl(['continue_with' => 'summary']) ?? '' ?>">
-                <?= Warehouse::getLabel('continue_to_summary') ?>
+                href="<?= htmlspecialchars($continue_to_summary_url, ENT_QUOTES, 'UTF-8') ?>">
+                <?= htmlspecialchars(Warehouse::getLabel('continue_to_summary'), ENT_QUOTES, 'UTF-8') ?>
                 <i class="bi bi-arrow-right"></i>
             </a>
         </div>

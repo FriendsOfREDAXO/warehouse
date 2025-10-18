@@ -22,9 +22,9 @@ if ($ycom_mode === 'choose') {
 	<section class="col-12 my-3">
 		<div class="d-flex justify-content-between align-items-center">
 			<a class="btn btn-outline-secondary"
-				href="<?= $back_url ?>">
+				href="<?= htmlspecialchars($back_url, ENT_QUOTES, 'UTF-8') ?>">
 				<i class="bi bi-arrow-left"></i>
-				<?= $back_label ?>
+				<?= htmlspecialchars($back_label, ENT_QUOTES, 'UTF-8') ?>
 			</a>
 		</div>
 	</section>
@@ -38,9 +38,9 @@ if ($ycom_mode === 'choose') {
 	<section class="col-12 my-3">
 		<div class="d-flex justify-content-between align-items-center">
 			<a class="btn btn-outline-secondary"
-				href="<?= $back_url ?>">
+				href="<?= htmlspecialchars($back_url, ENT_QUOTES, 'UTF-8') ?>">
 				<i class="bi bi-arrow-left"></i>
-				<?= $back_label ?>
+				<?= htmlspecialchars($back_label, ENT_QUOTES, 'UTF-8') ?>
 			</a>
 		</div>
 	</section>
