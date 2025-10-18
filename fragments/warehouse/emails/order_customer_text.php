@@ -11,7 +11,7 @@ if (!$order) {
 }
 
 ?>
-Sehr geehrte(r) REX_YFORM_DATA[field="salutation"] REX_YFORM_DATA[field="firstname"] REX_YFORM_DATA[field="lastname"],
+Sehr geehrte(r) <?= htmlspecialchars($order->getValue('salutation')) ?> <?= htmlspecialchars($order->getValue('firstname')) ?> <?= htmlspecialchars($order->getValue('lastname')) ?>,
 
 vielen Dank für Ihre Bestellung im Demo-Onlineshop! Falls Sie Änderungen an Ihrer Bestellung vornehmen oder den Status Ihrer Bestellung abfragen möchten, wenden Sie sich bitte direkt an uns:
 
