@@ -13,7 +13,7 @@ if (!$order) {
 ?>
 Wir haben folgende Bestellung erhalten:
 
-<?php echo Warehouse::getOrderAsText(); ?>
+<?php echo Warehouse::getOrderAsText($order_id); ?>
 
 
 <?php echo Warehouse::getCustomerDataAsText($order_id); ?>
