@@ -51,6 +51,7 @@ $containerClass = (null === $containerClass || false === $containerClass) ? 'con
 				<?php foreach ($cart_items as $item_key => $item) : ?>
 				<!-- Item -->
 				<div class="card-body" data-warehouse-item-key="<?= $item_key ?>">
+					<!-- g-0 prevents double margins from nested rows; inner rows use g-3 for content spacing -->
 					<div class="row row-cols-1 row-cols-md-2 align-items-center g-0">
 
 						<!-- Product cell-->
