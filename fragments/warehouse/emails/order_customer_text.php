@@ -33,7 +33,7 @@ Wir bestätigen Ihre Bestellung wie folgt:
 <?php echo Warehouse::getOrderAsText(); ?>
 
 
-<?php echo Warehouse::getCustomerDataAsText(); ?>
+<?php echo Warehouse::getCustomerDataAsText($order_id); ?>
 
 
 <?php if ($order->getPaymentId() == "prepayment") : ?>
