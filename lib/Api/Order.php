@@ -338,16 +338,16 @@ class Order extends rex_api_function
         if ($saved) {
             // Update the saved order with PayPal specific data
             $order = WarehouseOrder::query()
-                ->where('payment_id', $payment_id)
-                ->orderBy('id', 'DESC')
+                ->where(WarehouseOrder::PAYMENT_ID, $payment_id)
+                ->orderBy(WarehouseOrder::ID, 'DESC')
                 ->findOne();
 
             if ($order) {
-                $order->setValue('paypal_id', $capture['id'] ?? '')
+                $order->setValue(WarehouseOrder::PAYPAL_ID, $capture['id'] ?? '')
                     ->setOrderJson($apiResponse->getBody())
-                    ->setValue('payment_status', Payment::PAYMENT_STATUS_COMPLETED)
+                    ->setValue(WarehouseOrder::PAYMENT_STATUS, Payment::PAYMENT_STATUS_COMPLETED)
                     ->setOrderTotal($capture['purchase_units'][0]['payments']['captures'][0]['amount']['value'] ?? 0)
-                    ->setValue('shipping_status', Shipping::SHIPPING_STATUS_NOT_SHIPPED);
+                    ->setValue(WarehouseOrder::SHIPPING_STATUS, Shipping::SHIPPING_STATUS_NOT_SHIPPED);
 
                 $order->save();
             } else {
