@@ -1,15 +1,124 @@
-Dieses Repository ist eine Erweiterung (Add-on) für das REDAXO CMS https://github.com/redaxo/redaxo, das Shop-Funktionalitäten zu Verfügung stellt:
+# Warehouse - REDAXO CMS Shop Add-on
 
-1. Eine Produktverwaltung ("Artikel" und "Varianten") mit Kategorien und Eigenschaften wie Preis, Lagerbestand, Beschreibung, Verfügbarkeit
-2. Ausgabe-Templates ("Fragmente"), die den Shop im Frontend anzeigen
-3. Installationsroutinen, die die Einrichtung und den Betrieb vornehmen.
+## Project Overview
 
-Das Add-on basiert auf der Erweiterung YForm und YOrm, einer Datenbanktabellen-Verwaltung mit Benutzeroberfläche sowie einem ORM für die Datenverarbeitung, es nutzt außerdem Core-Klassen (REDAXO Core-System) und etablierte Erweiterungen (Add-ons) für REDAXO namens `URL` und `YRewrite` für die Steuerung von SEO-optimierten URLs und Metadaten.
+Dieses Repository ist eine Erweiterung (Add-on) für das REDAXO CMS (https://github.com/redaxo/redaxo), das Shop-Funktionalitäten bereitstellt:
 
-Du findest Informationen zu REDAXO und den entsprechenden Klassen und Konzepten unter folgenden URLs und Repositories:
+1. **Produktverwaltung**: "Artikel" und "Varianten" mit Kategorien und Eigenschaften wie Preis, Lagerbestand, Beschreibung, Verfügbarkeit
+2. **Frontend-Templates**: "Fragmente" (PHP-basierte Templates), die den Shop im Frontend anzeigen
+3. **Installation & Setup**: Routinen für die Einrichtung und den Betrieb
 
-* Technische Dokumentation und Tutorials / Erläuterungen REDAXO: <http://github.com/redaxo/docs> (z.B. zu Socket-Verbindungen, Extension Points, Backend-Pages und Service-Klassen wie rex_sql, rex_config_form, ...)
-* Das Core-System und Core-Addons von REDAXO: https://github.com/redaxo/redaxo, insb. https://github.com/redaxo/redaxo <https://github.com/redaxo/redaxo/tree/main/redaxo/src/core/lib>. Hinweis: Die Dateien zu den Klassennamen enthalten nicht den Präfix `rex_`, d.h. z.B. die Klasse `rex_socket` ist in `redaxo/src/core/lib/util/socket/socket.php`, oder die Klasse `rex_fragment` ist in `redaxo/src/core/lib/fragment.php`.
+### Technology Stack
+
+- **PHP**: ^8.3
+- **REDAXO CMS**: ^5.19
+- **YForm**: ^5.0 (Datenbanktabellen-Verwaltung und ORM)
+- **YForm Field**: >=2.12.0
+- **YRewrite**: ^2.9 (SEO-freundliche URLs)
+- **URL Add-on**: für SEO-optimierte URLs und Metadaten
+- **PayPal SDK**: 1.1.0 (Server-SDK für Zahlungsabwicklung)
+- **Bootstrap 5**: für Frontend-Templates (Standard-Framework)
+
+### Key Dependencies
+
+Das Add-on basiert auf:
+- **YForm & YOrm**: Datenbanktabellen-Verwaltung mit Benutzeroberfläche sowie ORM für die Datenverarbeitung
+- **REDAXO Core**: Core-Klassen für System-Funktionalität
+- **URL Add-on**: Steuerung von SEO-optimierten URLs
+- **YRewrite**: Metadaten-Verwaltung
+- **YCom** (optional): Benutzerverwaltung für Kundenkonten
+
+### External Resources
+
+Informationen zu REDAXO und den entsprechenden Klassen und Konzepten:
+- **REDAXO Dokumentation**: <http://github.com/redaxo/docs> (Socket-Verbindungen, Extension Points, Backend-Pages, Service-Klassen wie rex_sql, rex_config_form, ...)
+- **REDAXO Core-System**: https://github.com/redaxo/redaxo
+- **Core-Libraries**: https://github.com/redaxo/redaxo/tree/main/redaxo/src/core/lib
+
+**Hinweis**: Die Dateien zu Klassennamen enthalten nicht den Präfix `rex_`, z.B.:
+- Die Klasse `rex_socket` ist in `redaxo/src/core/lib/util/socket/socket.php`
+- Die Klasse `rex_fragment` ist in `redaxo/src/core/lib/fragment.php`
+
+## Quick Reference
+
+### Common Commands
+
+```bash
+# Install dependencies
+composer install
+
+# Code style checking
+composer cs-dry   # Check only (dry-run)
+composer cs-fix   # Auto-fix code style issues
+
+# Git workflow
+git status        # Check changed files
+git diff          # View changes
+git add .         # Stage changes
+git commit -m "Feature: Description"  # Commit with message
+```
+
+### File Locations
+
+| Type | Location | Description |
+|------|----------|-------------|
+| Main classes | `/lib/` | PHP classes (Article, Cart, Order, etc.) |
+| Frontend templates | `/fragments/warehouse/bootstrap5/` | PHP-based fragments |
+| Backend pages | `/pages/` | Admin interface pages |
+| Documentation | `/docs/` | Markdown documentation |
+| Installation | `/install/` | SQL schemas and setup files |
+| Language files | `/lang/` | Translations (de_de.lang, en_gb.lang) |
+| Assets | `/assets/` | JavaScript, CSS, images |
+| API endpoints | `/lib/Api/` | REST API classes |
+
+## Quick Start
+
+### Development Setup
+
+#### Prerequisites
+- PHP 8.3 or higher
+- REDAXO 5.19+ installed
+- Composer installed
+
+#### Installation Steps
+
+1. **Clone and install dependencies**:
+   ```bash
+   cd /path/to/warehouse
+   composer install
+   ```
+
+2. **Install in REDAXO**:
+   ```bash
+   # Copy add-on to REDAXO
+   cp -r /path/to/warehouse/ /path/to/redaxo/redaxo/src/addons/warehouse/
+   
+   # Or with rsync (includes hidden files):
+   # rsync -a /path/to/warehouse/ /path/to/redaxo/redaxo/src/addons/warehouse/
+   
+   # Then in REDAXO Backend:
+   # AddOns → Warehouse → Install
+   ```
+
+3. **Verify installation**:
+   - Check that all dependencies are satisfied
+   - Navigate to "Warehouse" in REDAXO Backend
+   - Run setup functions if needed (Settings → Setup)
+
+### Build & Test
+
+**Important**: No separate build process required. The add-on runs directly in REDAXO.
+
+**Code Style**:
+```bash
+composer cs-dry  # Check only
+composer cs-fix  # Auto-fix
+```
+
+**Testing**: 
+- No automated unit tests
+- Manual testing in REDAXO test instance required
+- See "Testing & Validation" section for detailed checklist
 
 ## Repository-Struktur und Dateien 
 
@@ -468,21 +577,55 @@ In `boot.php` wird das URL-Addon integriert für SEO-freundliche URLs:
   * Erlaubte Zahlungsquellen
   * Button-Style-Optionen
 
-## Entwicklungs-Richtlinien
+## Development Guidelines
 
-Bei der Entwicklung von Funktionalitäten und beim Lösen von Bugs soll überprüft werden, ob nötige Informationen durch den Issue-Ersteller gegeben wurden, bspw. ein Stack Trace, ein Ablauf wann etwas zu einem Problem führt oder welcher Bereich oder Methode als Ausgangspunkt für eine Lösung gewählt werden soll. Wenn diese Informationen nicht gegeben wurden oder aus dem Kontext zu erschließen sind, brich ab und stelle Nachfragen, um den Bereich deiner Lösung einzugrenzen. Schildere, wie du vorgehen würdest.
+### Issue Analysis & Planning
 
-### Code-Qualität und Best Practices
+Bei der Entwicklung von Funktionalitäten und beim Lösen von Bugs:
+1. **Überprüfe vorhandene Informationen**: Ist ein Stack Trace vorhanden? Ist der Ablauf beschrieben?
+2. **Stelle Nachfragen**: Wenn wichtige Informationen fehlen, brich ab und frage nach Details
+3. **Beschreibe dein Vorgehen**: Erkläre, wie du das Problem lösen würdest, bevor du beginnst
+4. **Grenze den Bereich ein**: Identifiziere die betroffenen Klassen, Methoden und Dateien
 
-Achte auf folgende Regeln:
+### Code Quality & Best Practices
 
-1. Vermeide inline-CSS und inline-JS - wenn doch erforderlich, dann mit einem Nonce ausstatten.
-2. Verwende Best Practices in der PHP-Entwicklung wie Typisierung / Type Hinting.
-3. Achte auf Rückwärtskompatibilität, wenn es sich um eine zentrale Funktion oder Funktionsänderung handelt und nicht nur um einen Bugfix.
-4. Vermeide überkomplexe Lösungen und bevorzuge kurze prägnante, der Aufgabenstellung angemessene Lösungen - arbeite nur komplexer, wenn du dazu aufgefordert wirst oder nach Rückfrage, wenn du nach 3-4 Minuten Laufzeit nicht zu einer guten Lösung gekommen bist.
-5. In einem PR wird die Versionsnummer `version` gemäß Semantic Versioning in der `package.yml` erhöht - je nachdem, ob es ein Bugfix/Patch, Minor Update mit neuen Funktionen oder Major Update ohne Rückwärtskompatibilität handelt. Mache in deinem PR einen Vorschlag, was ausgehend vom main-Repository die nächste Versionsnummer wäre.
+**Wichtige Regeln**:
 
-Es gibt keinen Build-Prozess, sodass du den Code selbst testen kannst. Es ist nicht über composer, yarn oder einen anderen Pakete-Manager verfügbar.
+1. **Kein Inline-CSS/JS**: Vermeide inline-CSS und inline-JS. Falls erforderlich, verwende ein Nonce: `<script nonce="<?= rex_response::getNonce() ?>">`
+
+2. **PHP Best Practices**:
+   - Verwende Type Hinting für alle Funktionsparameter und Rückgabewerte
+   - Nutze moderne PHP-Syntax (PHP 8.3)
+   - Befolge PSR-12 Coding Standards
+
+3. **Rückwärtskompatibilität**:
+   - Achte auf Rückwärtskompatibilität bei zentralen Funktionen
+   - Breaking Changes nur bei Major-Versionen
+   - Bugfixes sollten keine Breaking Changes enthalten
+
+4. **Einfachheit bevorzugen**:
+   - Bevorzuge einfache, prägnante Lösungen
+   - Vermeide überkomplexe Architekturen
+   - Nur bei Bedarf komplexere Lösungen implementieren
+
+5. **Semantic Versioning**:
+   - **PATCH** (z.B. 2.0.1): Bugfixes, keine neuen Features
+   - **MINOR** (z.B. 2.1.0): Neue Features, rückwärtskompatibel
+   - **MAJOR** (z.B. 3.0.0): Breaking Changes
+   - Versionsnummer in `package.yml` entsprechend anpassen
+
+6. **Security Best Practices**:
+   - Verhindere XSS durch korrekte Ausgabe-Escaping
+   - Nutze YForm/YOrm für Datenbankzugriffe (verhindert SQL-Injection)
+   - Validiere alle Benutzereingaben
+   - Verwende `rex_csrf_token::factory()` für CSRF-Schutz
+
+### Distribution
+
+**Wichtig**: Es gibt keinen Build-Prozess. Das Add-on wird nicht über Composer/NPM/Yarn verteilt.
+- Das Add-on wird direkt in REDAXO installiert
+- Dependencies werden via Composer verwaltet, aber das Add-on selbst nicht
+- Testing erfolgt in einer lokalen REDAXO-Instanz
 
 ## Code-Qualität und Linting
 
@@ -516,114 +659,185 @@ Die Regeln basieren auf der REDAXO PHP-CS-Fixer-Konfiguration (`redaxo/php-cs-fi
 - Strict Types Declaration
 - Konsistente Code-Formatierung
 
-## Testing und Validation
+## Testing & Validation
 
-### Manuelle Tests
+**Wichtig**: Es gibt keine automatisierten Unit-Tests. Alle Tests erfolgen manuell in einer REDAXO-Testinstanz.
 
-Da es keinen automatisierten Test-Suite gibt, müssen Änderungen manuell getestet werden:
+### Manual Testing Workflow
 
-1. **Installation in REDAXO-Testumgebung:**
-   - Kopiere das Add-on in den REDAXO `addons/` Ordner
-   - Installiere das Add-on über das Backend
-   - Prüfe, ob alle Abhängigkeiten erfüllt sind
+#### 1. Installation Testing
+```bash
+# Add-on in REDAXO-Testumgebung kopieren (inkl. versteckter Dateien)
+rsync -a /path/to/warehouse/ /path/to/redaxo/redaxo/src/addons/warehouse/
 
-2. **Funktionale Tests:**
-   - Teste alle geänderten Funktionen im Frontend und Backend
-   - Prüfe die Warenkorb-Funktionalität
-   - Teste den Checkout-Prozess
-   - Validiere die Bestellabwicklung
-   - Prüfe PayPal-Integration (Sandbox-Modus)
+# Im REDAXO Backend:
+# - AddOns → Warehouse → Installieren
+# - Abhängigkeiten werden automatisch geprüft
+```
 
-3. **Browser-Tests:**
-   - Teste in verschiedenen Browsern (Chrome, Firefox, Safari)
-   - Prüfe responsive Design auf mobilen Geräten
-   - Validiere JavaScript-Funktionalität
+#### 2. Functional Testing
 
-4. **Backend-Tests:**
-   - Teste alle Backend-Seiten (Order, Settings, Docs)
-   - Prüfe YForm-Tabellen und Formulare
-   - Validiere Setup-Funktionen
+**Frontend**:
+- [ ] Artikelansicht (Details, Varianten)
+- [ ] Kategorieansicht
+- [ ] Warenkorb (Hinzufügen, Entfernen, Mengen ändern)
+- [ ] Checkout-Prozess (Gast & Login)
+- [ ] Bestellabschluss
+- [ ] PayPal-Integration (Sandbox-Modus)
+- [ ] Kundenkonten (wenn YCom installiert)
 
-### Dokumentations-Validierung
+**Backend**:
+- [ ] Bestellübersicht und -details
+- [ ] Artikel-/Varianten-Verwaltung
+- [ ] Kategorien-Verwaltung
+- [ ] Einstellungen (General, Payment, Shipping, etc.)
+- [ ] Dokumentations-Seite
+- [ ] Setup-Funktionen
 
-Nach Code-Änderungen:
-1. Prüfe, ob die Dokumentation in `/docs/` noch aktuell ist
-2. Aktualisiere betroffene Markdown-Dateien
-3. Teste die Dokumentationsanzeige im Backend unter "Warehouse → Docs"
+#### 3. Browser & Device Testing
+- [ ] Chrome, Firefox, Safari
+- [ ] Mobile responsive Design
+- [ ] JavaScript-Funktionalität (data-warehouse-* System)
+- [ ] AJAX-Endpunkte (Warenkorb, Checkout)
 
-## Entwicklungs-Workflow
+#### 4. Security Testing
+- [ ] XSS-Verhinderung in Formularen
+- [ ] CSRF-Token-Validierung
+- [ ] SQL-Injection-Schutz (via YOrm)
+- [ ] Zugriffskontrolle (Backend-Permissions)
 
-### Typischer Workflow für eine Code-Änderung:
+### Documentation Validation
 
-1. **Verstehen der Anforderung:**
-   - Lies das Issue sorgfältig
-   - Prüfe Stack Traces und Fehlermeldungen
-   - Stelle Nachfragen, wenn Informationen fehlen
+Nach jeder Code-Änderung:
+1. **Prüfen**: Ist die Dokumentation in `/docs/` noch aktuell?
+2. **Aktualisieren**: Betroffene Markdown-Dateien anpassen
+3. **Testen**: Dokumentationsanzeige im Backend unter "Warehouse → Docs" prüfen
+4. **Code-Beispiele**: Alle Code-Beispiele auf Korrektheit prüfen
 
-2. **Code-Änderungen vornehmen:**
-   - Mache minimale, gezielte Änderungen
-   - Achte auf Rückwärtskompatibilität
-   - Verwende Type Hints und moderne PHP-Syntax
+## Development Workflow
 
-3. **Code-Style prüfen:**
-   ```bash
-   composer cs-fix
-   ```
+### Standard Workflow für Code-Änderungen
 
-4. **Manuelle Tests durchführen:**
-   - Installiere das Add-on in einer Test-REDAXO-Instanz
-   - Teste alle betroffenen Funktionen
-   - Prüfe Frontend und Backend
+#### 1. Requirements Analysis
+- [ ] Issue sorgfältig lesen
+- [ ] Stack Traces und Fehlermeldungen analysieren
+- [ ] Fehlende Informationen beim Issue-Ersteller erfragen
+- [ ] Betroffene Dateien und Klassen identifizieren
 
-5. **Dokumentation aktualisieren:**
-   - Aktualisiere relevante `/docs/*.md` Dateien
-   - Prüfe `docs/00_documentation_overview.md` auf Vollständigkeit
+#### 2. Implementation
+- [ ] **Minimale Änderungen**: Nur das Nötigste ändern
+- [ ] **Rückwärtskompatibilität**: Bei nicht-Bugfixes beachten
+- [ ] **Type Hints**: Alle Parameter und Rückgabewerte typisieren
+- [ ] **Moderne PHP-Syntax**: PHP 8.3 Features nutzen
+- [ ] **Security**: XSS, SQL-Injection, CSRF beachten
 
-6. **Version aktualisieren:**
-   - Erhöhe die Version in `package.yml` nach Semantic Versioning
-   - PATCH (2.0.1): Bugfixes
-   - MINOR (2.1.0): Neue Features (rückwärtskompatibel)
-   - MAJOR (3.0.0): Breaking Changes
+#### 3. Code Quality Check
+```bash
+# Code-Style automatisch korrigieren
+composer cs-fix
 
-7. **Commit und PR:**
-   - Schreibe aussagekräftige Commit-Messages
-   - Beschreibe alle Änderungen im PR
-   - Verlinke relevante Issues
+# Nur prüfen (optional)
+composer cs-dry
+```
 
-## Wie Code-Änderungen zu verifizieren sind
+#### 4. Manual Testing
+```bash
+# Add-on in Test-REDAXO installieren (aus dem warehouse Verzeichnis)
+cp -r . /path/to/redaxo/redaxo/src/addons/warehouse/
 
-### Vor dem Commit:
+# Oder mit rsync (empfohlen, inkl. versteckter Dateien):
+# rsync -a /path/to/warehouse/ /path/to/redaxo/redaxo/src/addons/warehouse/
 
-1. **Linting:**
-   ```bash
-   composer cs-dry  # Prüfen
-   composer cs-fix  # Korrigieren
-   ```
+# Im REDAXO Backend:
+# - AddOns → Warehouse → Re-installieren oder Update
+```
 
-2. **Dateien prüfen:**
-   - Wurden nur relevante Dateien geändert?
-   - Keine ungewollten Änderungen an vendor/, node_modules/, etc.?
-   - `.gitignore` korrekt konfiguriert?
+**Testing Checkliste**:
+- [ ] Betroffene Frontend-Funktionen testen
+- [ ] Betroffene Backend-Seiten prüfen
+- [ ] Browser-Kompatibilität (Chrome, Firefox, Safari)
+- [ ] Mobile Responsive Design
+- [ ] JavaScript-Funktionalität
+- [ ] PayPal-Integration (falls betroffen, Sandbox nutzen)
 
-3. **Code-Review:**
-   - Sind alle Änderungen minimal und fokussiert?
-   - Wurde Type Hinting verwendet?
-   - Sind Security-Best-Practices beachtet (kein XSS, SQL-Injection, etc.)?
-   - Verwenden Fragmente `data-warehouse-*` Attribute statt Inline-JS?
+#### 5. Documentation Update
+- [ ] `/docs/*.md` Dateien auf Aktualität prüfen
+- [ ] Code-Beispiele anpassen
+- [ ] Neue Features dokumentieren
+- [ ] Backend-Dokumentation unter "Warehouse → Docs" testen
 
-### Nach dem Commit:
+#### 6. Version Update (package.yml)
+Semantic Versioning beachten:
+- **PATCH** (2.0.1): Nur Bugfixes
+- **MINOR** (2.1.0): Neue Features, rückwärtskompatibel
+- **MAJOR** (3.0.0): Breaking Changes
 
-1. **GitHub Actions überprüfen:**
-   - Die Workflow `.github/workflows/code-style.yml` wird automatisch bei Push/PR ausgeführt
-   - PHP-CS-Fixer wird automatisch angewendet und Fixes werden committed
-   - Prüfe den Workflow-Status im "Actions"-Tab des Repositories
-   - Bei Fehlern werden diese im PR angezeigt
+#### 7. Commit & Pull Request
+```bash
+# Aussagekräftige Commit-Message
+git commit -m "Fix: Beschreibung des Bugfix" 
+# oder
+git commit -m "Feature: Beschreibung des neuen Features"
+```
 
-2. **Dokumentation:**
-   - Ist die Dokumentation aktuell?
-   - Sind alle neuen Features dokumentiert?
-   - Sind Code-Beispiele korrekt?
+**PR-Beschreibung sollte enthalten**:
+- Was wurde geändert?
+- Warum wurde es geändert?
+- Wie wurde es getestet?
+- Verlinkte Issues (#123)
 
-3. **Version:**
-   - Wurde die Version in `package.yml` korrekt erhöht?
-   - Entspricht die Versionserhöhung der Art der Änderung?
+## Code Verification Checklist
+
+### Pre-Commit Verification
+
+#### 1. Code Style & Linting
+```bash
+composer cs-fix  # Automatisch korrigieren
+composer cs-dry  # Optional: Nur prüfen
+```
+
+#### 2. File Changes Review
+```bash
+git status
+git diff
+```
+Prüfe:
+- [ ] Nur relevante Dateien geändert?
+- [ ] Keine ungewollten Änderungen (vendor/, node_modules/, etc.)?
+- [ ] `.gitignore` korrekt konfiguriert?
+- [ ] Keine Secrets oder Credentials committed?
+
+#### 3. Code Quality Review
+- [ ] **Minimale Änderungen**: Nur das Nötigste geändert?
+- [ ] **Type Hinting**: Alle Parameter und Rückgabewerte typisiert?
+- [ ] **Security**: XSS, SQL-Injection, CSRF-Schutz beachtet?
+- [ ] **Fragmente**: `data-warehouse-*` Attribute statt Inline-JS?
+- [ ] **Nonce**: Inline-Scripts mit `<?= rex_response::getNonce() ?>` ausgestattet?
+- [ ] **Rückwärtskompatibilität**: Bei nicht-Bugfixes gewahrt?
+
+#### 4. Documentation Check
+- [ ] Relevante `/docs/*.md` Dateien aktualisiert?
+- [ ] Neue Features dokumentiert?
+- [ ] Code-Beispiele korrekt und funktionsfähig?
+- [ ] `package.yml` Version erhöht (Semantic Versioning)?
+
+### Post-Commit Verification
+
+#### 1. CI/CD Pipeline (GitHub Actions)
+Nach Push/PR wird automatisch ausgeführt:
+- `.github/workflows/code-style.yml`: PHP-CS-Fixer
+- Automatische Fixes werden committed
+- Status im "Actions"-Tab prüfen
+- Bei Fehlern: Im PR angezeigt
+
+#### 2. Pull Request Review
+Prüfe im PR:
+- [ ] CI/CD Pipelines erfolgreich?
+- [ ] Alle Änderungen wie erwartet?
+- [ ] PR-Beschreibung vollständig?
+- [ ] Issues korrekt verlinkt?
+
+#### 3. Final Checks
+- [ ] Version in `package.yml` korrekt erhöht?
+- [ ] Dokumentation vollständig?
+- [ ] Manuelle Tests erfolgreich durchgeführt?
