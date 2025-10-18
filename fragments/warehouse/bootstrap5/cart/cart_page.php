@@ -50,7 +50,7 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 
 				<?php foreach ($cart_items as $item_key => $item) : ?>
 				<!-- Item -->
-				<div class="card-body">
+				<div class="card-body" data-warehouse-item-key="<?= $item_key ?>">
 					<div class="row row-cols-1 row-cols-md-2 align-items-center">
 
 						<!-- Product cell-->

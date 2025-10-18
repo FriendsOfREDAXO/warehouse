@@ -23,7 +23,7 @@ $domain = Domain::getCurrent();
 		<?php if ($cart_items && count($cart_items) > 0) { ?>
 		<ul class="list-group list-group-flush">
 			<?php foreach ($cart_items as $item_key => $item) { ?>
-			<li class="list-group-item">
+			<li class="list-group-item" data-warehouse-item-key="<?= $item_key ?>">
 				<div class="row g-3 align-items-center">
 					<div class="col-auto">
 						<div class="ratio ratio-4x3">

@@ -38,7 +38,7 @@ if (!$cart_items || count($cart_items) === 0) {
 	</thead>
 	<tbody>
 		<?php foreach ($cart_items as $item_key => $item) : ?>
-		<tr data-article-key="<?= $item_key ?>">
+		<tr data-article-key="<?= $item_key ?>" data-warehouse-item-key="<?= $item_key ?>">
 			<td class="align-left">
 				<?= html_entity_decode($item['name']) ?>
 				<?php if ($item['type'] === 'variant'): ?>
