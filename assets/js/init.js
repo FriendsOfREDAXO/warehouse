@@ -120,6 +120,10 @@
     function initCartPage() {
         const cartPageContainer = document.querySelector('[data-warehouse-cart-page]');
         if (!cartPageContainer) return;
+        
+        // Skip if already initialized to prevent duplicate event listeners
+        if (cartPageContainer.dataset.warehouseInitialized === 'true') return;
+        cartPageContainer.dataset.warehouseInitialized = 'true';
 
         // Initialize tooltips if Bootstrap is available
         if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
@@ -271,6 +275,10 @@
     function initOffcanvasCart() {
         const offcanvasCart = document.querySelector('[data-warehouse-offcanvas-cart]');
         if (!offcanvasCart) return;
+        
+        // Skip if already initialized to prevent duplicate event listeners
+        if (offcanvasCart.dataset.warehouseInitialized === 'true') return;
+        offcanvasCart.dataset.warehouseInitialized = 'true';
 
         // Handle empty cart button
         const emptyCartBtn = offcanvasCart.querySelector('[data-warehouse-cart-empty]');
@@ -365,6 +373,10 @@
     function initCartTable() {
         const cartTable = document.querySelector('[data-warehouse-cart-table]');
         if (!cartTable) return;
+        
+        // Skip if already initialized to prevent duplicate event listeners
+        if (cartTable.dataset.warehouseInitialized === 'true') return;
+        cartTable.dataset.warehouseInitialized = 'true';
 
         // Handle quantity button clicks
         cartTable.querySelectorAll('[data-warehouse-cart-quantity]').forEach(button => {
@@ -484,6 +496,10 @@
     function initArticleDetail() {
         const articleDetail = document.querySelector('[data-warehouse-article-detail]');
         if (!articleDetail) return;
+        
+        // Skip if already initialized to prevent duplicate event listeners
+        if (articleDetail.dataset.warehouseInitialized === 'true') return;
+        articleDetail.dataset.warehouseInitialized = 'true';
 
         // Handle quantity switcher buttons
         const quantityButtons = articleDetail.querySelectorAll('[data-warehouse-quantity-switch]');
@@ -587,6 +603,10 @@
     function initCheckoutForm() {
         const checkoutForm = document.querySelector('[data-warehouse-checkout-form]');
         if (!checkoutForm) return;
+        
+        // Skip if already initialized to prevent duplicate event listeners
+        if (checkoutForm.dataset.warehouseInitialized === 'true') return;
+        checkoutForm.dataset.warehouseInitialized = 'true';
 
         // Handle different shipping address toggle
         const shippingToggle = checkoutForm.querySelector('[data-warehouse-shipping-toggle]');
