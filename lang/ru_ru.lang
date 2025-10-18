@@ -1,0 +1,649 @@
+# V1
+warehouse_iso_code = ISO код
+warehouse_iso2 = ISO код2
+warehouse_iso3 = ISO код3
+warehouse_is_eu = Страна ЕС
+warehouse_shipping_zone = Зона доставки
+warehouse_phone_code = Код страны
+warehouse_shipping_calculation_mode = Расчёт
+
+warehouse_tax_ust_ident = Налог [НДС]
+warehouse_tax_disable_by_ust_ident = Освобождение от налога с НДС
+warehouse_tax = Налог
+warehouse_tax_tax_disable = Общее освобождение от налога
+
+# v2.0.0
+warehouse.title = Магазин
+warehouse_module = Warehouse - Магазин
+
+warehouse.module.title = Заголовок
+warehouse.module.description = Текст
+warehouse.module.select.default = Пожалуйста, выберите
+
+# V2.0.0
+# Permissions
+warehouse = Warehouse: Доступ ко всем областям
+warehouse[settings] = Warehouse: Настройки
+warehouse[shipping] = Warehouse: Настройки доставки
+
+# V2.0.0
+# Backend Pages
+
+warehouse_order_dashboard = Панель управления
+warehouse_order = Заказы
+warehouse_order_list = Заказы
+warehouse_order_details = Детали заказа
+warehouse_customer = Зарегистрированные клиенты
+warehouse_customer_address = Адреса доставки
+warehouse_article = Товары
+warehouse_article_variant = Варианты
+warehouse_category = Категории
+warehouse_search = Поиск
+warehouse_country = Страны
+warehouse_shipping = Доставка
+warehouse_settings = Администрирование
+warehouse_settings_shop = Настройки
+warehouse_settings_payment = Оплата
+warehouse_settings_general = Общие настройки
+warehouse_settings_domain = Профили домена
+warehouse_settings_tawarehouse_article_variant.weightx = Налоги
+warehouse_settings_log = Журнал
+warehouse_settings_discount = Скидки
+warehouse_settings_documents = Документы
+warehouse_settings_label = Текст
+warehouse_settings_setup = Установка
+warehouse_docs = Помощь
+
+warehouse_docs.README = Введение
+warehouse_docs.warehouse_article = Товары
+warehouse_docs.warehouse_article_variant = Варианты
+warehouse_docs.warehouse_category = Категории
+warehouse_docs.order = Заказы
+warehouse_docs.settings.setup = Установка
+warehouse_docs.settings.general = Общие настройки
+warehouse_docs.settings.shipping = Доставка
+warehouse_docs.settings.payment = Оплата
+warehouse_docs.settings.domain = Домен
+warehouse_docs.settings.discount = Скидки
+warehouse_docs.customer = Клиенты (YCom)
+warehouse_docs.domain = Домен
+warehouse_docs.search = Поиск
+warehouse_docs.shipping = Доставка
+warehouse_docs.warehouse_extend = Расширить Warehouse
+ 
+
+# Warehouse Settings: General Settings
+
+warehouse.settings.general.info = Добро пожаловать в Warehouse 2.0 - некоторые основные настройки были установлены при установке. Ознакомьтесь с изменениями по сравнению с Warehouse 1.0 в разделе помощи.
+
+warehouse.settings.editor = WYSIWYG-редактор
+warehouse.settings.editor.notice = например <code>class="form-control redactor-editor--default"</code>
+
+warehouse.settings.currency = Валюта
+warehouse.settings.currency_symbol = Символ валюты (например ₽)
+warehouse.settings.currency_symbol.notice = <code>rex_config::get("warehouse","currency_symbol")</code>
+
+warehouse.settings.tax_options = Налоговые ставки
+warehouse.settings.tax_options.notice = Возможные налоговые ставки для выбора в товарах и вариантах. По умолчанию: <code>19,7,0</code> для ставок 19%, 7% и 0%. Используйте точку расширения <code>WAREHOUSE_TAX_OPTIONS</code> для изменения налоговых ставок.
+
+warehouse.settings.shipping_allowed = Разрешённые страны для доставки
+
+warehouse.settings.cart_mode = После действия корзины
+warehouse.settings.cart_mode.notice = Можно открыть страницу корзины или предыдущую страницу товара. Если открывается страница товара, showcart=1 добавляется как get-параметр.
+
+warehouse.settings.instant_checkout_enabled = Включить кнопку "Купить сейчас"
+warehouse.settings.instant_checkout_enabled.notice = Если включено, на страницах товаров будет отображаться кнопка "Купить сейчас", которая ведёт прямо к оформлению заказа.
+warehouse.settings.yes = Да
+warehouse.settings.no = Нет
+
+warehouse.ycom_modes.enforce = Заказ только с учётной записью клиента
+warehouse.ycom_modes.choose = Клиент выбирает
+warehouse.ycom_modes.guest_only = Гостевой режим (Учётная запись клиента не требуется)
+
+warehouse.settings.enable_features = Дополнительные опции для товаров и вариантов
+warehouse.settings.enable_features.bulk_prices = Запрос оптовых цен
+warehouse.settings.enable_features.weight = Запрос веса товара
+warehouse.settings.enable_features.variants = Разрешить варианты
+warehouse.settings.enable_features.stock = Управление запасами
+warehouse.settings.enable_features.sku = Управление SKU (артикул)
+
+warehouse.settings.fallback_category_image = Изображение категории по умолчанию
+warehouse.settings.fallback_category_image.notice = Используется, когда изображение для категории недоступно.
+
+warehouse.settings.fallback_article_image = Изображение товара по умолчанию
+warehouse.settings.fallback_article_image.notice = Используется, когда изображение для товара или варианта недоступно.
+
+warehouse.settings.invoice_number = Номер счёта
+warehouse.settings.invoice_number.notice = Текущий номер для следующего счёта. Автоматически увеличивается при создании счёта. Используйте точку расширения <code>WAREHOUSE_INVOICE_NUMBER</code> для изменения нумерации.
+warehouse.settings.delivery_note_number = Номер накладной
+warehouse.settings.delivery_note_number.notice = Текущий номер для следующей накладной. Автоматически увеличивается при создании накладной. Используйте точку расширения <code>WAREHOUSE_DELIVERY_NOTE_NUMBER</code> для изменения нумерации.
+warehouse.settings.order_number = Номер заказа
+warehouse.settings.order_number.notice = Текущий номер для следующего заказа. Автоматически увеличивается при создании заказа. Используйте точку расширения <code>WAREHOUSE_ORDER_NUMBER</code> для изменения нумерации.
+
+# Warehouse Settings: Shipping costs
+
+warehouse.settings.shipping = Стоимость доставки
+warehouse.settings.shipping_fee = Стоимость доставки
+warehouse.settings.free_shipping_from = Бесплатная доставка от
+warehouse.settings.minimum_order_value = Минимальная сумма заказа
+warehouse.settings.shipping_calculation_mode = Расширенная стоимость доставки
+warehouse.settings.shipping_calculation_mode.options.default = нет (по умолчанию)
+warehouse.settings.shipping_calculation_mode.options.quantity = КОЛИЧЕСТВО: Ступенчатая стоимость доставки по количеству
+warehouse.settings.shipping_calculation_mode.options.weight = ВЕС: Ступенчатая стоимость доставки по весу
+warehouse.settings.shipping_calculation_mode.options.order_total = СУММА ЗАКАЗА: Ступенчатая стоимость доставки по сумме заказа
+
+# Warehouse Settings: Domain
+
+warehouse_settings_domain.fieldset_art_ids = Страницы
+warehouse_settings_domain.yrewrite_domain_id = Домен
+warehouse_settings_domain.cart_art_id = Корзина покупок
+warehouse_settings_domain.checkout_art_id = Оформление заказа
+warehouse_settings_domain.shippinginfo_art_id = Информация о доставке
+warehouse_settings_domain.order_art_id = Заказ
+warehouse_settings_domain.address_art_id = Адрес
+warehouse_settings_domain.payment_error_art_id = Ошибка оплаты
+warehouse_settings_domain.thankyou_art_id = Спасибо
+
+warehouse_settings_domain.fieldset_email = Настройки электронной почты
+warehouse_settings_domain.email_template_customer = Шаблон электронной почты для клиента
+warehouse_settings_domain.email_template_seller = Шаблон электронной почты для продавца
+warehouse_settings_domain.email_signature = Подпись электронной почты
+warehouse_settings_domain.order_email = Адрес электронной почты получателя для заказов
+warehouse_settings_domain.order_email.notice = Разделяйте несколько получателей запятыми
+
+warehouse_settings_domain.fieldset_sepa = Перевод SEPA
+warehouse_settings_domain.sepa_account_holder_name = Владелец счёта
+warehouse_settings_domain.sepa_bank_name = Название банка
+warehouse_settings_domain.sepa_bic = BIC
+warehouse_settings_domain.sepa_iban = IBAN
+
+warehouse_settings_domain.fieldset_end = 🔚
+
+# Warehouse Settings: Discounts
+
+warehouse.discount_info = Скидки в настоящее время не поддерживаются. Примите участие в разработке на <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> для разработки расширенной системы скидок, состоящей из: Фиксированная скидка, Бесплатная доставка, Рекламные периоды, Коды купонов и скидки для определённых групп YCom.
+
+# YForm Tables: Table names
+
+warehouse_article.tablename = 📦 Товары
+warehouse_article_variant.tablename = 📦 Варианты
+warehouse_category.tablename = 📦 Категории
+warehouse_order.tablename = 📦 Заказы
+# warehouse_country.tablename = 📦 Страны
+# warehouse_shipping.tablename = 📦 Доставка
+warehouse_settings_domain.tablename = 📦 Настройки домена
+warehouse_customer_address.tablename = 📦 Адреса
+
+# YForm Table "Articles": Labels
+
+warehouse_article.name = Название
+warehouse_article.category_id = Категория
+warehouse_article.status = Статус
+warehouse_article_status.active = 🟢 Активный
+warehouse_article_status.draft = 🟡 Черновик
+warehouse_article_status.hidden = 🔴 Скрытый
+warehouse_article.prio = Порядок
+warehouse_article.weight = Вес
+warehouse_article.image = Изображение
+warehouse_article.gallery = Галерея
+warehouse_article.short_text = Краткий текст
+warehouse_article.short_text.notice = Этот текст используется как тизер, а также для SEO и поэтому не должен превышать 160 символов.
+warehouse_article.text = Текст
+warehouse_article.price = Цена
+warehouse_article.price_text = Текст цены
+warehouse_article.tax = Налог
+warehouse_article.tax.none = По умолчанию
+warehouse_article.createdate = Создано
+warehouse_article.updatedate = Последнее изменение
+warehouse_article.variant_ids = Варианты
+warehouse_article.availability = Наличие
+warehouse_article.uuid = UUID
+warehouse_article.bulk_prices = Оптовые цены
+warehouse_article.stock = Запас
+warehouse_article.sku = SKU
+warehouse_article.sku.notice = Артикул - если пусто, используется ID
+
+# YForm Table "Categories": Labels
+
+warehouse_category.status = Статус
+warehouse_category.status.active = 🟢 Активный
+warehouse_category.status.draft = 🟡 Черновик
+warehouse_category.status.hidden = 🔴 Скрытый
+warehouse_category.name = Название
+warehouse_category.teaser = Тизер
+warehouse_category.link_intern = Внутренняя ссылка
+warehouse_category.prio = Порядок
+warehouse_category.image = Изображение
+warehouse_category.text = Текст
+warehouse_category.createdate = Создано
+warehouse_category.updatedate = Последнее изменение
+warehouse_category.parent_id = Родительская категория
+warehouse_category.uuid = UUID
+
+# YForm Table "Article Variants": Labels
+
+warehouse_article_variant.article_id = Основной товар
+warehouse_article_variant.name = Название
+warehouse_article_variant.price = Цена
+warehouse_article_variant.bulk_prices = Оптовые цены
+warehouse_article_variant.weight = Вес
+warehouse_article_variant.bulk_prices.amount = Количество
+warehouse_article_variant.bulk_prices.price = Цена
+warehouse_article_variant.bulk_prices.weight = Вес
+warehouse_article_varaint.stock = Запас
+warehouse_article_variant.prio = Порядок
+warehouse_article_variant.availability = Наличие
+warehouse_article_variant.status = Статус
+warehouse_article_variant.status.active = 🟢 Активный
+warehouse_article_variant.status.draft = 🟡 Черновик
+warehouse_article_variant.status.hidden = 🔴 Скрытый
+warehouse_article_variant.image = Изображение
+warehouse_article_variant.sku = SKU
+warehouse_article_variant.sku.notice = Артикул - если пусто, используется ID
+warehouse_article_variant.uuid = UUID
+warehouse_article_variant.createdate = Создано
+warehouse_article_variant.updatedate = Последнее изменение
+
+
+# YForm Table "Countries": Labels
+
+warehouse_country.code = Код
+warehouse_country.name = Название
+warehouse_country.mode = Режим
+warehouse_country.status = Статус
+warehouse_country.prio = Порядок
+warehouse_country.tax = Налог
+
+# YForm Table "Order": Labels
+
+warehouse_order.salutation = Обращение
+warehouse_order.firstname = Имя
+warehouse_order.lastname = Фамилия
+warehouse_order.company = Компания
+warehouse_order.address = Адрес
+warehouse_order.zip = Почтовый индекс
+warehouse_order.city = Город
+warehouse_order.country = Страна
+warehouse_order.email = Электронная почта
+warehouse_order.createdate = Дата заказа
+warehouse_order.paypal_id = ID PayPal
+warehouse_order.payment_id = ID платежа
+warehouse_order.paypal_confirm_token = Токен подтверждения PayPal
+warehouse_order.payment_confirm = Подтверждение платежа
+warehouse_order.order_no = Номер заказа
+warehouse_order.order_text = Текст заказа
+warehouse_order.order_json = JSON заказа
+warehouse_order.order_total = Сумма заказа
+warehouse_order.ycom_user_id = ID пользователя YCom
+warehouse_order.payment_type = Тип платежа
+warehouse_order.payed = Оплачено
+warehouse_order.not_payed = Не оплачено
+warehouse_order.imported = Импортировано
+warehouse_order.is_read = Прочитано
+warehouse_order.updatedate = Заказ начат...
+warehouse_order.payment_status = Статус платежа
+warehouse_order.payment_status.select = Выбрать статус платежа
+warehouse_order.shipping_status = Статус доставки
+warehouse_order.shipping_status.select = Выбрать статус доставки
+warehouse_order.buyer = Покупатель
+warehouse_order.custom_order_id = Пользовательский ID заказа
+
+# YForm Table "Shipping": Labels
+
+warehouse_shipping.name = Название
+warehouse_shipping.mode = Режим
+warehouse_shipping.params = Параметры
+
+# Warehouse Articles and Variants: Status
+
+warehouse_article.status.active = 🟢 Активный
+warehouse_article.status.draft = 🟡 Черновик
+warehouse_article.status.hidden = 🔴 Скрытый
+
+# Warehouse Articles and Variants: Availability
+
+warehouse_article.availability.BackOrder = 🟡 Отложенный заказ
+warehouse_article.availability.Discontinued = 🟡 Снято с производства
+warehouse_article.availability.InStock = 🟢 В наличии
+warehouse_article.availability.InStoreOnly = 🟡 Только в магазине
+warehouse_article.availability.LimitedAvailability = 🟡 Ограниченное наличие
+warehouse_article.availability.MadeToOrder = 🟡 Изготовление на заказ
+warehouse_article.availability.OnlineOnly = 🟢 Только онлайн
+warehouse_article.availability.OutOfStock = 🔴 Нет в наличии
+warehouse_article.availability.PreOrder = 🟢 Предзаказ
+warehouse_article.availability.PreSale = 🟢 Предпродажа
+warehouse_article.availability.Reserved = 🔴 Зарезервировано
+warehouse_article.availability.SoldOut = 🔴 Распродано
+
+warehouse_article_variant.availability.BackOrder = 🟡 Отложенный заказ
+warehouse_article_variant.availability.Discontinued = 🟡 Снято с производства
+warehouse_article_variant.availability.InStock = 🟢 В наличии
+warehouse_article_variant.availability.InStoreOnly = 🟡 Только в магазине
+warehouse_article_variant.availability.LimitedAvailability = 🟡 Ограниченное наличие
+warehouse_article_variant.availability.MadeToOrder = 🟡 Изготовление на заказ
+warehouse_article_variant.availability.OnlineOnly = 🟢 Только онлайн
+warehouse_article_variant.availability.OutOfStock = 🔴 Нет в наличии
+warehouse_article_variant.availability.PreOrder = 🟢 Предзаказ
+warehouse_article_variant.availability.PreSale = 🟢 Предпродажа
+warehouse_article_variant.availability.Reserved = 🔴 Зарезервировано
+warehouse_article_variant.availability.SoldOut = 🔴 Распродано
+
+warehouse.search.results = Найдено записей: {0}.
+warehouse.search.no_results = Записи не найдены.
+
+warehouse.search.description = Поиск в товарах, категориях и заказах. Совет: Вы также можете фильтровать через <code>+</code>, <code>-</code>, например <code>+красный</code> для всех товаров со словом "красный" или <code>+Иван -Иванов</code> для всех заказов от "Иван" без "Иванов".
+
+
+warehouse_quicknavigation_search_button = Поиск
+warehouse_quicknavigation_search_placeholder = Введите поисковый запрос
+
+warehouse_article.icon_label = Товар
+warehouse_article_variant.icon_label = Вариант
+warehouse_category.icon_label = Категория
+warehouse_order.icon_label = Заказ
+
+# Warehouse Log
+warehouse.log.activated = Ведение журнала активировано.
+warehouse.log.deactivated = Ведение журнала деактивировано.
+warehouse.log.warning_logisinactive = Ведение журнала в настоящее время <b>отключено</b>. <a href="{0}">Активировать ведение журнала</a>
+warehouse.log.warning_logisactive = Ведение журнала в настоящее время <b>активно</b>. <a href="{0}">Деактивировать ведение журнала</a>
+warehouse.log.time = Время
+warehouse.log.ip = IP
+warehouse.log.user_id = ID пользователя
+warehouse.log.event = Событие
+warehouse.log.params = Параметры
+warehouse.log.user_ip = IP пользователя
+warehouse.log.type = Тип
+warehouse.log.email = Электронная почта
+warehouse.log.delete_log_msg = Вы действительно хотите удалить журнал?
+warehouse.log.title = Файл журнала: {0}
+
+# Warehouse Settings - Shipping
+
+warehouse.settings = Настройки доставки
+warehouse.settings.shipping_costs = Стоимость доставки
+warehouse.settings.minimum_order_value = Минимальная сумма заказа
+warehouse.settings.shipping_fee = Стоимость доставки
+warehouse.settings.free_shipping_from = Бесплатная доставка от
+warehouse.settings.shipping_calculation_mode = Расчёт стоимости доставки
+
+warehouse.settings.shipping_calculation_mode.options.default = Фиксированная ставка (По умолчанию)
+warehouse.settings.shipping_calculation_mode.options.quantity = Количество
+warehouse.settings.shipping_calculation_mode.options.weight = Вес
+warehouse.settings.shipping_calculation_mode.options.order_total = Сумма заказа
+
+# Warehouse PayPal
+
+warehouse.settings.payment = Настройки оплаты
+
+warehouse.settings.payment.store_name = Название магазина
+warehouse.settings.payment.store_name.notice = например <code>Иван Иванов ООО</code>, передаётся в PayPal среди прочего.
+
+warehouse.settings.payment.store_country_code = Код страны магазина
+warehouse.settings.payment.store_country_code.notice = например <code>ru-RU</code> - передаётся в PayPal среди прочего.
+
+warehouse.settings.payment.paypal_client_id = ID клиента PayPal
+warehouse.settings.payment.paypal_secret = Секрет PayPal
+
+warehouse.settings.payment.sandboxmode = Песочница PayPal
+warehouse.settings.payment.sandboxmode.option = Включить песочницу PayPal (тестовые заказы)
+
+warehouse.settings.payment.paypal_sandbox_client_id = ID клиента песочницы PayPal
+warehouse.settings.payment.paypal_sandbox_secret = Секрет песочницы PayPal
+
+warehouse.settings.payment.paypal_getparams = Дополнительные GET-параметры для PayPal
+warehouse.settings.payment.paypal_getparams.notice = например для использования обслуживания во время разработки. Укажите в формате JSON в виде <code>{"key1":"value1","key2":"value2"}</code>.
+
+warehouse.settings.payment.info = В настоящее время поддерживается только PayPal в качестве платёжного провайдера. Участвуйте в дальнейшей разработке на GitHub по адресу <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a>.
+
+warehouse.settings.cart_mode.cart = Показать корзину покупок
+warehouse.settings.cart_mode.page = Показать страницу товара
+
+warehouse.order.details.error.no_data_id = Пожалуйста, сначала выберите заказ из обзора или поиска.
+warehouse.order.details.error.order_not_found = Запрошенный заказ не найден.
+warehouse.order.details.error.invalid_payment_status = Недействительный статус платежа.
+warehouse.order.details.error.invalid_shipping_status = Недействительный статус доставки.
+warehouse.order.details.error.invoice_generation_failed = Ошибка при генерации счёта.
+warehouse.order.details.error.delivery_note_generation_failed = Ошибка при генерации накладной.
+warehouse.order.details.success.payment_status_updated = Статус платежа успешно обновлён.
+warehouse.order.details.success.shipping_status_updated = Статус доставки успешно обновлён.
+warehouse.order.details.success.invoice_generated = Счёт успешно сгенерирован.
+warehouse.order.details.success.delivery_note_generated = Накладная успешно сгенерирована.
+
+warehouse.settings.framework = Желаемый выходной фреймворк
+warehouse.settings.framework.notice = В настоящее время поддерживается только Bootstrap 5. <code>bootstrap5</code> - значение по умолчанию. Вы также можете скопировать папку <code>src/addons/warehouse/fragments/bootstrap5</code> в <code>src/addons/project/fragments/bootstrap5</code> и настроить её. Больше информации в документации.
+
+warehouse.settings.container_class = CSS-класс контейнера
+warehouse.settings.container_class.notice = Дополнительно определите CSS-класс контейнера, например <code>container</code>, <code>container-fluid</code>, <code>container-lg</code> и т.д. По умолчанию используется <code>container</code>. Оставьте поле пустым, если контейнер не должен использоваться.
+
+warehouse.settings.shipping_conditions_text = Условия стоимости доставки
+warehouse.settings.shipping_conditions_text.notice = Текст, отображаемый под стоимостью доставки. Например "Бесплатная доставка от 50 евро стоимости заказа." или "Стоимость доставки ступенчатая по весу."
+
+
+warehouse.settings.label_cart = Корзина покупок
+warehouse.settings.label_cart_empty = Корзина покупок пуста.
+
+warehouse.payment_options.prepayment = Предоплата
+warehouse.payment_options.invoice   = Счёт
+warehouse.payment_options.paypal    = PayPal
+warehouse.payment_options.direct_debit  = Прямое дебетование
+
+
+warehouse_customer_address.ycom_user_id = ID пользователя YCom
+warehouse_customer_address.salutation = Обращение
+warehouse_customer_address.type = Тип
+warehouse_customer_address.company = Компания
+warehouse_customer_address.name = Название
+warehouse_customer_address.street = Улица
+warehouse_customer_address.zip = Почтовый индекс
+warehouse_customer_address.city = Город
+warehouse_customer_address.country = Страна
+
+warehouse.customer_address.type = Тип
+warehouse.customer_address.type.private = Частный
+warehouse.customer_address.type.company = Компания
+warehouse.customer_address.type.shipping = Доставка
+warehouse.customer_address.type.billing = Выставление счёта
+warehouse.customer_address.type.other = Другое
+
+warehouse_customer_address.validate.unique.ycom_user_id_and_type = Комбинация ID пользователя YCom и типа адреса может встречаться только один раз. Пожалуйста, проверьте ваш ввод.
+
+
+warehouse.settings.ycom_mode = Учётная запись клиента
+warehouse.settings.ycom_mode.notice = Требуется дополнение YCom. Примечание: Если дополнение YCom было установлено позже, дополнение Warehouse необходимо переустановить.
+warehouse.settings.ycom_mode.guest_only = Гостевой режим (учётная запись клиента не требуется)
+warehouse.settings.ycom_mode.choose = Клиент выбирает, создавать ли учётную запись клиента
+warehouse.settings.ycom_mode.enforce_account = Требуется учётная запись клиента
+
+
+warehouse.settings.label_cart_empty_confirm = Вы уверены, что хотите очистить корзину покупок?
+warehouse.settings.label_back_to_cart = Вернуться в корзину покупок
+warehouse.settings.label_checkout = Оформление заказа
+warehouse.settings.label_payment_type = Варианты оплаты
+warehouse.settings.label_remove_from_cart = Удалить
+warehouse.settings.label_cart_remove_item_confirm = Вы уверены, что хотите удалить выбранный товар?
+warehouse.settings.label_article = Товар
+warehouse.settings.label_price = Цена за единицу
+warehouse.settings.label_quantity = Количество
+warehouse.settings.label_total = Общая цена
+warehouse.settings.label_shipping_costs = Стоимость доставки
+warehouse.settings.label_shipping_costs_free = Бесплатная доставка
+warehouse.settings.label_shipping_costs_weight = Стоимость доставки по весу
+warehouse.settings.label_checkout = Оформление заказа
+warehouse.settings.label_checkout_instant = Купить сейчас
+warehouse.settings.label_checkout_address = Адрес
+warehouse.settings.label_checkout_payment = Способ оплаты
+warehouse.settings.label_checkout_choose = Выберите, как вы хотите продолжить:
+warehouse.settings.label_checkout_guest = Продолжить как гость
+warehouse.settings.label_checkout_guest_text = Купить без регистрации. Вам нужно будет повторно вводить свои данные при каждом заказе.
+warehouse.settings.label_checkout_guest_continue = Заказать как гость
+warehouse.settings.label_checkout_login = Продолжить с учётной записью клиента
+warehouse.settings.label_checkout_login_text = Войдите или создайте учётную запись клиента для более быстрых заказов в будущем.
+warehouse.settings.label_checkout_login_email = Адрес электронной почты
+warehouse.settings.label_checkout_login_password = Пароль
+warehouse.settings.label_checkout_login_submit = Войти
+warehouse.settings.label_checkout_register_text = Ещё нет учётной записи клиента? Зарегистрируйтесь сейчас.
+warehouse.settings.label_checkout_submit_order = Купить сейчас
+warehouse.settings.label_checkout_submit_order = Оформить заказ
+warehouse.settings.label_checkout_submit_order_wait = Пожалуйста, подождите...
+warehouse.settings.label_cart_subtotal = Промежуточный итог
+warehouse.settings.label_cart_total = Итого
+warehouse.settings.label_cart_total_weight = Общий вес
+warehouse.settings.label_next = Далее
+warehouse.settings.label_add_to_cart = Добавить в корзину
+warehouse.settings.label_add_to_cart_success = Добавлено!
+warehouse.settings.label_add_to_order = Добавить в заказ
+
+warehouse.settings.label_payment_options = Варианты оплаты
+warehouse.settings.label_paymentoptions = {0}
+warehouse.settings.label_paymentoptions_notice = Примечание для {0}
+warehouse.settings.label_paymentoptions_image = Логотип {0}
+warehouse.payment_options.invoice = Счёт
+warehouse.payment_options.prepayment = Предоплата
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Прямое дебетование
+
+# PayPal Button Style Configuration
+
+warehouse.settings.payment.paypal_style = Стиль кнопки PayPal
+
+warehouse.settings.payment.paypal_button_shape = Форма кнопки
+warehouse.settings.payment.paypal_button_shape.notice = Выберите форму кнопки PayPal.
+warehouse.settings.payment.paypal_button_shape.rect = Прямоугольная
+warehouse.settings.payment.paypal_button_shape.pill = Форма таблетки
+
+warehouse.settings.payment.paypal_button_size = Размер кнопки
+warehouse.settings.payment.paypal_button_size.notice = Выберите размер кнопки PayPal.
+warehouse.settings.payment.paypal_button_size.small = Маленький
+warehouse.settings.payment.paypal_button_size.medium = Средний
+warehouse.settings.payment.paypal_button_size.large = Большой
+warehouse.settings.payment.paypal_button_size.responsive = Адаптивный
+
+warehouse.settings.payment.paypal_button_color = Цвет кнопки
+warehouse.settings.payment.paypal_button_color.notice = Выберите цвет кнопки PayPal.
+warehouse.settings.payment.paypal_button_color.gold = Золотой
+warehouse.settings.payment.paypal_button_color.blue = Синий
+warehouse.settings.payment.paypal_button_color.silver = Серебряный
+warehouse.settings.payment.paypal_button_color.black = Чёрный
+warehouse.settings.payment.paypal_button_color.white = Белый
+
+warehouse.settings.payment.paypal_button_label = Метка кнопки
+warehouse.settings.payment.paypal_button_label.notice = Выберите метку кнопки PayPal.
+warehouse.settings.payment.paypal_button_label.paypal = PayPal
+warehouse.settings.payment.paypal_button_label.checkout = Оформление заказа
+warehouse.settings.payment.paypal_button_label.pay = Оплатить
+warehouse.settings.payment.paypal_button_label.buynow = Купить сейчас
+warehouse.settings.payment.paypal_button_label.installment = Рассрочка
+warehouse.settings.payment.paypal_button_label.donate = Пожертвовать
+
+warehouse.settings.payment.paypal_button_layout = Макет кнопки
+warehouse.settings.payment.paypal_button_layout.notice = Выберите макет кнопки PayPal.
+warehouse.settings.payment.paypal_button_layout.horizontal = Горизонтальный
+warehouse.settings.payment.paypal_button_layout.vertical = Вертикальный
+
+warehouse.settings.payment.paypal_button_height = Высота кнопки
+warehouse.settings.payment.paypal_button_height.notice = Укажите высоту кнопки PayPal в пикселях (необязательно).
+
+warehouse.settings.payment.paypal_button_funding_source = Предпочтительный источник оплаты
+warehouse.settings.payment.paypal_button_funding_source.notice = Выберите предпочтительный источник оплаты для кнопки PayPal.
+warehouse.settings.payment.paypal_button_funding_source.paypal = PayPal
+warehouse.settings.payment.paypal_button_funding_source.credit = Кредитная карта
+
+warehouse.settings.payment.paypal_include_images = Передать изображения товаров в заказ PayPal
+warehouse.settings.payment.paypal_include_images.option = Передать изображения товаров в PayPal
+warehouse.settings.payment.paypal_include_images.notice = Если включено, изображения товаров передаются как URL в PayPal. Изображения передаются в малом размере (rex_media_small).
+
+# Setup Page
+warehouse.setup.repair_tables = Восстановить таблицы
+warehouse.setup.repair_tables_info = Восстанавливает структуру базы данных и повторно импортирует табличные наборы YForm.
+warehouse.setup.repair_tables_button = Восстановить таблицы
+warehouse.setup.repair_tables_confirm = Вы уверены, что хотите восстановить таблицы? Этот процесс нельзя отменить.
+
+warehouse.setup.install_structure = Создать структуру
+warehouse.setup.install_structure_info = Создаёт структуру магазина с категориями и профилем домена. Возможно только при отсутствии профиля домена.
+warehouse.setup.install_structure_button = Создать структуру
+warehouse.setup.install_structure_confirm = Вы уверены, что хотите создать структуру магазина?
+
+warehouse.setup.install_url_profiles = Создать профили URL
+warehouse.setup.install_url_profiles_info = Устанавливает профили URL для товаров, категорий и заказов.
+warehouse.setup.install_url_profiles_button = Создать профили URL
+warehouse.setup.install_url_profiles_confirm = Вы уверены, что хотите создать профили URL?
+
+warehouse.setup.import_demo = Импортировать демонстрационные данные
+warehouse.setup.import_demo_info = Импортирует демонстрационные товары, категории и заказы для тестирования.
+warehouse.setup.import_demo_button = Импортировать демонстрационные данные
+warehouse.setup.import_demo_confirm = Вы уверены, что хотите импортировать демонстрационные данные? Существующие данные могут быть перезаписаны.
+
+warehouse.setup.reset_shop = Сбросить магазин
+warehouse.setup.reset_shop_info = Удаляет все демонстрационные данные и сбрасывает магазин в исходное состояние.
+warehouse.setup.reset_shop_button = Сбросить магазин
+warehouse.setup.reset_shop_confirm = Вы ДЕЙСТВИТЕЛЬНО уверены, что хотите сбросить магазин? Все товары, категории и заказы будут удалены!
+
+warehouse.setup.install_module = Установить модуль Warehouse
+warehouse.setup.install_module_info = Устанавливает или обновляет модуль Warehouse для вывода на фронтенде.
+
+warehouse.setup.success_tables_repaired = Таблицы успешно восстановлены и табличные наборы импортированы.
+warehouse.setup.success_structure_installed = Структура магазина успешно создана.
+warehouse.setup.success_url_profiles_installed = Профили URL успешно установлены.
+warehouse.setup.success_demo_imported = Демонстрационные данные успешно импортированы.
+warehouse.setup.success_shop_reset = Магазин успешно сброшен.
+
+# Setup Error Messages
+warehouse.setup.error_repair_tables = Ошибка при восстановлении таблиц: {0}
+warehouse.setup.error_domain_exists = Профиль домена уже существует. Структура может быть создана только при отсутствии профиля домена.
+warehouse.setup.error_install_structure = Ошибка при создании структуры: {0}
+warehouse.setup.error_url_addon_unavailable = Дополнение URL недоступно. Пожалуйста, установите дополнение URL.
+warehouse.setup.error_install_url_profiles = Ошибка при установке профилей URL: {0}
+warehouse.setup.error_import_demo = Ошибка при импорте демонстрационных данных: {0}
+warehouse.setup.error_reset_shop = Ошибка при сбросе магазина: {0}
+
+# Module and Email Template Messages
+warehouse.setup.module_updated = Модуль "{0}" был обновлён.
+warehouse.setup.module_created = Модуль был создан в "{0}".
+warehouse.setup.email_template_updated = Шаблон электронной почты "{0}" был обновлён.
+warehouse.setup.email_template_created = Шаблон электронной почты "{0}" был создан.
+warehouse.setup.module_button = Модуль {0} {1}
+warehouse.setup.email_template_button = Шаблон {0} {1}
+warehouse.setup.module_update = обновить
+warehouse.setup.module_install = установить
+warehouse.setup.install_email_templates = Установить или обновить шаблоны электронной почты
+
+warehouse.order.dashboard.recent_orders = Последние заказы
+warehouse.order.dashboard.orders_by_month = Заказы по месяцам
+warehouse.order.dashboard.date = Дата
+warehouse.order.dashboard.month = Месяц
+warehouse.order.dashboard.total = Общая сумма
+warehouse.order.dashboard.recent_customers = Последние клиенты
+warehouse.order.dashboard.customer.name = Название
+warehouse.order.dashboard.customer.email = Электронная почта
+
+warehouse.settings.payment.allowed_payment_options = Разрешённые способы оплаты
+warehouse.payment_options.prepayment = Предоплата
+warehouse.payment_options.invoice = Счёт
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Прямое дебетование
+
+warehouse.settings.documents.info = Документы в настоящее время не поддерживаются. Примите участие в разработке на <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> для разработки создания документов, состоящего из диапазонов номеров, PDF подтверждения заказа, PDF счёта, PDF накладной и электронного счёта.
+warehouse.settings.documents.pdfout_version = Пожалуйста, установите PDFout версии 10.x или выше для создания документов. Версия 9.x больше не поддерживается.
+
+
+warehouse.order.shipping_status.shipped = Отправлено
+warehouse.order.shipping_status.not_shipped = Не отправлено
+warehouse.order.shipping_status.partially_shipped = Частично отправлено
+warehouse.order.shipping_status.returned = Возвращено
+warehouse.order.shipping_status.lost = Потеряно
+warehouse.order.shipping_status.cancelled = Отменено
+
+warehouse.payment_status = Статус платежа
+warehouse.payment_status.pending = ⌛ Ожидается
+warehouse.payment_status.completed = ✅ Завершено
+warehouse.payment_status.failed = ❌ Не удалось
+warehouse.payment_status.cancelled = ❌ Отменено
+warehouse.payment_status.refunded = ✅ Возвращено
+
+# PayPal Error Handling
+warehouse.paypal.error_modal_title = Платёж не выполнен
+warehouse.paypal.error_modal_close = Закрыть
+warehouse.paypal.error_technical_details = Технические подробности
+warehouse.paypal.error_create_order = Возникла проблема при инициализации платежа PayPal. Пожалуйста, попробуйте снова или выберите другой способ оплаты.
+warehouse.paypal.error_capture_order = Ваш платёж не может быть завершён. Пожалуйста, попробуйте снова или выберите другой способ оплаты.
