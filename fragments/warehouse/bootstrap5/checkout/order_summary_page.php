@@ -95,7 +95,7 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 								<?php if ($with_tax): ?>
 								<tr>
 									<td colspan="3">
-										<strong>MwSt.</strong>
+										<strong><?= Warehouse::getLabel('tax_total') ?></strong>
 									</td>
 									<td class="text-end">
 										<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
