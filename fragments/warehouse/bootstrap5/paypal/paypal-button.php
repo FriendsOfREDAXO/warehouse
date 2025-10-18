@@ -29,7 +29,7 @@ use PaypalServerSdkLib\PaypalServerSdkClientBuilder;
 		<div class="modal-content">
 			<div class="modal-header">
 				<h1 class="modal-title fs-5" id="paypalErrorModalLabel"><?= Warehouse::getLabel('paypal.error_modal_title') ?></h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= htmlspecialchars(Warehouse::getLabel('paypal.error_modal_close'), ENT_QUOTES, 'UTF-8') ?>"></button>
 			</div>
 			<div class="modal-body" id="paypalErrorModalBody">
 				<!-- Error message will be inserted here -->
