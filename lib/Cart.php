@@ -166,8 +166,8 @@ class Cart
                 $current_mode = Warehouse::getPriceInputMode();
                 
                 // Get the item object to recalculate prices with bulk pricing
-                if ($items[$item_key]['type'] === 'variant' && $article_variant_id) {
-                    $variant = ArticleVariant::get($article_variant_id);
+                if ($items[$item_key]['type'] === 'variant' && !empty($items[$item_key]['article_variant_id'])) {
+                    $variant = ArticleVariant::get($items[$item_key]['article_variant_id']);
                     if ($variant) {
                         // Get total price for quantity (accounts for bulk pricing)
                         $total_price_current_mode = $variant->getPriceForQuantity($new_amount, $current_mode);
