@@ -161,10 +161,51 @@ class Cart
             if ($items[$item_key]['amount'] <= 0) {
                 unset($items[$item_key]);
             } else {
-                // Recalculate total and tax amount
-                $items[$item_key]['total'] = $items[$item_key]['price'] * $items[$item_key]['amount'];
-                if (isset($items[$item_key]['gross_price'], $items[$item_key]['net_price'])) {
-                    $items[$item_key]['tax_amount'] = ($items[$item_key]['gross_price'] - $items[$item_key]['net_price']) * $items[$item_key]['amount'];
+                // Recalculate prices based on current quantity (includes bulk pricing)
+                $new_amount = $items[$item_key]['amount'];
+                $current_mode = Warehouse::getPriceInputMode();
+                
+                // Get the item object to recalculate prices with bulk pricing
+                if ($items[$item_key]['type'] === 'variant' && !empty($items[$item_key]['article_variant_id'])) {
+                    $variant = ArticleVariant::get($items[$item_key]['article_variant_id']);
+                    if ($variant) {
+                        // Get total price for quantity (accounts for bulk pricing)
+                        $total_price_current_mode = $variant->getPriceForQuantity($new_amount, $current_mode);
+                        $unit_price_current_mode = $new_amount > 0 ? $total_price_current_mode / $new_amount : 0;
+                        
+                        // Get net and gross unit prices for tax calculation (also considering bulk pricing)
+                        $total_price_net = $variant->getPriceForQuantity($new_amount, 'net');
+                        $total_price_gross = $variant->getPriceForQuantity($new_amount, 'gross');
+                        $unit_price_net = $new_amount > 0 ? $total_price_net / $new_amount : 0;
+                        $unit_price_gross = $new_amount > 0 ? $total_price_gross / $new_amount : 0;
+                        
+                        // Update stored prices
+                        $items[$item_key]['price'] = $unit_price_current_mode;
+                        $items[$item_key]['net_price'] = $unit_price_net;
+                        $items[$item_key]['gross_price'] = $unit_price_gross;
+                        $items[$item_key]['total'] = $total_price_current_mode;
+                        $items[$item_key]['tax_amount'] = $total_price_gross - $total_price_net;
+                    }
+                } else {
+                    $article = Article::get($article_id);
+                    if ($article) {
+                        // Get total price for quantity (accounts for bulk pricing)
+                        $total_price_current_mode = $article->getPriceForQuantity($new_amount, $current_mode);
+                        $unit_price_current_mode = $new_amount > 0 ? $total_price_current_mode / $new_amount : 0;
+                        
+                        // Get net and gross unit prices for tax calculation (also considering bulk pricing)
+                        $total_price_net = $article->getPriceForQuantity($new_amount, 'net');
+                        $total_price_gross = $article->getPriceForQuantity($new_amount, 'gross');
+                        $unit_price_net = $new_amount > 0 ? $total_price_net / $new_amount : 0;
+                        $unit_price_gross = $new_amount > 0 ? $total_price_gross / $new_amount : 0;
+                        
+                        // Update stored prices
+                        $items[$item_key]['price'] = $unit_price_current_mode;
+                        $items[$item_key]['net_price'] = $unit_price_net;
+                        $items[$item_key]['gross_price'] = $unit_price_gross;
+                        $items[$item_key]['total'] = $total_price_current_mode;
+                        $items[$item_key]['tax_amount'] = $total_price_gross - $total_price_net;
+                    }
                 }
             }
         }
