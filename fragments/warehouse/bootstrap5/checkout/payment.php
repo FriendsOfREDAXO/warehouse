@@ -44,7 +44,7 @@ $continue_to_summary_url = $domain?->getCheckoutUrl(['continue_with' => 'summary
     </section>
     <section class="col-12">
         <h2><?= htmlspecialchars(Warehouse::getLabel('checkout_payment'), ENT_QUOTES, 'UTF-8') ?></h2>
-        <p>Zahlungsinformationen wurden gespeichert.</p>
+        <p><?= htmlspecialchars(Warehouse::getLabel('payment_info_saved'), ENT_QUOTES, 'UTF-8') ?></p>
     </section>
     <section class="col-12 my-3">
         <div class="d-flex justify-content-between align-items-center">
