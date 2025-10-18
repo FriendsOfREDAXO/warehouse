@@ -4,8 +4,7 @@ use FriendsOfRedaxo\Warehouse\Payment;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
 /** @var rex_yform_value_abstract $this */
-
-$options = Payment::getPaymentOptions();
+/** @var array<string, array{label: string, description: string, logo: string}> $options */
 
 $notices = [];
 if ('' != $this->getElement('notice')) {
@@ -60,7 +59,7 @@ foreach ($options as $key => $value) {
 			<div class="card-body p-2">
 				<h6 class="card-title mb-1"><input class=""
 						<?= implode(' ', $input_attributes) ?>
-					/>&nbsp;<?= htmlspecialchars($value['label'] ?? $this->getLabelStyle($value)) ?>
+					/>&nbsp;<?= htmlspecialchars($value['label'] ?? $key) ?>
 				</h6>
 				<?php if (!empty($value['description'])): ?>
 				<p class="card-text small mb-0">
