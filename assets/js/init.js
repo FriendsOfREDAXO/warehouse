@@ -354,10 +354,37 @@
             });
         }
 
-        // Update offcanvas subtotal
-        const subtotalElement = container.querySelector('[data-warehouse-offcanvas-subtotal]');
-        if (subtotalElement && cartData.totals && cartData.totals.subtotal_formatted) {
-            subtotalElement.textContent = cartData.totals.subtotal_formatted;
+        // Update all cart totals if available
+        if (cartData.totals) {
+            // Update legacy subtotal (for backward compatibility)
+            const subtotalElement = container.querySelector('[data-warehouse-offcanvas-subtotal]');
+            if (subtotalElement && cartData.totals.subtotal_formatted) {
+                subtotalElement.textContent = cartData.totals.subtotal_formatted;
+            }
+
+            // Update subtotal by mode (net/gross)
+            const subtotalByModeElement = container.querySelector('[data-warehouse-offcanvas-subtotal-by-mode]');
+            if (subtotalByModeElement && cartData.totals.subtotal_by_mode_formatted) {
+                subtotalByModeElement.textContent = cartData.totals.subtotal_by_mode_formatted;
+            }
+
+            // Update tax total
+            const taxElement = container.querySelector('[data-warehouse-offcanvas-tax]');
+            if (taxElement && cartData.totals.tax_total_formatted) {
+                taxElement.textContent = cartData.totals.tax_total_formatted;
+            }
+
+            // Update shipping costs
+            const shippingElement = container.querySelector('[data-warehouse-offcanvas-shipping]');
+            if (shippingElement && cartData.totals.shipping_costs_formatted) {
+                shippingElement.textContent = cartData.totals.shipping_costs_formatted;
+            }
+
+            // Update cart total by mode (final total)
+            const totalElement = container.querySelector('[data-warehouse-offcanvas-total]');
+            if (totalElement && cartData.totals.cart_total_by_mode_formatted) {
+                totalElement.textContent = cartData.totals.cart_total_by_mode_formatted;
+            }
         }
 
         // Remove deleted items from DOM
