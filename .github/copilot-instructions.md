@@ -665,7 +665,7 @@ Die Regeln basieren auf der REDAXO PHP-CS-Fixer-Konfiguration (`redaxo/php-cs-fi
 #### 1. Installation Testing
 ```bash
 # Add-on in REDAXO-Testumgebung kopieren
-cp -r /path/to/warehouse /path/to/redaxo/addons/
+cp -r /path/to/warehouse /path/to/redaxo/redaxo/src/addons/warehouse/
 
 # Im REDAXO Backend:
 # - AddOns → Warehouse → Installieren
@@ -740,7 +740,7 @@ composer cs-dry
 #### 4. Manual Testing
 ```bash
 # Add-on in Test-REDAXO installieren
-cp -r . /path/to/redaxo/addons/warehouse/
+cp -r . /path/to/redaxo/redaxo/src/addons/warehouse/
 
 # Im REDAXO Backend:
 # - AddOns → Warehouse → Re-installieren oder Update
