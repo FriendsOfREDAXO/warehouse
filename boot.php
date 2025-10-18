@@ -60,6 +60,21 @@ if (rex::isFrontend()) {
         }
     }
 
+    // PHP fallback for add_to_cart action from URL parameters
+    $cartAction = rex_request('action', 'string', '');
+    if ($cartAction === 'add_to_cart') {
+        $artId = rex_request('art_id', 'int', 0);
+        $orderCount = rex_request('order_count', 'int', 1);
+        
+        if ($artId > 0) {
+            Warehouse::addToCart($artId, null, $orderCount);
+            
+            // Redirect to the same page without the action parameters to prevent duplicate additions on page refresh
+            $currentUrl = rex_getUrl();
+            rex_response::sendRedirect($currentUrl);
+        }
+    }
+
     // APIs verfügbar machen
     rex_api_function::register('warehouse_order', Api\Order::class);
     rex_api_function::register('warehouse_cart_api', Api\CartApi::class);
