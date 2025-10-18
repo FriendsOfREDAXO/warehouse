@@ -91,6 +91,11 @@ warehouse.settings.shipping_allowed = Erlaubte Länder für die Lieferung
 warehouse.settings.cart_mode = Nach Warenkorb-Aktion
 warehouse.settings.cart_mode.notice = Es kann entweder die Warenkorbseite aufgerufen werden oder die vorherige Artikelseite. Wenn die Artikelseite aufgerufen wird, so wird showcart=1 als Get-Parameter angehängt.
 
+warehouse.settings.instant_checkout_enabled = "Sofort kaufen"-Button aktivieren
+warehouse.settings.instant_checkout_enabled.notice = Wenn aktiviert, wird auf Artikelseiten ein "Sofort kaufen"-Button angezeigt, der direkt zur Kasse führt.
+warehouse.settings.yes = Ja
+warehouse.settings.no = Nein
+
 warehouse.ycom_modes.enforce = Bestellung nur mit Kundenkonto
 warehouse.ycom_modes.choose = Kunde wählt aus
 warehouse.ycom_modes.guest_only = Gastmodus (Es wird kein Kundenkonto benötigt)

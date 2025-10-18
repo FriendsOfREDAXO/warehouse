@@ -611,6 +611,7 @@
                     const formData = new FormData(detailForm);
                     const articleId = formData.get('article_id');
                     const orderCount = formData.get('order_count');
+                    const submitValue = formData.get('submit');
                     
                     // Check for active variant
                     let variantId = null;
@@ -619,12 +620,26 @@
                         variantId = activeVariant.dataset.warehouseVariantId;
                     }
 
+                    // Determine if instant checkout was clicked
+                    const isInstantCheckout = submitValue === 'checkout';
+
                     updateCart('add', articleId, variantId, orderCount, null,
                         (data) => {
-                            // Optional: Show success feedback
-                            const submitBtn = detailForm.querySelector('button[type="submit"]:focus');
-                            if (submitBtn) {
-                                submitBtn.blur();
+                            if (isInstantCheckout) {
+                                // Redirect to checkout page
+                                // Get the checkout URL from data attribute
+                                const checkoutUrl = detailForm.dataset.warehouseCheckoutUrl;
+                                if (checkoutUrl) {
+                                    window.location.href = checkoutUrl;
+                                } else {
+                                    console.error('Warehouse: Checkout URL not configured in form data attribute');
+                                }
+                            } else {
+                                // Optional: Show success feedback
+                                const submitBtn = detailForm.querySelector('button[type="submit"]:focus');
+                                if (submitBtn) {
+                                    submitBtn.blur();
+                                }
                             }
                         }
                     );

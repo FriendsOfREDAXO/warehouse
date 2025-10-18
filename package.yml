@@ -121,6 +121,7 @@ default_config:
     currency: "EUR"
     country_codes: "DE"
     cart_mode: "cart"
+    instant_checkout_enabled: 1
     editor: ''
     framework: 'bootstrap5'
     container_class: 'container'

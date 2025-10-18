@@ -113,7 +113,7 @@ if (Warehouse::isBulkPricesEnabled()) {
                 <!-- / Preis -->
 
                     <div class="col-12">
-                        <form data-warehouse-add-form>
+                        <form data-warehouse-add-form data-warehouse-checkout-url="<?= rex_getUrl(rex_config::get('warehouse', 'address_page')) ?>">
                             <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
                             <div class="input-group mb-3">
                                 <button class="btn btn-outline-primary" type="button" 
@@ -129,7 +129,9 @@ if (Warehouse::isBulkPricesEnabled()) {
                                         data-warehouse-quantity-input="warehouse_count_<?= $article->getId() ?>">[+]</button>
                             </div>
                             <button type="submit" name="submit" value="cart" class="btn btn-secondary"><?= Warehouse::getLabel('add_to_cart') ?></button>
+                            <?php if (Warehouse::getConfig('instant_checkout_enabled', 1)) : ?>
                             <button type="submit" name="submit" value="checkout" class="btn btn-primary"><?= Warehouse::getLabel('checkout_instant') ?></button>
+                            <?php endif; ?>
                         </form>
                     </div>
                 </div>

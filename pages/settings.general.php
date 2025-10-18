@@ -41,6 +41,15 @@ $select->addOptions([
 ]);
 $field->setNotice(rex_i18n::msg('warehouse.settings.cart_mode.notice'));
 
+$field = $form->addSelectField('instant_checkout_enabled');
+$field->setLabel(rex_i18n::msg('warehouse.settings.instant_checkout_enabled'));
+$select = $field->getSelect();
+$select->addOptions([
+    '0' => rex_i18n::msg('warehouse.settings.no'),
+    '1' => rex_i18n::msg('warehouse.settings.yes')
+]);
+$field->setNotice(rex_i18n::msg('warehouse.settings.instant_checkout_enabled.notice'));
+
 $field = $form->addSelectField('ycom_mode');
 $field->setLabel(rex_i18n::msg('warehouse.settings.ycom_mode'));
 $select = $field->getSelect();
