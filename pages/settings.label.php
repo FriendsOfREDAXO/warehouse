@@ -120,6 +120,18 @@ if (count($paymentOptions) > 0) {
         $allFields[] = ['label_paymentoptions_' . $key . '_image', rex_i18n::msg('warehouse.settings.label_paymentoptions_image', rex_i18n::msg($option)), 'media'];
     }
 }
+
+// Explicit field mappings for special cases
+$explicitMappings = [
+    'label_add_to_cart' => 'cart',
+    'label_add_to_cart_success' => 'cart',
+    'label_back' => 'checkout',
+    'label_back_to_address' => 'checkout',
+    'label_back_to_payment' => 'checkout',
+    'label_continue_to_payment' => 'checkout',
+    'label_continue_to_summary' => 'checkout',
+];
+
 $used = [];
 foreach ($allFields as [$name, $label, $type]) {
     if (in_array($name, $used)) {
@@ -133,16 +145,6 @@ foreach ($allFields as [$name, $label, $type]) {
         $field = $form->addInputField('text', $name, null, ['class' => 'form-control']);
         $field->setLabel($label);
     }
-    // Explicit field mappings for special cases
-    $explicitMappings = [
-        'label_add_to_cart' => 'cart',
-        'label_add_to_cart_success' => 'cart',
-        'label_back' => 'checkout',
-        'label_back_to_address' => 'checkout',
-        'label_back_to_payment' => 'checkout',
-        'label_continue_to_payment' => 'checkout',
-        'label_continue_to_summary' => 'checkout',
-    ];
     
     if (isset($explicitMappings[$name])) {
         $formFields[$explicitMappings[$name]][] = $field;
