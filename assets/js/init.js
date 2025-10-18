@@ -668,7 +668,7 @@
                     const isInstantCheckout = submitValue === 'checkout';
                     
                     // Get the clicked submit button
-                    const clickedButton = e.submitter || detailForm.querySelector('button[type="submit"][value="' + submitValue + '"]');
+                    const clickedButton = e.submitter || Array.from(detailForm.querySelectorAll('button[type="submit"]')).find(btn => btn.value === submitValue);
 
                     updateCart('add', articleId, variantId, orderCount, null,
                         (data) => {
