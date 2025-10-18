@@ -106,7 +106,6 @@ if (Warehouse::isBulkPricesEnabled()) {
                     <div class="col-12">
                         <?= html_entity_decode($article->getText() ?? '') ?>
                     </div>
-                    
                     <div class="col-12">
                         <!-- Preis -->
                         <div data-warehouse-price-display 
