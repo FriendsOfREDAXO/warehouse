@@ -25,18 +25,16 @@ if ($manager) {
     if ($profile?->getTableName() == rex::getTable('warehouse_article')) {
         echo Warehouse::parse('article/details.php', [
             'article' => $dataset,
-            'article_id' => $dataset_id
+            'article_id' => $dataset_id,
         ]);
     } elseif ($profile?->getTableName() == rex::getTable('warehouse_category')) {
-
         echo Warehouse::parse('article/list.php', [
             'category' => $dataset,
-            'category_id' => $dataset_id
+            'category_id' => $dataset_id,
         ]);
     }
 } else {
     echo Warehouse::parse('category/list.php');
 }
-
 
 echo Warehouse::parse('cart/offcanvas_cart.php');

@@ -12,8 +12,7 @@ $cart_items = $cart->getItems();
 
 $domain = Domain::getCurrent();
 
-if (!$cart_items || count($cart_items) === 0) {
-
+if (!$cart_items || 0 === count($cart_items)) {
     echo '<p class="text-center">' . Warehouse::getLabel('cart_empty') . '</p>';
     return;
 }
@@ -41,9 +40,9 @@ if (!$cart_items || count($cart_items) === 0) {
 		<tr data-article-key="<?= $item_key ?>" data-warehouse-item-key="<?= $item_key ?>">
 			<td class="align-left">
 				<?= html_entity_decode($item['name']) ?>
-				<?php if ($item['type'] === 'variant'): ?>
+				<?php if ('variant' === $item['type']): ?>
 					<small class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
-				<?php endif; ?>
+				<?php endif ?>
 			</td>
 			<td class="align-right">
 				<?= Warehouse::formatCurrency($item['price']) ?>
@@ -52,19 +51,19 @@ if (!$cart_items || count($cart_items) === 0) {
 				<div class="d-inline-flex align-items-center gap-1">
 <div class="d-inline-flex align-items-center gap-1">
 <button type="button" class="btn btn-outline-secondary btn-sm px-2 py-0"
-data-warehouse-cart-quantity="modify" 
-data-warehouse-mode="-" 
-data-warehouse-article-id="<?= $item['article_id'] ?>" 
-data-warehouse-variant-id="<?= $item['variant_id'] ?>" 
+data-warehouse-cart-quantity="modify"
+data-warehouse-mode="-"
+data-warehouse-article-id="<?= $item['article_id'] ?>"
+data-warehouse-variant-id="<?= $item['variant_id'] ?>"
 data-warehouse-amount="1"
 data-warehouse-original-text="-"
 <?= $item['amount'] <= 1 ? 'disabled="disabled"' : '' ?>>-</button>
 <span class="mx-2" data-warehouse-item-amount="<?= $item_key ?>"><?= $item['amount'] ?></span>
 <button type="button" class="btn btn-outline-secondary btn-sm px-2 py-0"
-data-warehouse-cart-quantity="modify" 
-data-warehouse-mode="+" 
-data-warehouse-article-id="<?= $item['article_id'] ?>" 
-data-warehouse-variant-id="<?= $item['variant_id'] ?>" 
+data-warehouse-cart-quantity="modify"
+data-warehouse-mode="+"
+data-warehouse-article-id="<?= $item['article_id'] ?>"
+data-warehouse-variant-id="<?= $item['variant_id'] ?>"
 data-warehouse-amount="1"
 data-warehouse-original-text="+">+</button>
 </div>
@@ -75,15 +74,15 @@ data-warehouse-original-text="+">+</button>
 <td>
 <button type="button" class="btn btn-outline-danger btn-sm px-2 py-0"
 data-warehouse-cart-delete
-data-warehouse-article-id="<?= $item['article_id'] ?>" 
+data-warehouse-article-id="<?= $item['article_id'] ?>"
 data-warehouse-variant-id="<?= $item['variant_id'] ?>"
 data-warehouse-confirm="<?= rex_escape(Warehouse::getLabel('cart_remove_item_confirm')) ?>"><?= Warehouse::getLabel('remove_from_cart') ?></button>
 </td>
-		<?php endforeach; ?>
+		<?php endforeach ?>
 		<!-- Netto/Brutto-Ausgabe im Tabellen-Cart -->
 		<tr>
 			<td class="align-left">Zwischensumme
-				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
+				(<?= 'gross' === Warehouse::getPriceInputMode() ? 'Brutto' : 'Netto' ?>)
 			</td>
 			<td></td>
 			<td></td>
@@ -116,7 +115,7 @@ data-warehouse-confirm="<?= rex_escape(Warehouse::getLabel('cart_remove_item_con
 		</tr>
 		<tr>
 			<td class="align-left"><?= Warehouse::getLabel('total') ?>
-				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
+				(<?= 'gross' === Warehouse::getPriceInputMode() ? 'Brutto' : 'Netto' ?>)
 			</td>
 			<td></td>
 			<td></td>
@@ -137,7 +136,7 @@ data-warehouse-confirm="<?= rex_escape(Warehouse::getLabel('cart_remove_item_con
 		</div>
 		<p><a data-warehouse-cart-next class="btn btn-primary"
 				href="<?= $domain?->getCheckoutUrl() ?? '' ?>"
-				class="white_big_circle"><?= Warehouse::getLabel('next'); ?></a>
+				class="white_big_circle"><?= Warehouse::getLabel('next') ?></a>
 		</p>
 	</div>
 </div>

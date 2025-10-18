@@ -2,9 +2,9 @@
 
 /** @var rex_fragment $this */
 
-use FriendsOfRedaxo\Warehouse\Category;
 use FriendsOfRedaxo\Warehouse\Article;
 use FriendsOfRedaxo\Warehouse\ArticleVariant;
+use FriendsOfRedaxo\Warehouse\Category;
 
 $categories = Category::findRootCategories('active');
 ?>
@@ -28,22 +28,22 @@ foreach ($categories as $category) {
 	</div>
 	<div class="row">
 		<?php foreach ($articles as $article) {
-		    /** @var Article $article */
-		    ?>
+            /** @var Article $article */
+            ?>
 		<div class="col-sm-6 col-md-4 col-lg-3">
 			<div class="card">
 				<a href="<?= $article->getUrl() ?>">
 					<?php if ($article->getImageAsMedia()) { ?>
 					<img class="img-fluid card-img-top"
-						src="<?= $article->getImageAsMedia()->getUrl(); ?>">
+						src="<?= $article->getImageAsMedia()->getUrl() ?>">
 					<?php } ?>
 				</a>
 				<div class="card-body">
-					<a href="<?= $article->getUrl(); ?>"
+					<a href="<?= $article->getUrl() ?>"
 						class="card-title"><?= $article->getName() ?></a>
 					<br />
 					<?php foreach ($article?->getVariants() ?? [] as $variant) {
-					    /** @var ArticleVariant $variant */ ?>
+/** @var ArticleVariant $variant */ ?>
 					<a href="<?= $article->getUrl() ?>?variant=<?= $variant->getId() ?>"
 						class="card-link"><?= $variant->getName() ?></a>
 					<?php } ?>

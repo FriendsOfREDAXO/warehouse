@@ -12,7 +12,7 @@ $cart_items = $cart->getItems();
 $domain = Domain::getCurrent();
 ?>
 <!-- cart/offcanvas_cart.php -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="cart-offcanvas" data-warehouse-offcanvas-cart data-warehouse-empty-message="<?= Warehouse::getLabel('cart_is_empty'); ?>">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cart-offcanvas" data-warehouse-offcanvas-cart data-warehouse-empty-message="<?= Warehouse::getLabel('cart_is_empty') ?>">
 	<div class="offcanvas-header">
 		<h5 class="offcanvas-title">
 			<?= Warehouse::getLabel('cart') ?>
@@ -41,11 +41,11 @@ $domain = Domain::getCurrent();
 						<a class="link-heading stretched-link text-decoration-none small"
 							href="<?= rex_getUrl('', '', ['warehouse-article-id' => $item['article_id']]) ?>"><?= trim($item['name'], '- ') ?>
 							<span class="text-muted small">
-								(<?= $item['article_id'] ?><?= $item['type'] === 'variant' ? '-' . $item['variant_id'] : '' ?>)</span>
+								(<?= $item['article_id'] ?><?= 'variant' === $item['type'] ? '-' . $item['variant_id'] : '' ?>)</span>
 						</a>
-						<?php if ($item['type'] === 'variant'): ?>
+						<?php if ('variant' === $item['type']): ?>
 							<small class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
-						<?php endif; ?>
+						<?php endif ?>
 						<div class="mt-1 row g-2 align-items-center">
 							<div class="col-auto fw-bolder small" data-warehouse-item-total="<?= $item_key ?>">
 								<?= Warehouse::formatCurrency($item['total']) ?>
@@ -58,11 +58,11 @@ $domain = Domain::getCurrent();
 						</div>
 					</div>
 					<div class="col-auto">
-						<button type="button" class="btn btn-link text-danger p-0" 
+						<button type="button" class="btn btn-link text-danger p-0"
 							data-warehouse-cart-delete
-							data-warehouse-article-id="<?= $item['article_id'] ?>" 
+							data-warehouse-article-id="<?= $item['article_id'] ?>"
 							data-warehouse-variant-id="<?= $item['variant_id'] ?>"
-							data-warehouse-confirm="<?= rex_i18n::msg('warehouse.cart_remove_confirm', '') ?>" 
+							data-warehouse-confirm="<?= rex_i18n::msg('warehouse.cart_remove_confirm', '') ?>"
 							title="Remove">
 							<i class="bi bi-x-circle-fill"></i>
 						</button>
@@ -102,7 +102,7 @@ $domain = Domain::getCurrent();
 		<!-- Netto/Brutto-Ausgabe im Offcanvas-Cart -->
 		<div class="row g-2">
 			<div class="col text-muted h4">Zwischensumme
-				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
+				(<?= 'gross' === Warehouse::getPriceInputMode() ? 'Brutto' : 'Netto' ?>)
 			</div>
 			<div class="col-auto h4 fw-bolder" data-warehouse-offcanvas-subtotal-by-mode>
 				<?= Warehouse::formatCurrency(Cart::getSubTotalByMode(Warehouse::getPriceInputMode())) ?>
@@ -122,7 +122,7 @@ $domain = Domain::getCurrent();
 		</div>
 		<div class="row g-2 align-items-center">
 			<div class="col text-muted"><?= Warehouse::getLabel('total') ?>
-				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
+				(<?= 'gross' === Warehouse::getPriceInputMode() ? 'Brutto' : 'Netto' ?>)
 			</div>
 			<div class="col-auto h5 fw-bolder" data-warehouse-offcanvas-total>
 				<?= Warehouse::formatCurrency(Cart::getCartTotalByMode(Warehouse::getPriceInputMode())) ?>
@@ -131,7 +131,7 @@ $domain = Domain::getCurrent();
 
 		<div class="d-grid gap-2 mt-3">
 			<div class="d-flex justify-content-between">
-				<button type="button" class="btn btn-link text-danger" 
+				<button type="button" class="btn btn-link text-danger"
 					data-warehouse-cart-empty
 					data-warehouse-confirm="<?= rex_escape(Warehouse::getLabel('cart_empty_confirm')) ?>">
 					<?= Warehouse::getLabel('cart_empty') ?>
@@ -145,7 +145,7 @@ $domain = Domain::getCurrent();
 	</div>
 	<?php } else { ?>
 	<div class="alert alert-info">
-		<?= Warehouse::getLabel('cart_is_empty'); ?>
+		<?= Warehouse::getLabel('cart_is_empty') ?>
 	</div>
 	<?php } ?>
 </div>

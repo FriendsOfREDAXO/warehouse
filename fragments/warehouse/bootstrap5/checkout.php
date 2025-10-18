@@ -2,7 +2,6 @@
 
 /** @var rex_fragment $this */
 
-use FriendsOfRedaxo\Warehouse\Cart;
 use FriendsOfRedaxo\Warehouse\Checkout;
 use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Domain;
@@ -21,9 +20,7 @@ $domain = Domain::getCurrent();
 
 $ycom_mode = Warehouse::getConfig('ycom_mode', 'guest_only');
 
-
 if (rex::isFrontend()) {
-
     // Voraussetzungen für Schritt 5 - Summary
     if ('summary' === rex_get('continue_with', 'string', '')) {
         $fragment = new rex_fragment();
@@ -55,30 +52,29 @@ if (rex::isFrontend()) {
     }
 
     // Voraussetzungen für Schritt 3 - Auswahl noch nicht getroffen
-    if ($ycom_mode === 'choose' && '' === rex_get('continue_as', 'string', '')) {
+    if ('choose' === $ycom_mode && '' === rex_get('continue_as', 'string', '')) {
         $fragment = new rex_fragment();
         echo $fragment->parse('warehouse/bootstrap5/checkout/ycom_choose.php');
         return;
     }
 
     // Voraussetzungen für Schritt 3 - YCom-Account erforderlich
-    if ($ycom_mode === 'enforce_account' && Customer::getCurrent() === null) {
+    if ('enforce_account' === $ycom_mode && null === Customer::getCurrent()) {
         $fragment = new rex_fragment();
         echo $fragment->parse('warehouse/bootstrap5/checkout/ycom_choose.php');
         return;
     }
 
     // Voraussetzungen für Schritt 3 - direkt zur Gast-Checkout-Seite
-    if ($ycom_mode === 'guest_only' || 'guest' === rex_get('continue_as', 'string', '')) {
+    if ('guest_only' === $ycom_mode || 'guest' === rex_get('continue_as', 'string', '')) {
         $fragment = new rex_fragment();
         echo $fragment->parse('warehouse/bootstrap5/checkout/form-guest.php');
         return;
     }
-
 }
 
 if (rex::isBackend()) {
     rex_view::info(
-        rex_i18n::msg('warehouse_checkout_not_available_in_backend')
+        rex_i18n::msg('warehouse_checkout_not_available_in_backend'),
     );
 }

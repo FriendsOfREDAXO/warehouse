@@ -2,13 +2,9 @@
 
 /** @var rex_fragment $this */
 
-use FriendsOfRedaxo\Warehouse\Cart;
 use FriendsOfRedaxo\Warehouse\Checkout;
-use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Domain;
-use FriendsOfRedaxo\Warehouse\Payment;
 use FriendsOfRedaxo\Warehouse\Session;
-use FriendsOfRedaxo\Warehouse\Warehouse;
 
 $customer = Checkout::loadCustomerFromSession();
 
@@ -22,7 +18,7 @@ $domain = Domain::getCurrent();
 // 3. Zahlung per Nachnahme - Formular zur Nachnahme-Zahlung anzeigen
 // 4. Zahlung per Lastschrift - Formular zur Lastschrift-Zahlung anzeigen
 ?>
-<?php dump(Checkout::loadCustomerFromSession()); ?>
+<?php dump(Checkout::loadCustomerFromSession()) ?>
 
 <?php
 

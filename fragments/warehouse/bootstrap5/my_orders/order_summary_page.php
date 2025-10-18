@@ -4,8 +4,9 @@
 
 use FriendsOfRedaxo\Warehouse\Cart;
 use FriendsOfRedaxo\Warehouse\Customer;
-use FriendsOfRedaxo\Warehouse\Warehouse;
 use FriendsOfRedaxo\Warehouse\Session;
+use FriendsOfRedaxo\Warehouse\Shipping;
+use FriendsOfRedaxo\Warehouse\Warehouse;
 
 ?>
 <?php
@@ -26,14 +27,14 @@ $shipping_data = Session::getShippingAddressData();
         <tr>
             <td>
                 <?= trim(html_entity_decode($item['name']), ' -') ?><br>
-                <?php $attr_text = []; ?>
+                <?php $attr_text = [] ?>
                 <?php foreach ($item['attributes'] as $attr) : ?>
                     <?php $attr_text[] = $attr['value'] ?>
                 <?php endforeach ?>
-                <?= implode(' - ', $attr_text). ($attr_text ? '<br>' : '') ?>
-                
-                
-                
+                <?= implode(' - ', $attr_text) . ($attr_text ? '<br>' : '') ?>
+
+
+
                 <?= $item['amount'] ?> x à <?= number_format($item['price'], 2) ?>
             </td>
             <td class="uk-text-right"><?= number_format($item['total'], 2) ?></td>
@@ -41,7 +42,7 @@ $shipping_data = Session::getShippingAddressData();
     <?php endforeach ?>
     <tr>
         <td><?= Warehouse::getLabel('shipping_costs') ?> <?= $billing_data['country'] ?? $user_data['country'] ?? '' ?></td>
-        <td class="uk-text-right"><?= number_format((float) FriendsOfRedaxo\Warehouse\Shipping::getCost(), 2) ?></td>
+        <td class="uk-text-right"><?= number_format((float) Shipping::getCost(), 2) ?></td>
     </tr>
     <tr>
         <td><?= Warehouse::getLabel('total') ?></td>
@@ -72,7 +73,7 @@ $shipping_data = Session::getShippingAddressData();
             <?php endif ?>
         </p>
     </div>
-    
+
     <div class="col-md-6">
         <h4><?= Warehouse::getLabel('address_shipping') ?>:</h4>
         <?php if (!empty($shipping_data)): ?>
@@ -93,4 +94,4 @@ $shipping_data = Session::getShippingAddressData();
     </div>
 </div>
 
-<p><?= Warehouse::getLabel('payment_type'); ?>: <?= Warehouse::getLabel('paymentoptions_' . ($user_data['payment_type'] ?? '')) ?></p>
+<p><?= Warehouse::getLabel('payment_type') ?>: <?= Warehouse::getLabel('paymentoptions_' . ($user_data['payment_type'] ?? '')) ?></p>

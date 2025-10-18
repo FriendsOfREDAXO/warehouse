@@ -1,12 +1,12 @@
 <?php
 /** @var rex_fragment $this */
-use FriendsOfRedaxo\Warehouse\Warehouse;
 use FriendsOfRedaxo\Warehouse\Cart;
 use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Payment;
 use FriendsOfRedaxo\Warehouse\Session;
 use FriendsOfRedaxo\Warehouse\Shipping;
+use FriendsOfRedaxo\Warehouse\Warehouse;
 
 /** @var array $customer */
 $customer = $this->getVar('customer', []);
@@ -19,11 +19,11 @@ $domain = Domain::getCurrent();
 
 // Variablen für die Anzeige definieren
 $cart_items = $cart['items'] ?? [];
-$with_tax = Warehouse::getPriceInputMode() === 'gross';
+$with_tax = 'gross' === Warehouse::getPriceInputMode();
 $shipping = Shipping::getCost();
 
 $containerClass = Warehouse::getConfig('container_class', 'container');
-$containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($containerClass);
+$containerClass = (null === $containerClass) ? 'container' : htmlspecialchars($containerClass);
 
 ?>
 
@@ -43,7 +43,7 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 									<th scope="col"><?= Warehouse::getLabel('product_description') ?></th>
 									<?php if ($with_tax): ?>
 									<th scope="col" class="text-end"><?= Warehouse::getLabel('tax_column') ?></th>
-									<?php endif; ?>
+									<?php endif ?>
 									<th scope="col" class="text-end">
 										<?= Warehouse::getCurrency() ?>
 									</th>
@@ -64,15 +64,15 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 										</small>
 									</td>
 									<td>
-										<?php if ($item['type'] === 'variant'): ?>
+										<?php if ('variant' === $item['type']): ?>
 										<div class="text-muted small">Variante</div>
-										<?php endif; ?>
+										<?php endif ?>
 									</td>
 									<?php if ($with_tax): ?>
 									<td class="text-end">
-										<?= isset($item['tax']) ? $item['tax'] : '19' ?>%
+										<?= $item['tax'] ?? '19' ?>%
 									</td>
-									<?php endif; ?>
+									<?php endif ?>
 									<td class="text-end">
 										<?= Warehouse::formatCurrency($item['total']) ?>
 									</td>
@@ -100,7 +100,7 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 										<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
 									</td>
 								</tr>
-								<?php endif; ?>
+								<?php endif ?>
 
 								<!-- Gesamtsumme -->
 								<tr class="table-info">
@@ -142,17 +142,17 @@ if (empty($billingAddress)) {
     $billingAddress = $customerData;
 }
 
-$billing_company_name = (isset($billingAddress[Customer::COMPANY]) && !empty($billingAddress[Customer::COMPANY])) ? $billingAddress[Customer::COMPANY] . ' ' . ($billingAddress[Customer::DEPARTMENT] ?? '') .'<br>': '';
-$billing_vat_id = (isset($billingAddress['ust']) && !empty($billingAddress['ust'])) ? 'Ust. Identnummer: ' . $billingAddress['ust'] .'<br>': '';
-$billing_title = (isset($billingAddress['title']) && !empty($billingAddress['title'])) ? ' ' . $billingAddress['title'] .' ': ' ';
+$billing_company_name = (isset($billingAddress[Customer::COMPANY]) && !empty($billingAddress[Customer::COMPANY])) ? $billingAddress[Customer::COMPANY] . ' ' . ($billingAddress[Customer::DEPARTMENT] ?? '') . '<br>' : '';
+$billing_vat_id = (isset($billingAddress['ust']) && !empty($billingAddress['ust'])) ? 'Ust. Identnummer: ' . $billingAddress['ust'] . '<br>' : '';
+$billing_title = (isset($billingAddress['title']) && !empty($billingAddress['title'])) ? ' ' . $billingAddress['title'] . ' ' : ' ';
 
-echo "<strong>";
+echo '<strong>';
 echo ($billingAddress[Customer::SALUTATION] ?? '') . $billing_title . ($billingAddress[Customer::FIRSTNAME] ?? '') . ' ' . ($billingAddress[Customer::LASTNAME] ?? '');
-echo "</strong><br>";
+echo '</strong><br>';
 echo $billing_company_name . $billing_vat_id;
 echo ($billingAddress[Customer::ADDRESS] ?? '') . ' ' . ($billingAddress['housenumber'] ?? '') . '<br>';
 echo ($billingAddress[Customer::ZIP] ?? '') . ' ' . ($billingAddress[Customer::CITY] ?? '') . '<br>';
-echo($billingAddress['country'] ?? '');
+echo $billingAddress['country'] ?? '';
 ?>
 					</address>
 				</div>
@@ -176,16 +176,16 @@ if (empty($shippingAddress)) {
     $shippingAddress = $billingAddress;
 }
 
-$shipping_company_name = (isset($shippingAddress[Customer::COMPANY]) && !empty($shippingAddress[Customer::COMPANY])) ? $shippingAddress[Customer::COMPANY] . ' ' . ($shippingAddress[Customer::DEPARTMENT] ?? '') .'<br>': '';
-$shipping_title = (isset($shippingAddress['title']) && !empty($shippingAddress['title'])) ? ' ' . $shippingAddress['title'] .' ': ' ';
+$shipping_company_name = (isset($shippingAddress[Customer::COMPANY]) && !empty($shippingAddress[Customer::COMPANY])) ? $shippingAddress[Customer::COMPANY] . ' ' . ($shippingAddress[Customer::DEPARTMENT] ?? '') . '<br>' : '';
+$shipping_title = (isset($shippingAddress['title']) && !empty($shippingAddress['title'])) ? ' ' . $shippingAddress['title'] . ' ' : ' ';
 
-echo "<strong>";
+echo '<strong>';
 echo ($shippingAddress[Customer::SALUTATION] ?? '') . $shipping_title . ($shippingAddress[Customer::FIRSTNAME] ?? '') . ' ' . ($shippingAddress[Customer::LASTNAME] ?? '');
-echo "</strong><br>";
+echo '</strong><br>';
 echo $shipping_company_name;
 echo ($shippingAddress[Customer::ADDRESS] ?? '') . ' ' . ($shippingAddress['housenumber'] ?? '') . '<br>';
 echo ($shippingAddress[Customer::ZIP] ?? '') . ' ' . ($shippingAddress[Customer::CITY] ?? '') . '<br>';
-echo($shippingAddress['country'] ?? '');
+echo $shippingAddress['country'] ?? '';
 ?>
 					</address>
 				</div>
@@ -199,7 +199,7 @@ echo($shippingAddress['country'] ?? '');
 			<div class="card">
 				<div class="card-header">
 					<h3 class="mb-0">
-						<?= Warehouse::getLabel('payment_type'); ?>
+						<?= Warehouse::getLabel('payment_type') ?>
 					</h3>
 				</div>
 				<div class="card-body">
@@ -220,7 +220,7 @@ echo Warehouse::getLabel('paymentoptions_' . ($customerData['payment_type'] ?? '
 
 <?php
 // Only show PayPal button if PayPal was selected as payment method
-if (isset($customerData['payment_type']) && $customerData['payment_type'] === 'paypal') {
+if (isset($customerData['payment_type']) && 'paypal' === $customerData['payment_type']) {
     echo $this->getSubfragment('warehouse/bootstrap5/paypal/paypal-button.php');
 }
 ?>

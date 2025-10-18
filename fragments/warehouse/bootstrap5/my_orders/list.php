@@ -1,6 +1,5 @@
 <?php
 
-
 /** @var rex_fragment $this */
 use FriendsOfRedaxo\Warehouse\Order;
 use rex_yform_manager_collection;
@@ -17,8 +16,8 @@ $orders = $this->getVar('orders');
 			<table class="table table-striped">
 				<tbody>
 					<?php foreach ($this->orders as $order) :
-					    /** @var Order $order */
-					    ?>
+                        /** @var Order $order */
+                        ?>
 					<tr>
 						<td><?= $order->id ?></td>
 						<td><?= $order->getCreatedate() ?></td>
@@ -29,7 +28,7 @@ $orders = $this->getVar('orders');
 								href="<?= rex_getUrl('', '', ['warehouse-order-id' => $order->id]) ?>">Bestellung
 								ansehen</a></td>
 					</tr>
-					<?php endforeach; ?>
+					<?php endforeach ?>
 				</tbody>
 			</table>
 		</section>

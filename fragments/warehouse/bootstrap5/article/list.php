@@ -3,38 +3,38 @@
 
 /** @var rex_fragment $this */
 
-use FriendsOfRedaxo\Warehouse\Category;
 use FriendsOfRedaxo\Warehouse\Article;
+use FriendsOfRedaxo\Warehouse\Category;
 
 /** @var Category|null $category */
 $category = $this->getVar('category');
 
-if ($category === null) {
+if (null === $category) {
     return;
 }
 $articles = $category->getArticles('active', 48, 0);
 
 ?>
 <div class="row row-cols-1 row-cols-md-2 g-4">
-	<?php if (!$articles || count($articles) === 0) : ?>
+	<?php if (!$articles || 0 === count($articles)) : ?>
 	<div class="alert alert-info" role="alert">
 		<?= rex_i18n::msg('warehouse_no_articles') ?>
 	</div>
-	<?php endif; ?>
+	<?php endif ?>
 	<?php foreach ($articles as $article) : ?>
 	<?php
-		/** @var Article $article */
+        /** @var Article $article */
         $link = rex_getUrl('', '', ['warehouse-article-id' => $article->getId()]);
-	    $image = $article->getImage();
-	    $teaser = $article->getShortText();
-	    $imageUrl = $article->getImageAsMedia()->getUrl() ?? '';
-	    ?>
+        $image = $article->getImage();
+        $teaser = $article->getShortText();
+        $imageUrl = $article->getImageAsMedia()->getUrl() ?? '';
+        ?>
 	<div class="col">
 		<div class="card h-100">
 			<div class="row g-0 align-items-center">
 				<!-- Image column -->
 				<div class="col-12 col-md-4">
-					<a href="<?= $link; ?>">
+					<a href="<?= $link ?>">
 						<img src="<?= $imageUrl ?>"
 							class="img-fluid rounded-start w-100"
 							alt="<?= htmlspecialchars($article->getName() ?? '') ?>">

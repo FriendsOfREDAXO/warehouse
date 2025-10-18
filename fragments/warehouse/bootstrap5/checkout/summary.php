@@ -2,11 +2,7 @@
 
 /** @var rex_fragment $this */
 
-use FriendsOfRedaxo\Warehouse\Cart;
-use FriendsOfRedaxo\Warehouse\Checkout;
-use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Domain;
-use FriendsOfRedaxo\Warehouse\Payment;
 use FriendsOfRedaxo\Warehouse\Session;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 
