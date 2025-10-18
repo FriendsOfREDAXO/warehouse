@@ -18,7 +18,8 @@ use PaypalServerSdkLib\PaypalServerSdkClientBuilder;
 	data-warehouse-paypal-error-page-url="<?= htmlspecialchars(PayPal::getErrorPageUrl(), ENT_QUOTES, 'UTF-8') ?>" 
 	data-warehouse-paypal-success-page-url="<?= htmlspecialchars(PayPal::getSuccessPageUrl(), ENT_QUOTES, 'UTF-8') ?>"
 	data-warehouse-paypal-error-create-order="<?= htmlspecialchars(Warehouse::getLabel('paypal.error_create_order'), ENT_QUOTES, 'UTF-8') ?>"
-	data-warehouse-paypal-error-capture-order="<?= htmlspecialchars(Warehouse::getLabel('paypal.error_capture_order'), ENT_QUOTES, 'UTF-8') ?>">
+	data-warehouse-paypal-error-capture-order="<?= htmlspecialchars(Warehouse::getLabel('paypal.error_capture_order'), ENT_QUOTES, 'UTF-8') ?>"
+	data-warehouse-paypal-error-technical-details="<?= htmlspecialchars(Warehouse::getLabel('paypal.error_technical_details'), ENT_QUOTES, 'UTF-8') ?>">
 </div>
 <p data-warehouse-paypal="result-message" id="paypal-result-message"></p>
 
