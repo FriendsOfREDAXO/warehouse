@@ -174,7 +174,6 @@ default_config:
     label_cart: 'Warenkorb'
     label_add_to_cart: 'Zum Warenkorb hinzufügen'
     label_add_to_cart_success: 'Zum Warenkorb hinzugefügt'
-    labeL_cart_empty: 'Der Warenkorb ist leer'
     label_article: 'Artikel'
     label_tax: 'inkl. MwSt.'
     label_back_to_cart: 'Zurück zum Warenkorb'

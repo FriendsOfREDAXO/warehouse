@@ -499,6 +499,8 @@ warehouse.settings.label_payment_info_saved = Zahlungsinformationen wurden gespe
 warehouse.settings.label_add_to_cart = In den Warenkorb
 warehouse.settings.label_add_to_cart_success = Hinzugefügt!
 warehouse.settings.label_add_to_order = In die Bestellung
+warehouse.settings.label_order_number = Bestellnummer
+warehouse.settings.label_tax = inkl. MwSt.
 
 warehouse.settings.label_payment_options = Bezahloptionen
 warehouse.settings.label_paymentoptions = {0}
