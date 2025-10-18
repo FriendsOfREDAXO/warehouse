@@ -1,5 +1,5 @@
 package: warehouse
-version: '2.0.0-dev-2025-10-18'
+version: '2.0.0-dev-2025-10-19'
 author: FriendsOfREDAXO
 supportpage: https://github.com/FriendsOfREDAXO/warehouse
 
@@ -174,7 +174,6 @@ default_config:
     label_cart: 'Warenkorb'
     label_add_to_cart: 'Zum Warenkorb hinzufügen'
     label_add_to_cart_success: 'Zum Warenkorb hinzugefügt'
-    labeL_cart_empty: 'Der Warenkorb ist leer'
     label_article: 'Artikel'
     label_tax: 'inkl. MwSt.'
     label_back_to_cart: 'Zurück zum Warenkorb'
