@@ -65,7 +65,7 @@ $shipping_data = Session::getShippingAddressData();
             <strong><?= Warehouse::getLabel('cart_subtotal') ?></strong>
         </td>
         <td class="text-end border-top">
-            <?= Warehouse::formatCurrency(array_sum(array_column($this->cart, 'total'))) ?>
+            <?= Warehouse::formatCurrency(Cart::getSubTotalByMode(Warehouse::getPriceInputMode())) ?>
         </td>
     </tr>
     
