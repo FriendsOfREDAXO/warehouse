@@ -94,6 +94,7 @@ $allFields = [
     ['label_legal_privacy_policy', 'Ich habe die Datenschutzbestimmungen gelesen.', 'text'],
     // payment options (text)
     ['label_payment_options', rex_i18n::msg('warehouse.settings.label_payment_options'), 'text'],
+    ['label_payment_type', rex_i18n::msg('warehouse.settings.label_payment_type'), 'text'],
     // shipping (text)
     ['label_shipping_costs', rex_i18n::msg('warehouse.settings.label_shipping_costs'), 'text'],
     ['label_shipping_costs_free', rex_i18n::msg('warehouse.settings.label_shipping_costs_free'), 'text'],
