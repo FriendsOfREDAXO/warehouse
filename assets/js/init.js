@@ -785,12 +785,14 @@
                             this.innerHTML = originalText;
                             this.classList.remove('disabled');
                             
-                            // Optional: Show success feedback
-                            const successText = this.dataset.warehouseSuccessText || 'Hinzugefügt!';
-                            this.innerHTML = successText;
-                            setTimeout(() => {
-                                this.innerHTML = originalText;
-                            }, 1500);
+                            // Optional: Show success feedback if configured
+                            const successText = this.dataset.warehouseSuccessText;
+                            if (successText) {
+                                this.innerHTML = successText;
+                                setTimeout(() => {
+                                    this.innerHTML = originalText;
+                                }, 1500);
+                            }
                         },
                         (error) => {
                             // Reset link state on error
