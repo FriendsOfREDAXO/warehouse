@@ -198,7 +198,7 @@ default_config:
     label_checkout_login_password: 'Passwort'
     label_checkout_login_submit: 'Anmelden'
     label_checkout_register_text: 'Sie haben noch kein Kundenkonto? Dann registrieren Sie sich jetzt.'
-    label_checkout_submit_order: 'Jetzt  kaufen'
+    label_checkout_submit_order: 'Jetzt kaufen'
     label_checkout_submit_order_wait: 'Bitte warten...'
     label_next: 'Weiter'
     label_payment_options: 'Bezahloptionen'
