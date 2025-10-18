@@ -17,7 +17,7 @@ use FriendsOfRedaxo\Warehouse\Warehouse;
         <?= Warehouse::getConfig('shipping_conditions_text') ?>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary"><?= Warehouse::getLabel('button_okay') ?></button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?= Warehouse::getLabel('button_okay') ?></button>
       </div>
     </div>
   </div>
