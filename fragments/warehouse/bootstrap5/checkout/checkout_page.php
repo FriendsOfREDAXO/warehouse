@@ -11,10 +11,10 @@ $ycom_mode = Warehouse::getConfig('ycom_mode', 'guest_only');
 // Determine back URL based on ycom_mode
 if ($ycom_mode === 'choose') {
     $back_url = $domain?->getCheckoutUrl() ?? '';
-    $back_label = Warehouse::getLabel('back');
+    $back_label = rex_i18n::msg('warehouse.settings.label_back');
 } else {
     $back_url = $domain?->getCartArtUrl() ?? '';
-    $back_label = Warehouse::getLabel('back_to_cart');
+    $back_label = rex_i18n::msg('warehouse.settings.label_back_to_cart');
 }
 
 ?>

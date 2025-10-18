@@ -16,7 +16,7 @@ $cart_url = $domain?->getCartArtUrl() ?? '';
             <a class="btn btn-outline-secondary"
                 href="<?= htmlspecialchars($cart_url, ENT_QUOTES, 'UTF-8') ?>">
                 <i class="bi bi-arrow-left"></i>
-                <?= htmlspecialchars(Warehouse::getLabel('back_to_cart'), ENT_QUOTES, 'UTF-8') ?>
+                <?= htmlspecialchars(rex_i18n::msg('warehouse.settings.label_back_to_cart'), ENT_QUOTES, 'UTF-8') ?>
             </a>
         </div>
     </section>
@@ -57,7 +57,7 @@ $cart_url = $domain?->getCartArtUrl() ?? '';
             <a class="btn btn-outline-secondary"
                 href="<?= htmlspecialchars($cart_url, ENT_QUOTES, 'UTF-8') ?>">
                 <i class="bi bi-arrow-left"></i>
-                <?= htmlspecialchars(Warehouse::getLabel('back_to_cart'), ENT_QUOTES, 'UTF-8') ?>
+                <?= htmlspecialchars(rex_i18n::msg('warehouse.settings.label_back_to_cart'), ENT_QUOTES, 'UTF-8') ?>
             </a>
         </div>
     </section>

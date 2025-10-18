@@ -18,7 +18,7 @@ $warehouse_cart_text = '';
 $ycom_mode = Warehouse::getConfig('ycom_mode', 'guest_only');
 
 $back_url = $domain?->getCheckoutUrl(['continue_as' => $ycom_mode === 'guest_only' ? 'guest' : rex_get('continue_as', 'string', 'guest')]) ?? '';
-$back_button_html = '<div class="d-flex justify-content-start mb-3"><a class="btn btn-outline-secondary" href="' . htmlspecialchars($back_url, ENT_QUOTES, 'UTF-8') . '"><i class="bi bi-arrow-left"></i> ' . htmlspecialchars(Warehouse::getLabel('back_to_address'), ENT_QUOTES, 'UTF-8') . '</a></div>';
+$back_button_html = '<div class="d-flex justify-content-start mb-3"><a class="btn btn-outline-secondary" href="' . htmlspecialchars($back_url, ENT_QUOTES, 'UTF-8') . '"><i class="bi bi-arrow-left"></i> ' . htmlspecialchars(rex_i18n::msg('warehouse.settings.label_back_to_address'), ENT_QUOTES, 'UTF-8') . '</a></div>';
 
 echo $back_button_html;
 
