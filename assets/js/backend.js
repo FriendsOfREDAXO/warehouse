@@ -1,14 +1,9 @@
 // Copy-to-clipboard function for warehouse address data
 function data_copy() {
-    var textToCopy = this.textContent.trim();
+    const textToCopy = this.textContent.trim();
     
     if (navigator.clipboard && window.isSecureContext) {
         // Modern clipboard API
-        navigator.clipboard.writeText(textToCopy).then(function() {
-            showCopyFeedback(this, 'Kopiert!');
-        }.bind(this), function() {
-            // Fallback for clipboard API failure
-            fallbackCopyMethod.call(this, textToCopy);
         navigator.clipboard.writeText(textToCopy).then(() => {
             showCopyFeedback(this, 'Kopiert!');
         }, () => {
@@ -23,7 +18,7 @@ function data_copy() {
 
 // Fallback copy method for browsers without clipboard API
 function fallbackCopyMethod(textToCopy) {
-    var tempInput = document.createElement('textarea');
+    const tempInput = document.createElement('textarea');
     tempInput.value = textToCopy;
     tempInput.style.position = 'fixed';
     tempInput.style.left = '-9999px';
@@ -31,12 +26,8 @@ function fallbackCopyMethod(textToCopy) {
     tempInput.select();
     
     try {
-        var successful = document.execCommand('copy');
-        if (successful) {
-            showCopyFeedback(this, 'Kopiert!');
-        } else {
-            showCopyFeedback(this, 'Kopieren fehlgeschlagen', true);
-        }
+        const successful = document.execCommand('copy');
+        showCopyFeedback(this, successful ? 'Kopiert!' : 'Kopieren fehlgeschlagen', !successful);
     } catch (err) {
         showCopyFeedback(this, 'Kopieren nicht unterstützt', true);
     }
@@ -46,8 +37,8 @@ function fallbackCopyMethod(textToCopy) {
 
 // Show feedback after copy operation
 function showCopyFeedback(element, message, isError = false) {
-    var originalText = element.title || '';
-    var originalBg = element.style.backgroundColor;
+    const originalTitle = element.title || '';
+    const originalBg = element.style.backgroundColor;
     
     // Set feedback styling
     element.style.backgroundColor = isError ? '#f8d7da' : '#d4edda';
@@ -55,72 +46,66 @@ function showCopyFeedback(element, message, isError = false) {
     element.title = message;
     
     // Reset after 1 second
-    setTimeout(function() {
+    setTimeout(() => {
         element.style.backgroundColor = originalBg;
-        element.title = originalText;
+        element.title = originalTitle;
     }, 1000);
 }
 
 $(document).on("rex:ready", function(warehouse, container) {
 
     // Initialize copy functionality for existing elements
-    document.querySelectorAll('div[data-warehouse-copy]').forEach(function(el) {
+    document.querySelectorAll('div[data-warehouse-copy]').forEach(el => {
         el.addEventListener('click', data_copy);
     });
 
-    // Warte auf QuickNavigation -  Event an das Formular erst nach 2 Sekunden
-    setTimeout(function() {
+    // Wait for QuickNavigation - Attach event to form after 2 seconds
+    setTimeout(() => {
 
-        // Fügt den Submit-Event-Listener zum Formular mit der ID "warehouse_search" hinzu
+        // Add submit event listener to warehouse_search form
         $('#warehouse_search').on('submit', function(e) {
-            // Verhindert das Absenden des Formulars
+            // Prevent form submission
             e.preventDefault();
 
-            // Sendet eine AJAX-Anfrage
+            // Send AJAX request
             $.ajax({
-                url: '/', // URL, an die die Anfrage gesendet wird
-                type: 'GET', // Methode der Anfrage
+                url: '/',
+                type: 'GET',
                 data: {
-                    "rex-api-call": 'warehouse_search', // Daten, die an den Server gesendet werden
-                    "q": $('input[name="q"]').val() // Wert des Eingabefelds
+                    "rex-api-call": 'warehouse_search',
+                    "q": $('input[name="q"]').val()
                 },
                 success: function(response) {
-                    // Erstellt ein leeres table-Element und fügt Klassen hinzu
-                    var table = $('<table></table>');
-                    table.addClass('table table-striped table-hover');
-                    // Erstellt ein leeres tbody-Element
-                    var tbody = $('<tbody></tbody>');
+                    // Create table element with classes
+                    const table = $('<table></table>').addClass('table table-striped table-hover');
+                    const tbody = $('<tbody></tbody>');
 
-                    // Durchläuft jedes Element im Antwortobjekt
+                    // Iterate through response items
                     $.each(response, function(key, value) {
-                        // Erstellt ein neues tr-Element und fügt das gewünschte HTML hinzu
-                        var tr = $('<tr></tr>');
-                        var td1 = $('<td></td>').text(value['id']);
-                        var td2 = $('<td></td>').append($(value['icon']));
-                        var td4 = $('<td></td>').append($(value['url']));
-                        var td5 = $('<td></td>').text(value['details']);
-                        tr.append(td1);
-                        tr.append(td2);
-                        tr.append(td4);
-                        tr.append(td5);
+                        // Create table row with data
+                        const tr = $('<tr></tr>');
+                        const td1 = $('<td></td>').text(value['id']);
+                        const td2 = $('<td></td>').append($(value['icon']));
+                        const td4 = $('<td></td>').append($(value['url']));
+                        const td5 = $('<td></td>').text(value['details']);
+                        tr.append(td1, td2, td4, td5);
 
-                        // Fügt das tr-Element zum tbody-Element hinzu
+                        // Add row to tbody
                         tbody.append(tr);
-                        // Fügt das tbody-Element zum table-Element hinzu
-                        table.append(tbody);
                     });
 
-                    // Fügt das table-Element in das div mit der ID "warehouseSearchResults" ein
+                    // Add tbody to table and insert into results div
+                    table.append(tbody);
                     $('#warehouseSearchResults').html(table);
 
-                    // Fügt den Click-Event-Listener zu allen neuen div-Elementen mit dem data-warehouse-copy Attribut hinzu
-                    document.querySelectorAll('div[data-warehouse-copy]').forEach(function(el) {
-                        el.addEventListener('click', data_copy)
-                    })
+                    // Re-initialize copy functionality for new elements
+                    document.querySelectorAll('div[data-warehouse-copy]').forEach(el => {
+                        el.addEventListener('click', data_copy);
+                    });
 
                 },
                 error: function() {
-                    // Zeigt eine Fehlermeldung an, wenn ein Fehler auftritt
+                    // Show error message
                     $('#warehouseSearchResults').html('Ein Fehler ist aufgetreten.');
                 }
             });

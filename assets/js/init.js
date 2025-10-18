@@ -140,6 +140,87 @@
     }
 
     // ========================================
+    // Shared Cart Display Update Logic
+    // ========================================
+    
+    /**
+     * Updates cart totals in the DOM
+     * @param {Object} totals - Cart totals data
+     * @param {Element} container - Container element
+     * @param {string} prefix - Attribute prefix (e.g., 'cart', 'offcanvas')
+     */
+    function updateCartTotals(totals, container, prefix = 'cart') {
+        if (!totals) return;
+
+        const selectors = {
+            subtotalByMode: `[data-warehouse-${prefix}-subtotal-by-mode]`,
+            tax: `[data-warehouse-${prefix}-tax]`,
+            shipping: `[data-warehouse-${prefix}-shipping]`,
+            total: `[data-warehouse-${prefix}-total]`
+        };
+
+        // Update subtotal by mode (net/gross)
+        updateElement(container, selectors.subtotalByMode, totals.subtotal_by_mode_formatted);
+
+        // Update tax total
+        updateElement(container, selectors.tax, totals.tax_total_formatted);
+
+        // Update shipping costs
+        updateElement(container, selectors.shipping, totals.shipping_costs_formatted);
+
+        // Update cart total by mode (final total)
+        updateElement(container, selectors.total, totals.cart_total_by_mode_formatted);
+    }
+
+    /**
+     * Updates a single element's text content if element exists
+     * @param {Element} container - Container element
+     * @param {string} selector - CSS selector
+     * @param {string} value - Value to set
+     */
+    function updateElement(container, selector, value) {
+        const element = container.querySelector(selector);
+        if (element && value) {
+            element.textContent = value;
+        }
+    }
+
+    /**
+     * Removes deleted items from cart display
+     * @param {Object} cartData - Cart data with items
+     * @param {Element} container - Container element
+     * @param {string} itemSelector - Selector for item parent to remove (e.g., '.card-body', 'tr', 'li')
+     */
+    function removeDeletedItems(cartData, container, itemSelector) {
+        if (!cartData.cart || !cartData.cart.items) return;
+
+        const currentItemKeys = Object.keys(cartData.cart.items);
+        container.querySelectorAll('[data-warehouse-item-key]').forEach(element => {
+            const itemKey = element.getAttribute('data-warehouse-item-key');
+            if (itemKey && !currentItemKeys.includes(itemKey)) {
+                const itemContainer = element.closest(itemSelector);
+                if (itemContainer) {
+                    itemContainer.remove();
+                }
+            }
+        });
+    }
+
+    /**
+     * Handles delete button click with confirmation
+     * @param {Event} e - Click event
+     * @param {Function} callback - Callback function on success
+     */
+    function handleDeleteClick(e, callback) {
+        e.preventDefault();
+        const { warehouseArticleId, warehouseVariantId, warehouseConfirm } = e.currentTarget.dataset;
+        
+        if (!warehouseConfirm || confirm(warehouseConfirm)) {
+            updateCart('delete', warehouseArticleId, warehouseVariantId, 1, null, callback);
+        }
+    }
+
+    // ========================================
     // Cart Page Handlers
     // ========================================
     
@@ -161,52 +242,34 @@
             cartPageContainer.querySelectorAll('[data-warehouse-cart-quantity]').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const action = this.dataset.warehouseCartQuantity;
-                    const mode = this.dataset.warehouseMode;
-                    const articleId = this.dataset.warehouseArticleId;
-                    const variantId = this.dataset.warehouseVariantId;
-                    const amount = this.dataset.warehouseAmount || 1;
+                    const { warehouseCartQuantity, warehouseMode, warehouseArticleId, warehouseVariantId, warehouseAmount = 1 } = this.dataset;
 
-                    // Show loading state - only for quantity buttons, not delete buttons
+                    // Show loading state
                     const loadingElements = cartPageContainer.querySelectorAll(
-                        `[data-warehouse-cart-quantity][data-warehouse-article-id="${articleId}"][data-warehouse-variant-id="${variantId || ''}"]`
+                        `[data-warehouse-cart-quantity][data-warehouse-article-id="${warehouseArticleId}"][data-warehouse-variant-id="${warehouseVariantId || ''}"]`
                     );
                     loadingElements.forEach(el => el.classList.add('opacity-50'));
 
-                    updateCart(action, articleId, variantId, amount, mode, 
+                    updateCart(warehouseCartQuantity, warehouseArticleId, warehouseVariantId, warehouseAmount, warehouseMode, 
                         (data) => updateCartPageDisplay(data, cartPageContainer),
-                        () => {
-                            loadingElements.forEach(el => el.classList.remove('opacity-50'));
-                        }
+                        () => loadingElements.forEach(el => el.classList.remove('opacity-50'))
                     );
                 });
             });
 
             // Handle delete button clicks
             cartPageContainer.querySelectorAll('[data-warehouse-cart-delete]').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const articleId = this.dataset.warehouseArticleId;
-                    const variantId = this.dataset.warehouseVariantId;
-                    const confirmMsg = this.dataset.warehouseConfirm || '';
-
-                    if (!confirmMsg || confirm(confirmMsg)) {
-                        updateCart('delete', articleId, variantId, 1, null,
-                            (data) => updateCartPageDisplay(data, cartPageContainer)
-                        );
-                    }
-                });
+                button.addEventListener('click', (e) => handleDeleteClick(e, (data) => updateCartPageDisplay(data, cartPageContainer)));
             });
 
             // Handle quantity input changes
             cartPageContainer.querySelectorAll('[data-warehouse-cart-input]').forEach(input => {
                 input.addEventListener('change', function() {
-                    const articleId = this.dataset.warehouseArticleId;
-                    const variantId = this.dataset.warehouseVariantId;
+                    const { warehouseArticleId, warehouseVariantId } = this.dataset;
                     const newAmount = parseInt(this.value, 10);
 
                     if (newAmount > 0) {
-                        updateCart('set', articleId, variantId, newAmount, 'set',
+                        updateCart('set', warehouseArticleId, warehouseVariantId, newAmount, 'set',
                             (data) => updateCartPageDisplay(data, cartPageContainer)
                         );
                     } else {
@@ -245,52 +308,16 @@
             });
         }
 
-        // Update all cart totals if available
+        // Update cart totals
+        updateCartTotals(cartData.totals, container, 'cart');
+
+        // Legacy support: Update old subtotal attribute if exists
         if (cartData.totals) {
-            // Update subtotal by mode (net/gross)
-            const subtotalByModeElement = container.querySelector('[data-warehouse-cart-subtotal-by-mode]');
-            if (subtotalByModeElement && cartData.totals.subtotal_by_mode_formatted) {
-                subtotalByModeElement.textContent = cartData.totals.subtotal_by_mode_formatted;
-            }
-
-            // Update tax total
-            const taxElement = container.querySelector('[data-warehouse-cart-tax]');
-            if (taxElement && cartData.totals.tax_total_formatted) {
-                taxElement.textContent = cartData.totals.tax_total_formatted;
-            }
-
-            // Update shipping costs
-            const shippingElement = container.querySelector('[data-warehouse-cart-shipping]');
-            if (shippingElement && cartData.totals.shipping_costs_formatted) {
-                shippingElement.textContent = cartData.totals.shipping_costs_formatted;
-            }
-
-            // Update cart total by mode (final total)
-            const totalElement = container.querySelector('[data-warehouse-cart-total]');
-            if (totalElement && cartData.totals.cart_total_by_mode_formatted) {
-                totalElement.textContent = cartData.totals.cart_total_by_mode_formatted;
-            }
-
-            // Legacy support: Update old subtotal attribute if exists
-            const subtotalElement = container.querySelector('[data-warehouse-cart-subtotal]');
-            if (subtotalElement && cartData.totals.total_formatted) {
-                subtotalElement.textContent = cartData.totals.total_formatted;
-            }
+            updateElement(container, '[data-warehouse-cart-subtotal]', cartData.totals.total_formatted);
         }
 
         // Remove deleted items from DOM
-        if (cartData.cart && cartData.cart.items) {
-            const currentItemKeys = Object.keys(cartData.cart.items);
-            container.querySelectorAll('[data-warehouse-item-key]').forEach(element => {
-                const itemKey = element.getAttribute('data-warehouse-item-key');
-                if (itemKey && !currentItemKeys.includes(itemKey)) {
-                    const itemContainer = element.closest('.card-body');
-                    if (itemContainer) {
-                        itemContainer.remove();
-                    }
-                }
-            });
-        }
+        removeDeletedItems(cartData, container, '.card-body');
 
         // If cart is empty, reload page
         if (cartData.totals && cartData.totals.items_count === 0) {
@@ -327,18 +354,7 @@
 
             // Handle delete button clicks
             offcanvasCart.querySelectorAll('[data-warehouse-cart-delete]').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const articleId = this.dataset.warehouseArticleId;
-                    const variantId = this.dataset.warehouseVariantId;
-                    const confirmMsg = this.dataset.warehouseConfirm || '';
-
-                    if (!confirmMsg || confirm(confirmMsg)) {
-                        updateCart('delete', articleId, variantId, 1, null,
-                            (data) => updateOffcanvasCartDisplay(data, offcanvasCart)
-                        );
-                    }
-                });
+                button.addEventListener('click', (e) => handleDeleteClick(e, (data) => updateOffcanvasCartDisplay(data, offcanvasCart)));
             });
 
             // Mark as initialized after successful setup
@@ -351,10 +367,7 @@
         if (cartData.items) {
             Object.entries(cartData.items).forEach(([itemKey, item]) => {
                 // Update item amount
-                const itemAmount = container.querySelector(`[data-warehouse-item-amount="${itemKey}"]`);
-                if (itemAmount) {
-                    itemAmount.textContent = item.amount;
-                }
+                updateElement(container, `[data-warehouse-item-amount="${itemKey}"]`, item.amount);
 
                 // Update item total
                 const itemTotal = container.querySelector(`[data-warehouse-item-total="${itemKey}"]`);
@@ -370,53 +383,16 @@
             });
         }
 
-        // Update all cart totals if available
+        // Update cart totals
+        updateCartTotals(cartData.totals, container, 'offcanvas');
+
+        // Legacy support: Update old subtotal attribute if exists
         if (cartData.totals) {
-            // Update legacy subtotal (for backward compatibility with custom templates before v2.0)
-            // This can be removed in a future major version when all templates use the new _by_mode attributes
-            const subtotalElement = container.querySelector('[data-warehouse-offcanvas-subtotal]');
-            if (subtotalElement && cartData.totals.subtotal_formatted) {
-                subtotalElement.textContent = cartData.totals.subtotal_formatted;
-            }
-
-            // Update subtotal by mode (net/gross)
-            const subtotalByModeElement = container.querySelector('[data-warehouse-offcanvas-subtotal-by-mode]');
-            if (subtotalByModeElement && cartData.totals.subtotal_by_mode_formatted) {
-                subtotalByModeElement.textContent = cartData.totals.subtotal_by_mode_formatted;
-            }
-
-            // Update tax total
-            const taxElement = container.querySelector('[data-warehouse-offcanvas-tax]');
-            if (taxElement && cartData.totals.tax_total_formatted) {
-                taxElement.textContent = cartData.totals.tax_total_formatted;
-            }
-
-            // Update shipping costs
-            const shippingElement = container.querySelector('[data-warehouse-offcanvas-shipping]');
-            if (shippingElement && cartData.totals.shipping_costs_formatted) {
-                shippingElement.textContent = cartData.totals.shipping_costs_formatted;
-            }
-
-            // Update cart total by mode (final total)
-            const totalElement = container.querySelector('[data-warehouse-offcanvas-total]');
-            if (totalElement && cartData.totals.cart_total_by_mode_formatted) {
-                totalElement.textContent = cartData.totals.cart_total_by_mode_formatted;
-            }
+            updateElement(container, '[data-warehouse-offcanvas-subtotal]', cartData.totals.subtotal_formatted);
         }
 
         // Remove deleted items from DOM
-        if (cartData.cart && cartData.cart.items) {
-            const currentItemKeys = Object.keys(cartData.cart.items);
-            container.querySelectorAll('[data-warehouse-item-key]').forEach(element => {
-                const itemKey = element.getAttribute('data-warehouse-item-key');
-                if (itemKey && !currentItemKeys.includes(itemKey)) {
-                    const listItem = element.closest('li');
-                    if (listItem) {
-                        listItem.remove();
-                    }
-                }
-            });
-        }
+        removeDeletedItems(cartData, container, 'li');
 
         // If cart is empty, show empty message
         if (cartData.totals && cartData.totals.items_count === 0) {
@@ -444,15 +420,11 @@
             cartTable.querySelectorAll('[data-warehouse-cart-quantity]').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const action = this.dataset.warehouseCartQuantity;
-                    const mode = this.dataset.warehouseMode;
-                    const articleId = this.dataset.warehouseArticleId;
-                    const variantId = this.dataset.warehouseVariantId;
-                    const amount = this.dataset.warehouseAmount || 1;
+                    const { warehouseCartQuantity, warehouseMode, warehouseArticleId, warehouseVariantId, warehouseAmount = 1 } = this.dataset;
 
-                    // Show loading state - only for quantity buttons, not delete buttons
+                    // Show loading state
                     const loadingElements = cartTable.querySelectorAll(
-                        `[data-warehouse-cart-quantity][data-warehouse-article-id="${articleId}"][data-warehouse-variant-id="${variantId || ''}"]`
+                        `[data-warehouse-cart-quantity][data-warehouse-article-id="${warehouseArticleId}"][data-warehouse-variant-id="${warehouseVariantId || ''}"]`
                     );
                     loadingElements.forEach(el => {
                         el.classList.add('disabled');
@@ -461,7 +433,7 @@
                         }
                     });
 
-                    updateCart(action, articleId, variantId, amount, mode,
+                    updateCart(warehouseCartQuantity, warehouseArticleId, warehouseVariantId, warehouseAmount, warehouseMode,
                         (data) => {
                             updateCartTableDisplay(data, cartTable);
                             // Reset loading state
@@ -472,27 +444,14 @@
                                 }
                             });
                         },
-                        () => {
-                            loadingElements.forEach(el => el.classList.remove('disabled'));
-                        }
+                        () => loadingElements.forEach(el => el.classList.remove('disabled'))
                     );
                 });
             });
 
             // Handle delete button clicks
             cartTable.querySelectorAll('[data-warehouse-cart-delete]').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const articleId = this.dataset.warehouseArticleId;
-                    const variantId = this.dataset.warehouseVariantId;
-                    const confirmMsg = this.dataset.warehouseConfirm || '';
-
-                    if (!confirmMsg || confirm(confirmMsg)) {
-                        updateCart('delete', articleId, variantId, 1, null,
-                            (data) => updateCartTableDisplay(data, cartTable)
-                        );
-                    }
-                });
+                button.addEventListener('click', (e) => handleDeleteClick(e, (data) => updateCartTableDisplay(data, cartTable)));
             });
 
             // Handle next button with loading animation
@@ -516,10 +475,7 @@
         if (cartData.items) {
             Object.entries(cartData.items).forEach(([itemKey, item]) => {
                 // Update quantity display
-                const quantitySpan = container.querySelector(`[data-warehouse-item-amount="${itemKey}"]`);
-                if (quantitySpan) {
-                    quantitySpan.textContent = item.amount;
-                }
+                updateElement(container, `[data-warehouse-item-amount="${itemKey}"]`, item.amount);
 
                 // Update item total
                 const itemTotal = container.querySelector(`[data-warehouse-item-total="${itemKey}"]`);
@@ -542,52 +498,16 @@
             });
         }
 
-        // Update all cart totals if available
+        // Update cart totals
+        updateCartTotals(cartData.totals, container, 'cart');
+
+        // Legacy support: Update old subtotal attribute if exists
         if (cartData.totals) {
-            // Update subtotal by mode (net/gross)
-            const subtotalByModeElement = container.querySelector('[data-warehouse-cart-subtotal-by-mode]');
-            if (subtotalByModeElement && cartData.totals.subtotal_by_mode_formatted) {
-                subtotalByModeElement.textContent = cartData.totals.subtotal_by_mode_formatted;
-            }
-
-            // Update tax total
-            const taxElement = container.querySelector('[data-warehouse-cart-tax]');
-            if (taxElement && cartData.totals.tax_total_formatted) {
-                taxElement.textContent = cartData.totals.tax_total_formatted;
-            }
-
-            // Update shipping costs
-            const shippingElement = container.querySelector('[data-warehouse-cart-shipping]');
-            if (shippingElement && cartData.totals.shipping_costs_formatted) {
-                shippingElement.textContent = cartData.totals.shipping_costs_formatted;
-            }
-
-            // Update cart total by mode (final total)
-            const totalElement = container.querySelector('[data-warehouse-cart-total]');
-            if (totalElement && cartData.totals.cart_total_by_mode_formatted) {
-                totalElement.textContent = cartData.totals.cart_total_by_mode_formatted;
-            }
-
-            // Legacy support: Update old subtotal attribute if exists
-            const subtotalElement = container.querySelector('[data-warehouse-table-subtotal]');
-            if (subtotalElement && cartData.totals.subtotal_by_mode_formatted) {
-                subtotalElement.textContent = cartData.totals.subtotal_by_mode_formatted;
-            }
+            updateElement(container, '[data-warehouse-table-subtotal]', cartData.totals.subtotal_by_mode_formatted);
         }
 
         // Remove deleted items from table
-        if (cartData.cart && cartData.cart.items) {
-            const currentItemKeys = Object.keys(cartData.cart.items);
-            container.querySelectorAll('[data-warehouse-item-key]').forEach(element => {
-                const itemKey = element.getAttribute('data-warehouse-item-key');
-                if (itemKey && !currentItemKeys.includes(itemKey)) {
-                    const tableRow = element.closest('tr');
-                    if (tableRow) {
-                        tableRow.remove();
-                    }
-                }
-            });
-        }
+        removeDeletedItems(cartData, container, 'tr');
 
         // If cart is empty, reload page
         if (cartData.totals && cartData.totals.items_count === 0) {

@@ -1,5 +1,7 @@
 // Read PayPal style config from the data attribute
 const configDiv = document.querySelector("[data-warehouse-paypal-config]");
+
+// Parse PayPal style configuration
 let paypalStyle = {};
 if (configDiv) {
     try {
@@ -9,18 +11,16 @@ if (configDiv) {
     }
 }
 
-const successUrl = configDiv ? configDiv.getAttribute("data-warehouse-paypal-success-page-url") : null;
-const cancelUrl = configDiv ? configDiv.getAttribute("data-warehouse-paypal-cancel-url") : null;
-const errorCreateOrderMsg = configDiv ? configDiv.getAttribute("data-warehouse-paypal-error-create-order") : "Could not initiate PayPal Checkout";
-const errorCaptureOrderMsg = configDiv ? configDiv.getAttribute("data-warehouse-paypal-error-capture-order") : "Sorry, your transaction could not be processed";
-const technicalDetailsLabel = configDiv ? configDiv.getAttribute("data-warehouse-paypal-error-technical-details") : "Technical Details";
+// Helper function to get attribute value with fallback
+const getConfigAttr = (attrName, fallback = null) => 
+    configDiv ? configDiv.getAttribute(attrName) : fallback;
 
-// Helper function to escape HTML to prevent XSS
-function escapeHtml(unsafe) {
-    const div = document.createElement('div');
-    div.textContent = unsafe;
-    return div.innerHTML;
-}
+// PayPal configuration values
+const successUrl = getConfigAttr("data-warehouse-paypal-success-page-url");
+const cancelUrl = getConfigAttr("data-warehouse-paypal-cancel-url");
+const errorCreateOrderMsg = getConfigAttr("data-warehouse-paypal-error-create-order", "Could not initiate PayPal Checkout");
+const errorCaptureOrderMsg = getConfigAttr("data-warehouse-paypal-error-capture-order", "Sorry, your transaction could not be processed");
+const technicalDetailsLabel = getConfigAttr("data-warehouse-paypal-error-technical-details", "Technical Details");
 
 // Function to show error modal
 function showPayPalErrorModal(message, detailedError = null) {
