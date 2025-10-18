@@ -18,7 +18,7 @@ if (!$cart_items || count($cart_items) === 0) {
     return;
 }
 ?>
-<table class="table table-striped table-hover table-bordered" data-warehouse-cart-table>
+<table class="table table-hover table-bordered" data-warehouse-cart-table>
 	<thead>
 		<tr>
 			<th class="align-left">
