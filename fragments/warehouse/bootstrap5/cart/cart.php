@@ -14,7 +14,7 @@ $domain = Domain::getCurrent();
 
 if (!$cart_items || count($cart_items) === 0) {
 
-    echo '<p class="text-center">' . rex_i18n::msg('warehouse.cart_empty') . '</p>';
+    echo '<p class="text-center">' . Warehouse::getLabel('cart_empty') . '</p>';
     return;
 }
 ?>
