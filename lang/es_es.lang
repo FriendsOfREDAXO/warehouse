@@ -1,0 +1,649 @@
+# V1
+warehouse_iso_code = Código ISO
+warehouse_iso2 = Código ISO2
+warehouse_iso3 = Código ISO3
+warehouse_is_eu = País UE
+warehouse_shipping_zone = Zona de envío
+warehouse_phone_code = Código de país
+warehouse_shipping_calculation_mode = Cálculo
+
+warehouse_tax_ust_ident = Impuesto [NIF]
+warehouse_tax_disable_by_ust_ident = Exención de impuestos con NIF
+warehouse_tax = Impuesto
+warehouse_tax_tax_disable = Exención de impuestos general
+
+# v2.0.0
+warehouse.title = Tienda
+warehouse_module = Warehouse - Tienda
+
+warehouse.module.title = Título
+warehouse.module.description = Texto
+warehouse.module.select.default = Por favor seleccione
+
+# V2.0.0
+# Permissions
+warehouse = Warehouse: Acceso a todas las áreas
+warehouse[settings] = Warehouse: Configuración
+warehouse[shipping] = Warehouse: Configuración de envío
+
+# V2.0.0
+# Backend Pages
+
+warehouse_order_dashboard = Panel de control
+warehouse_order = Pedidos
+warehouse_order_list = Pedidos
+warehouse_order_details = Detalles del pedido
+warehouse_customer = Clientes registrados
+warehouse_customer_address = Direcciones de entrega
+warehouse_article = Artículos
+warehouse_article_variant = Variantes
+warehouse_category = Categorías
+warehouse_search = Búsqueda
+warehouse_country = Países
+warehouse_shipping = Envío
+warehouse_settings = Administración
+warehouse_settings_shop = Configuración
+warehouse_settings_payment = Pago
+warehouse_settings_general = Configuración general
+warehouse_settings_domain = Perfiles de dominio
+warehouse_settings_tawarehouse_article_variant.weightx = Impuestos
+warehouse_settings_log = Registro
+warehouse_settings_discount = Descuentos
+warehouse_settings_documents = Documentos
+warehouse_settings_label = Texto
+warehouse_settings_setup = Configuración
+warehouse_docs = Ayuda
+
+warehouse_docs.README = Introducción
+warehouse_docs.warehouse_article = Artículos
+warehouse_docs.warehouse_article_variant = Variantes
+warehouse_docs.warehouse_category = Categorías
+warehouse_docs.order = Pedidos
+warehouse_docs.settings.setup = Configuración
+warehouse_docs.settings.general = Configuración general
+warehouse_docs.settings.shipping = Envío
+warehouse_docs.settings.payment = Pago
+warehouse_docs.settings.domain = Dominio
+warehouse_docs.settings.discount = Descuentos
+warehouse_docs.customer = Clientes (YCom)
+warehouse_docs.domain = Dominio
+warehouse_docs.search = Búsqueda
+warehouse_docs.shipping = Envío
+warehouse_docs.warehouse_extend = Extender Warehouse
+ 
+
+# Warehouse Settings: General Settings
+
+warehouse.settings.general.info = Bienvenido a Warehouse 2.0 - algunas configuraciones básicas se han establecido durante la instalación. Familiarícese con los cambios de Warehouse 1.0 en la sección de ayuda.
+
+warehouse.settings.editor = Editor WYSIWYG
+warehouse.settings.editor.notice = p.ej. <code>class="form-control redactor-editor--default"</code>
+
+warehouse.settings.currency = Moneda
+warehouse.settings.currency_symbol = Símbolo de moneda (p.ej. €)
+warehouse.settings.currency_symbol.notice = <code>rex_config::get("warehouse","currency_symbol")</code>
+
+warehouse.settings.tax_options = Tasas de impuestos
+warehouse.settings.tax_options.notice = Tasas de impuestos posibles para selección en artículos y variantes. Por defecto: <code>19,7,0</code> para tasas de 19%, 7% y 0%. Use el punto de extensión <code>WAREHOUSE_TAX_OPTIONS</code> para cambiar las tasas de impuestos.
+
+warehouse.settings.shipping_allowed = Países permitidos para la entrega
+
+warehouse.settings.cart_mode = Después de la acción del carrito
+warehouse.settings.cart_mode.notice = Se puede abrir la página del carrito o la página del artículo anterior. Si se abre la página del artículo, showcart=1 se agrega como parámetro get.
+
+warehouse.settings.instant_checkout_enabled = Activar botón "Comprar ahora"
+warehouse.settings.instant_checkout_enabled.notice = Si está activado, se mostrará un botón "Comprar ahora" en las páginas de artículos que conduce directamente al pago.
+warehouse.settings.yes = Sí
+warehouse.settings.no = No
+
+warehouse.ycom_modes.enforce = Pedido solo con cuenta de cliente
+warehouse.ycom_modes.choose = El cliente elige
+warehouse.ycom_modes.guest_only = Modo invitado (No se requiere cuenta de cliente)
+
+warehouse.settings.enable_features = Opciones adicionales para artículos y variantes
+warehouse.settings.enable_features.bulk_prices = Consultar precios al por mayor
+warehouse.settings.enable_features.weight = Consultar peso del artículo
+warehouse.settings.enable_features.variants = Permitir variantes
+warehouse.settings.enable_features.stock = Gestionar stock
+warehouse.settings.enable_features.sku = Gestionar SKU (número de artículo)
+
+warehouse.settings.fallback_category_image = Imagen de categoría predeterminada
+warehouse.settings.fallback_category_image.notice = Se usa cuando no hay imagen disponible para la categoría.
+
+warehouse.settings.fallback_article_image = Imagen de artículo predeterminada
+warehouse.settings.fallback_article_image.notice = Se usa cuando no hay imagen disponible para el artículo o variante.
+
+warehouse.settings.invoice_number = Número de factura
+warehouse.settings.invoice_number.notice = Número corriente para la próxima factura. Se incrementa automáticamente al crear una factura. Use el punto de extensión <code>WAREHOUSE_INVOICE_NUMBER</code> para cambiar la numeración.
+warehouse.settings.delivery_note_number = Número de albarán
+warehouse.settings.delivery_note_number.notice = Número corriente para el próximo albarán. Se incrementa automáticamente al crear un albarán. Use el punto de extensión <code>WAREHOUSE_DELIVERY_NOTE_NUMBER</code> para cambiar la numeración.
+warehouse.settings.order_number = Número de pedido
+warehouse.settings.order_number.notice = Número corriente para el próximo pedido. Se incrementa automáticamente al crear un pedido. Use el punto de extensión <code>WAREHOUSE_ORDER_NUMBER</code> para cambiar la numeración.
+
+# Warehouse Settings: Shipping costs
+
+warehouse.settings.shipping = Costos de envío
+warehouse.settings.shipping_fee = Costos de envío
+warehouse.settings.free_shipping_from = Envío gratis desde
+warehouse.settings.minimum_order_value = Valor mínimo de pedido
+warehouse.settings.shipping_calculation_mode = Costos de envío avanzados
+warehouse.settings.shipping_calculation_mode.options.default = ninguno (predeterminado)
+warehouse.settings.shipping_calculation_mode.options.quantity = CANTIDAD: Costos de envío escalonados por cantidad
+warehouse.settings.shipping_calculation_mode.options.weight = PESO: Costos de envío escalonados por peso
+warehouse.settings.shipping_calculation_mode.options.order_total = TOTAL PEDIDO: Costos de envío escalonados por total del pedido
+
+# Warehouse Settings: Domain
+
+warehouse_settings_domain.fieldset_art_ids = Páginas
+warehouse_settings_domain.yrewrite_domain_id = Dominio
+warehouse_settings_domain.cart_art_id = Carrito de compras
+warehouse_settings_domain.checkout_art_id = Caja
+warehouse_settings_domain.shippinginfo_art_id = Info de envío
+warehouse_settings_domain.order_art_id = Pedido
+warehouse_settings_domain.address_art_id = Dirección
+warehouse_settings_domain.payment_error_art_id = Error de pago
+warehouse_settings_domain.thankyou_art_id = Gracias
+
+warehouse_settings_domain.fieldset_email = Configuración de correo electrónico
+warehouse_settings_domain.email_template_customer = Plantilla de correo electrónico para el cliente
+warehouse_settings_domain.email_template_seller = Plantilla de correo electrónico para el vendedor
+warehouse_settings_domain.email_signature = Firma de correo electrónico
+warehouse_settings_domain.order_email = Correo electrónico del destinatario para pedidos
+warehouse_settings_domain.order_email.notice = Separe múltiples destinatarios con comas
+
+warehouse_settings_domain.fieldset_sepa = Transferencia SEPA
+warehouse_settings_domain.sepa_account_holder_name = Titular de la cuenta
+warehouse_settings_domain.sepa_bank_name = Nombre del banco
+warehouse_settings_domain.sepa_bic = BIC
+warehouse_settings_domain.sepa_iban = IBAN
+
+warehouse_settings_domain.fieldset_end = 🔚
+
+# Warehouse Settings: Discounts
+
+warehouse.discount_info = Los descuentos no están actualmente soportados. Participe en el desarrollo en <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> para el desarrollo de un sistema de descuentos avanzado que consta de: Descuento plano, Envío gratis, Períodos promocionales, Códigos de cupón y descuentos para ciertos grupos YCom.
+
+# YForm Tables: Table names
+
+warehouse_article.tablename = 📦 Artículos
+warehouse_article_variant.tablename = 📦 Variantes
+warehouse_category.tablename = 📦 Categorías
+warehouse_order.tablename = 📦 Pedidos
+# warehouse_country.tablename = 📦 Países
+# warehouse_shipping.tablename = 📦 Envío
+warehouse_settings_domain.tablename = 📦 Configuración de dominio
+warehouse_customer_address.tablename = 📦 Direcciones
+
+# YForm Table "Articles": Labels
+
+warehouse_article.name = Nombre
+warehouse_article.category_id = Categoría
+warehouse_article.status = Estado
+warehouse_article_status.active = 🟢 Activo
+warehouse_article_status.draft = 🟡 Borrador
+warehouse_article_status.hidden = 🔴 Oculto
+warehouse_article.prio = Orden
+warehouse_article.weight = Peso
+warehouse_article.image = Imagen
+warehouse_article.gallery = Galería
+warehouse_article.short_text = Texto corto
+warehouse_article.short_text.notice = Este texto se usa como adelanto y también para SEO y, por lo tanto, no debe tener más de 160 caracteres.
+warehouse_article.text = Texto
+warehouse_article.price = Precio
+warehouse_article.price_text = Texto de precio
+warehouse_article.tax = Impuesto
+warehouse_article.tax.none = Predeterminado
+warehouse_article.createdate = Creado el
+warehouse_article.updatedate = Última modificación
+warehouse_article.variant_ids = Variantes
+warehouse_article.availability = Disponibilidad
+warehouse_article.uuid = UUID
+warehouse_article.bulk_prices = Precios al por mayor
+warehouse_article.stock = Stock
+warehouse_article.sku = SKU
+warehouse_article.sku.notice = Número de artículo - si está vacío, se usa el ID
+
+# YForm Table "Categories": Labels
+
+warehouse_category.status = Estado
+warehouse_category.status.active = 🟢 Activo
+warehouse_category.status.draft = 🟡 Borrador
+warehouse_category.status.hidden = 🔴 Oculto
+warehouse_category.name = Nombre
+warehouse_category.teaser = Adelanto
+warehouse_category.link_intern = Enlace interno
+warehouse_category.prio = Orden
+warehouse_category.image = Imagen
+warehouse_category.text = Texto
+warehouse_category.createdate = Creado el
+warehouse_category.updatedate = Última modificación
+warehouse_category.parent_id = Categoría padre
+warehouse_category.uuid = UUID
+
+# YForm Table "Article Variants": Labels
+
+warehouse_article_variant.article_id = Artículo principal
+warehouse_article_variant.name = Nombre
+warehouse_article_variant.price = Precio
+warehouse_article_variant.bulk_prices = Precios al por mayor
+warehouse_article_variant.weight = Peso
+warehouse_article_variant.bulk_prices.amount = Cantidad
+warehouse_article_variant.bulk_prices.price = Precio
+warehouse_article_variant.bulk_prices.weight = Peso
+warehouse_article_varaint.stock = Stock
+warehouse_article_variant.prio = Orden
+warehouse_article_variant.availability = Disponibilidad
+warehouse_article_variant.status = Estado
+warehouse_article_variant.status.active = 🟢 Activo
+warehouse_article_variant.status.draft = 🟡 Borrador
+warehouse_article_variant.status.hidden = 🔴 Oculto
+warehouse_article_variant.image = Imagen
+warehouse_article_variant.sku = SKU
+warehouse_article_variant.sku.notice = Número de artículo - si está vacío, se usa el ID
+warehouse_article_variant.uuid = UUID
+warehouse_article_variant.createdate = Creado el
+warehouse_article_variant.updatedate = Última modificación
+
+
+# YForm Table "Countries": Labels
+
+warehouse_country.code = Código
+warehouse_country.name = Nombre
+warehouse_country.mode = Modo
+warehouse_country.status = Estado
+warehouse_country.prio = Orden
+warehouse_country.tax = Impuesto
+
+# YForm Table "Order": Labels
+
+warehouse_order.salutation = Saludo
+warehouse_order.firstname = Nombre
+warehouse_order.lastname = Apellido
+warehouse_order.company = Empresa
+warehouse_order.address = Dirección
+warehouse_order.zip = Código postal
+warehouse_order.city = Ciudad
+warehouse_order.country = País
+warehouse_order.email = Correo electrónico
+warehouse_order.createdate = Fecha del pedido
+warehouse_order.paypal_id = ID de PayPal
+warehouse_order.payment_id = ID de pago
+warehouse_order.paypal_confirm_token = Token de confirmación de PayPal
+warehouse_order.payment_confirm = Confirmación de pago
+warehouse_order.order_no = Número de pedido
+warehouse_order.order_text = Texto del pedido
+warehouse_order.order_json = JSON del pedido
+warehouse_order.order_total = Total del pedido
+warehouse_order.ycom_user_id = ID de usuario YCom
+warehouse_order.payment_type = Tipo de pago
+warehouse_order.payed = Pagado
+warehouse_order.not_payed = No pagado
+warehouse_order.imported = Importado
+warehouse_order.is_read = Leído
+warehouse_order.updatedate = Pedido iniciado el...
+warehouse_order.payment_status = Estado de pago
+warehouse_order.payment_status.select = Seleccionar estado de pago
+warehouse_order.shipping_status = Estado de envío
+warehouse_order.shipping_status.select = Seleccionar estado de envío
+warehouse_order.buyer = Comprador
+warehouse_order.custom_order_id = ID de pedido personalizado
+
+# YForm Table "Shipping": Labels
+
+warehouse_shipping.name = Nombre
+warehouse_shipping.mode = Modo
+warehouse_shipping.params = Parámetros
+
+# Warehouse Articles and Variants: Status
+
+warehouse_article.status.active = 🟢 Activo
+warehouse_article.status.draft = 🟡 Borrador
+warehouse_article.status.hidden = 🔴 Oculto
+
+# Warehouse Articles and Variants: Availability
+
+warehouse_article.availability.BackOrder = 🟡 Pedido pendiente
+warehouse_article.availability.Discontinued = 🟡 Descontinuado
+warehouse_article.availability.InStock = 🟢 En stock
+warehouse_article.availability.InStoreOnly = 🟡 Solo en tienda
+warehouse_article.availability.LimitedAvailability = 🟡 Disponibilidad limitada
+warehouse_article.availability.MadeToOrder = 🟡 Hecho a pedido
+warehouse_article.availability.OnlineOnly = 🟢 Solo en línea
+warehouse_article.availability.OutOfStock = 🔴 Agotado
+warehouse_article.availability.PreOrder = 🟢 Pedido anticipado
+warehouse_article.availability.PreSale = 🟢 Preventa
+warehouse_article.availability.Reserved = 🔴 Reservado
+warehouse_article.availability.SoldOut = 🔴 Agotado
+
+warehouse_article_variant.availability.BackOrder = 🟡 Pedido pendiente
+warehouse_article_variant.availability.Discontinued = 🟡 Descontinuado
+warehouse_article_variant.availability.InStock = 🟢 En stock
+warehouse_article_variant.availability.InStoreOnly = 🟡 Solo en tienda
+warehouse_article_variant.availability.LimitedAvailability = 🟡 Disponibilidad limitada
+warehouse_article_variant.availability.MadeToOrder = 🟡 Hecho a pedido
+warehouse_article_variant.availability.OnlineOnly = 🟢 Solo en línea
+warehouse_article_variant.availability.OutOfStock = 🔴 Agotado
+warehouse_article_variant.availability.PreOrder = 🟢 Pedido anticipado
+warehouse_article_variant.availability.PreSale = 🟢 Preventa
+warehouse_article_variant.availability.Reserved = 🔴 Reservado
+warehouse_article_variant.availability.SoldOut = 🔴 Agotado
+
+warehouse.search.results = Se encontraron {0} entradas.
+warehouse.search.no_results = No se encontraron entradas.
+
+warehouse.search.description = Buscar en artículos, categorías y pedidos. Consejo: También puede filtrar mediante <code>+</code>, <code>-</code>, p.ej. <code>+rojo</code> para todos los artículos con la palabra "rojo" o <code>+Max -García</code> para todos los pedidos de "Max" sin "García".
+
+
+warehouse_quicknavigation_search_button = Búsqueda
+warehouse_quicknavigation_search_placeholder = Introduzca el término de búsqueda
+
+warehouse_article.icon_label = Artículo
+warehouse_article_variant.icon_label = Variante
+warehouse_category.icon_label = Categoría
+warehouse_order.icon_label = Pedido
+
+# Warehouse Log
+warehouse.log.activated = El registro ha sido activado.
+warehouse.log.deactivated = El registro ha sido desactivado.
+warehouse.log.warning_logisinactive = El registro está actualmente <b>desactivado</b>. <a href="{0}">Activar registro</a>
+warehouse.log.warning_logisactive = El registro está actualmente <b>activo</b>. <a href="{0}">Desactivar registro</a>
+warehouse.log.time = Hora
+warehouse.log.ip = IP
+warehouse.log.user_id = ID de usuario
+warehouse.log.event = Evento
+warehouse.log.params = Parámetros
+warehouse.log.user_ip = IP de usuario
+warehouse.log.type = Tipo
+warehouse.log.email = Correo electrónico
+warehouse.log.delete_log_msg = ¿Realmente desea eliminar el registro?
+warehouse.log.title = Archivo de registro: {0}
+
+# Warehouse Settings - Shipping
+
+warehouse.settings = Configuración de envío
+warehouse.settings.shipping_costs = Costos de envío
+warehouse.settings.minimum_order_value = Valor mínimo de pedido
+warehouse.settings.shipping_fee = Costos de envío
+warehouse.settings.free_shipping_from = Envío gratis desde
+warehouse.settings.shipping_calculation_mode = Cálculo de costos de envío
+
+warehouse.settings.shipping_calculation_mode.options.default = Tarifa plana (Predeterminado)
+warehouse.settings.shipping_calculation_mode.options.quantity = Cantidad
+warehouse.settings.shipping_calculation_mode.options.weight = Peso
+warehouse.settings.shipping_calculation_mode.options.order_total = Total del pedido
+
+# Warehouse PayPal
+
+warehouse.settings.payment = Configuración de pago
+
+warehouse.settings.payment.store_name = Nombre de la tienda
+warehouse.settings.payment.store_name.notice = p.ej. <code>Juan Pérez S.L.</code>, transmitido a PayPal entre otros.
+
+warehouse.settings.payment.store_country_code = Código de país de la tienda
+warehouse.settings.payment.store_country_code.notice = p.ej. <code>es-ES</code> - transmitido a PayPal entre otros.
+
+warehouse.settings.payment.paypal_client_id = ID de cliente de PayPal
+warehouse.settings.payment.paypal_secret = Secreto de PayPal
+
+warehouse.settings.payment.sandboxmode = Sandbox de PayPal
+warehouse.settings.payment.sandboxmode.option = Activar sandbox de PayPal (pedidos de prueba)
+
+warehouse.settings.payment.paypal_sandbox_client_id = ID de cliente del sandbox de PayPal
+warehouse.settings.payment.paypal_sandbox_secret = Secreto del sandbox de PayPal
+
+warehouse.settings.payment.paypal_getparams = Parámetros GET adicionales para PayPal
+warehouse.settings.payment.paypal_getparams.notice = p.ej. para usar Mantenimiento durante el desarrollo. Especifique como JSON en la forma <code>{"key1":"value1","key2":"value2"}</code>.
+
+warehouse.settings.payment.info = Actualmente solo se admite PayPal como proveedor de pago. Participe en el desarrollo adicional en GitHub en <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a>.
+
+warehouse.settings.cart_mode.cart = Mostrar carrito de compras
+warehouse.settings.cart_mode.page = Mostrar página del producto
+
+warehouse.order.details.error.no_data_id = Por favor, primero seleccione un pedido de la vista general o búsqueda.
+warehouse.order.details.error.order_not_found = El pedido solicitado no se encontró.
+warehouse.order.details.error.invalid_payment_status = Estado de pago inválido.
+warehouse.order.details.error.invalid_shipping_status = Estado de envío inválido.
+warehouse.order.details.error.invoice_generation_failed = Error al generar la factura.
+warehouse.order.details.error.delivery_note_generation_failed = Error al generar el albarán.
+warehouse.order.details.success.payment_status_updated = Estado de pago actualizado con éxito.
+warehouse.order.details.success.shipping_status_updated = Estado de envío actualizado con éxito.
+warehouse.order.details.success.invoice_generated = Factura generada con éxito.
+warehouse.order.details.success.delivery_note_generated = Albarán generado con éxito.
+
+warehouse.settings.framework = Framework de salida deseado
+warehouse.settings.framework.notice = Actualmente solo se admite Bootstrap 5. <code>bootstrap5</code> es el valor predeterminado. También puede copiar la carpeta <code>src/addons/warehouse/fragments/bootstrap5</code> a <code>src/addons/project/fragments/bootstrap5</code> y personalizarla. Más información en la documentación.
+
+warehouse.settings.container_class = Clase de contenedor CSS
+warehouse.settings.container_class.notice = Defina opcionalmente una clase de contenedor CSS, p.ej. <code>container</code>, <code>container-fluid</code>, <code>container-lg</code> etc. Se usa <code>container</code> por defecto. Deje el campo vacío si no se debe usar ningún contenedor.
+
+warehouse.settings.shipping_conditions_text = Condiciones de costos de envío
+warehouse.settings.shipping_conditions_text.notice = Texto que se muestra debajo de los costos de envío. P.ej. "Envío gratis a partir de 50 euros de valor del pedido." o "Costos de envío escalonados por peso."
+
+
+warehouse.settings.label_cart = Carrito de compras
+warehouse.settings.label_cart_empty = El carrito de compras está vacío.
+
+warehouse.payment_options.prepayment = Pago anticipado
+warehouse.payment_options.invoice   = Factura
+warehouse.payment_options.paypal    = PayPal
+warehouse.payment_options.direct_debit  = Débito directo
+
+
+warehouse_customer_address.ycom_user_id = ID de usuario YCom
+warehouse_customer_address.salutation = Saludo
+warehouse_customer_address.type = Tipo
+warehouse_customer_address.company = Empresa
+warehouse_customer_address.name = Nombre
+warehouse_customer_address.street = Calle
+warehouse_customer_address.zip = Código postal
+warehouse_customer_address.city = Ciudad
+warehouse_customer_address.country = País
+
+warehouse.customer_address.type = Tipo
+warehouse.customer_address.type.private = Privado
+warehouse.customer_address.type.company = Empresa
+warehouse.customer_address.type.shipping = Envío
+warehouse.customer_address.type.billing = Facturación
+warehouse.customer_address.type.other = Otro
+
+warehouse_customer_address.validate.unique.ycom_user_id_and_type = La combinación de ID de usuario YCom y tipo de dirección solo puede ocurrir una vez. Por favor, verifique su entrada.
+
+
+warehouse.settings.ycom_mode = Cuenta de cliente
+warehouse.settings.ycom_mode.notice = Requiere el complemento YCom. Nota: Si el complemento YCom se instaló más tarde, el complemento Warehouse debe reinstalarse.
+warehouse.settings.ycom_mode.guest_only = Modo invitado (no se requiere cuenta de cliente)
+warehouse.settings.ycom_mode.choose = El cliente elige si crear una cuenta de cliente
+warehouse.settings.ycom_mode.enforce_account = Se requiere cuenta de cliente
+
+
+warehouse.settings.label_cart_empty_confirm = ¿Está seguro de que desea vaciar el carrito de compras?
+warehouse.settings.label_back_to_cart = Volver al carrito de compras
+warehouse.settings.label_checkout = Caja
+warehouse.settings.label_payment_type = Opciones de pago
+warehouse.settings.label_remove_from_cart = Eliminar
+warehouse.settings.label_cart_remove_item_confirm = ¿Está seguro de que desea eliminar el artículo seleccionado?
+warehouse.settings.label_article = Artículo
+warehouse.settings.label_price = Precio unitario
+warehouse.settings.label_quantity = Cantidad
+warehouse.settings.label_total = Precio total
+warehouse.settings.label_shipping_costs = Costos de envío
+warehouse.settings.label_shipping_costs_free = Envío gratis
+warehouse.settings.label_shipping_costs_weight = Costos de envío por peso
+warehouse.settings.label_checkout = Caja
+warehouse.settings.label_checkout_instant = Comprar ahora
+warehouse.settings.label_checkout_address = Dirección
+warehouse.settings.label_checkout_payment = Método de pago
+warehouse.settings.label_checkout_choose = Elija cómo desea proceder:
+warehouse.settings.label_checkout_guest = Continuar como invitado
+warehouse.settings.label_checkout_guest_text = Compre sin registro. Deberá volver a ingresar sus datos con cada pedido.
+warehouse.settings.label_checkout_guest_continue = Ordenar como invitado
+warehouse.settings.label_checkout_login = Continuar con cuenta de cliente
+warehouse.settings.label_checkout_login_text = Inicie sesión o cree una cuenta de cliente para pedidos más rápidos en el futuro.
+warehouse.settings.label_checkout_login_email = Dirección de correo electrónico
+warehouse.settings.label_checkout_login_password = Contraseña
+warehouse.settings.label_checkout_login_submit = Iniciar sesión
+warehouse.settings.label_checkout_register_text = ¿Aún no tiene una cuenta de cliente? Regístrese ahora.
+warehouse.settings.label_checkout_submit_order = Comprar ahora
+warehouse.settings.label_checkout_submit_order = Realizar pedido
+warehouse.settings.label_checkout_submit_order_wait = Por favor espere...
+warehouse.settings.label_cart_subtotal = Subtotal
+warehouse.settings.label_cart_total = Total
+warehouse.settings.label_cart_total_weight = Peso total
+warehouse.settings.label_next = Siguiente
+warehouse.settings.label_add_to_cart = Añadir al carrito
+warehouse.settings.label_add_to_cart_success = ¡Añadido!
+warehouse.settings.label_add_to_order = Añadir al pedido
+
+warehouse.settings.label_payment_options = Opciones de pago
+warehouse.settings.label_paymentoptions = {0}
+warehouse.settings.label_paymentoptions_notice = Nota para {0}
+warehouse.settings.label_paymentoptions_image = Logo {0}
+warehouse.payment_options.invoice = Factura
+warehouse.payment_options.prepayment = Pago anticipado
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Débito directo
+
+# PayPal Button Style Configuration
+
+warehouse.settings.payment.paypal_style = Estilo del botón PayPal
+
+warehouse.settings.payment.paypal_button_shape = Forma del botón
+warehouse.settings.payment.paypal_button_shape.notice = Seleccione la forma del botón PayPal.
+warehouse.settings.payment.paypal_button_shape.rect = Rectangular
+warehouse.settings.payment.paypal_button_shape.pill = Forma de píldora
+
+warehouse.settings.payment.paypal_button_size = Tamaño del botón
+warehouse.settings.payment.paypal_button_size.notice = Seleccione el tamaño del botón PayPal.
+warehouse.settings.payment.paypal_button_size.small = Pequeño
+warehouse.settings.payment.paypal_button_size.medium = Medio
+warehouse.settings.payment.paypal_button_size.large = Grande
+warehouse.settings.payment.paypal_button_size.responsive = Responsivo
+
+warehouse.settings.payment.paypal_button_color = Color del botón
+warehouse.settings.payment.paypal_button_color.notice = Seleccione el color del botón PayPal.
+warehouse.settings.payment.paypal_button_color.gold = Oro
+warehouse.settings.payment.paypal_button_color.blue = Azul
+warehouse.settings.payment.paypal_button_color.silver = Plata
+warehouse.settings.payment.paypal_button_color.black = Negro
+warehouse.settings.payment.paypal_button_color.white = Blanco
+
+warehouse.settings.payment.paypal_button_label = Etiqueta del botón
+warehouse.settings.payment.paypal_button_label.notice = Seleccione la etiqueta del botón PayPal.
+warehouse.settings.payment.paypal_button_label.paypal = PayPal
+warehouse.settings.payment.paypal_button_label.checkout = Caja
+warehouse.settings.payment.paypal_button_label.pay = Pagar
+warehouse.settings.payment.paypal_button_label.buynow = Comprar ahora
+warehouse.settings.payment.paypal_button_label.installment = Pago a plazos
+warehouse.settings.payment.paypal_button_label.donate = Donar
+
+warehouse.settings.payment.paypal_button_layout = Diseño del botón
+warehouse.settings.payment.paypal_button_layout.notice = Seleccione el diseño del botón PayPal.
+warehouse.settings.payment.paypal_button_layout.horizontal = Horizontal
+warehouse.settings.payment.paypal_button_layout.vertical = Vertical
+
+warehouse.settings.payment.paypal_button_height = Altura del botón
+warehouse.settings.payment.paypal_button_height.notice = Especifique la altura del botón PayPal en píxeles (opcional).
+
+warehouse.settings.payment.paypal_button_funding_source = Fuente de pago preferida
+warehouse.settings.payment.paypal_button_funding_source.notice = Seleccione la fuente de pago preferida para el botón PayPal.
+warehouse.settings.payment.paypal_button_funding_source.paypal = PayPal
+warehouse.settings.payment.paypal_button_funding_source.credit = Tarjeta de crédito
+
+warehouse.settings.payment.paypal_include_images = Transferir imágenes de productos al pedido de PayPal
+warehouse.settings.payment.paypal_include_images.option = Transferir imágenes de productos a PayPal
+warehouse.settings.payment.paypal_include_images.notice = Si está activado, las imágenes de productos se transfieren como URL a PayPal. Las imágenes se transfieren en tamaño pequeño (rex_media_small).
+
+# Setup Page
+warehouse.setup.repair_tables = Reparar tablas
+warehouse.setup.repair_tables_info = Repara la estructura de la base de datos y reimporta los conjuntos de tablas de YForm.
+warehouse.setup.repair_tables_button = Reparar tablas
+warehouse.setup.repair_tables_confirm = ¿Está seguro de que desea reparar las tablas? Este proceso no se puede deshacer.
+
+warehouse.setup.install_structure = Crear estructura
+warehouse.setup.install_structure_info = Crea la estructura de la tienda con categorías y perfil de dominio. Solo es posible si aún no existe un perfil de dominio.
+warehouse.setup.install_structure_button = Crear estructura
+warehouse.setup.install_structure_confirm = ¿Está seguro de que desea crear la estructura de la tienda?
+
+warehouse.setup.install_url_profiles = Crear perfiles de URL
+warehouse.setup.install_url_profiles_info = Instala los perfiles de URL para artículos, categorías y pedidos.
+warehouse.setup.install_url_profiles_button = Crear perfiles de URL
+warehouse.setup.install_url_profiles_confirm = ¿Está seguro de que desea crear los perfiles de URL?
+
+warehouse.setup.import_demo = Importar datos de demostración
+warehouse.setup.import_demo_info = Importa artículos, categorías y pedidos de demostración con fines de prueba.
+warehouse.setup.import_demo_button = Importar datos de demostración
+warehouse.setup.import_demo_confirm = ¿Está seguro de que desea importar los datos de demostración? Los datos existentes pueden ser sobrescritos.
+
+warehouse.setup.reset_shop = Restablecer tienda
+warehouse.setup.reset_shop_info = Elimina todos los datos de demostración y restablece la tienda a su estado inicial.
+warehouse.setup.reset_shop_button = Restablecer tienda
+warehouse.setup.reset_shop_confirm = ¿Está REALMENTE seguro de que desea restablecer la tienda? ¡Todos los artículos, categorías y pedidos serán eliminados!
+
+warehouse.setup.install_module = Instalar módulo Warehouse
+warehouse.setup.install_module_info = Instala o actualiza el módulo Warehouse para la salida frontend.
+
+warehouse.setup.success_tables_repaired = Tablas reparadas con éxito y conjuntos de tablas importados.
+warehouse.setup.success_structure_installed = Estructura de tienda creada con éxito.
+warehouse.setup.success_url_profiles_installed = Perfiles de URL instalados con éxito.
+warehouse.setup.success_demo_imported = Datos de demostración importados con éxito.
+warehouse.setup.success_shop_reset = Tienda restablecida con éxito.
+
+# Setup Error Messages
+warehouse.setup.error_repair_tables = Error al reparar tablas: {0}
+warehouse.setup.error_domain_exists = Ya existe un perfil de dominio. La estructura solo se puede crear si aún no existe un perfil de dominio.
+warehouse.setup.error_install_structure = Error al crear la estructura: {0}
+warehouse.setup.error_url_addon_unavailable = El complemento de URL no está disponible. Por favor, instale el complemento de URL.
+warehouse.setup.error_install_url_profiles = Error al instalar perfiles de URL: {0}
+warehouse.setup.error_import_demo = Error al importar datos de demostración: {0}
+warehouse.setup.error_reset_shop = Error al restablecer la tienda: {0}
+
+# Module and Email Template Messages
+warehouse.setup.module_updated = El módulo "{0}" ha sido actualizado.
+warehouse.setup.module_created = El módulo ha sido creado en "{0}".
+warehouse.setup.email_template_updated = La plantilla de correo electrónico "{0}" ha sido actualizada.
+warehouse.setup.email_template_created = La plantilla de correo electrónico "{0}" ha sido creada.
+warehouse.setup.module_button = Módulo {0} {1}
+warehouse.setup.email_template_button = Plantilla {0} {1}
+warehouse.setup.module_update = actualizar
+warehouse.setup.module_install = instalar
+warehouse.setup.install_email_templates = Instalar o actualizar plantillas de correo electrónico
+
+warehouse.order.dashboard.recent_orders = Pedidos recientes
+warehouse.order.dashboard.orders_by_month = Pedidos por mes
+warehouse.order.dashboard.date = Fecha
+warehouse.order.dashboard.month = Mes
+warehouse.order.dashboard.total = Importe total
+warehouse.order.dashboard.recent_customers = Clientes recientes
+warehouse.order.dashboard.customer.name = Nombre
+warehouse.order.dashboard.customer.email = Correo electrónico
+
+warehouse.settings.payment.allowed_payment_options = Métodos de pago permitidos
+warehouse.payment_options.prepayment = Pago anticipado
+warehouse.payment_options.invoice = Factura
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Débito directo
+
+warehouse.settings.documents.info = Los documentos no están actualmente soportados. Participe en el desarrollo en <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> para el desarrollo de creación de documentos, que consta de rangos de números, PDF de confirmación de pedido, PDF de factura, PDF de albarán y factura electrónica.
+warehouse.settings.documents.pdfout_version = Por favor, instale PDFout en la versión 10.x o superior para crear documentos. La versión 9.x ya no es compatible.
+
+
+warehouse.order.shipping_status.shipped = Enviado
+warehouse.order.shipping_status.not_shipped = No enviado
+warehouse.order.shipping_status.partially_shipped = Parcialmente enviado
+warehouse.order.shipping_status.returned = Devuelto
+warehouse.order.shipping_status.lost = Perdido
+warehouse.order.shipping_status.cancelled = Cancelado
+
+warehouse.payment_status = Estado de pago
+warehouse.payment_status.pending = ⌛ Pendiente
+warehouse.payment_status.completed = ✅ Completado
+warehouse.payment_status.failed = ❌ Fallido
+warehouse.payment_status.cancelled = ❌ Cancelado
+warehouse.payment_status.refunded = ✅ Reembolsado
+
+# PayPal Error Handling
+warehouse.paypal.error_modal_title = Pago fallido
+warehouse.paypal.error_modal_close = Cerrar
+warehouse.paypal.error_technical_details = Detalles técnicos
+warehouse.paypal.error_create_order = Hubo un problema al inicializar el pago de PayPal. Por favor, inténtelo de nuevo o elija un método de pago diferente.
+warehouse.paypal.error_capture_order = Su pago no pudo completarse. Por favor, inténtelo de nuevo o elija un método de pago diferente.
