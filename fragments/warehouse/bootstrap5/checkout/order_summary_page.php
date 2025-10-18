@@ -36,57 +36,58 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-striped" id="table_order_summary">
+						<table class="table" id="table_order_summary">
 							<thead class="table-light">
 								<tr>
 									<th scope="col"><?= Warehouse::getLabel('article') ?></th>
-									<th scope="col"><?= Warehouse::getLabel('product_description') ?></th>
-									<?php if ($with_tax): ?>
-									<th scope="col" class="text-end"><?= Warehouse::getLabel('tax_column') ?></th>
-									<?php endif; ?>
-									<th scope="col" class="text-end">
-										<?= Warehouse::getCurrency() ?>
-									</th>
+									<th scope="col" class="text-end"><?= Warehouse::getLabel('price') ?></th>
+									<th scope="col" class="text-end"><?= Warehouse::getLabel('quantity') ?></th>
+									<th scope="col" class="text-end"><?= Warehouse::getLabel('total') ?></th>
 								</tr>
 							</thead>
 							<tbody>
 								<?php foreach ($cart_items as $item_key => $item) : ?>
 								<tr>
 									<td>
-										<div class="text-muted small">
-											<?= $item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : '') ?>
+										<div class="row align-items-center">
+											<div class="col-auto">
+												<?php if (isset($item['image']) && $item['image']) : ?>
+												<img src="<?= rex_url::media($item['image']) ?>" alt="<?= htmlspecialchars(html_entity_decode($item['name']), ENT_QUOTES, 'UTF-8') ?>" class="img-fluid" style="max-width: 80px;">
+												<?php endif ?>
+											</div>
+											<div class="col">
+												<div class="text-muted small">
+													<?= htmlspecialchars($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : ''), ENT_QUOTES, 'UTF-8') ?>
+												</div>
+												<div><?= html_entity_decode($item['name']) ?></div>
+												<?php if ($item['type'] === 'variant'): ?>
+												<small class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
+												<?php endif; ?>
+											</div>
 										</div>
-										<?= trim(html_entity_decode($item['name']), ' -') ?><br>
-										<small class="text-muted">
-											<?= $item['amount'] ?>
-											x à
-											<?= Warehouse::formatCurrency($item['price']) ?>
-										</small>
 									</td>
-									<td>
-										<?php if ($item['type'] === 'variant'): ?>
-										<div class="text-muted small">Variante</div>
+									<td class="text-end">
+										<?= Warehouse::formatCurrency($item['price']) ?>
+										<?php if ($with_tax && isset($item['tax'])): ?>
+										<small class="text-muted d-block">(inkl. <?= $item['tax'] ?>% MwSt.)</small>
 										<?php endif; ?>
 									</td>
-									<?php if ($with_tax): ?>
 									<td class="text-end">
-										<?= isset($item['tax']) ? $item['tax'] : '19' ?>%
+										<?= $item['amount'] ?>
 									</td>
-									<?php endif; ?>
 									<td class="text-end">
 										<?= Warehouse::formatCurrency($item['total']) ?>
 									</td>
 								</tr>
 								<?php endforeach ?>
 
-								<!-- Versandkosten -->
+								<!-- Zwischensumme -->
 								<tr>
-									<td colspan="<?= $with_tax ? '3' : '2' ?>"
-										class="border-top">
-										<strong><?= Warehouse::getLabel('shipping_costs') ?></strong>
+									<td colspan="3" class="border-top">
+										<strong><?= Warehouse::getLabel('cart_subtotal') ?></strong>
 									</td>
 									<td class="text-end border-top">
-										<?= Warehouse::formatCurrency($shipping) ?>
+										<?= Warehouse::formatCurrency(Cart::getSubTotalByMode(Warehouse::getPriceInputMode())) ?>
 									</td>
 								</tr>
 
@@ -94,7 +95,7 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 								<?php if ($with_tax): ?>
 								<tr>
 									<td colspan="3">
-										<strong><?= Warehouse::getLabel('tax_total') ?></strong>
+										<strong>MwSt.</strong>
 									</td>
 									<td class="text-end">
 										<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
@@ -102,11 +103,20 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 								</tr>
 								<?php endif; ?>
 
+								<!-- Versandkosten -->
+								<tr>
+									<td colspan="3">
+										<strong><?= Warehouse::getLabel('shipping_costs') ?></strong>
+									</td>
+									<td class="text-end">
+										<?= Warehouse::formatCurrency($shipping) ?>
+									</td>
+								</tr>
+
 								<!-- Gesamtsumme -->
 								<tr class="table-info">
-									<td colspan="<?= $with_tax ? '3' : '2' ?>"
-										class="fw-bold">
-										<?= $with_tax ? Warehouse::getLabel('total_with_tax') : Warehouse::getLabel('total_net') ?>
+									<td colspan="3" class="fw-bold">
+										<?= Warehouse::getLabel('cart_total') ?>
 									</td>
 									<td class="text-end fw-bold">
 										<?= Cart::getCartTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
