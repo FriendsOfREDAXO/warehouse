@@ -104,19 +104,19 @@ $domain = Domain::getCurrent();
 			<div class="col text-muted h4">Zwischensumme
 				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 			</div>
-			<div class="col-auto h4 fw-bolder">
+			<div class="col-auto h4 fw-bolder" data-warehouse-offcanvas-subtotal-by-mode>
 				<?= Warehouse::formatCurrency(Cart::getSubTotalByMode(Warehouse::getPriceInputMode())) ?>
 			</div>
 		</div>
 		<div class="row g-2">
 			<div class="col text-muted">MwSt.</div>
-			<div class="col-auto">
+			<div class="col-auto" data-warehouse-offcanvas-tax>
 				<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
 			</div>
 		</div>
 		<div class="row g-2">
 			<div class="col text-muted"><?= Warehouse::getLabel('shipping_costs') ?></div>
-			<div class="col-auto">
+			<div class="col-auto" data-warehouse-offcanvas-shipping>
 				<?= Warehouse::formatCurrency(Shipping::getCost()) ?>
 			</div>
 		</div>
@@ -124,7 +124,7 @@ $domain = Domain::getCurrent();
 			<div class="col text-muted"><?= Warehouse::getLabel('total') ?>
 				(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 			</div>
-			<div class="col-auto h5 fw-bolder">
+			<div class="col-auto h5 fw-bolder" data-warehouse-offcanvas-total>
 				<?= Warehouse::formatCurrency(Cart::getCartTotalByMode(Warehouse::getPriceInputMode())) ?>
 			</div>
 		</div>
