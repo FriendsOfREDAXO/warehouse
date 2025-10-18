@@ -90,12 +90,12 @@ class Customer extends rex_yform_manager_dataset
     /** @api */
     public function getEmail() : ?string
     {
-        return $this->getValue("email");
+        return $this->getValue(self::EMAIL);
     }
     /** @api */
     public function setEmail(mixed $value) : self
     {
-        $this->setValue("email", $value);
+        $this->setValue(self::EMAIL, $value);
         return $this;
     }
 
@@ -104,24 +104,24 @@ class Customer extends rex_yform_manager_dataset
     /** @api */
     public function getFirstname() : ?string
     {
-        return $this->getValue("firstname");
+        return $this->getValue(self::FIRSTNAME);
     }
     /** @api */
     public function setFirstname(mixed $value) : self
     {
-        $this->setValue("firstname", $value);
+        $this->setValue(self::FIRSTNAME, $value);
         return $this;
     }
     /* Nachname */
     /** @api */
     public function getLastname() : ?string
     {
-        return $this->getValue("lastname");
+        return $this->getValue(self::LASTNAME);
     }
     /** @api */
     public function setLastname(mixed $value) : self
     {
-        $this->setValue("lastname", $value);
+        $this->setValue(self::LASTNAME, $value);
         return $this;
     }
 
@@ -129,12 +129,12 @@ class Customer extends rex_yform_manager_dataset
     /** @api */
     public function getSalutation() : ?string
     {
-        return $this->getValue("salutation");
+        return $this->getValue(self::SALUTATION);
     }
     /** @api */
     public function setSalutation(mixed $value) : self
     {
-        $this->setValue("salutation", $value);
+        $this->setValue(self::SALUTATION, $value);
         return $this;
     }
 
@@ -148,15 +148,15 @@ class Customer extends rex_yform_manager_dataset
     public function getShippingAddress() : ?CustomerAddress
     {
         $address = CustomerAddress::query()
-            ->where('ycom_user_id', $this->getValue(self::ID))
-            ->where('type', 'shipping')
+            ->where(CustomerAddress::YCOM_USER_ID, $this->getValue(self::ID))
+            ->where(CustomerAddress::TYPE, 'shipping')
             ->findOne();
         if ($address) {
             return $address;
         }
         // Fallback to the main address if no shipping address is set
         $address = CustomerAddress::query()
-            ->where('ycom_user_id', $this->getValue(self::ID))
+            ->where(CustomerAddress::YCOM_USER_ID, $this->getValue(self::ID))
             ->findOne();
         if ($address) {
             return $address;
@@ -166,17 +166,17 @@ class Customer extends rex_yform_manager_dataset
 
     public function saveInSession() {
         $data = [
-            'id' => $this->getId(),
-            'email' => $this->getEmail(),
-            'salutation' => $this->getSalutation(),
-            'firstname' => $this->getFirstname(),
-            'lastname' => $this->getLastname(),
-            'company' => $this->getCompany(),
-            // 'department' => $this->getDepartment(),
-            'address' => $this->getAddress(),
-            'phone' => $this->getPhone(),
-            'zip' => $this->getZip(),
-            'city' => $this->getCity()
+            self::ID => $this->getId(),
+            self::EMAIL => $this->getEmail(),
+            self::SALUTATION => $this->getSalutation(),
+            self::FIRSTNAME => $this->getFirstname(),
+            self::LASTNAME => $this->getLastname(),
+            self::COMPANY => $this->getCompany(),
+            // self::DEPARTMENT => $this->getDepartment(),
+            self::ADDRESS => $this->getAddress(),
+            self::PHONE => $this->getPhone(),
+            self::ZIP => $this->getZip(),
+            self::CITY => $this->getCity()
         ];
         // Save the customer data in the session
         Session::setCustomer($data);
@@ -185,72 +185,72 @@ class Customer extends rex_yform_manager_dataset
     /** @api */
     public function getCompany(): ?string
     {
-        return $this->getValue("company");
+        return $this->getValue(self::COMPANY);
     }
     /** @api */
     public function setCompany(mixed $value): self
     {
-        $this->setValue("company", $value);
+        $this->setValue(self::COMPANY, $value);
         return $this;
     }
 
     /** @api */
     public function getDepartment(): ?string
     {
-        return $this->getValue("department");
+        return $this->getValue(self::DEPARTMENT);
     }
     /** @api */
     public function setDepartment(mixed $value): self
     {
-        $this->setValue("department", $value);
+        $this->setValue(self::DEPARTMENT, $value);
         return $this;
     }
 
     /** @api */
     public function getAddress(): ?string
     {
-        return $this->getValue("address");
+        return $this->getValue(self::ADDRESS);
     }
     /** @api */
     public function setAddress(mixed $value): self
     {
-        $this->setValue("address", $value);
+        $this->setValue(self::ADDRESS, $value);
         return $this;
     }
 
     /** @api */
     public function getZip(): ?string
     {
-        return $this->getValue("zip");
+        return $this->getValue(self::ZIP);
     }
     /** @api */
     public function setZip(mixed $value): self
     {
-        $this->setValue("zip", $value);
+        $this->setValue(self::ZIP, $value);
         return $this;
     }
 
     /** @api */
     public function getCity(): ?string
     {
-        return $this->getValue("city");
+        return $this->getValue(self::CITY);
     }
     /** @api */
     public function setCity(mixed $value): self
     {
-        $this->setValue("city", $value);
+        $this->setValue(self::CITY, $value);
         return $this;
     }
 
     /** @api */
     public function getPhone(): ?string
     {
-        return $this->getValue("phone");
+        return $this->getValue(self::PHONE);
     }
     /** @api */
     public function setPhone(mixed $value): self
     {
-        $this->setValue("phone", $value);
+        $this->setValue(self::PHONE, $value);
         return $this;
     }
 

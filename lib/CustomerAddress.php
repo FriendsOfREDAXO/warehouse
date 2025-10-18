@@ -43,19 +43,19 @@ class CustomerAddress extends rex_yform_manager_dataset
     /** @api */
     public function getYcomUser() : ?rex_yform_manager_dataset
     {
-        return $this->getRelatedDataset("ycom_user_id");
+        return $this->getRelatedDataset(self::YCOM_USER_ID);
     }
 
     /* Typ */
     /** @api */
     public function getType() : ?string
     {
-        return $this->getValue("type");
+        return $this->getValue(self::TYPE);
     }
     /** @api */
     public function setType(mixed $value) : self
     {
-        $this->setValue("type", $value);
+        $this->setValue(self::TYPE, $value);
         return $this;
     }
     
@@ -69,12 +69,12 @@ class CustomerAddress extends rex_yform_manager_dataset
     /** @api */
     public function getCompany() : ?string
     {
-        return $this->getValue("company");
+        return $this->getValue(self::COMPANY);
     }
     /** @api */
     public function setCompany(mixed $value) : self
     {
-        $this->setValue("company", $value);
+        $this->setValue(self::COMPANY, $value);
         return $this;
     }
 
@@ -82,12 +82,12 @@ class CustomerAddress extends rex_yform_manager_dataset
     /** @api */
     public function getName() : ?string
     {
-        return $this->getValue("name");
+        return $this->getValue(self::NAME);
     }
     /** @api */
     public function setName(mixed $value) : self
     {
-        $this->setValue("name", $value);
+        $this->setValue(self::NAME, $value);
         return $this;
     }
 
@@ -95,12 +95,12 @@ class CustomerAddress extends rex_yform_manager_dataset
     /** @api */
     public function getStreet() : ?string
     {
-        return $this->getValue("street");
+        return $this->getValue(self::STREET);
     }
     /** @api */
     public function setStreet(mixed $value) : self
     {
-        $this->setValue("street", $value);
+        $this->setValue(self::STREET, $value);
         return $this;
     }
 
@@ -108,12 +108,12 @@ class CustomerAddress extends rex_yform_manager_dataset
     /** @api */
     public function getZip() : ?string
     {
-        return $this->getValue("zip");
+        return $this->getValue(self::ZIP);
     }
     /** @api */
     public function setZip(mixed $value) : self
     {
-        $this->setValue("zip", $value);
+        $this->setValue(self::ZIP, $value);
         return $this;
     }
 
@@ -121,12 +121,12 @@ class CustomerAddress extends rex_yform_manager_dataset
     /** @api */
     public function getCity() : ?string
     {
-        return $this->getValue("city");
+        return $this->getValue(self::CITY);
     }
     /** @api */
     public function setCity(mixed $value) : self
     {
-        $this->setValue("city", $value);
+        $this->setValue(self::CITY, $value);
         return $this;
     }
 
@@ -134,24 +134,24 @@ class CustomerAddress extends rex_yform_manager_dataset
     /** @api */
     public function getCountry() : ?string
     {
-        return $this->getValue("country");
+        return $this->getValue(self::COUNTRY);
     }
     /** @api */
     public function setCountry(mixed $value) : self
     {
-        $this->setValue("country", $value);
+        $this->setValue(self::COUNTRY, $value);
         return $this;
     }
 
     public function saveInSession() {
         $data = [
-            'type' => $this->getType(),
-            'company' => $this->getCompany(),
-            'name' => $this->getName(),
-            'street' => $this->getStreet(),
-            'zip' => $this->getZip(),
-            'city' => $this->getCity(),
-            'country' => $this->getCountry(),
+            self::TYPE => $this->getType(),
+            self::COMPANY => $this->getCompany(),
+            self::NAME => $this->getName(),
+            self::STREET => $this->getStreet(),
+            self::ZIP => $this->getZip(),
+            self::CITY => $this->getCity(),
+            self::COUNTRY => $this->getCountry(),
         ];
 
         if($this->getType() === 'shipping') {

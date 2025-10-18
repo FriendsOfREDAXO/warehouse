@@ -3,6 +3,7 @@
 /** @var rex_fragment $this */
 
 use FriendsOfRedaxo\Warehouse\Cart;
+use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 use FriendsOfRedaxo\Warehouse\Session;
 
@@ -53,12 +54,12 @@ $shipping_data = Session::getShippingAddressData();
         <h4><?= Warehouse::getLabel('address_billing') ?>:</h4>
         <p>
             <?php if (!empty($billing_data)): ?>
-                <?= ($billing_data['firstname'] ?? '') . ' ' . ($billing_data['lastname'] ?? '') ?><br>
-                <?php if (!empty($billing_data['company'])): ?>
-                    <?= $billing_data['company'] ?><br>
+                <?= ($billing_data[Customer::FIRSTNAME] ?? '') . ' ' . ($billing_data[Customer::LASTNAME] ?? '') ?><br>
+                <?php if (!empty($billing_data[Customer::COMPANY])): ?>
+                    <?= $billing_data[Customer::COMPANY] ?><br>
                 <?php endif ?>
-                <?= $billing_data['address'] ?? '' ?><br>
-                <?= ($billing_data['zip'] ?? '') . ' ' . ($billing_data['city'] ?? '') ?><br>
+                <?= $billing_data[Customer::ADDRESS] ?? '' ?><br>
+                <?= ($billing_data[Customer::ZIP] ?? '') . ' ' . ($billing_data[Customer::CITY] ?? '') ?><br>
                 <?= $billing_data['country'] ?? '' ?>
             <?php else: ?>
                 <?= ($user_data['firstname'] ?? '') . ' ' . ($user_data['lastname'] ?? '') ?><br>
@@ -76,12 +77,12 @@ $shipping_data = Session::getShippingAddressData();
         <h4><?= Warehouse::getLabel('address_shipping') ?>:</h4>
         <?php if (!empty($shipping_data)): ?>
             <p>
-                <?= ($shipping_data['firstname'] ?? '') . ' ' . ($shipping_data['lastname'] ?? '') ?><br>
-                <?php if (!empty($shipping_data['company'])): ?>
-                    <?= $shipping_data['company'] ?><br>
+                <?= ($shipping_data[Customer::FIRSTNAME] ?? '') . ' ' . ($shipping_data[Customer::LASTNAME] ?? '') ?><br>
+                <?php if (!empty($shipping_data[Customer::COMPANY])): ?>
+                    <?= $shipping_data[Customer::COMPANY] ?><br>
                 <?php endif ?>
-                <?= $shipping_data['address'] ?? '' ?><br>
-                <?= ($shipping_data['zip'] ?? '') . ' ' . ($shipping_data['city'] ?? '') ?><br>
+                <?= $shipping_data[Customer::ADDRESS] ?? '' ?><br>
+                <?= ($shipping_data[Customer::ZIP] ?? '') . ' ' . ($shipping_data[Customer::CITY] ?? '') ?><br>
                 <?= $shipping_data['country'] ?? '' ?>
             </p>
         <?php else: ?>

@@ -414,7 +414,7 @@ class Cart
                 }
                 
                 // Check if variant is still available
-                if (!in_array($variant->getValue('availability'), ArticleVariant::AVAILABLE)) {
+                if (!in_array($variant->getValue(ArticleVariant::AVAILABILITY_FIELD), ArticleVariant::AVAILABLE)) {
                     return rex_i18n::msg('warehouse.cart_item_no_longer_available', $item['name']);
                 }
             } else {
@@ -424,7 +424,7 @@ class Cart
                 }
                 
                 // Check if article is still available
-                if (!in_array($article->getValue('availability'), Article::AVAILABLE)) {
+                if (!in_array($article->getValue(Article::AVAILABILITY_FIELD), Article::AVAILABLE)) {
                     return rex_i18n::msg('warehouse.cart_item_no_longer_available', $item['name']);
                 }
             }
