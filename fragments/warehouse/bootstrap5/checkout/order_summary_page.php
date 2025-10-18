@@ -142,14 +142,14 @@ if (empty($billingAddress)) {
     $billingAddress = $customerData;
 }
 
-$firma = (isset($billingAddress['company']) && !empty($billingAddress['company'])) ? $billingAddress['company'] . ' ' . ($billingAddress['department'] ?? '') .'<br>': '';
-$ust = (isset($billingAddress['ust']) && !empty($billingAddress['ust'])) ? 'Ust. Identnummer: ' . $billingAddress['ust'] .'<br>': '';
-$title = (isset($billingAddress['title']) && !empty($billingAddress['title'])) ? ' ' . $billingAddress['title'] .' ': ' ';
+$billing_company_name = (isset($billingAddress['company']) && !empty($billingAddress['company'])) ? $billingAddress['company'] . ' ' . ($billingAddress['department'] ?? '') .'<br>': '';
+$billing_vat_id = (isset($billingAddress['ust']) && !empty($billingAddress['ust'])) ? 'Ust. Identnummer: ' . $billingAddress['ust'] .'<br>': '';
+$billing_title = (isset($billingAddress['title']) && !empty($billingAddress['title'])) ? ' ' . $billingAddress['title'] .' ': ' ';
 
 echo "<strong>";
-echo ($billingAddress['salutation'] ?? '') . $title . ($billingAddress['firstname'] ?? '') . ' ' . ($billingAddress['lastname'] ?? '');
+echo ($billingAddress['salutation'] ?? '') . $billing_title . ($billingAddress['firstname'] ?? '') . ' ' . ($billingAddress['lastname'] ?? '');
 echo "</strong><br>";
-echo $firma . $ust;
+echo $billing_company_name . $billing_vat_id;
 echo ($billingAddress['address'] ?? '') . ' ' . ($billingAddress['housenumber'] ?? '') . '<br>';
 echo ($billingAddress['zip'] ?? '') . ' ' . ($billingAddress['city'] ?? '') . '<br>';
 echo($billingAddress['country'] ?? '');
@@ -176,12 +176,13 @@ if (empty($shippingAddress)) {
     $shippingAddress = $billingAddress;
 }
 
-$firma = (isset($shippingAddress['company']) && !empty($shippingAddress['company'])) ? $shippingAddress['company'] . ' ' . ($shippingAddress['department'] ?? '') .'<br>': '';
+$shipping_company_name = (isset($shippingAddress['company']) && !empty($shippingAddress['company'])) ? $shippingAddress['company'] . ' ' . ($shippingAddress['department'] ?? '') .'<br>': '';
+$shipping_title = (isset($shippingAddress['title']) && !empty($shippingAddress['title'])) ? ' ' . $shippingAddress['title'] .' ': ' ';
 
 echo "<strong>";
-echo ($shippingAddress['salutation'] ?? '') . ' ' . ($shippingAddress['firstname'] ?? '') . ' ' . ($shippingAddress['lastname'] ?? '');
+echo ($shippingAddress['salutation'] ?? '') . $shipping_title . ($shippingAddress['firstname'] ?? '') . ' ' . ($shippingAddress['lastname'] ?? '');
 echo "</strong><br>";
-echo $firma;
+echo $shipping_company_name;
 echo ($shippingAddress['address'] ?? '') . ' ' . ($shippingAddress['housenumber'] ?? '') . '<br>';
 echo ($shippingAddress['zip'] ?? '') . ' ' . ($shippingAddress['city'] ?? '') . '<br>';
 echo($shippingAddress['country'] ?? '');
