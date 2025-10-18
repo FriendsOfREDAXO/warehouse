@@ -356,7 +356,8 @@
 
         // Update all cart totals if available
         if (cartData.totals) {
-            // Update legacy subtotal (for backward compatibility)
+            // Update legacy subtotal (for backward compatibility with custom templates before v2.0)
+            // This can be removed in a future major version when all templates use the new _by_mode attributes
             const subtotalElement = container.querySelector('[data-warehouse-offcanvas-subtotal]');
             if (subtotalElement && cartData.totals.subtotal_formatted) {
                 subtotalElement.textContent = cartData.totals.subtotal_formatted;
