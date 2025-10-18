@@ -240,6 +240,21 @@
                 "label": "",
                 "list_hidden": 1,
                 "message": "translate:warehouse_customer_address.validate.unique.ycom_user_id_and_type",
+                "name": "ycom_user_id,type,name,zip,street,city",
+                "not_required": "",
+                "prio": 15,
+                "search": 0,
+                "table": "",
+                "table_name": "rex_warehouse_customer_address",
+                "type_id": "validate",
+                "type_name": "unique"
+            },
+            {
+                "db_type": "",
+                "empty_option": "0",
+                "label": "",
+                "list_hidden": 1,
+                "message": "translate:warehouse_customer_address.validate.unique.ycom_user_id_and_type",
                 "name": "ycom_user_id,type",
                 "not_required": "",
                 "prio": 15,
@@ -248,6 +263,19 @@
                 "table_name": "rex_warehouse_customer_address",
                 "type_id": "validate",
                 "type_name": "unique"
+            },
+            {
+                "db_type": "char(1)",
+                "label": "translate:warehouse_customer_address.favorite_marker",
+                "list_hidden": 0,
+                "name": "favorite_marker",
+                "not_required": "",
+                "notice": "",
+                "prio": 16,
+                "search": 0,
+                "table_name": "rex_warehouse_customer_address",
+                "type_id": "value",
+                "type_name": "warehouse_marker"
             }
         ],
         "table": {

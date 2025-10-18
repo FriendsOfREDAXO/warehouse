@@ -436,6 +436,7 @@
                 "no_db": "0",
                 "not_required": "",
                 "prio": 24,
+                "salt": "",
                 "search": 0,
                 "table_name": "rex_warehouse_order",
                 "type_id": "value",
