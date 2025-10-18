@@ -32,7 +32,7 @@ $shipping_data = Session::getShippingAddressData();
                 <div class="row align-items-center">
                     <div class="col-auto">
                         <?php if (isset($item['image']) && $item['image']) : ?>
-                        <img src="/images/products/<?= htmlspecialchars($item['image'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars(html_entity_decode($item['name']), ENT_QUOTES, 'UTF-8') ?>" class="img-fluid" style="max-width: 80px;">
+                        <img src="<?= rex_url::media($item['image']) ?>" alt="<?= htmlspecialchars(html_entity_decode($item['name']), ENT_QUOTES, 'UTF-8') ?>" class="img-fluid" style="max-width: 80px;">
                         <?php endif ?>
                     </div>
                     <div class="col">
@@ -53,19 +53,19 @@ $shipping_data = Session::getShippingAddressData();
                     </div>
                 </div>
             </td>
-            <td class="text-end"><?= number_format($item['price'], 2) ?></td>
+            <td class="text-end"><?= Warehouse::formatCurrency($item['price']) ?></td>
             <td class="text-end"><?= $item['amount'] ?></td>
-            <td class="text-end"><?= number_format($item['total'], 2) ?></td>
+            <td class="text-end"><?= Warehouse::formatCurrency($item['total']) ?></td>
         </tr>
     <?php endforeach ?>
     
     <!-- Zwischensumme -->
     <tr>
         <td colspan="3" class="border-top">
-            <strong>Zwischensumme</strong>
+            <strong><?= Warehouse::getLabel('cart_subtotal') ?></strong>
         </td>
         <td class="text-end border-top">
-            <?= number_format(array_sum(array_column($this->cart, 'total')), 2) ?>
+            <?= Warehouse::formatCurrency(array_sum(array_column($this->cart, 'total'))) ?>
         </td>
     </tr>
     
@@ -74,12 +74,12 @@ $shipping_data = Session::getShippingAddressData();
         <td colspan="3">
             <strong><?= Warehouse::getLabel('shipping_costs') ?> <?= $billing_data['country'] ?? $user_data['country'] ?? '' ?></strong>
         </td>
-        <td class="text-end"><?= number_format((float) FriendsOfRedaxo\Warehouse\Shipping::getCost(), 2) ?></td>
+        <td class="text-end"><?= Warehouse::formatCurrency((float) FriendsOfRedaxo\Warehouse\Shipping::getCost()) ?></td>
     </tr>
     
     <!-- Gesamtsumme -->
     <tr class="table-info">
-        <td colspan="3" class="fw-bold"><?= Warehouse::getLabel('total') ?></td>
+        <td colspan="3" class="fw-bold"><?= Warehouse::getLabel('cart_total') ?></td>
         <td class="text-end fw-bold"><?= Cart::getCartTotalFormatted() ?></td>
     </tr>
     </tbody>

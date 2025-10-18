@@ -52,7 +52,7 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 										<div class="row align-items-center">
 											<div class="col-auto">
 												<?php if (isset($item['image']) && $item['image']) : ?>
-												<img src="/images/products/<?= htmlspecialchars($item['image'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars(html_entity_decode($item['name']), ENT_QUOTES, 'UTF-8') ?>" class="img-fluid" style="max-width: 80px;">
+												<img src="<?= rex_url::media($item['image']) ?>" alt="<?= htmlspecialchars(html_entity_decode($item['name']), ENT_QUOTES, 'UTF-8') ?>" class="img-fluid" style="max-width: 80px;">
 												<?php endif ?>
 											</div>
 											<div class="col">
@@ -84,7 +84,7 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 								<!-- Zwischensumme -->
 								<tr>
 									<td colspan="3" class="border-top">
-										<strong>Zwischensumme (<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)</strong>
+										<strong><?= Warehouse::getLabel('cart_subtotal') ?></strong>
 									</td>
 									<td class="text-end border-top">
 										<?= Warehouse::formatCurrency(Cart::getSubTotalByMode(Warehouse::getPriceInputMode())) ?>
@@ -95,7 +95,7 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 								<?php if ($with_tax): ?>
 								<tr>
 									<td colspan="3">
-										<strong><?= Warehouse::getLabel('tax_total') ?></strong>
+										<strong>MwSt.</strong>
 									</td>
 									<td class="text-end">
 										<?= Warehouse::formatCurrency(Cart::getTaxTotalByMode()) ?>
@@ -116,7 +116,7 @@ $containerClass = ($containerClass === null) ? 'container' : htmlspecialchars($c
 								<!-- Gesamtsumme -->
 								<tr class="table-info">
 									<td colspan="3" class="fw-bold">
-										<?= $with_tax ? Warehouse::getLabel('total_with_tax') : Warehouse::getLabel('total_net') ?>
+										<?= Warehouse::getLabel('cart_total') ?>
 									</td>
 									<td class="text-end fw-bold">
 										<?= Cart::getCartTotalByModeFormatted(Warehouse::getPriceInputMode()) ?>
