@@ -97,7 +97,7 @@ class ArticleVariant extends rex_yform_manager_dataset
     public function getArticle() : ?Article
     {
         /** @var Article|null $article */
-        $article = $this->getRelatedDataset("article_id");
+        $article = $this->getRelatedDataset(self::ARTICLE_ID);
         return $article;
     }
 
@@ -105,12 +105,12 @@ class ArticleVariant extends rex_yform_manager_dataset
     /** @api */
     public function getName() : ?string
     {
-        return $this->getValue("name");
+        return $this->getValue(self::NAME);
     }
     /** @api */
     public function setName(mixed $value) : self
     {
-        $this->setValue("name", $value);
+        $this->setValue(self::NAME, $value);
         return $this;
     }
 
@@ -132,7 +132,7 @@ class ArticleVariant extends rex_yform_manager_dataset
      */
     public function getPrice(?string $mode = null): ?float
     {
-        $price = $this->getValue("price");
+        $price = $this->getValue(self::PRICE);
         if ($price === null) {
             return null;
         }
@@ -155,7 +155,7 @@ class ArticleVariant extends rex_yform_manager_dataset
     /** @api */
     public function setPrice(float $value) : self
     {
-        $this->setValue("price", $value);
+        $this->setValue(self::PRICE, $value);
         return $this;
     }
             
@@ -163,12 +163,12 @@ class ArticleVariant extends rex_yform_manager_dataset
     /** @api */
     public function getWeight() : ?float
     {
-        return $this->getValue("weight");
+        return $this->getValue(self::WEIGHT);
     }
     /** @api */
     public function setWeight(float $value) : self
     {
-        $this->setValue("weight", $value);
+        $this->setValue(self::WEIGHT, $value);
         return $this;
     }
             
@@ -176,7 +176,7 @@ class ArticleVariant extends rex_yform_manager_dataset
     /** @api */
     public function getAvailability() : mixed
     {
-        return $this->getValue("availability");
+        return $this->getValue(self::AVAILABILITY_FIELD);
     }
 
     public function getAvailabilityLabel() : ?string
@@ -187,7 +187,7 @@ class ArticleVariant extends rex_yform_manager_dataset
     /** @api */
     public function setAvailability(mixed $param) : mixed
     {
-        $this->setValue("availability", $param);
+        $this->setValue(self::AVAILABILITY_FIELD, $param);
         return $this;
     }
 
@@ -195,7 +195,7 @@ class ArticleVariant extends rex_yform_manager_dataset
     /** @api */
     public function getImage() : mixed
     {
-        $image = $this->getValue("image");
+        $image = $this->getValue(self::IMAGE);
         if (!$image) {
             $image = rex_config::get('warehouse', 'fallback_article_image');
         }
@@ -213,7 +213,7 @@ class ArticleVariant extends rex_yform_manager_dataset
     /** @api */
     public function setImage(string $filename) : self
     {
-        $this->setValue("image", $filename);
+        $this->setValue(self::IMAGE, $filename);
         return $this;
     }
 

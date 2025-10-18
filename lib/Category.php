@@ -57,12 +57,12 @@ class Category extends \rex_yform_manager_dataset
     public function getStatus() : ?string
     {
         // Rückgabe des Status, falls gesetzt, sonst Standardwert
-        return $this->getValue("status") ? $this->getValue("status") : self::STATUS_DRAFT;
+        return $this->getValue(self::STATUS) ? $this->getValue(self::STATUS) : self::STATUS_DRAFT;
     }
     /** @api */
     public function setStatus(string $param) : mixed
     {
-        $this->setValue("status", $param);
+        $this->setValue(self::STATUS, $param);
         return $this;
     }
     
@@ -70,12 +70,12 @@ class Category extends \rex_yform_manager_dataset
     /** @api */
     public function getName() : mixed
     {
-        return $this->getValue("name");
+        return $this->getValue(self::NAME);
     }
     /** @api */
     public function setName(mixed $value) : self
     {
-        $this->setValue("name", $value);
+        $this->setValue(self::NAME, $value);
         return $this;
     }
     
@@ -83,12 +83,12 @@ class Category extends \rex_yform_manager_dataset
     /** @api */
     public function getTeaser() : ?string
     {
-        return $this->getValue("teaser");
+        return $this->getValue(self::TEASER);
     }
     /** @api */
     public function setTeaser(mixed $value) : self
     {
-        $this->setValue("teaser", $value);
+        $this->setValue(self::TEASER, $value);
         return $this;
     }
     
@@ -96,7 +96,7 @@ class Category extends \rex_yform_manager_dataset
     /** @api */
     public function getImage() : mixed
     {
-        $image = $this->getValue("image");
+        $image = $this->getValue(self::IMAGE);
         if ($image) {
             return $image;
         }
@@ -118,7 +118,7 @@ class Category extends \rex_yform_manager_dataset
     public function setImage(string $filename) : self
     {
         if (rex_media::get($filename)) {
-            $this->setValue("image", $filename);
+            $this->setValue(self::IMAGE, $filename);
         }
         return $this;
     }
@@ -128,14 +128,14 @@ class Category extends \rex_yform_manager_dataset
     public function getText(bool $asPlaintext = false) : ?string
     {
         if ($asPlaintext) {
-            return strip_tags($this->getValue("text"));
+            return strip_tags($this->getValue(self::TEXT));
         }
-        return $this->getValue("text");
+        return $this->getValue(self::TEXT);
     }
     /** @api */
     public function setText(mixed $value) : self
     {
-        $this->setValue("text", $value);
+        $this->setValue(self::TEXT, $value);
         return $this;
     }
                 
@@ -143,12 +143,12 @@ class Category extends \rex_yform_manager_dataset
     /** @api */
     public function getUpdatedate() : ?string
     {
-        return $this->getValue("updatedate");
+        return $this->getValue(self::UPDATEDATE);
     }
     /** @api */
     public function setUpdatedate(string $value) : self
     {
-        $this->setValue("updatedate", $value);
+        $this->setValue(self::UPDATEDATE, $value);
         return $this;
     }
     
@@ -156,19 +156,19 @@ class Category extends \rex_yform_manager_dataset
     /** @api */
     public function getParent() : ?rex_yform_manager_dataset
     {
-        return $this->getRelatedDataset("parent_id");
+        return $this->getRelatedDataset(self::PARENT_ID);
     }
     
     /* UUID */
     /** @api */
     public function getUuid() : mixed
     {
-        return $this->getValue("uuid");
+        return $this->getValue(self::UUID);
     }
     /** @api */
     public function setUuid(mixed $value) : self
     {
-        $this->setValue("uuid", $value);
+        $this->setValue(self::UUID, $value);
         return $this;
     }
 
@@ -178,16 +178,16 @@ class Category extends \rex_yform_manager_dataset
     public function findChildren(string $status = self::STATUS_ACTIVE) : rex_yform_manager_collection
     {
         return self::query()
-            ->where('parent_id', $this->getId())
-            ->where('status', $status, '=')
+            ->where(self::PARENT_ID, $this->getId())
+            ->where(self::STATUS, $status, '=')
             ->find();
     }
 
     public function getArticles(string|array $status = self::STATUS_ACTIVE, int $limit = 48, int $offset = 0): rex_yform_manager_collection
     {
         return Article::query()
-            ->where('category_id', $this->getId())
-            ->where('status', $status, '=')
+            ->where(Article::CATEGORY_ID, $this->getId())
+            ->where(Article::STATUS, $status, '=')
             ->limit($offset, $limit)
             ->find();
     }
@@ -195,9 +195,9 @@ class Category extends \rex_yform_manager_dataset
     public static function findRootCategories(string|array $status = self::STATUS_ACTIVE, int $limit = 48, int $offset = 0): rex_yform_manager_collection
     {
         $categories = self::query()
-            ->where('status', $status, '=')
-            ->where('parent_id', 0)
-            ->orderBy('prio')
+            ->where(self::STATUS, $status, '=')
+            ->where(self::PARENT_ID, 0)
+            ->orderBy(self::PRIO)
             ->limit($offset, $limit)
             ->find();
             

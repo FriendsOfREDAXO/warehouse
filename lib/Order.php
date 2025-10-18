@@ -350,7 +350,7 @@ class Order extends rex_yform_manager_dataset
     /** @api */
     public function getYcomUser() : ?rex_yform_manager_dataset
     {
-        return $this->getRelatedDataset("ycom_user_id");
+        return $this->getRelatedDataset(self::YCOM_USER_ID);
     }
 
     public function setYComUser(int $ycom_user_id) : self
@@ -370,8 +370,8 @@ class Order extends rex_yform_manager_dataset
         }
         $data = self::query()
                 ->alias('orders')
-                ->where('orders.ycom_user_id', $ycom_user_id)
-                ->orderBy('createdate', 'desc')
+                ->where('orders.' . self::YCOM_USER_ID, $ycom_user_id)
+                ->orderBy(self::CREATEDATE, 'desc')
         ;
         return $data->find();
     }
@@ -391,7 +391,7 @@ class Order extends rex_yform_manager_dataset
     
     public static function findByUuid(string $uuid) : ?self
     {
-        return self::query()->where('uuid', $uuid)->findOne();
+        return self::query()->where(self::HASH, $uuid)->findOne();
        
     }
 
