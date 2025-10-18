@@ -57,7 +57,8 @@ data-warehouse-mode="-"
 data-warehouse-article-id="<?= $item['article_id'] ?>" 
 data-warehouse-variant-id="<?= $item['variant_id'] ?>" 
 data-warehouse-amount="1"
-data-warehouse-original-text="-">-</button>
+data-warehouse-original-text="-"
+<?= $item['amount'] <= 1 ? 'disabled="disabled"' : '' ?>>-</button>
 <span class="mx-2" data-warehouse-item-amount="<?= $item_key ?>"><?= $item['amount'] ?></span>
 <button type="button" class="btn btn-outline-secondary btn-sm px-2 py-0"
 data-warehouse-cart-quantity="modify" 
