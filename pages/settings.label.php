@@ -27,6 +27,8 @@ $formFields = [
 $allFields = [
     // cart fields (text)
     ['label_cart', rex_i18n::msg('warehouse.settings.label_cart'), 'text'],
+    ['label_add_to_cart', rex_i18n::msg('warehouse.settings.label_add_to_cart'), 'text'],
+    ['label_add_to_cart_success', rex_i18n::msg('warehouse.settings.label_add_to_cart_success'), 'text'],
     ['label_cart_empty', rex_i18n::msg('warehouse.settings.label_cart_empty'), 'text'],
     ['label_cart_subtotal', rex_i18n::msg('warehouse.settings.label_cart_subtotal'), 'text'],
     ['label_cart_total', rex_i18n::msg('warehouse.settings.label_cart_total'), 'text'],
@@ -36,6 +38,7 @@ $allFields = [
     ['label_cart_remove_item_confirm', rex_i18n::msg('warehouse.settings.label_cart_remove_item_confirm'), 'text'],
     ['label_cart_empty_confirm', rex_i18n::msg('warehouse.settings.label_cart_empty_confirm'), 'text'],
     ['label_next', rex_i18n::msg('warehouse.settings.label_next'), 'text'],
+    ['label_back', rex_i18n::msg('warehouse.settings.label_back'), 'text'],
     ['label_article', rex_i18n::msg('warehouse.settings.label_article'), 'text'],
     ['label_price', rex_i18n::msg('warehouse.settings.label_price'), 'text'],
     ['label_quantity', rex_i18n::msg('warehouse.settings.label_quantity'), 'text'],
@@ -57,6 +60,10 @@ $allFields = [
     ['label_checkout_register_text', rex_i18n::msg('warehouse.settings.label_checkout_register_text'), 'text'],
     ['label_checkout_submit_order', rex_i18n::msg('warehouse.settings.label_checkout_submit_order'), 'text'],
     ['label_checkout_submit_order_wait', rex_i18n::msg('warehouse.settings.label_checkout_submit_order_wait'), 'text'],
+    ['label_back_to_address', rex_i18n::msg('warehouse.settings.label_back_to_address'), 'text'],
+    ['label_back_to_payment', rex_i18n::msg('warehouse.settings.label_back_to_payment'), 'text'],
+    ['label_continue_to_payment', rex_i18n::msg('warehouse.settings.label_continue_to_payment'), 'text'],
+    ['label_continue_to_summary', rex_i18n::msg('warehouse.settings.label_continue_to_summary'), 'text'],
     // customer fields (text)
     ['label_customer_firstname', 'Vorname', 'text'],
     ['label_customer_lastname', 'Nachname', 'text'],
@@ -78,6 +85,8 @@ $allFields = [
     ['label_order_summary', 'Bestellübersicht', 'text'],
     ['label_order_not_found', 'Bestellung nicht gefunden', 'text'],
     ['label_order_back_to_overview', 'Zur Übersicht', 'text'],
+    ['label_order_number', rex_i18n::msg('warehouse.settings.label_order_number'), 'text'],
+    ['label_tax', rex_i18n::msg('warehouse.settings.label_tax'), 'text'],
     ['label_tax_total', 'Steuer', 'text'],
     ['label_tax_column', 'Steuer', 'text'],
     ['label_total_with_tax', 'Total inkl. MwSt.', 'text'],
@@ -94,6 +103,7 @@ $allFields = [
     ['label_legal_privacy_policy', 'Ich habe die Datenschutzbestimmungen gelesen.', 'text'],
     // payment options (text)
     ['label_payment_options', rex_i18n::msg('warehouse.settings.label_payment_options'), 'text'],
+    ['label_payment_info_saved', rex_i18n::msg('warehouse.settings.label_payment_info_saved'), 'text'],
     ['label_payment_type', rex_i18n::msg('warehouse.settings.label_payment_type'), 'text'],
     // shipping (text)
     ['label_shipping_costs', rex_i18n::msg('warehouse.settings.label_shipping_costs'), 'text'],
@@ -110,6 +120,18 @@ if (count($paymentOptions) > 0) {
         $allFields[] = ['label_paymentoptions_' . $key . '_image', rex_i18n::msg('warehouse.settings.label_paymentoptions_image', rex_i18n::msg($option)), 'media'];
     }
 }
+
+// Explicit field mappings for special cases
+$explicitMappings = [
+    'label_add_to_cart' => 'cart',
+    'label_add_to_cart_success' => 'cart',
+    'label_back' => 'checkout',
+    'label_back_to_address' => 'checkout',
+    'label_back_to_payment' => 'checkout',
+    'label_continue_to_payment' => 'checkout',
+    'label_continue_to_summary' => 'checkout',
+];
+
 $used = [];
 foreach ($allFields as [$name, $label, $type]) {
     if (in_array($name, $used)) {
@@ -123,7 +145,10 @@ foreach ($allFields as [$name, $label, $type]) {
         $field = $form->addInputField('text', $name, null, ['class' => 'form-control']);
         $field->setLabel($label);
     }
-    if (strpos($name, 'cart_') !== false) {
+    
+    if (isset($explicitMappings[$name])) {
+        $formFields[$explicitMappings[$name]][] = $field;
+    } elseif (strpos($name, 'cart_') !== false) {
         $formFields['cart'][] = $field;
     } elseif (strpos($name, 'checkout_') !== false) {
         $formFields['checkout'][] = $field;
