@@ -10,6 +10,13 @@ $article = $this->getVar('article');
 if (!$article instanceof Article) {
     return;
 }
+
+// Include frontend CSS once per page
+static $frontendCssIncluded = false;
+if (!$frontendCssIncluded) {
+    echo '<link rel="stylesheet" href="' . rex_url::addonAssets('warehouse', 'css/frontend.css') . '">';
+    $frontendCssIncluded = true;
+}
 /** @var Category $category */
 $category = $article->getCategory();
 $variants = [];
@@ -140,5 +147,4 @@ if (Warehouse::isBulkPricesEnabled()) {
     </div>
 </div>
 
-<link rel="stylesheet" href="<?= rex_url::addonAssets('warehouse', 'css/frontend.css') ?>">
 <script src="<?= rex_url::addonAssets('warehouse', 'js/init.js') ?>" nonce="<?= rex_response::getNonce() ?>"></script>

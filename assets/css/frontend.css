@@ -28,9 +28,9 @@
 
 /* Success feedback for add to cart button */
 .warehouse-btn-success-feedback {
-    background-color: #198754 !important;
-    border-color: #198754 !important;
-    color: white !important;
+    background-color: var(--bs-success, #198754) !important;
+    border-color: var(--bs-success, #198754) !important;
+    color: var(--bs-white, white) !important;
 }
 
 /* Transition for button state changes */
