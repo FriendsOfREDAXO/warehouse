@@ -90,10 +90,10 @@ git commit -m "Feature: Description"  # Commit with message
 
 2. **Install in REDAXO**:
    ```bash
-   # Copy add-on to REDAXO (run from warehouse directory)
-   cp -r . /path/to/redaxo/redaxo/src/addons/warehouse/
+   # Copy add-on to REDAXO
+   cp -r /path/to/warehouse/ /path/to/redaxo/redaxo/src/addons/warehouse/
    
-   # Or with explicit source path (includes hidden files):
+   # Or with rsync (includes hidden files):
    # rsync -a /path/to/warehouse/ /path/to/redaxo/redaxo/src/addons/warehouse/
    
    # Then in REDAXO Backend:
