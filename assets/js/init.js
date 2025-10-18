@@ -151,9 +151,9 @@
                     const variantId = this.dataset.warehouseVariantId;
                     const amount = this.dataset.warehouseAmount || 1;
 
-                    // Show loading state
+                    // Show loading state - only for quantity buttons, not delete buttons
                     const loadingElements = cartPageContainer.querySelectorAll(
-                        `[data-warehouse-article-id="${articleId}"][data-warehouse-variant-id="${variantId || ''}"]`
+                        `[data-warehouse-cart-quantity][data-warehouse-article-id="${articleId}"][data-warehouse-variant-id="${variantId || ''}"]`
                     );
                     loadingElements.forEach(el => el.classList.add('opacity-50'));
 
@@ -406,9 +406,9 @@
                     const variantId = this.dataset.warehouseVariantId;
                     const amount = this.dataset.warehouseAmount || 1;
 
-                    // Show loading state
+                    // Show loading state - only for quantity buttons, not delete buttons
                     const loadingElements = cartTable.querySelectorAll(
-                        `[data-warehouse-article-id="${articleId}"][data-warehouse-variant-id="${variantId || ''}"]`
+                        `[data-warehouse-cart-quantity][data-warehouse-article-id="${articleId}"][data-warehouse-variant-id="${variantId || ''}"]`
                     );
                     loadingElements.forEach(el => {
                         el.classList.add('disabled');
