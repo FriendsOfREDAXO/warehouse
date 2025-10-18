@@ -482,6 +482,19 @@
                 if (itemTotal && item.current_total !== undefined) {
                     itemTotal.textContent = formatCurrency(item.current_total);
                 }
+
+                // Update minus button disabled state based on quantity
+                const row = container.querySelector(`[data-article-key="${itemKey}"]`);
+                if (row) {
+                    const minusButton = row.querySelector('[data-warehouse-mode="-"]');
+                    if (minusButton) {
+                        if (item.amount <= 1) {
+                            minusButton.setAttribute('disabled', 'disabled');
+                        } else {
+                            minusButton.removeAttribute('disabled');
+                        }
+                    }
+                }
             });
         }
 
