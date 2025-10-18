@@ -139,6 +139,28 @@
         return formatter.format(value);
     }
 
+    /**
+     * Shows success feedback on a button element
+     * @param {Element} button - Button element
+     * @param {string} successText - Success message
+     * @param {number} duration - Duration in milliseconds
+     */
+    function showButtonFeedback(button, successText, duration = 2000) {
+        const originalText = button.textContent;
+        
+        // Change button text and style
+        button.textContent = successText;
+        button.classList.add('warehouse-btn-success-feedback');
+        button.disabled = true;
+        
+        // Reset button after duration
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove('warehouse-btn-success-feedback');
+            button.disabled = false;
+        }, duration);
+    }
+
     // ========================================
     // Shared Cart Display Update Logic
     // ========================================
@@ -604,23 +626,9 @@
                             } else {
                                 // Show success feedback on the add to cart button
                                 if (clickedButton && clickedButton.getAttribute('value') === 'cart') {
-                                    const originalText = clickedButton.textContent;
                                     const successText = clickedButton.dataset.warehouseSuccessText || 'Zum Warenkorb hinzugefügt';
-                                    
-                                    // Change button text and style
-                                    clickedButton.textContent = successText;
-                                    clickedButton.classList.add('warehouse-btn-success-feedback');
-                                    clickedButton.disabled = true;
-                                    
-                                    // Animate cart button in header
+                                    showButtonFeedback(clickedButton, successText);
                                     animateCartButton();
-                                    
-                                    // Reset button after 2 seconds
-                                    setTimeout(() => {
-                                        clickedButton.textContent = originalText;
-                                        clickedButton.classList.remove('warehouse-btn-success-feedback');
-                                        clickedButton.disabled = false;
-                                    }, 2000);
                                 }
                                 
                                 // Blur the button
@@ -682,23 +690,18 @@
             
             if (shippingToggle && shippingFields) {
                 shippingToggle.addEventListener('change', function() {
-                    if (this.checked) {
-                        shippingFields.style.display = 'block';
-                    } else {
-                        shippingFields.style.display = 'none';
-                        // Clear shipping address fields when hidden
-                        const shippingInputs = shippingFields.querySelectorAll('input, textarea');
-                        shippingInputs.forEach(input => {
-                            if (input.type !== 'hidden') {
-                                input.value = '';
-                            }
+                    shippingFields.style.display = this.checked ? 'block' : 'none';
+                    
+                    // Clear shipping address fields when hidden
+                    if (!this.checked) {
+                        shippingFields.querySelectorAll('input:not([type="hidden"]), textarea').forEach(input => {
+                            input.value = '';
                         });
                     }
                 });
                 
                 // Check if should be shown on load
-                const hasShippingData = shippingFields.dataset.warehouseHasData === 'true';
-                if (hasShippingData) {
+                if (shippingFields.dataset.warehouseHasData === 'true') {
                     shippingToggle.checked = true;
                     shippingFields.style.display = 'block';
                 }
