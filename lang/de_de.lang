@@ -93,6 +93,8 @@ warehouse.settings.cart_mode.notice = Es kann entweder die Warenkorbseite aufger
 
 warehouse.settings.instant_checkout_enabled = "Sofort kaufen"-Button aktivieren
 warehouse.settings.instant_checkout_enabled.notice = Wenn aktiviert, wird auf Artikelseiten ein "Sofort kaufen"-Button angezeigt, der direkt zur Kasse führt.
+warehouse.settings.yes = Ja
+warehouse.settings.no = Nein
 
 warehouse.ycom_modes.enforce = Bestellung nur mit Kundenkonto
 warehouse.ycom_modes.choose = Kunde wählt aus

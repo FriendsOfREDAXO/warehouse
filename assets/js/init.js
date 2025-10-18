@@ -614,9 +614,13 @@
                         (data) => {
                             if (isInstantCheckout) {
                                 // Redirect to checkout page
-                                // Get the checkout URL from data attribute or construct it
-                                const checkoutUrl = detailForm.dataset.warehouseCheckoutUrl || 'index.php?address_page=1';
-                                window.location.href = checkoutUrl;
+                                // Get the checkout URL from data attribute
+                                const checkoutUrl = detailForm.dataset.warehouseCheckoutUrl;
+                                if (checkoutUrl) {
+                                    window.location.href = checkoutUrl;
+                                } else {
+                                    console.error('Warehouse: Checkout URL not configured in form data attribute');
+                                }
                             } else {
                                 // Optional: Show success feedback
                                 const submitBtn = detailForm.querySelector('button[type="submit"]:focus');
