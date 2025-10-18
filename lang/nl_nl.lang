@@ -1,0 +1,649 @@
+# V1
+warehouse_iso_code = ISO-code
+warehouse_iso2 = ISO-code2
+warehouse_iso3 = ISO-code3
+warehouse_is_eu = EU-land
+warehouse_shipping_zone = Verzendzone
+warehouse_phone_code = Landcode
+warehouse_shipping_calculation_mode = Berekening
+
+warehouse_tax_ust_ident = Belasting [BTW-nr]
+warehouse_tax_disable_by_ust_ident = Belastingvrijstelling met BTW-nr
+warehouse_tax = Belasting
+warehouse_tax_tax_disable = Belastingvrijstelling algemeen
+
+# v2.0.0
+warehouse.title = Winkel
+warehouse_module = Warehouse - Winkel
+
+warehouse.module.title = Titel
+warehouse.module.description = Tekst
+warehouse.module.select.default = Selecteer alstublieft
+
+# V2.0.0
+# Permissions
+warehouse = Warehouse: Toegang tot alle gebieden
+warehouse[settings] = Warehouse: Instellingen
+warehouse[shipping] = Warehouse: Verzendinstellingen
+
+# V2.0.0
+# Backend Pages
+
+warehouse_order_dashboard = Dashboard
+warehouse_order = Bestellingen
+warehouse_order_list = Bestellingen
+warehouse_order_details = Bestellingsdetails
+warehouse_customer = Geregistreerde klanten
+warehouse_customer_address = Leveradressen
+warehouse_article = Artikelen
+warehouse_article_variant = Varianten
+warehouse_category = Categorieën
+warehouse_search = Zoeken
+warehouse_country = Landen
+warehouse_shipping = Verzending
+warehouse_settings = Beheer
+warehouse_settings_shop = Instellingen
+warehouse_settings_payment = Betaling
+warehouse_settings_general = Algemene instellingen
+warehouse_settings_domain = Domeinprofielen
+warehouse_settings_tawarehouse_article_variant.weightx = Belastingen
+warehouse_settings_log = Logboek
+warehouse_settings_discount = Kortingen
+warehouse_settings_documents = Documenten
+warehouse_settings_label = Tekst
+warehouse_settings_setup = Setup
+warehouse_docs = Help
+
+warehouse_docs.README = Intro
+warehouse_docs.warehouse_article = Artikelen
+warehouse_docs.warehouse_article_variant = Varianten
+warehouse_docs.warehouse_category = Categorieën
+warehouse_docs.order = Bestellingen
+warehouse_docs.settings.setup = Setup
+warehouse_docs.settings.general = Algemene instellingen
+warehouse_docs.settings.shipping = Verzending
+warehouse_docs.settings.payment = Betaling
+warehouse_docs.settings.domain = Domein
+warehouse_docs.settings.discount = Kortingen
+warehouse_docs.customer = Klanten (YCom)
+warehouse_docs.domain = Domein
+warehouse_docs.search = Zoeken
+warehouse_docs.shipping = Verzending
+warehouse_docs.warehouse_extend = Warehouse uitbreiden
+ 
+
+# Warehouse Settings: General Settings
+
+warehouse.settings.general.info = Welkom bij Warehouse 2.0 - sommige basisinstellingen zijn tijdens de installatie ingesteld. Maak uzelf vertrouwd met de wijzigingen ten opzichte van Warehouse 1.0 in het hulpgedeelte.
+
+warehouse.settings.editor = WYSIWYG-editor
+warehouse.settings.editor.notice = bijv. <code>class="form-control redactor-editor--default"</code>
+
+warehouse.settings.currency = Valuta
+warehouse.settings.currency_symbol = Valutasymbool (bijv. €)
+warehouse.settings.currency_symbol.notice = <code>rex_config::get("warehouse","currency_symbol")</code>
+
+warehouse.settings.tax_options = Belastingtarieven
+warehouse.settings.tax_options.notice = Mogelijke belastingtarieven voor selectie in artikelen en varianten. Standaard: <code>19,7,0</code> voor 19%, 7% en 0% belastingtarief. Gebruik het extensiepunt <code>WAREHOUSE_TAX_OPTIONS</code> om de belastingtarieven te wijzigen.
+
+warehouse.settings.shipping_allowed = Toegestane landen voor levering
+
+warehouse.settings.cart_mode = Na winkelwagen actie
+warehouse.settings.cart_mode.notice = De winkelwagenpagina kan worden geopend of de vorige artikelpagina. Als de artikelpagina wordt geopend, wordt showcart=1 toegevoegd als get-parameter.
+
+warehouse.settings.instant_checkout_enabled = "Nu kopen"-knop inschakelen
+warehouse.settings.instant_checkout_enabled.notice = Indien ingeschakeld, wordt op artikelpagina's een "Nu kopen"-knop weergegeven die direct naar de kassa leidt.
+warehouse.settings.yes = Ja
+warehouse.settings.no = Nee
+
+warehouse.ycom_modes.enforce = Bestelling alleen met klantaccount
+warehouse.ycom_modes.choose = Klant kiest
+warehouse.ycom_modes.guest_only = Gastmodus (Geen klantaccount vereist)
+
+warehouse.settings.enable_features = Extra opties voor artikelen en varianten
+warehouse.settings.enable_features.bulk_prices = Bulkprijzen opvragen
+warehouse.settings.enable_features.weight = Artikelgewicht opvragen
+warehouse.settings.enable_features.variants = Varianten toestaan
+warehouse.settings.enable_features.stock = Voorraad beheren
+warehouse.settings.enable_features.sku = SKU (artikelnummer) beheren
+
+warehouse.settings.fallback_category_image = Standaard categorieafbeelding
+warehouse.settings.fallback_category_image.notice = Wordt gebruikt wanneer er geen afbeelding beschikbaar is voor de categorie.
+
+warehouse.settings.fallback_article_image = Standaard artikelafbeelding
+warehouse.settings.fallback_article_image.notice = Wordt gebruikt wanneer er geen afbeelding beschikbaar is voor het artikel of de variant.
+
+warehouse.settings.invoice_number = Factuurnummer
+warehouse.settings.invoice_number.notice = Lopend nummer voor de volgende factuur. Wordt automatisch verhoogd bij het aanmaken van een factuur. Gebruik het extensiepunt <code>WAREHOUSE_INVOICE_NUMBER</code> om de nummering te wijzigen.
+warehouse.settings.delivery_note_number = Pakbonnummer
+warehouse.settings.delivery_note_number.notice = Lopend nummer voor de volgende pakbon. Wordt automatisch verhoogd bij het aanmaken van een pakbon. Gebruik het extensiepunt <code>WAREHOUSE_DELIVERY_NOTE_NUMBER</code> om de nummering te wijzigen.
+warehouse.settings.order_number = Bestelnummer
+warehouse.settings.order_number.notice = Lopend nummer voor de volgende bestelling. Wordt automatisch verhoogd bij het aanmaken van een bestelling. Gebruik het extensiepunt <code>WAREHOUSE_ORDER_NUMBER</code> om de nummering te wijzigen.
+
+# Warehouse Settings: Shipping costs
+
+warehouse.settings.shipping = Verzendkosten
+warehouse.settings.shipping_fee = Verzendkosten
+warehouse.settings.free_shipping_from = Gratis verzending vanaf
+warehouse.settings.minimum_order_value = Minimale bestelwaarde
+warehouse.settings.shipping_calculation_mode = Geavanceerde verzendkosten
+warehouse.settings.shipping_calculation_mode.options.default = geen (standaard)
+warehouse.settings.shipping_calculation_mode.options.quantity = AANTAL: Getrapte verzendkosten per aantal
+warehouse.settings.shipping_calculation_mode.options.weight = GEWICHT: Getrapte verzendkosten per gewicht
+warehouse.settings.shipping_calculation_mode.options.order_total = BESTELTOTAAL: Getrapte verzendkosten per besteltotaal
+
+# Warehouse Settings: Domain
+
+warehouse_settings_domain.fieldset_art_ids = Pagina's
+warehouse_settings_domain.yrewrite_domain_id = Domein
+warehouse_settings_domain.cart_art_id = Winkelwagen
+warehouse_settings_domain.checkout_art_id = Afrekenen
+warehouse_settings_domain.shippinginfo_art_id = Verzendinfo
+warehouse_settings_domain.order_art_id = Bestelling
+warehouse_settings_domain.address_art_id = Adres
+warehouse_settings_domain.payment_error_art_id = Betalingsfout
+warehouse_settings_domain.thankyou_art_id = Bedankt
+
+warehouse_settings_domain.fieldset_email = E-mailinstellingen
+warehouse_settings_domain.email_template_customer = E-mailtemplate voor klant
+warehouse_settings_domain.email_template_seller = E-mailtemplate voor verkoper
+warehouse_settings_domain.email_signature = E-mailhandtekening
+warehouse_settings_domain.order_email = Ontvanger e-mail voor bestellingen
+warehouse_settings_domain.order_email.notice = Scheid meerdere ontvangers met komma's
+
+warehouse_settings_domain.fieldset_sepa = SEPA-overboeking
+warehouse_settings_domain.sepa_account_holder_name = Rekeninghouder
+warehouse_settings_domain.sepa_bank_name = Banknaam
+warehouse_settings_domain.sepa_bic = BIC
+warehouse_settings_domain.sepa_iban = IBAN
+
+warehouse_settings_domain.fieldset_end = 🔚
+
+# Warehouse Settings: Discounts
+
+warehouse.discount_info = Kortingen worden momenteel niet ondersteund. Neem deel aan de ontwikkeling op <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> voor de ontwikkeling van een geavanceerd kortingssysteem bestaande uit: Vaste korting, Gratis verzending, Promotieperiodes, Vouchercodes en kortingen voor bepaalde YCom-groepen.
+
+# YForm Tables: Table names
+
+warehouse_article.tablename = 📦 Artikelen
+warehouse_article_variant.tablename = 📦 Varianten
+warehouse_category.tablename = 📦 Categorieën
+warehouse_order.tablename = 📦 Bestellingen
+# warehouse_country.tablename = 📦 Landen
+# warehouse_shipping.tablename = 📦 Verzending
+warehouse_settings_domain.tablename = 📦 Domeininstellingen
+warehouse_customer_address.tablename = 📦 Adressen
+
+# YForm Table "Articles": Labels
+
+warehouse_article.name = Naam
+warehouse_article.category_id = Categorie
+warehouse_article.status = Status
+warehouse_article_status.active = 🟢 Actief
+warehouse_article_status.draft = 🟡 Concept
+warehouse_article_status.hidden = 🔴 Verborgen
+warehouse_article.prio = Volgorde
+warehouse_article.weight = Gewicht
+warehouse_article.image = Afbeelding
+warehouse_article.gallery = Galerij
+warehouse_article.short_text = Korte tekst
+warehouse_article.short_text.notice = Deze tekst wordt gebruikt als teaser en ook voor SEO en mag daarom niet langer zijn dan 160 tekens.
+warehouse_article.text = Tekst
+warehouse_article.price = Prijs
+warehouse_article.price_text = Prijstekst
+warehouse_article.tax = Belasting
+warehouse_article.tax.none = Standaard
+warehouse_article.createdate = Gemaakt op
+warehouse_article.updatedate = Laatst gewijzigd
+warehouse_article.variant_ids = Varianten
+warehouse_article.availability = Beschikbaarheid
+warehouse_article.uuid = UUID
+warehouse_article.bulk_prices = Bulkprijzen
+warehouse_article.stock = Voorraad
+warehouse_article.sku = SKU
+warehouse_article.sku.notice = Artikelnummer - indien leeg wordt de ID gebruikt
+
+# YForm Table "Categories": Labels
+
+warehouse_category.status = Status
+warehouse_category.status.active = 🟢 Actief
+warehouse_category.status.draft = 🟡 Concept
+warehouse_category.status.hidden = 🔴 Verborgen
+warehouse_category.name = Naam
+warehouse_category.teaser = Teaser
+warehouse_category.link_intern = Interne link
+warehouse_category.prio = Volgorde
+warehouse_category.image = Afbeelding
+warehouse_category.text = Tekst
+warehouse_category.createdate = Gemaakt op
+warehouse_category.updatedate = Laatst gewijzigd
+warehouse_category.parent_id = Bovenliggende categorie
+warehouse_category.uuid = UUID
+
+# YForm Table "Article Variants": Labels
+
+warehouse_article_variant.article_id = Hoofdartikel
+warehouse_article_variant.name = Naam
+warehouse_article_variant.price = Prijs
+warehouse_article_variant.bulk_prices = Bulkprijzen
+warehouse_article_variant.weight = Gewicht
+warehouse_article_variant.bulk_prices.amount = Aantal
+warehouse_article_variant.bulk_prices.price = Prijs
+warehouse_article_variant.bulk_prices.weight = Gewicht
+warehouse_article_varaint.stock = Voorraad
+warehouse_article_variant.prio = Volgorde
+warehouse_article_variant.availability = Beschikbaarheid
+warehouse_article_variant.status = Status
+warehouse_article_variant.status.active = 🟢 Actief
+warehouse_article_variant.status.draft = 🟡 Concept
+warehouse_article_variant.status.hidden = 🔴 Verborgen
+warehouse_article_variant.image = Afbeelding
+warehouse_article_variant.sku = SKU
+warehouse_article_variant.sku.notice = Artikelnummer - indien leeg wordt de ID gebruikt
+warehouse_article_variant.uuid = UUID
+warehouse_article_variant.createdate = Gemaakt op
+warehouse_article_variant.updatedate = Laatst gewijzigd
+
+
+# YForm Table "Countries": Labels
+
+warehouse_country.code = Code
+warehouse_country.name = Naam
+warehouse_country.mode = Modus
+warehouse_country.status = Status
+warehouse_country.prio = Volgorde
+warehouse_country.tax = Belasting
+
+# YForm Table "Order": Labels
+
+warehouse_order.salutation = Aanhef
+warehouse_order.firstname = Voornaam
+warehouse_order.lastname = Achternaam
+warehouse_order.company = Bedrijf
+warehouse_order.address = Adres
+warehouse_order.zip = Postcode
+warehouse_order.city = Plaats
+warehouse_order.country = Land
+warehouse_order.email = E-mail
+warehouse_order.createdate = Besteldatum
+warehouse_order.paypal_id = PayPal-ID
+warehouse_order.payment_id = Betalings-ID
+warehouse_order.paypal_confirm_token = PayPal-bevestigingstoken
+warehouse_order.payment_confirm = Betalingsbevestiging
+warehouse_order.order_no = Bestelnummer
+warehouse_order.order_text = Besteltekst
+warehouse_order.order_json = Bestel-JSON
+warehouse_order.order_total = Besteltotaal
+warehouse_order.ycom_user_id = YCom-gebruikers-ID
+warehouse_order.payment_type = Betalingstype
+warehouse_order.payed = Betaald
+warehouse_order.not_payed = Niet betaald
+warehouse_order.imported = Geïmporteerd
+warehouse_order.is_read = Gelezen
+warehouse_order.updatedate = Bestelling gestart op...
+warehouse_order.payment_status = Betalingsstatus
+warehouse_order.payment_status.select = Selecteer betalingsstatus
+warehouse_order.shipping_status = Verzendstatus
+warehouse_order.shipping_status.select = Selecteer verzendstatus
+warehouse_order.buyer = Koper
+warehouse_order.custom_order_id = Aangepaste bestel-ID
+
+# YForm Table "Shipping": Labels
+
+warehouse_shipping.name = Naam
+warehouse_shipping.mode = Modus
+warehouse_shipping.params = Parameters
+
+# Warehouse Articles and Variants: Status
+
+warehouse_article.status.active = 🟢 Actief
+warehouse_article.status.draft = 🟡 Concept
+warehouse_article.status.hidden = 🔴 Verborgen
+
+# Warehouse Articles and Variants: Availability
+
+warehouse_article.availability.BackOrder = 🟡 Nabestelling
+warehouse_article.availability.Discontinued = 🟡 Uitlopend
+warehouse_article.availability.InStock = 🟢 Op voorraad
+warehouse_article.availability.InStoreOnly = 🟡 Alleen in winkel
+warehouse_article.availability.LimitedAvailability = 🟡 Beperkte beschikbaarheid
+warehouse_article.availability.MadeToOrder = 🟡 Op bestelling gemaakt
+warehouse_article.availability.OnlineOnly = 🟢 Alleen online
+warehouse_article.availability.OutOfStock = 🔴 Niet op voorraad
+warehouse_article.availability.PreOrder = 🟢 Voorbestelling
+warehouse_article.availability.PreSale = 🟢 Voorverkoop
+warehouse_article.availability.Reserved = 🔴 Gereserveerd
+warehouse_article.availability.SoldOut = 🔴 Uitverkocht
+
+warehouse_article_variant.availability.BackOrder = 🟡 Nabestelling
+warehouse_article_variant.availability.Discontinued = 🟡 Uitlopend
+warehouse_article_variant.availability.InStock = 🟢 Op voorraad
+warehouse_article_variant.availability.InStoreOnly = 🟡 Alleen in winkel
+warehouse_article_variant.availability.LimitedAvailability = 🟡 Beperkte beschikbaarheid
+warehouse_article_variant.availability.MadeToOrder = 🟡 Op bestelling gemaakt
+warehouse_article_variant.availability.OnlineOnly = 🟢 Alleen online
+warehouse_article_variant.availability.OutOfStock = 🔴 Niet op voorraad
+warehouse_article_variant.availability.PreOrder = 🟢 Voorbestelling
+warehouse_article_variant.availability.PreSale = 🟢 Voorverkoop
+warehouse_article_variant.availability.Reserved = 🔴 Gereserveerd
+warehouse_article_variant.availability.SoldOut = 🔴 Uitverkocht
+
+warehouse.search.results = {0} vermeldingen gevonden.
+warehouse.search.no_results = Geen vermeldingen gevonden.
+
+warehouse.search.description = Zoek in artikelen, categorieën en bestellingen. Tip: U kunt ook filteren via <code>+</code>, <code>-</code>, bijv. <code>+rood</code> voor alle artikelen met het woord "rood" of <code>+Max -Jansen</code> voor alle bestellingen van "Max" zonder "Jansen".
+
+
+warehouse_quicknavigation_search_button = Zoeken
+warehouse_quicknavigation_search_placeholder = Voer zoekterm in
+
+warehouse_article.icon_label = Artikel
+warehouse_article_variant.icon_label = Variant
+warehouse_category.icon_label = Categorie
+warehouse_order.icon_label = Bestelling
+
+# Warehouse Log
+warehouse.log.activated = Loggen is geactiveerd.
+warehouse.log.deactivated = Loggen is gedeactiveerd.
+warehouse.log.warning_logisinactive = Loggen is momenteel <b>uitgeschakeld</b>. <a href="{0}">Loggen activeren</a>
+warehouse.log.warning_logisactive = Loggen is momenteel <b>actief</b>. <a href="{0}">Loggen deactiveren</a>
+warehouse.log.time = Tijd
+warehouse.log.ip = IP
+warehouse.log.user_id = Gebruikers-ID
+warehouse.log.event = Gebeurtenis
+warehouse.log.params = Parameters
+warehouse.log.user_ip = Gebruiker-IP
+warehouse.log.type = Type
+warehouse.log.email = E-mail
+warehouse.log.delete_log_msg = Weet u zeker dat u het logboek wilt verwijderen?
+warehouse.log.title = Logbestand: {0}
+
+# Warehouse Settings - Shipping
+
+warehouse.settings = Verzendinstellingen
+warehouse.settings.shipping_costs = Verzendkosten
+warehouse.settings.minimum_order_value = Minimale bestelwaarde
+warehouse.settings.shipping_fee = Verzendkosten
+warehouse.settings.free_shipping_from = Gratis verzending vanaf
+warehouse.settings.shipping_calculation_mode = Berekening verzendkosten
+
+warehouse.settings.shipping_calculation_mode.options.default = Vast tarief (Standaard)
+warehouse.settings.shipping_calculation_mode.options.quantity = Aantal
+warehouse.settings.shipping_calculation_mode.options.weight = Gewicht
+warehouse.settings.shipping_calculation_mode.options.order_total = Besteltotaal
+
+# Warehouse PayPal
+
+warehouse.settings.payment = Betalingsinstellingen
+
+warehouse.settings.payment.store_name = Winkelnaam
+warehouse.settings.payment.store_name.notice = bijv. <code>Jan Janssen B.V.</code>, onder andere doorgegeven aan PayPal.
+
+warehouse.settings.payment.store_country_code = Landcode winkel
+warehouse.settings.payment.store_country_code.notice = bijv. <code>nl-NL</code> - onder andere doorgegeven aan PayPal.
+
+warehouse.settings.payment.paypal_client_id = PayPal Client-ID
+warehouse.settings.payment.paypal_secret = PayPal Secret
+
+warehouse.settings.payment.sandboxmode = PayPal Sandbox
+warehouse.settings.payment.sandboxmode.option = PayPal Sandbox inschakelen (testbestellingen)
+
+warehouse.settings.payment.paypal_sandbox_client_id = PayPal Sandbox Client-ID
+warehouse.settings.payment.paypal_sandbox_secret = PayPal Sandbox Secret
+
+warehouse.settings.payment.paypal_getparams = Extra GET-parameters voor PayPal
+warehouse.settings.payment.paypal_getparams.notice = bijv. om onderhoud te gebruiken tijdens ontwikkeling. Specificeer als JSON in de vorm <code>{"key1":"value1","key2":"value2"}</code>.
+
+warehouse.settings.payment.info = Momenteel wordt alleen PayPal ondersteund als betalingsprovider. Neem deel aan verdere ontwikkeling op GitHub op <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a>.
+
+warehouse.settings.cart_mode.cart = Winkelwagen tonen
+warehouse.settings.cart_mode.page = Productpagina tonen
+
+warehouse.order.details.error.no_data_id = Selecteer eerst een bestelling uit het overzicht of zoekresultaten.
+warehouse.order.details.error.order_not_found = De gevraagde bestelling is niet gevonden.
+warehouse.order.details.error.invalid_payment_status = Ongeldige betalingsstatus.
+warehouse.order.details.error.invalid_shipping_status = Ongeldige verzendstatus.
+warehouse.order.details.error.invoice_generation_failed = Fout bij genereren factuur.
+warehouse.order.details.error.delivery_note_generation_failed = Fout bij genereren pakbon.
+warehouse.order.details.success.payment_status_updated = Betalingsstatus succesvol bijgewerkt.
+warehouse.order.details.success.shipping_status_updated = Verzendstatus succesvol bijgewerkt.
+warehouse.order.details.success.invoice_generated = Factuur succesvol gegenereerd.
+warehouse.order.details.success.delivery_note_generated = Pakbon succesvol gegenereerd.
+
+warehouse.settings.framework = Gewenst output-framework
+warehouse.settings.framework.notice = Momenteel wordt alleen Bootstrap 5 ondersteund. <code>bootstrap5</code> is de standaardwaarde. U kunt ook de map <code>src/addons/warehouse/fragments/bootstrap5</code> kopiëren naar <code>src/addons/project/fragments/bootstrap5</code> en aanpassen. Meer informatie in de docs.
+
+warehouse.settings.container_class = CSS-containerklasse
+warehouse.settings.container_class.notice = Definieer optioneel een CSS-containerklasse, bijv. <code>container</code>, <code>container-fluid</code>, <code>container-lg</code> enz. Standaard wordt <code>container</code> gebruikt. Laat het veld leeg als er geen container moet worden gebruikt.
+
+warehouse.settings.shipping_conditions_text = Verzendkostenvoorwaarden
+warehouse.settings.shipping_conditions_text.notice = Tekst die onder de verzendkosten wordt weergegeven. Bijv. "Gratis verzending vanaf 50 euro bestelwaarde." of "Verzendkosten getrap per gewicht."
+
+
+warehouse.settings.label_cart = Winkelwagen
+warehouse.settings.label_cart_empty = De winkelwagen is leeg.
+
+warehouse.payment_options.prepayment = Vooruitbetaling
+warehouse.payment_options.invoice   = Factuur
+warehouse.payment_options.paypal    = PayPal
+warehouse.payment_options.direct_debit  = Automatische incasso
+
+
+warehouse_customer_address.ycom_user_id = YCom-gebruikers-ID
+warehouse_customer_address.salutation = Aanhef
+warehouse_customer_address.type = Type
+warehouse_customer_address.company = Bedrijf
+warehouse_customer_address.name = Naam
+warehouse_customer_address.street = Straat
+warehouse_customer_address.zip = Postcode
+warehouse_customer_address.city = Plaats
+warehouse_customer_address.country = Land
+
+warehouse.customer_address.type = Type
+warehouse.customer_address.type.private = Privé
+warehouse.customer_address.type.company = Bedrijf
+warehouse.customer_address.type.shipping = Verzending
+warehouse.customer_address.type.billing = Facturering
+warehouse.customer_address.type.other = Overig
+
+warehouse_customer_address.validate.unique.ycom_user_id_and_type = De combinatie van YCom-gebruikers-ID en adrestype mag slechts één keer voorkomen. Controleer uw invoer.
+
+
+warehouse.settings.ycom_mode = Klantaccount
+warehouse.settings.ycom_mode.notice = Vereist de YCom-add-on. Opmerking: Als de YCom-add-on later is geïnstalleerd, moet de Warehouse-add-on opnieuw worden geïnstalleerd.
+warehouse.settings.ycom_mode.guest_only = Gastmodus (geen klantaccount vereist)
+warehouse.settings.ycom_mode.choose = Klant kiest of klantaccount wordt aangemaakt
+warehouse.settings.ycom_mode.enforce_account = Klantaccount vereist
+
+
+warehouse.settings.label_cart_empty_confirm = Weet u zeker dat u de winkelwagen wilt legen?
+warehouse.settings.label_back_to_cart = Terug naar winkelwagen
+warehouse.settings.label_checkout = Afrekenen
+warehouse.settings.label_payment_type = Betalingsopties
+warehouse.settings.label_remove_from_cart = Verwijderen
+warehouse.settings.label_cart_remove_item_confirm = Weet u zeker dat u het geselecteerde artikel wilt verwijderen?
+warehouse.settings.label_article = Artikel
+warehouse.settings.label_price = Stukprijs
+warehouse.settings.label_quantity = Aantal
+warehouse.settings.label_total = Totaalprijs
+warehouse.settings.label_shipping_costs = Verzendkosten
+warehouse.settings.label_shipping_costs_free = Gratis verzending
+warehouse.settings.label_shipping_costs_weight = Verzendkosten per gewicht
+warehouse.settings.label_checkout = Afrekenen
+warehouse.settings.label_checkout_instant = Nu kopen
+warehouse.settings.label_checkout_address = Adres
+warehouse.settings.label_checkout_payment = Betalingsmethode
+warehouse.settings.label_checkout_choose = Kies hoe u wilt doorgaan:
+warehouse.settings.label_checkout_guest = Doorgaan als gast
+warehouse.settings.label_checkout_guest_text = Kopen zonder registratie. U moet uw gegevens bij elke bestelling opnieuw invoeren.
+warehouse.settings.label_checkout_guest_continue = Bestellen als gast
+warehouse.settings.label_checkout_login = Doorgaan met klantaccount
+warehouse.settings.label_checkout_login_text = Log in of maak een klantaccount aan voor snellere toekomstige bestellingen.
+warehouse.settings.label_checkout_login_email = E-mailadres
+warehouse.settings.label_checkout_login_password = Wachtwoord
+warehouse.settings.label_checkout_login_submit = Inloggen
+warehouse.settings.label_checkout_register_text = Heeft u nog geen klantaccount? Registreer u nu.
+warehouse.settings.label_checkout_submit_order = Nu kopen
+warehouse.settings.label_checkout_submit_order = Bestelling plaatsen
+warehouse.settings.label_checkout_submit_order_wait = Even geduld...
+warehouse.settings.label_cart_subtotal = Subtotaal
+warehouse.settings.label_cart_total = Totaal
+warehouse.settings.label_cart_total_weight = Totaalgewicht
+warehouse.settings.label_next = Volgende
+warehouse.settings.label_add_to_cart = Toevoegen aan winkelwagen
+warehouse.settings.label_add_to_cart_success = Toegevoegd!
+warehouse.settings.label_add_to_order = Toevoegen aan bestelling
+
+warehouse.settings.label_payment_options = Betalingsopties
+warehouse.settings.label_paymentoptions = {0}
+warehouse.settings.label_paymentoptions_notice = Opmerking voor {0}
+warehouse.settings.label_paymentoptions_image = Logo {0}
+warehouse.payment_options.invoice = Factuur
+warehouse.payment_options.prepayment = Vooruitbetaling
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Automatische incasso
+
+# PayPal Button Style Configuration
+
+warehouse.settings.payment.paypal_style = PayPal-knopstijl
+
+warehouse.settings.payment.paypal_button_shape = Knopvorm
+warehouse.settings.payment.paypal_button_shape.notice = Selecteer de vorm van de PayPal-knop.
+warehouse.settings.payment.paypal_button_shape.rect = Rechthoekig
+warehouse.settings.payment.paypal_button_shape.pill = Pilvorm
+
+warehouse.settings.payment.paypal_button_size = Knopgrootte
+warehouse.settings.payment.paypal_button_size.notice = Selecteer de grootte van de PayPal-knop.
+warehouse.settings.payment.paypal_button_size.small = Klein
+warehouse.settings.payment.paypal_button_size.medium = Middel
+warehouse.settings.payment.paypal_button_size.large = Groot
+warehouse.settings.payment.paypal_button_size.responsive = Responsief
+
+warehouse.settings.payment.paypal_button_color = Knopkleur
+warehouse.settings.payment.paypal_button_color.notice = Selecteer de kleur van de PayPal-knop.
+warehouse.settings.payment.paypal_button_color.gold = Goud
+warehouse.settings.payment.paypal_button_color.blue = Blauw
+warehouse.settings.payment.paypal_button_color.silver = Zilver
+warehouse.settings.payment.paypal_button_color.black = Zwart
+warehouse.settings.payment.paypal_button_color.white = Wit
+
+warehouse.settings.payment.paypal_button_label = Knoplabel
+warehouse.settings.payment.paypal_button_label.notice = Selecteer het label van de PayPal-knop.
+warehouse.settings.payment.paypal_button_label.paypal = PayPal
+warehouse.settings.payment.paypal_button_label.checkout = Afrekenen
+warehouse.settings.payment.paypal_button_label.pay = Betalen
+warehouse.settings.payment.paypal_button_label.buynow = Nu kopen
+warehouse.settings.payment.paypal_button_label.installment = Afbetaling
+warehouse.settings.payment.paypal_button_label.donate = Doneren
+
+warehouse.settings.payment.paypal_button_layout = Knoplay-out
+warehouse.settings.payment.paypal_button_layout.notice = Selecteer de lay-out van de PayPal-knop.
+warehouse.settings.payment.paypal_button_layout.horizontal = Horizontaal
+warehouse.settings.payment.paypal_button_layout.vertical = Verticaal
+
+warehouse.settings.payment.paypal_button_height = Knophoogte
+warehouse.settings.payment.paypal_button_height.notice = Specificeer de hoogte van de PayPal-knop in pixels (optioneel).
+
+warehouse.settings.payment.paypal_button_funding_source = Voorkeurs betalingsbron
+warehouse.settings.payment.paypal_button_funding_source.notice = Selecteer de voorkeursbetalingsbron voor de PayPal-knop.
+warehouse.settings.payment.paypal_button_funding_source.paypal = PayPal
+warehouse.settings.payment.paypal_button_funding_source.credit = Creditcard
+
+warehouse.settings.payment.paypal_include_images = Productafbeeldingen naar PayPal-bestelling overdragen
+warehouse.settings.payment.paypal_include_images.option = Productafbeeldingen naar PayPal overdragen
+warehouse.settings.payment.paypal_include_images.notice = Indien ingeschakeld, worden productafbeeldingen als URL's naar PayPal overgedragen. De afbeeldingen worden in kleine grootte overgedragen (rex_media_small).
+
+# Setup Page
+warehouse.setup.repair_tables = Tabellen repareren
+warehouse.setup.repair_tables_info = Repareert de databasestructuur en importeert de YForm-tablesets opnieuw.
+warehouse.setup.repair_tables_button = Tabellen repareren
+warehouse.setup.repair_tables_confirm = Weet u zeker dat u de tabellen wilt repareren? Dit proces kan niet ongedaan worden gemaakt.
+
+warehouse.setup.install_structure = Structuur aanmaken
+warehouse.setup.install_structure_info = Maakt de winkelstructuur aan met categorieën en domeinprofiel. Alleen mogelijk als er nog geen domeinprofiel bestaat.
+warehouse.setup.install_structure_button = Structuur aanmaken
+warehouse.setup.install_structure_confirm = Weet u zeker dat u de winkelstructuur wilt aanmaken?
+
+warehouse.setup.install_url_profiles = URL-profielen aanmaken
+warehouse.setup.install_url_profiles_info = Installeert de URL-profielen voor artikelen, categorieën en bestellingen.
+warehouse.setup.install_url_profiles_button = URL-profielen aanmaken
+warehouse.setup.install_url_profiles_confirm = Weet u zeker dat u de URL-profielen wilt aanmaken?
+
+warehouse.setup.import_demo = Demogegevens importeren
+warehouse.setup.import_demo_info = Importeert demo-artikelen, categorieën en bestellingen voor testdoeleinden.
+warehouse.setup.import_demo_button = Demogegevens importeren
+warehouse.setup.import_demo_confirm = Weet u zeker dat u de demogegevens wilt importeren? Bestaande gegevens kunnen worden overschreven.
+
+warehouse.setup.reset_shop = Winkel resetten
+warehouse.setup.reset_shop_info = Verwijdert alle demogegevens en reset de winkel naar de beginstaat.
+warehouse.setup.reset_shop_button = Winkel resetten
+warehouse.setup.reset_shop_confirm = Weet u ECHT zeker dat u de winkel wilt resetten? Alle artikelen, categorieën en bestellingen worden verwijderd!
+
+warehouse.setup.install_module = Warehouse-module installeren
+warehouse.setup.install_module_info = Installeert of werkt de Warehouse-module bij voor frontend-output.
+
+warehouse.setup.success_tables_repaired = Tabellen succesvol gerepareerd en tablesets geïmporteerd.
+warehouse.setup.success_structure_installed = Winkelstructuur succesvol aangemaakt.
+warehouse.setup.success_url_profiles_installed = URL-profielen succesvol geïnstalleerd.
+warehouse.setup.success_demo_imported = Demogegevens succesvol geïmporteerd.
+warehouse.setup.success_shop_reset = Winkel succesvol gereset.
+
+# Setup Error Messages
+warehouse.setup.error_repair_tables = Fout bij repareren tabellen: {0}
+warehouse.setup.error_domain_exists = Er bestaat al een domeinprofiel. De structuur kan alleen worden aangemaakt als er nog geen domeinprofiel bestaat.
+warehouse.setup.error_install_structure = Fout bij aanmaken structuur: {0}
+warehouse.setup.error_url_addon_unavailable = De URL-add-on is niet beschikbaar. Installeer de URL-add-on.
+warehouse.setup.error_install_url_profiles = Fout bij installeren URL-profielen: {0}
+warehouse.setup.error_import_demo = Fout bij importeren demogegevens: {0}
+warehouse.setup.error_reset_shop = Fout bij resetten winkel: {0}
+
+# Module and Email Template Messages
+warehouse.setup.module_updated = Module "{0}" is bijgewerkt.
+warehouse.setup.module_created = Module is aangemaakt op "{0}".
+warehouse.setup.email_template_updated = E-mailtemplate "{0}" is bijgewerkt.
+warehouse.setup.email_template_created = E-mailtemplate "{0}" is aangemaakt.
+warehouse.setup.module_button = Module {0} {1}
+warehouse.setup.email_template_button = Template {0} {1}
+warehouse.setup.module_update = bijwerken
+warehouse.setup.module_install = installeren
+warehouse.setup.install_email_templates = E-mailtemplates installeren of bijwerken
+
+warehouse.order.dashboard.recent_orders = Recente bestellingen
+warehouse.order.dashboard.orders_by_month = Bestellingen per maand
+warehouse.order.dashboard.date = Datum
+warehouse.order.dashboard.month = Maand
+warehouse.order.dashboard.total = Totaalbedrag
+warehouse.order.dashboard.recent_customers = Recente klanten
+warehouse.order.dashboard.customer.name = Naam
+warehouse.order.dashboard.customer.email = E-mail
+
+warehouse.settings.payment.allowed_payment_options = Toegestane betalingsmethoden
+warehouse.payment_options.prepayment = Vooruitbetaling
+warehouse.payment_options.invoice = Factuur
+warehouse.payment_options.paypal = PayPal
+warehouse.payment_options.direct_debit = Automatische incasso
+
+warehouse.settings.documents.info = Documenten worden momenteel niet ondersteund. Neem deel aan de ontwikkeling op <a href="https://github.com/friendsofredaxo/warehouse/">https://github.com/friendsofredaxo/warehouse/</a> voor de ontwikkeling van documentcreatie, bestaande uit nummerreeksen, bestelbevestigings-PDF, factuur-PDF, pakbon-PDF en e-factuur.
+warehouse.settings.documents.pdfout_version = Installeer PDFout in versie 10.x of hoger om documenten te maken. Versie 9.x wordt niet meer ondersteund.
+
+
+warehouse.order.shipping_status.shipped = Verzonden
+warehouse.order.shipping_status.not_shipped = Niet verzonden
+warehouse.order.shipping_status.partially_shipped = Gedeeltelijk verzonden
+warehouse.order.shipping_status.returned = Geretourneerd
+warehouse.order.shipping_status.lost = Verloren
+warehouse.order.shipping_status.cancelled = Geannuleerd
+
+warehouse.payment_status = Betalingsstatus
+warehouse.payment_status.pending = ⌛ In afwachting
+warehouse.payment_status.completed = ✅ Voltooid
+warehouse.payment_status.failed = ❌ Mislukt
+warehouse.payment_status.cancelled = ❌ Geannuleerd
+warehouse.payment_status.refunded = ✅ Terugbet aald
+
+# PayPal Error Handling
+warehouse.paypal.error_modal_title = Betaling mislukt
+warehouse.paypal.error_modal_close = Sluiten
+warehouse.paypal.error_technical_details = Technische details
+warehouse.paypal.error_create_order = Er is een probleem opgetreden bij het initialiseren van de PayPal-betaling. Probeer het opnieuw of kies een andere betalingsmethode.
+warehouse.paypal.error_capture_order = Uw betaling kon niet worden voltooid. Probeer het opnieuw of kies een andere betalingsmethode.
