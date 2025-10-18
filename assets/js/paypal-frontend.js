@@ -9,8 +9,68 @@ if (configDiv) {
     }
 }
 
-const successUrl = configDiv ? configDiv.getAttribute("data-warehouse-paypal-success-url") : null;
+const successUrl = configDiv ? configDiv.getAttribute("data-warehouse-paypal-success-page-url") : null;
 const cancelUrl = configDiv ? configDiv.getAttribute("data-warehouse-paypal-cancel-url") : null;
+const errorCreateOrderMsg = configDiv ? configDiv.getAttribute("data-warehouse-paypal-error-create-order") : "Could not initiate PayPal Checkout";
+const errorCaptureOrderMsg = configDiv ? configDiv.getAttribute("data-warehouse-paypal-error-capture-order") : "Sorry, your transaction could not be processed";
+const technicalDetailsLabel = configDiv ? configDiv.getAttribute("data-warehouse-paypal-error-technical-details") : "Technical Details";
+
+// Helper function to escape HTML to prevent XSS
+function escapeHtml(unsafe) {
+    const div = document.createElement('div');
+    div.textContent = unsafe;
+    return div.innerHTML;
+}
+
+// Function to show error modal
+function showPayPalErrorModal(message, detailedError = null) {
+    const modalElement = document.getElementById("paypalErrorModal");
+    const modalBody = document.getElementById("paypalErrorModalBody");
+    
+    if (modalElement && modalBody) {
+        // Create error message paragraph
+        const messageParagraph = document.createElement('p');
+        messageParagraph.textContent = message;
+        
+        // Clear existing content
+        modalBody.innerHTML = '';
+        modalBody.appendChild(messageParagraph);
+        
+        // Add detailed error in a collapsed section for debugging
+        if (detailedError) {
+            console.error("PayPal Error Details:", detailedError);
+            
+            const details = document.createElement('details');
+            details.className = 'mt-3';
+            
+            const summary = document.createElement('summary');
+            summary.className = 'text-muted small';
+            summary.textContent = technicalDetailsLabel;
+            
+            const pre = document.createElement('pre');
+            pre.className = 'small mt-2 p-2 bg-light border rounded';
+            pre.textContent = detailedError;
+            
+            details.appendChild(summary);
+            details.appendChild(pre);
+            modalBody.appendChild(details);
+        }
+        
+        // Show the modal using Bootstrap 5, if available
+        if (window.bootstrap && typeof window.bootstrap.Modal === "function") {
+            const modal = new window.bootstrap.Modal(modalElement);
+            modal.show();
+        } else {
+            // Fallback if Bootstrap's JS is not available
+            console.error("PayPal Error (Bootstrap modal unavailable):", message, detailedError);
+            alert(message);
+        }
+    } else {
+        // Fallback if modal is not available
+        console.error("PayPal Error:", message, detailedError);
+        alert(message);
+    }
+}
 
 const paypalButtons = window.paypal.Buttons({
     style: {
@@ -48,7 +108,8 @@ const paypalButtons = window.paypal.Buttons({
             throw new Error(errorMessage);
         } catch (error) {
             console.error(error);
-            resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
+            showPayPalErrorModal(errorCreateOrderMsg, error.message || error.toString());
+            throw error; // Re-throw to prevent PayPal from proceeding
         }
     },
     async onApprove(data, actions) {
@@ -95,9 +156,7 @@ const paypalButtons = window.paypal.Buttons({
 
         } catch (error) {
             console.error(error);
-            resultMessage(
-                `Sorry, your transaction could not be processed...<br><br>${error}`
-            );
+            showPayPalErrorModal(errorCaptureOrderMsg, error.message || error.toString());
         }
     },
 });
