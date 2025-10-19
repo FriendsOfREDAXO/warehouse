@@ -56,8 +56,10 @@ $yform->setValidateField('empty', [CustomerAddress::CITY, 'translate:warehouse.v
 
 $yform->setValueField('text', [CustomerAddress::COUNTRY, 'translate:warehouse_customer_address.country', '', '0']);
 
-// Validation for unique address
-$yform->setValidateField('unique', [CustomerAddress::YCOM_USER_ID . ',' . CustomerAddress::TYPE, 'translate:warehouse_customer_address.validate.unique.ycom_user_id_and_type', '', '0']);
+// Validation for unique address (only for new records)
+if (!$dataset) {
+    $yform->setValidateField('unique', [CustomerAddress::YCOM_USER_ID . ',' . CustomerAddress::TYPE, 'translate:warehouse_customer_address.validate.unique.ycom_user_id_and_type', '', '0']);
+}
 
 // Submit button
 $yform->setValueField('submit', ['submit', 'translate:warehouse.save', '', 'no_db']);
