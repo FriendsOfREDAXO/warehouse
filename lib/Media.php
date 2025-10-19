@@ -7,10 +7,10 @@ use rex_string;
 
 /**
  * Media class for consistent image output with REDAXO Media Manager integration.
- * 
+ *
  * Extends rex_media to provide fluent interface for generating img tags with proper
  * width/height from cached images and support for Media Manager profiles.
- * 
+ *
  * @example
  * <?= Media::get('filename.jpg')->setAlt("Product")->setClass("img-fluid")->getImg('warehouse-article-list') ?>
  */
@@ -20,30 +20,8 @@ class Media extends rex_media
     protected $alt;
 
     /**
-     * Factory method to create a Media instance.
-     * 
-     * @param string $filename The filename of the media
-     * @return self|null Returns Media instance or null if file doesn't exist
-     * @api
-     */
-    public static function get($filename)
-    {
-        $media = parent::get($filename);
-        if ($media instanceof rex_media) {
-            // Convert rex_media to Media instance
-            $instance = new self();
-            // Copy properties from rex_media
-            foreach (get_object_vars($media) as $key => $value) {
-                $instance->$key = $value;
-            }
-            return $instance;
-        }
-        return null;
-    }
-
-    /**
      * Set multiple HTML attributes at once.
-     * 
+     *
      * @param array $attributes Associative array of attribute => value pairs
      * @return self
      * @api
@@ -56,7 +34,7 @@ class Media extends rex_media
 
     /**
      * Set the class attribute (convenience method).
-     * 
+     *
      * @param string $class CSS class(es)
      * @return self
      * @api
@@ -69,7 +47,7 @@ class Media extends rex_media
 
     /**
      * Set the alt text for the image.
-     * 
+     *
      * @param string $alt Alternative text
      * @return self
      * @api
@@ -82,7 +60,7 @@ class Media extends rex_media
 
     /**
      * Generate alt text automatically if not set.
-     * 
+     *
      * @return string
      */
     protected function generateAlt()
@@ -95,7 +73,7 @@ class Media extends rex_media
 
     /**
      * Get image as attributes array for use with rex_string::buildAttributes.
-     * 
+     *
      * @param string $type Media Manager profile/type name (e.g., 'warehouse-article-list')
      * @return array Associative array of img tag attributes
      * @api
@@ -132,7 +110,7 @@ class Media extends rex_media
 
     /**
      * Generate complete img tag with attributes.
-     * 
+     *
      * @param string $type Media Manager profile/type name (e.g., 'warehouse-article-list')
      * @return string Complete HTML img tag
      * @api
