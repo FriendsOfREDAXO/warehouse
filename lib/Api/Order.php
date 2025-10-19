@@ -155,13 +155,22 @@ class Order extends rex_api_function
         $shipping_cost = Shipping::getCost(); // Shipping costs
         $cart_items = $cart->getItems(); // Get items from Cart object
 
+        // Ensure all amounts are positive
+        $cart_total = max(0, floatval($cart_total));
+        $cart_subtotal = max(0, floatval($cart_subtotal));
+        $shipping_cost = max(0, floatval($shipping_cost));
+
         // Build PayPal items from cart
         $paypal_items = [];
         foreach ($cart_items as $item) {
+            // Ensure price is positive and properly formatted
+            $itemPrice = max(0, floatval($item['price']));
+            $itemQuantity = max(1, intval($item['amount']));
+            
             $itemBuilder = ItemBuilder::init(
                 $item['name'],
-                MoneyBuilder::init($currency, number_format($item['price'], 2, '.', ''))->build(),
-                (string) $item['amount']
+                MoneyBuilder::init($currency, number_format($itemPrice, 2, '.', ''))->build(),
+                (string) $itemQuantity
             )
                 ->description($item['name'])
                 ->sku($item['sku'] ?? ($item['article_id'] . ($item['variant_id'] ? '-' . $item['variant_id'] : '')));
@@ -206,12 +215,19 @@ class Order extends rex_api_function
             // provides givenName() and surname() methods (no fullName()).
             $trimmedName = trim($shippingName);
 
+            // Validate country code - must be 2-letter ISO code
+            $countryCode = strtoupper($addressToUse['country'] ?? PayPal::getStoreCountryCode());
+            if (strlen($countryCode) !== 2 || !ctype_alpha($countryCode)) {
+                // Fallback to store country code if invalid
+                $countryCode = PayPal::getStoreCountryCode();
+            }
+
             // ShippingDetailsBuilder expects a ShippingName object. Use the
             // ShippingNameBuilder which provides a fullName() setter.
             $shipping = ShippingDetailsBuilder::init()
                 ->name(\PaypalServerSdkLib\Models\Builders\ShippingNameBuilder::init()->fullName($trimmedName)->build())
                 ->address(
-                    AddressBuilder::init($addressToUse['country'] ?? PayPal::getStoreCountryCode())
+                    AddressBuilder::init($countryCode)
                         ->addressLine1($addressToUse['address'] ?? '')
                         ->adminArea2($addressToUse['city'] ?? '') // Stadt
                         ->postalCode($addressToUse['zip'] ?? '')
@@ -225,8 +241,8 @@ class Order extends rex_api_function
         if (!empty($customer)) {
             $payerBuilder = PayerBuilder::init();
 
-            // Add email address
-            if (!empty($customer['email'])) {
+            // Add email address - validate format
+            if (!empty($customer['email']) && filter_var($customer['email'], FILTER_VALIDATE_EMAIL)) {
                 $payerBuilder->emailAddress($customer['email']);
             }
 
@@ -244,11 +260,14 @@ class Order extends rex_api_function
                 $payerBuilder->name($nameBuilder->build());
             }
 
-            // Add phone information if available
+            // Add phone information if available - validate and format for E.164
             if (!empty($customer['phone'])) {
-                $phoneNumber = PhoneNumberBuilder::init($customer['phone'])->build();
-                $phoneWithType = PhoneWithTypeBuilder::init($phoneNumber)->build();
-                $payerBuilder->phone($phoneWithType);
+                $formattedPhone = self::formatPhoneNumberE164($customer['phone']);
+                if ($formattedPhone !== null) {
+                    $phoneNumber = PhoneNumberBuilder::init($formattedPhone)->build();
+                    $phoneWithType = PhoneWithTypeBuilder::init($phoneNumber)->build();
+                    $payerBuilder->phone($phoneWithType);
+                }
             }
 
             $payer = $payerBuilder->build();
@@ -359,5 +378,100 @@ class Order extends rex_api_function
 
 
         return self::handleResponse($apiResponse);
+    }
+
+    /**
+     * Format phone number to E.164 format for PayPal
+     * PayPal requires phone numbers in E.164 format: +[country code][number]
+     * 
+     * @param string $phone The phone number to format
+     * @return string|null Formatted phone number or null if invalid
+     */
+    private static function formatPhoneNumberE164(string $phone): ?string
+    {
+        // Remove all non-digit characters except +
+        $cleaned = preg_replace('/[^\d+]/', '', $phone);
+        
+        // If empty after cleaning, return null
+        if (empty($cleaned)) {
+            return null;
+        }
+        
+        // If already starts with +, validate and return
+        if (str_starts_with($cleaned, '+')) {
+            // Remove + and check if we have 7-15 digits (PayPal requirement)
+            $digits = substr($cleaned, 1);
+            if (strlen($digits) >= 7 && strlen($digits) <= 15 && ctype_digit($digits)) {
+                return $cleaned;
+            }
+            return null;
+        }
+        
+        // If starts with 00, convert to + format
+        if (str_starts_with($cleaned, '00')) {
+            $cleaned = '+' . substr($cleaned, 2);
+            $digits = substr($cleaned, 1);
+            if (strlen($digits) >= 7 && strlen($digits) <= 15 && ctype_digit($digits)) {
+                return $cleaned;
+            }
+            return null;
+        }
+        
+        // If number doesn't start with 0 or +, assume it has country code already
+        if (!str_starts_with($cleaned, '0')) {
+            $cleaned = '+' . $cleaned;
+            $digits = substr($cleaned, 1);
+            if (strlen($digits) >= 7 && strlen($digits) <= 15 && ctype_digit($digits)) {
+                return $cleaned;
+            }
+            return null;
+        }
+        
+        // For German numbers starting with 0, add +49 country code
+        // This is a fallback - ideally the country code should be stored with customer data
+        $storeCountryCode = PayPal::getStoreCountryCode();
+        $countryDialCode = self::getCountryDialCode($storeCountryCode);
+        
+        if ($countryDialCode && str_starts_with($cleaned, '0')) {
+            // Remove leading 0 and add country code
+            $cleaned = '+' . $countryDialCode . substr($cleaned, 1);
+            $digits = substr($cleaned, 1);
+            if (strlen($digits) >= 7 && strlen($digits) <= 15 && ctype_digit($digits)) {
+                return $cleaned;
+            }
+        }
+        
+        // If we can't format it properly, return null to skip the field
+        return null;
+    }
+
+    /**
+     * Get dial code for a country code
+     * 
+     * @param string $countryCode ISO 3166-1 alpha-2 country code
+     * @return string|null Country dial code without +
+     */
+    private static function getCountryDialCode(string $countryCode): ?string
+    {
+        // Common country dial codes - extend as needed
+        $dialCodes = [
+            'DE' => '49',  // Germany
+            'AT' => '43',  // Austria
+            'CH' => '41',  // Switzerland
+            'FR' => '33',  // France
+            'IT' => '39',  // Italy
+            'ES' => '34',  // Spain
+            'GB' => '44',  // United Kingdom
+            'US' => '1',   // United States
+            'NL' => '31',  // Netherlands
+            'BE' => '32',  // Belgium
+            'PL' => '48',  // Poland
+            'CZ' => '420', // Czech Republic
+            'DK' => '45',  // Denmark
+            'SE' => '46',  // Sweden
+            'NO' => '47',  // Norway
+        ];
+        
+        return $dialCodes[strtoupper($countryCode)] ?? null;
     }
 }
