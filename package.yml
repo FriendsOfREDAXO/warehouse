@@ -230,12 +230,17 @@ default_config:
 
     # Address fields
     label_address_address: 'Adresse'
+    label_address_street: 'Straße'
     label_address_zip: 'PLZ'
     label_address_city: 'Ort'
     label_address_country: 'Land'
+    label_address_name: 'Name'
+    label_address_company: 'Firma'
     label_address_shipping: 'Lieferadresse'
     label_address_billing: 'Rechnungsadresse'
     label_address_same_as_billing: 'Entspricht der Lieferadresse'
+    label_address_save: 'Speichern'
+    label_address_saved_successfully: 'Die Adresse wurde erfolgreich gespeichert.'
 
     # Product / Order labels
     label_product_variant: 'Variante'
@@ -253,6 +258,9 @@ default_config:
     label_validation_email_invalid: 'Bitte geben Sie eine gültige E-Mail Adresse ein'
     label_validation_agb_required: 'Sie müssen die AGBs akzeptieren.'
     label_validation_privacy_required: 'Sie müssen die Datenschutzbestimmungen akzeptieren.'
+    
+    # YCom messages
+    label_ycom_not_logged_in: 'Sie müssen angemeldet sein, um diese Seite zu verwenden.'
 
     # Legal / Terms
     label_legal_agb_privacy: 'AGBs und Datenschutz'

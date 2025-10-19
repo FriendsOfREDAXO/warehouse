@@ -3,11 +3,12 @@
 /** @var rex_fragment $this */
 
 use FriendsOfRedaxo\Warehouse\CustomerAddress;
+use FriendsOfRedaxo\Warehouse\Warehouse;
 
 // Get current logged-in YCom user
 $current_ycom_user = rex_ycom_auth::getUser();
 if (!$current_ycom_user) {
-    echo '<div class="alert alert-warning">' . rex_i18n::msg('warehouse.ycom.not_logged_in') . '</div>';
+    echo '<div class="alert alert-warning">' . Warehouse::getLabel('ycom_not_logged_in') . '</div>';
     return;
 }
 
@@ -33,25 +34,25 @@ if ($dataset) {
 }
 
 // Hidden fields
-$yform->setValueField('hidden', [CustomerAddress::YCOM_USER_ID, 'translate:warehouse_customer_address.ycom_user_id', $current_ycom_user_id]);
-$yform->setValueField('hidden', [CustomerAddress::TYPE, 'translate:warehouse_customer_address.type', 'shipping']);
+$yform->setValueField('hidden', [CustomerAddress::YCOM_USER_ID, '', $current_ycom_user_id]);
+$yform->setValueField('hidden', [CustomerAddress::TYPE, '', 'shipping']);
 
 // Form fields
-$yform->setValueField('text', [CustomerAddress::COMPANY, 'translate:warehouse_customer_address.company', '', '0']);
+$yform->setValueField('text', [CustomerAddress::COMPANY, Warehouse::getLabel('address_company'), '', '0']);
 
-$yform->setValueField('text', [CustomerAddress::NAME, 'translate:warehouse_customer_address.name', '', '0']);
-$yform->setValidateField('empty', [CustomerAddress::NAME, 'translate:warehouse.validation.required']);
+$yform->setValueField('text', [CustomerAddress::NAME, Warehouse::getLabel('address_name'), '', '0']);
+$yform->setValidateField('empty', [CustomerAddress::NAME, Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', [CustomerAddress::STREET, 'translate:warehouse_customer_address.street', '', '0']);
-$yform->setValidateField('empty', [CustomerAddress::STREET, 'translate:warehouse.validation.required']);
+$yform->setValueField('text', [CustomerAddress::STREET, Warehouse::getLabel('address_street'), '', '0']);
+$yform->setValidateField('empty', [CustomerAddress::STREET, Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', [CustomerAddress::ZIP, 'translate:warehouse_customer_address.zip', '', '0']);
-$yform->setValidateField('empty', [CustomerAddress::ZIP, 'translate:warehouse.validation.required']);
+$yform->setValueField('text', [CustomerAddress::ZIP, Warehouse::getLabel('address_zip'), '', '0']);
+$yform->setValidateField('empty', [CustomerAddress::ZIP, Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', [CustomerAddress::CITY, 'translate:warehouse_customer_address.city', '', '0']);
-$yform->setValidateField('empty', [CustomerAddress::CITY, 'translate:warehouse.validation.required']);
+$yform->setValueField('text', [CustomerAddress::CITY, Warehouse::getLabel('address_city'), '', '0']);
+$yform->setValidateField('empty', [CustomerAddress::CITY, Warehouse::getLabel('validation_required_fields')]);
 
-$yform->setValueField('text', [CustomerAddress::COUNTRY, 'translate:warehouse_customer_address.country', '', '0']);
+$yform->setValueField('text', [CustomerAddress::COUNTRY, Warehouse::getLabel('address_country'), '', '0']);
 
 // Validation for unique address (only for new records)
 if (!$dataset) {
@@ -59,7 +60,7 @@ if (!$dataset) {
 }
 
 // Submit button
-$yform->setValueField('submit', ['submit', 'translate:warehouse.save', '', 'no_db']);
+$yform->setValueField('submit', ['submit', Warehouse::getLabel('address_save'), '', 'no_db']);
 
 // Action: save to database
 if ($dataset) {
@@ -75,6 +76,6 @@ if ($yform->objparams['form_show_submit']) {
     echo $form_output;
 } else {
     // Form was submitted successfully
-    echo '<div class="alert alert-success">' . rex_i18n::msg('warehouse.address.saved_successfully') . '</div>';
+    echo '<div class="alert alert-success">' . Warehouse::getLabel('address_saved_successfully') . '</div>';
     echo $form_output;
 }

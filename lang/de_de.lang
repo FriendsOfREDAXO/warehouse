@@ -655,9 +655,3 @@ warehouse.paypal.error_modal_close = Schließen
 warehouse.paypal.error_technical_details = Technische Details
 warehouse.paypal.error_create_order = Es gab ein Problem bei der Initialisierung der PayPal-Zahlung. Bitte versuchen Sie es erneut oder wählen Sie eine andere Zahlungsmethode.
 warehouse.paypal.error_capture_order = Ihre Zahlung konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut oder wählen Sie eine andere Zahlungsmethode.
-
-# Address Form Messages
-warehouse.save = Speichern
-warehouse.validation.required = Dieses Feld ist erforderlich.
-warehouse.ycom.not_logged_in = Sie müssen angemeldet sein, um diese Seite zu verwenden.
-warehouse.address.saved_successfully = Die Adresse wurde erfolgreich gespeichert.
