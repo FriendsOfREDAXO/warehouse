@@ -125,8 +125,8 @@ if (rex_addon::get('yform')->isAvailable()) {
     }
 
     // Install email templates for customer and seller
-    warehouse_install_email_template('wh_customer');
-    warehouse_install_email_template('wh_order');
+    warehouse_install_email_template('warehhouse_customer');
+    warehouse_install_email_template('warehhouse_order');
 }
 
 

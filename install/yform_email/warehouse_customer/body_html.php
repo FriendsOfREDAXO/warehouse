@@ -1,0 +1,29 @@
+<?php
+
+#####################################################################################
+#                                                                                   #
+# DIESES TEMPLATE NICHT VERÄNDERN, ES WIRD BEI UPDATES VON WAREHOUSE ZURÜCKGESETZT! #
+#                                                                                   #
+#####################################################################################
+
+/** @var rex_yform $yform */
+
+// Get order_id from form field value
+$order_id = 0;
+$order_id_field = $yform->getValueField('order_id');
+if ($order_id_field) {
+    $order_id = (int) $order_id_field->getValue();
+}
+
+// Get domain_id from form field value
+$domain_id = 0;
+$domain_id_field = $yform->getValueField('domain_id');
+if ($domain_id_field) {
+    $domain_id = (int) $domain_id_field->getValue();
+}
+
+
+echo rex_fragment::factory('warehouse/emails/order_customer.php')->parse([
+    'order_id' => $order_id,
+    'domain_id' => $domain_id,
+]);

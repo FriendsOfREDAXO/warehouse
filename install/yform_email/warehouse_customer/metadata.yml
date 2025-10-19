@@ -4,4 +4,4 @@ mail_from_name: 'REX_YFORM_DATA[field="email_from_name"]'
 mail_reply_to: ''
 mail_reply_to_name: ''
 subject: Bestellbestätigung
-attachments: agb_2019-08_warehouse.pdf
+attachments: ''
