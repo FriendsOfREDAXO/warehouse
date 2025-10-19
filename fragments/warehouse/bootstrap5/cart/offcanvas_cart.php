@@ -6,6 +6,7 @@ use FriendsOfRedaxo\Warehouse\Cart;
 use FriendsOfRedaxo\Warehouse\Domain;
 use FriendsOfRedaxo\Warehouse\Shipping;
 use FriendsOfRedaxo\Warehouse\Warehouse;
+use FriendsOfRedaxo\Warehouse\Media;
 
 $cart = Cart::create();
 $cart_items = $cart->getItems();
@@ -30,9 +31,9 @@ $domain = Domain::getCurrent();
 							<?php if (isset($item['image']) && $item['image']) { ?>
 							<a
 								href="<?= rex_getUrl('', '', ['warehouse-article-id' => $item['article_id']]) ?>">
-								<img src="<?= $item['image'] ?>"
-									alt="<?= $item['name'] ?>"
-									class="img-fluid">
+								<img src="<?= htmlspecialchars($item['image']) ?>" 
+									alt="<?= htmlspecialchars($item['name']) ?>" 
+									class="img-fluid" />
 							</a>
 							<?php } ?>
 						</div>
