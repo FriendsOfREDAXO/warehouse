@@ -69,13 +69,7 @@ if ($dataset) {
     $yform->setActionField('db', ['rex_warehouse_customer_address']);
 }
 
-// Show success message if form was submitted successfully
-$form_output = $yform->getForm();
+// Show success message only when form is successfully saved
+$yform->setActionField('showtext', [Warehouse::getLabel('address_saved_successfully'), '<div class="alert alert-success">', '</div>', '0']);
 
-if ($yform->objparams['form_show_submit']) {
-    echo $form_output;
-} else {
-    // Form was submitted successfully
-    echo '<div class="alert alert-success">' . Warehouse::getLabel('address_saved_successfully') . '</div>';
-    echo $form_output;
-}
+echo $yform->getForm();
