@@ -647,3 +647,9 @@ warehouse.paypal.error_modal_close = Close
 warehouse.paypal.error_technical_details = Technical Details
 warehouse.paypal.error_create_order = There was a problem initializing the PayPal payment. Please try again or choose a different payment method.
 warehouse.paypal.error_capture_order = Your payment could not be completed. Please try again or choose a different payment method.
+
+# Address Form Messages
+warehouse.save = Save
+warehouse.validation.required = This field is required.
+warehouse.ycom.not_logged_in = You must be logged in to use this page.
+warehouse.address.saved_successfully = The address has been saved successfully.
