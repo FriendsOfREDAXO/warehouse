@@ -3,9 +3,6 @@
 /** @var rex_fragment $this */
 
 use FriendsOfRedaxo\Warehouse\CustomerAddress;
-use rex_ycom_auth;
-use rex_yform;
-use rex_yform_manager_table;
 
 // Get current logged-in YCom user
 $current_ycom_user = rex_ycom_auth::getUser();
