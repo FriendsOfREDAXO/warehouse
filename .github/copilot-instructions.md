@@ -436,9 +436,37 @@ Alle Frontend-Fragmente befinden sich in `/fragments/warehouse/bootstrap5/` und 
    echo $fragment->parse('warehouse/bootstrap5/article/details.php');
    ```
 
-6. **Labels und Texte** - Über `Warehouse::getLabel('key')` oder `rex_i18n::msg('key')`
-   * Konfigurierbar in "Settings → Label"
+6. **Labels und Texte - Wichtig: Unterschiedliche Methoden für Frontend und Backend!**
+   
+   **Frontend (Fragmente in `/fragments/warehouse/bootstrap5/` und E-Mails in `/fragments/warehouse/emails/`)**:
+   * **Verwende AUSSCHLIESSLICH** `Warehouse::getLabel('key')`
+   * Konfigurierbar in "Settings → Label" im Backend
    * Unterstützt Multi-Language via Sprog
+   * Beispiele:
+     ```php
+     <?= Warehouse::getLabel('cart') ?>
+     <?= Warehouse::getLabel('checkout') ?>
+     <?= Warehouse::getLabel('add_to_cart') ?>
+     ```
+   
+   **Backend (Seiten in `/pages/`, YForm-Konfigurationen, Backend-Fragmente)**:
+   * **Verwende** `rex_i18n::msg('key')` für direkte Übersetzungen
+   * **Oder** `translate:key` Placeholder in YForm-Feldern
+   * Übersetzungen in `/lang/*.lang` Dateien (z.B. `de_de.lang`, `en_gb.lang`)
+   * Beispiele:
+     ```php
+     // In Backend-Seiten:
+     $field->setLabel(rex_i18n::msg('warehouse.settings.payment.store_name'));
+     echo rex_view::title(rex_i18n::msg('warehouse.title'));
+     
+     // In YForm-Konfigurationen (z.B. settings.shipping.php):
+     if (strpos($label, 'translate:') === 0) {
+         $label = substr($label, strlen('translate:'));
+         $label = rex_i18n::msg($label);
+     }
+     ```
+   
+   **Wichtig**: Diese Trennung ist essentiell, da Frontend-Labels dynamisch vom Shop-Betreiber angepasst werden können, während Backend-Texte fest übersetzt sind.
 
 7. **Preisformatierung** - `Warehouse::formatCurrency($price)` für konsistente Währungsdarstellung
 
@@ -619,6 +647,36 @@ Bei der Entwicklung von Funktionalitäten und beim Lösen von Bugs:
    - Nutze YForm/YOrm für Datenbankzugriffe (verhindert SQL-Injection)
    - Validiere alle Benutzereingaben
    - Verwende `rex_csrf_token::factory()` für CSRF-Schutz
+
+7. **Sprachunterstützung (Language Support) - KRITISCH**:
+   
+   **Frontend und E-Mails - NUR `Warehouse::getLabel()`**:
+   - In allen Fragmenten unter `/fragments/warehouse/bootstrap5/`
+   - In allen E-Mail-Templates unter `/fragments/warehouse/emails/`
+   - **Niemals** `rex_i18n::msg()` im Frontend verwenden!
+   - Grund: Frontend-Labels sind vom Shop-Betreiber anpassbar (Settings → Label)
+   
+   **Backend - NUR `rex_i18n::msg()` oder `translate:` Placeholder**:
+   - In allen Backend-Seiten unter `/pages/`
+   - In Backend-Fragmenten unter `/fragments/warehouse/backend/`
+   - In YForm-Konfigurationen: `translate:key` Placeholder
+   - **Niemals** `Warehouse::getLabel()` im Backend verwenden!
+   - Übersetzungen in `/lang/*.lang` Dateien
+   
+   **Beispiele**:
+   ```php
+   // ✅ RICHTIG - Frontend Fragment:
+   <h2><?= Warehouse::getLabel('cart_title') ?></h2>
+   
+   // ❌ FALSCH - Frontend Fragment:
+   <h2><?= rex_i18n::msg('warehouse.cart_title') ?></h2>
+   
+   // ✅ RICHTIG - Backend Seite:
+   $field->setLabel(rex_i18n::msg('warehouse.settings.payment.store_name'));
+   
+   // ❌ FALSCH - Backend Seite:
+   $field->setLabel(Warehouse::getLabel('store_name'));
+   ```
 
 ### Distribution
 
