@@ -3,7 +3,6 @@
 
 /** @var rex_fragment $this */
 use FriendsOfRedaxo\Warehouse\Order;
-use rex_yform_manager_collection;
 
 /** @var rex_yform_manager_collection $orders */
 $orders = $this->getVar('orders');
