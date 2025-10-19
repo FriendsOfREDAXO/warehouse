@@ -6,6 +6,7 @@ use FriendsOfRedaxo\Warehouse\Cart;
 use FriendsOfRedaxo\Warehouse\Customer;
 use FriendsOfRedaxo\Warehouse\Warehouse;
 use FriendsOfRedaxo\Warehouse\Session;
+use FriendsOfRedaxo\Warehouse\Media;
 
 ?>
 <?php
@@ -32,7 +33,13 @@ $shipping_data = Session::getShippingAddressData();
                 <div class="row align-items-center g-0">
                     <div class="col-auto">
                         <?php if (isset($item['image']) && $item['image']) : ?>
-                        <img src="<?= rex_url::media($item['image']) ?>" alt="<?= htmlspecialchars(html_entity_decode($item['name']), ENT_QUOTES, 'UTF-8') ?>" class="img-fluid" style="max-width: 80px;">
+                        <?php
+                        $media = new Media(rex_url::media($item['image']));
+                        $media->setProfile('warehouse-cart')
+                            ->setAlt(html_entity_decode($item['name']))
+                            ->setAttribute(['class' => 'img-fluid', 'style' => 'max-width: 80px;']);
+                        echo $media->getImg();
+                        ?>
                         <?php endif ?>
                     </div>
                     <div class="col">

@@ -5,6 +5,7 @@
 use FriendsOfRedaxo\Warehouse\Warehouse;
 use FriendsOfRedaxo\Warehouse\Cart;
 use FriendsOfRedaxo\Warehouse\Shipping;
+use FriendsOfRedaxo\Warehouse\Media;
 
 $cart = Cart::create();
 $cart_items = $cart->getItems();
@@ -61,10 +62,15 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 									<?php if (isset($item['image']) && $item['image']) : ?>
 									<a class=""
 										href="<?= rex_getUrl('', '', ['warehouse-article-id'=>$item['article_id']]) ?>">
-										<figure class=""><img
-												src="/images/warehouse-cart-article/<?= $item['image'] ?>"
-												alt="<?= $item['name'] ?>"
-												class="img-fluid"></figure>
+										<figure class="">
+											<?php
+											$media = new Media('/images/warehouse-cart-article/' . $item['image']);
+											$media->setProfile('warehouse-cart')
+												->setAlt($item['name'])
+												->setAttribute(['class' => 'img-fluid']);
+											echo $media->getImg();
+											?>
+										</figure>
 									</a>
 									<?php endif ?>
 								</div>

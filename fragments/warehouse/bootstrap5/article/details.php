@@ -4,6 +4,7 @@ use FriendsOfRedaxo\Warehouse\Article;
 use FriendsOfRedaxo\Warehouse\ArticleVariant;
 use FriendsOfRedaxo\Warehouse\Category;
 use FriendsOfRedaxo\Warehouse\Warehouse;
+use FriendsOfRedaxo\Warehouse\Media;
 
 /** @var rex_fragment $this */
 $article = $this->getVar('article');
@@ -36,9 +37,13 @@ if (Warehouse::isBulkPricesEnabled()) {
 	<div class="col-12 col-md-4">
 		<div class="card-body p-0">
 			<?php if ($article->getImageAsMedia()) : ?>
-			<img src="warehouse-article<?= $article->getImageAsMedia()->getUrl() ?>"
-				class="img-fluid"
-				alt="<?= htmlspecialchars($article->getName() ?? '') ?>">
+			<?php
+			$media = new Media($article->getImageAsMedia()->getUrl());
+			$media->setProfile('warehouse-article-details')
+				->setAlt($article->getName() ?? '')
+				->setAttribute(['class' => 'img-fluid']);
+			echo $media->getImg();
+			?>
 			<?php endif; ?>
 		</div>
 	</div>

@@ -5,6 +5,7 @@
 
 use FriendsOfRedaxo\Warehouse\Category;
 use FriendsOfRedaxo\Warehouse\Article;
+use FriendsOfRedaxo\Warehouse\Media;
 
 /** @var Category|null $category */
 $category = $this->getVar('category');
@@ -35,9 +36,13 @@ $articles = $category->getArticles('active', 48, 0);
 				<!-- Image column -->
 				<div class="col-12 col-md-4">
 					<a href="<?= $link; ?>">
-						<img src="<?= $imageUrl ?>"
-							class="img-fluid rounded-start w-100"
-							alt="<?= htmlspecialchars($article->getName() ?? '') ?>">
+						<?php
+						$media = new Media($imageUrl);
+						$media->setProfile('warehouse-article-list')
+							->setAlt($article->getName() ?? '')
+							->setAttribute(['class' => 'img-fluid rounded-start w-100']);
+						echo $media->getImg();
+						?>
 					</a>
 				</div>
 				<!-- Content column -->

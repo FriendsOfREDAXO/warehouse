@@ -4,6 +4,7 @@
 use FriendsOfRedaxo\Warehouse\Article;
 use FriendsOfRedaxo\Warehouse\ArticleVariant;
 use FriendsOfRedaxo\Warehouse\Warehouse;
+use FriendsOfRedaxo\Warehouse\Media;
 
 /** @var Article $article */
 $article = $this->getVar('article');
@@ -14,9 +15,13 @@ $article = $this->getVar('article');
 		<h2><?= htmlspecialchars($article->getCategory()->getName() ?? '') ?>
 		</h2>
 		<?php if ($article->getCategory()?->getImage()) : ?>
-		<img src="warehouse-article/<?= rex_url::media($article->getCategory()->getImage()) ?>"
-			class="img-fluid"
-			alt="<?= htmlspecialchars($article->getCategory()->getName() ?? '') ?>">
+		<?php
+		$media = new Media(rex_url::media($article->getCategory()->getImage()));
+		$media->setProfile('warehouse-article-details')
+			->setAlt($article->getCategory()->getName() ?? '')
+			->setAttribute(['class' => 'img-fluid']);
+		echo $media->getImg();
+		?>
 		<?php endif ?>
 		<?= $article->getCategory()?->getText() ?>
 	</div>
@@ -35,9 +40,13 @@ $article = $this->getVar('article');
 				<a href="<?= rex_url::media($item->getImage()) ?>"
 					data-caption="<?= htmlspecialchars($item->getName()) ?>"
 					class="lightboxlink">
-					<img src="warehouse-article/<?= rex_url::media($item->getImage()) ?>"
-						alt="<?= htmlspecialchars($item->getName()) ?>"
-						class="img-fluid warehouse_prod_image">
+					<?php
+					$media = new Media(rex_url::media($item->getImage()));
+					$media->setProfile('warehouse-article-details')
+						->setAlt($item->getName())
+						->setAttribute(['class' => 'img-fluid warehouse_prod_image']);
+					echo $media->getImg();
+					?>
 				</a>
 				<?php endif ?>
 			</div>
