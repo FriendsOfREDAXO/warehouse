@@ -5,6 +5,7 @@
 use FriendsOfRedaxo\Warehouse\Category;
 use FriendsOfRedaxo\Warehouse\Article;
 use FriendsOfRedaxo\Warehouse\ArticleVariant;
+use FriendsOfRedaxo\Warehouse\Media;
 
 $categories = Category::findRootCategories('active');
 ?>
@@ -34,10 +35,11 @@ foreach ($categories as $category) {
 		<div class="col-sm-6 col-md-4 col-lg-3">
 			<div class="card">
 				<a href="<?= $article->getUrl() ?>">
-					<?php if ($article->getImageAsMedia()) { ?>
-					<img class="img-fluid card-img-top"
-						src="warehouse-category-list/<?= $article->getImageAsMedia()->getUrl(); ?>">
-					<?php } ?>
+					<?php if ($article->getImage() && $media = Media::get($article->getImage())): ?>
+					<?= $media->setAlt($article->getName())
+						->setClass('img-fluid card-img-top')
+						->getImg('warehouse-category-list') ?>
+					<?php endif; ?>
 				</a>
 				<div class="card-body">
 					<a href="<?= $article->getUrl(); ?>"

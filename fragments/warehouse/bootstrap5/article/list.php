@@ -5,6 +5,7 @@
 
 use FriendsOfRedaxo\Warehouse\Category;
 use FriendsOfRedaxo\Warehouse\Article;
+use FriendsOfRedaxo\Warehouse\Media;
 
 /** @var Category|null $category */
 $category = $this->getVar('category');
@@ -27,7 +28,6 @@ $articles = $category->getArticles('active', 48, 0);
         $link = rex_getUrl('', '', ['warehouse-article-id' => $article->getId()]);
 	    $image = $article->getImage();
 	    $teaser = $article->getShortText();
-	    $imageUrl = $article->getImageAsMedia()->getUrl() ?? '';
 	    ?>
 	<div class="col">
 		<div class="card h-100">
@@ -35,9 +35,11 @@ $articles = $category->getArticles('active', 48, 0);
 				<!-- Image column -->
 				<div class="col-12 col-md-4">
 					<a href="<?= $link; ?>">
-						<img src="<?= $imageUrl ?>"
-							class="img-fluid rounded-start w-100"
-							alt="<?= htmlspecialchars($article->getName() ?? '') ?>">
+						<?php if ($image && $media = Media::get($image)): ?>
+						<?= $media->setAlt($article->getName() ?? '')
+							->setClass('img-fluid rounded-start w-100')
+							->getImg('warehouse-article-list') ?>
+						<?php endif; ?>
 					</a>
 				</div>
 				<!-- Content column -->
