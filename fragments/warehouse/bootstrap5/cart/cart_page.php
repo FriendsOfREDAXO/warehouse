@@ -50,7 +50,8 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 
 				<?php foreach ($cart_items as $item_key => $item) : ?>
 				<!-- Item -->
-				<div class="card-body" data-warehouse-item-key="<?= $item_key ?>">
+				<div class="card-body"
+					data-warehouse-item-key="<?= $item_key ?>">
 					<div class="row row-cols-1 row-cols-md-2 align-items-center">
 
 						<!-- Product cell-->
@@ -61,7 +62,7 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 									<a class=""
 										href="<?= rex_getUrl('', '', ['warehouse-article-id'=>$item['article_id']]) ?>">
 										<figure class=""><img
-												src="/images/products/<?= $item['image'] ?>"
+												src="/images/warehouse-cart-article/<?= $item['image'] ?>"
 												alt="<?= $item['name'] ?>"
 												class="img-fluid"></figure>
 									</a>
@@ -75,7 +76,8 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 										href="<?= rex_getUrl('', '', ['warehouse-article-id'=>$item['article_id']]) ?>"><?= html_entity_decode($item['name']) ?>
 									</a>
 									<?php if ($item['type'] === 'variant'): ?>
-										<small class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
+									<small
+										class="text-muted d-block"><?= Warehouse::getLabel('product_variant') ?></small>
 									<?php endif; ?>
 								</div>
 							</div>
@@ -92,27 +94,25 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 									</div>
 								</div>
 								<div class="col">
-									<button type="button" class="btn btn-sm" 
-										data-warehouse-cart-quantity="modify" 
-										data-warehouse-mode="-" 
-										data-warehouse-article-id="<?= $item['article_id'] ?>" 
-										data-warehouse-variant-id="<?= $item['variant_id'] ?>" 
+									<button type="button" class="btn btn-sm" data-warehouse-cart-quantity="modify"
+										data-warehouse-mode="-"
+										data-warehouse-article-id="<?= $item['article_id'] ?>"
+										data-warehouse-variant-id="<?= $item['variant_id'] ?>"
 										data-warehouse-amount="1">
 										<i class="bi bi-dash"></i>
 									</button>
-									<input class="form-control" 
-										id="product-<?= $item_key ?>" 
+									<input class="form-control"
+										id="product-<?= $item_key ?>"
 										type="text" maxlength="3"
 										value="<?= $item['amount'] ?>"
 										data-warehouse-cart-input
-										data-warehouse-article-id="<?= $item['article_id'] ?>" 
+										data-warehouse-article-id="<?= $item['article_id'] ?>"
 										data-warehouse-variant-id="<?= $item['variant_id'] ?>"
 										data-warehouse-item-key="<?= $item_key ?>">
-									<button type="button" class="btn btn-sm" 
-										data-warehouse-cart-quantity="modify" 
-										data-warehouse-mode="+" 
-										data-warehouse-article-id="<?= $item['article_id'] ?>" 
-										data-warehouse-variant-id="<?= $item['variant_id'] ?>" 
+									<button type="button" class="btn btn-sm" data-warehouse-cart-quantity="modify"
+										data-warehouse-mode="+"
+										data-warehouse-article-id="<?= $item['article_id'] ?>"
+										data-warehouse-variant-id="<?= $item['variant_id'] ?>"
 										data-warehouse-amount="1">
 										<i class="bi bi-plus"></i>
 									</button>
@@ -121,15 +121,15 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 									<div class="text-muted d-md-none">
 										<?= Warehouse::getLabel('total') ?>
 									</div>
-									<div data-warehouse-item-total="<?= $item_key ?>">
+									<div
+										data-warehouse-item-total="<?= $item_key ?>">
 										<?= Warehouse::formatCurrency($item['total']) ?>
 									</div>
 								</div>
 								<div class="col">
-									<button type="button" class="btn btn-link text-danger" 
-										data-warehouse-cart-delete
-										data-warehouse-article-id="<?= $item['article_id'] ?>" 
-										data-warehouse-variant-id="<?= $item['variant_id'] ?>" 
+									<button type="button" class="btn btn-link text-danger" data-warehouse-cart-delete
+										data-warehouse-article-id="<?= $item['article_id'] ?>"
+										data-warehouse-variant-id="<?= $item['variant_id'] ?>"
 										data-warehouse-confirm="<?= rex_i18n::msg('warehouse.cart_remove_confirm', '') ?>"
 										data-bs-toggle="tooltip" data-bs-title="Remove">
 										<i class="bi bi-x-circle"></i>
@@ -164,7 +164,9 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 						</div>
 					</div>
 					<div class="row">
-						<div class="col text-muted"><?= Warehouse::getLabel('shipping_costs') ?></div>
+						<div class="col text-muted">
+							<?= Warehouse::getLabel('shipping_costs') ?>
+						</div>
 						<div class="col text" data-warehouse-cart-shipping>
 							<?= Warehouse::formatCurrency((float) Shipping::getCost()) ?>
 						</div>
@@ -172,7 +174,8 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 				</div>
 				<div class="card-body">
 					<div class="row align-items-center">
-						<div class="col text-muted"><?= Warehouse::getLabel('total') ?>
+						<div class="col text-muted">
+							<?= Warehouse::getLabel('total') ?>
 							(<?= Warehouse::getPriceInputMode() === 'gross' ? 'Brutto' : 'Netto' ?>)
 						</div>
 						<div class="col text-lead fw-bolder" data-warehouse-cart-total>
@@ -192,4 +195,6 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 
 	</div>
 </div>
-<script src="<?= rex_url::addonAssets('warehouse', 'js/init.js') ?>" nonce="<?= rex_response::getNonce() ?>"></script>
+<script
+	src="<?= rex_url::addonAssets('warehouse', 'js/init.js') ?>"
+	nonce="<?= rex_response::getNonce() ?>"></script>

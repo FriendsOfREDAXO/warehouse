@@ -118,7 +118,7 @@ class Article extends rex_yform_manager_dataset
 
     /* Kategorie */
     /** @api */
-    public function getCategory() : ?rex_yform_manager_dataset
+    public function getCategory() : ?Category
     {
         return $this->getRelatedDataset(self::CATEGORY_ID);
     }
