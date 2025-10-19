@@ -32,13 +32,11 @@ $shipping_data = Session::getShippingAddressData();
             <td>
                 <div class="row align-items-center g-0">
                     <div class="col-auto">
-                        <?php if (isset($item['image']) && $item['image']) : ?>
-                        <?php
-                        $media = new Media(rex_url::media($item['image']));
-                        $media->setAlt(html_entity_decode($item['name']))
-                            ->setAttribute(['class' => 'img-fluid', 'style' => 'max-width: 80px;']);
-                        echo $media->getImg();
-                        ?>
+                        <?php if (isset($item['image']) && $item['image'] && $media = Media::get($item['image'])) : ?>
+                        <?= $media->setAlt(html_entity_decode($item['name']))
+                            ->setAttribute(['style' => 'max-width: 80px;'])
+                            ->setClass('img-fluid')
+                            ->getImg() ?>
                         <?php endif ?>
                     </div>
                     <div class="col">

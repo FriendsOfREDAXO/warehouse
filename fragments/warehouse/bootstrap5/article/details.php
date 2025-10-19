@@ -36,14 +36,10 @@ if (Warehouse::isBulkPricesEnabled()) {
 <div class="row g-4" data-warehouse-article-detail>
 	<div class="col-12 col-md-4">
 		<div class="card-body p-0">
-			<?php if ($article->getImageAsMedia()) : ?>
-			<?php
-			$media = new Media($article->getImageAsMedia()->getUrl());
-			$media->setProfile('warehouse-article-details')
-				->setAlt($article->getName() ?? '')
-				->setAttribute(['class' => 'img-fluid']);
-			echo $media->getImg();
-			?>
+			<?php if ($article->getImage() && $media = Media::get($article->getImage())): ?>
+			<?= $media->setAlt($article->getName() ?? '')
+				->setClass('img-fluid')
+				->getImg('warehouse-article-details') ?>
 			<?php endif; ?>
 		</div>
 	</div>

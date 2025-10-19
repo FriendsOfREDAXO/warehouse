@@ -31,12 +31,9 @@ $domain = Domain::getCurrent();
 							<?php if (isset($item['image']) && $item['image']) { ?>
 							<a
 								href="<?= rex_getUrl('', '', ['warehouse-article-id' => $item['article_id']]) ?>">
-								<?php
-								$media = new Media($item['image']);
-								$media->setAlt($item['name'])
-									->setAttribute(['class' => 'img-fluid']);
-								echo $media->getImg();
-								?>
+								<img src="<?= htmlspecialchars($item['image']) ?>" 
+									alt="<?= htmlspecialchars($item['name']) ?>" 
+									class="img-fluid" />
 							</a>
 							<?php } ?>
 						</div>

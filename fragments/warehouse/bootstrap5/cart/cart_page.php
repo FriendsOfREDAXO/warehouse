@@ -63,12 +63,9 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 									<a class=""
 										href="<?= rex_getUrl('', '', ['warehouse-article-id'=>$item['article_id']]) ?>">
 										<figure class="">
-											<?php
-											$media = new Media('/images/warehouse-cart-article/' . $item['image']);
-											$media->setAlt($item['name'])
-												->setAttribute(['class' => 'img-fluid']);
-											echo $media->getImg();
-											?>
+											<img src="<?= htmlspecialchars($item['image']) ?>" 
+												alt="<?= htmlspecialchars($item['name']) ?>" 
+												class="img-fluid" />
 										</figure>
 									</a>
 									<?php endif ?>

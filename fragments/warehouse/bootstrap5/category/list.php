@@ -35,15 +35,11 @@ foreach ($categories as $category) {
 		<div class="col-sm-6 col-md-4 col-lg-3">
 			<div class="card">
 				<a href="<?= $article->getUrl() ?>">
-					<?php if ($article->getImageAsMedia()) { ?>
-					<?php
-					$media = new Media($article->getImageAsMedia()->getUrl());
-					$media->setProfile('warehouse-category-list')
-						->setAlt($article->getName())
-						->setAttribute(['class' => 'img-fluid card-img-top']);
-					echo $media->getImg();
-					?>
-					<?php } ?>
+					<?php if ($article->getImage() && $media = Media::get($article->getImage())): ?>
+					<?= $media->setAlt($article->getName())
+						->setClass('img-fluid card-img-top')
+						->getImg('warehouse-category-list') ?>
+					<?php endif; ?>
 				</a>
 				<div class="card-body">
 					<a href="<?= $article->getUrl(); ?>"

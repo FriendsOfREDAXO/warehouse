@@ -14,14 +14,10 @@ $article = $this->getVar('article');
 	<div class="col-12">
 		<h2><?= htmlspecialchars($article->getCategory()->getName() ?? '') ?>
 		</h2>
-		<?php if ($article->getCategory()?->getImage()) : ?>
-		<?php
-		$media = new Media(rex_url::media($article->getCategory()->getImage()));
-		$media->setProfile('warehouse-article-details')
-			->setAlt($article->getCategory()->getName() ?? '')
-			->setAttribute(['class' => 'img-fluid']);
-		echo $media->getImg();
-		?>
+		<?php if ($article->getCategory()?->getImage() && $media = Media::get($article->getCategory()->getImage())): ?>
+		<?= $media->setAlt($article->getCategory()->getName() ?? '')
+			->setClass('img-fluid')
+			->getImg('warehouse-article-details') ?>
 		<?php endif ?>
 		<?= $article->getCategory()?->getText() ?>
 	</div>
@@ -36,17 +32,13 @@ $article = $this->getVar('article');
 				</h3>
 			</div>
 			<div>
-				<?php if ($item->getImage()) : ?>
+				<?php if ($item->getImage() && $media = Media::get($item->getImage())): ?>
 				<a href="<?= rex_url::media($item->getImage()) ?>"
 					data-caption="<?= htmlspecialchars($item->getName()) ?>"
 					class="lightboxlink">
-					<?php
-					$media = new Media(rex_url::media($item->getImage()));
-					$media->setProfile('warehouse-article-details')
-						->setAlt($item->getName())
-						->setAttribute(['class' => 'img-fluid warehouse_prod_image']);
-					echo $media->getImg();
-					?>
+					<?= $media->setAlt($item->getName())
+						->setClass('img-fluid warehouse_prod_image')
+						->getImg('warehouse-article-details') ?>
 				</a>
 				<?php endif ?>
 			</div>

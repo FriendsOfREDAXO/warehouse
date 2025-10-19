@@ -28,7 +28,6 @@ $articles = $category->getArticles('active', 48, 0);
         $link = rex_getUrl('', '', ['warehouse-article-id' => $article->getId()]);
 	    $image = $article->getImage();
 	    $teaser = $article->getShortText();
-	    $imageUrl = $article->getImageAsMedia()->getUrl() ?? '';
 	    ?>
 	<div class="col">
 		<div class="card h-100">
@@ -36,13 +35,11 @@ $articles = $category->getArticles('active', 48, 0);
 				<!-- Image column -->
 				<div class="col-12 col-md-4">
 					<a href="<?= $link; ?>">
-						<?php
-						$media = new Media($imageUrl);
-						$media->setProfile('warehouse-article-list')
-							->setAlt($article->getName() ?? '')
-							->setAttribute(['class' => 'img-fluid rounded-start w-100']);
-						echo $media->getImg();
-						?>
+						<?php if ($image && $media = Media::get($image)): ?>
+						<?= $media->setAlt($article->getName() ?? '')
+							->setClass('img-fluid rounded-start w-100')
+							->getImg('warehouse-article-list') ?>
+						<?php endif; ?>
 					</a>
 				</div>
 				<!-- Content column -->
