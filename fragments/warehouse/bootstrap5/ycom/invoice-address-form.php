@@ -23,7 +23,7 @@ $dataset = rex_yform_manager_table::get('rex_warehouse_customer_address')
 
 $yform = new rex_yform();
 $yform->setObjectparams('form_name', 'table-rex_warehouse_customer_address');
-$yform->setObjectparams('form_action', rex_getUrl('REX_ARTICLE_ID'));
+$yform->setObjectparams('form_action', rex_getUrl(rex_article::getCurrentId()));
 $yform->setObjectparams('form_ytemplate', 'bootstrap5,bootstrap');
 $yform->setObjectparams('form_showformafterupdate', 1);
 $yform->setObjectparams('real_field_names', true);
