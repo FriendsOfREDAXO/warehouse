@@ -59,6 +59,34 @@ class Order extends rex_api_function
 {
     protected $published = true;
 
+    /**
+     * Country dial codes for phone number formatting
+     * Maps ISO 3166-1 alpha-2 country codes to international dial codes (without +)
+     * Extend this array to support additional countries
+     */
+    private const COUNTRY_DIAL_CODES = [
+        'DE' => '49',  // Germany
+        'AT' => '43',  // Austria
+        'CH' => '41',  // Switzerland
+        'FR' => '33',  // France
+        'IT' => '39',  // Italy
+        'ES' => '34',  // Spain
+        'GB' => '44',  // United Kingdom
+        'US' => '1',   // United States
+        'CA' => '1',   // Canada
+        'NL' => '31',  // Netherlands
+        'BE' => '32',  // Belgium
+        'PL' => '48',  // Poland
+        'CZ' => '420', // Czech Republic
+        'DK' => '45',  // Denmark
+        'SE' => '46',  // Sweden
+        'NO' => '47',  // Norway
+        'FI' => '358', // Finland
+        'GR' => '30',  // Greece
+        'PT' => '351', // Portugal
+        'IE' => '353', // Ireland
+    ];
+
     public function execute()
     {
 
@@ -163,9 +191,14 @@ class Order extends rex_api_function
         // Build PayPal items from cart
         $paypal_items = [];
         foreach ($cart_items as $item) {
-            // Ensure price is positive and properly formatted
-            $itemPrice = max(0, floatval($item['price']));
-            $itemQuantity = max(1, intval($item['amount']));
+            // Validate and ensure price is positive and properly formatted
+            $itemPrice = isset($item['price']) ? max(0, floatval($item['price'])) : 0;
+            
+            // Validate quantity - ensure it's a positive integer
+            $itemQuantity = 1; // Default to 1
+            if (isset($item['amount']) && is_numeric($item['amount'])) {
+                $itemQuantity = max(1, intval($item['amount']));
+            }
             
             $itemBuilder = ItemBuilder::init(
                 $item['name'],
@@ -427,7 +460,7 @@ class Order extends rex_api_function
             return null;
         }
         
-        // For German numbers starting with 0, add +49 country code
+        // For national numbers starting with 0, add country code based on store locale
         // This is a fallback - ideally the country code should be stored with customer data
         $storeCountryCode = PayPal::getStoreCountryCode();
         $countryDialCode = self::getCountryDialCode($storeCountryCode);
@@ -453,25 +486,6 @@ class Order extends rex_api_function
      */
     private static function getCountryDialCode(string $countryCode): ?string
     {
-        // Common country dial codes - extend as needed
-        $dialCodes = [
-            'DE' => '49',  // Germany
-            'AT' => '43',  // Austria
-            'CH' => '41',  // Switzerland
-            'FR' => '33',  // France
-            'IT' => '39',  // Italy
-            'ES' => '34',  // Spain
-            'GB' => '44',  // United Kingdom
-            'US' => '1',   // United States
-            'NL' => '31',  // Netherlands
-            'BE' => '32',  // Belgium
-            'PL' => '48',  // Poland
-            'CZ' => '420', // Czech Republic
-            'DK' => '45',  // Denmark
-            'SE' => '46',  // Sweden
-            'NO' => '47',  // Norway
-        ];
-        
-        return $dialCodes[strtoupper($countryCode)] ?? null;
+        return self::COUNTRY_DIAL_CODES[strtoupper($countryCode)] ?? null;
     }
 }
