@@ -243,3 +243,34 @@ Beispiel:
 $dataset = Customer::get($id);
 $shippingAddress = $dataset->getShippingAddress();
 ```
+
+## Account Dashboard Fragment
+
+Das Account-Dashboard-Fragment (`warehouse/bootstrap5/account.php`) bietet eine Übersicht des Kundenkontos mit folgenden Karten:
+
+### Verwendung
+
+```php
+// Im REDAXO-Artikel oder Modul:
+$fragment = new rex_fragment();
+echo $fragment->parse('warehouse/bootstrap5/account.php');
+```
+
+### Angezeigte Informationen
+
+Das Fragment zeigt folgende Karten an:
+
+1. **Begrüßung**: Zeigt den Namen des eingeloggten Benutzers
+2. **Stammdaten**: Name und E-Mail-Adresse aus rex_ycom_user
+3. **Meine Bestellungen**: Die aktuellste Bestellung mit Link zur Bestellübersicht (wenn eine ORDER_ART_ID in der Domain konfiguriert ist)
+4. **Rechnungsadresse**: Die hinterlegte Rechnungsadresse mit Link zur Adressverwaltung (wenn eine ADDRESS_ART_ID in der Domain konfiguriert ist)
+5. **Lieferadresse**: Die hinterlegte Lieferadresse mit Link zur Adressverwaltung (wenn eine ADDRESS_ART_ID in der Domain konfiguriert ist)
+
+### Voraussetzungen
+
+- Der Benutzer muss eingeloggt sein (rex_ycom_auth::getUser())
+- Optional: Domain-Konfiguration mit ORDER_ART_ID und ADDRESS_ART_ID für die entsprechenden Links
+
+### Beispiel Bootstrap 5 Grid
+
+Das Fragment verwendet ein Bootstrap 5 Grid-Layout mit Cards für eine responsive Darstellung.
