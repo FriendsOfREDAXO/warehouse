@@ -263,7 +263,7 @@ foreach ($modules_dir as $mod_name) {
             $is_installed = true;
         }
     }
-    $content .= '<p><a class="btn btn-primary ' . ($is_installed ? '' : 'btn-save') . '" href="index.php?page=' . $this->getName() . '/setup&amp;install_module=' . md5($mod_name) . '" class="rex-button">' . $addon->i18n('warehouse.setup.module_button', $mod_name, $addon->i18n($is_installed ? 'warehouse.setup.module_update' : 'warehouse.setup.module_install')) . '</a></p>';
+    $content .= '<p><a class="btn btn-primary ' . ($is_installed ? '' : 'btn-save') . '" href="index.php?page=' . $this->getName() . '/settings/setup&amp;install_module=' . md5($mod_name) . '" class="rex-button">' . $addon->i18n('warehouse.setup.module_button', $mod_name, $addon->i18n($is_installed ? 'warehouse.setup.module_update' : 'warehouse.setup.module_install')) . '</a></p>';
 }
 
 $fragment = new rex_fragment();
@@ -283,7 +283,7 @@ foreach ($etpl_dir as $etpl_name) {
             $is_installed = true;
         }
     }
-    $content .= '<p><a class="btn btn-primary ' . ($is_installed ? '' : 'btn-save') . '" href="index.php?page=' . $this->getName() . '/setup&amp;install_yform_email=' . $etpl_name . '" class="rex-button">' . $addon->i18n('warehouse.setup.email_template_button', $etpl_name, $addon->i18n($is_installed ? 'warehouse.setup.module_update' : 'warehouse.setup.module_install')) . '</a></p>';
+    $content .= '<p><a class="btn btn-primary ' . ($is_installed ? '' : 'btn-save') . '" href="index.php?page=' . $this->getName() . '/settings/setup&amp;install_yform_email=' . $etpl_name . '" class="rex-button">' . $addon->i18n('warehouse.setup.email_template_button', $etpl_name, $addon->i18n($is_installed ? 'warehouse.setup.module_update' : 'warehouse.setup.module_install')) . '</a></p>';
 }
 
 $fragment = new rex_fragment();
