@@ -67,14 +67,13 @@ class Media
         }
 
         // In REDAXO wird das Bildprofil über die URL gesteuert
-        // Format: /media/profile_name/filename.jpg
+        // Format: profile_name/filename.jpg (wird vom Media Manager verarbeitet)
         // Das Profil kann später außerhalb des Addons konfiguriert werden
         $src = $this->path;
-        if ($this->profile && !empty($this->profile)) {
-            // Wenn ein Profil gesetzt ist, wird es in die URL eingebaut
+        if ($this->profile) {
+            // Wenn ein Profil gesetzt ist, wird es als Präfix vor den Pfad gesetzt
             // Dies ermöglicht die Nutzung des REDAXO Media Managers
-            // Die konkrete Implementierung hängt von der Media Manager Konfiguration ab
-            // Für jetzt wird das Profil als Platzhalter dokumentiert
+            $src = $this->profile . '/' . $this->path;
         }
 
         return '<img src="' . htmlspecialchars($src) . '"' . $attrString . ' />';

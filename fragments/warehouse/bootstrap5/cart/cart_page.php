@@ -65,8 +65,7 @@ $containerClass = ($containerClass === null || $containerClass === false) ? 'con
 										<figure class="">
 											<?php
 											$media = new Media('/images/warehouse-cart-article/' . $item['image']);
-											$media->setProfile('warehouse-cart')
-												->setAlt($item['name'])
+											$media->setAlt($item['name'])
 												->setAttribute(['class' => 'img-fluid']);
 											echo $media->getImg();
 											?>

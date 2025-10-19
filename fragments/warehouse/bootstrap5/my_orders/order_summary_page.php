@@ -35,8 +35,7 @@ $shipping_data = Session::getShippingAddressData();
                         <?php if (isset($item['image']) && $item['image']) : ?>
                         <?php
                         $media = new Media(rex_url::media($item['image']));
-                        $media->setProfile('warehouse-cart')
-                            ->setAlt(html_entity_decode($item['name']))
+                        $media->setAlt(html_entity_decode($item['name']))
                             ->setAttribute(['class' => 'img-fluid', 'style' => 'max-width: 80px;']);
                         echo $media->getImg();
                         ?>

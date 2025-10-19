@@ -33,8 +33,7 @@ $domain = Domain::getCurrent();
 								href="<?= rex_getUrl('', '', ['warehouse-article-id' => $item['article_id']]) ?>">
 								<?php
 								$media = new Media($item['image']);
-								$media->setProfile('warehouse-cart')
-									->setAlt($item['name'])
+								$media->setAlt($item['name'])
 									->setAttribute(['class' => 'img-fluid']);
 								echo $media->getImg();
 								?>
