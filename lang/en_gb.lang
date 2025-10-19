@@ -420,6 +420,17 @@ warehouse.settings.shipping_conditions_text = Shipping Cost Conditions
 warehouse.settings.shipping_conditions_text.notice = Text displayed below the shipping costs. E.g. "Free shipping from 50 Euro order value." or "Shipping costs staggered by weight."
 
 
+warehouse.settings.label_account_welcome = Welcome
+warehouse.settings.label_account_master_data = Master Data
+warehouse.settings.label_account_my_orders = My Orders
+warehouse.settings.label_account_latest_order = Latest Order
+warehouse.settings.label_account_no_orders = You have not placed any orders yet.
+warehouse.settings.label_account_view_all_orders = View All Orders
+warehouse.settings.label_account_no_billing_address = No billing address stored
+warehouse.settings.label_account_no_shipping_address = No shipping address stored
+warehouse.settings.label_account_edit_address = Edit Address
+warehouse.settings.label_account_login_required = Please log in to access your account.
+
 warehouse.settings.label_cart = Shopping Cart
 warehouse.settings.label_cart_empty = The shopping cart is empty.
 

@@ -71,6 +71,17 @@ $allFields = [
     ['label_customer_department', 'Abteilung', 'text'],
     ['label_customer_email', 'E-Mail', 'text'],
     ['label_customer_phone', 'Telefon', 'text'],
+    // account fields (text)
+    ['label_account_welcome', 'Willkommen', 'text'],
+    ['label_account_master_data', 'Stammdaten', 'text'],
+    ['label_account_my_orders', 'Meine Bestellungen', 'text'],
+    ['label_account_latest_order', 'Letzte Bestellung', 'text'],
+    ['label_account_no_orders', 'Sie haben noch keine Bestellungen aufgegeben.', 'text'],
+    ['label_account_view_all_orders', 'Alle Bestellungen anzeigen', 'text'],
+    ['label_account_no_billing_address', 'Keine Rechnungsadresse hinterlegt', 'text'],
+    ['label_account_no_shipping_address', 'Keine Lieferadresse hinterlegt', 'text'],
+    ['label_account_edit_address', 'Adresse bearbeiten', 'text'],
+    ['label_account_login_required', 'Bitte melden Sie sich an, um auf Ihr Konto zuzugreifen.', 'text'],
     // address fields (text)
     ['label_address_address', 'Adresse', 'text'],
     ['label_address_zip', 'PLZ', 'text'],
@@ -152,7 +163,7 @@ foreach ($allFields as [$name, $label, $type]) {
         $formFields['cart'][] = $field;
     } elseif (strpos($name, 'checkout_') !== false) {
         $formFields['checkout'][] = $field;
-    } elseif (strpos($name, 'customer_') !== false) {
+    } elseif (strpos($name, 'customer_') !== false || strpos($name, 'account_') !== false) {
         $formFields['customer'][] = $field;
     } elseif (strpos($name, 'address_') !== false) {
         $formFields['address'][] = $field;
