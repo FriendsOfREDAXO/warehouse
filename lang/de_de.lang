@@ -420,6 +420,17 @@ warehouse.settings.shipping_conditions_text = Versandkosten-Bedingungen
 warehouse.settings.shipping_conditions_text.notice = Text, der unter den Versandkosten angezeigt wird. Z.B. "Versandkostenfrei ab 50 Euro Bestellwert." oder "Versandkosten nach Gewicht gestaffelt."
 
 
+warehouse.settings.label_account_welcome = Willkommen
+warehouse.settings.label_account_master_data = Stammdaten
+warehouse.settings.label_account_my_orders = Meine Bestellungen
+warehouse.settings.label_account_latest_order = Letzte Bestellung
+warehouse.settings.label_account_no_orders = Sie haben noch keine Bestellungen aufgegeben.
+warehouse.settings.label_account_view_all_orders = Alle Bestellungen anzeigen
+warehouse.settings.label_account_no_billing_address = Keine Rechnungsadresse hinterlegt
+warehouse.settings.label_account_no_shipping_address = Keine Lieferadresse hinterlegt
+warehouse.settings.label_account_edit_address = Adresse bearbeiten
+warehouse.settings.label_account_login_required = Bitte melden Sie sich an, um auf Ihr Konto zuzugreifen.
+
 warehouse.settings.label_cart = Warenkorb 
 warehouse.settings.label_cart_empty = Der Warenkorb ist leer.
 
