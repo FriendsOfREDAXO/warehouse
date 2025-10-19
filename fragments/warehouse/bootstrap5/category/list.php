@@ -20,7 +20,8 @@ foreach ($categories as $category) {
 	<div class="row">
 		<div class="col-12">
 			<h2 class="mt-5 mb-2 fw-bold">
-				<a href="<?= $category?->getUrl() ?? '' ?>">
+				<a
+					href="<?= $category?->getUrl() ?? '' ?>">
 					<?= $category?->getName() ?? '' ?>
 				</a>
 			</h2>
@@ -35,7 +36,7 @@ foreach ($categories as $category) {
 				<a href="<?= $article->getUrl() ?>">
 					<?php if ($article->getImageAsMedia()) { ?>
 					<img class="img-fluid card-img-top"
-						src="<?= $article->getImageAsMedia()->getUrl(); ?>">
+						src="warehouse-category-list/<?= $article->getImageAsMedia()->getUrl(); ?>">
 					<?php } ?>
 				</a>
 				<div class="card-body">
