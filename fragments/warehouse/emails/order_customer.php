@@ -5,6 +5,11 @@ namespace FriendsOfRedaxo\Warehouse;
 /** @var rex_fragment $this */
 
 $order_id = $this->getVar('order_id', null);
+// Available for future use: domain settings and email sender information
+$domain_id = $this->getVar('domain_id', null);
+$email_from_email = $this->getVar('email_from_email', '');
+$email_from_name = $this->getVar('email_from_name', '');
+
 $order = Order::get($order_id);
 if (!$order) {
     throw new \Exception('Order not found for the given order ID: ' . $order_id);
@@ -29,11 +34,11 @@ if (!$order) {
         <b>E-Mail:</b> <a href="mailto:info@demo-firma.de">info@demo-firma.de</a>
     </p>
 
-    <?php if ($order->getPaymentId() == "paypal") : ?>
+    <?php if ('paypal' == $order->getPaymentId()) : ?>
         <p>Ihre Zahlung ist auf unserem PayPal-Konto eingegangen; wir werden nun Ihre Bestellung schnellstens auf den Weg zu Ihnen bringen.</p>
     <?php endif ?>
 
-    <?php if ($order->getPaymentId() == "prepayment") : ?>
+    <?php if ('prepayment' == $order->getPaymentId()) : ?>
         <p>Sobald wir Ihren Zahlungseingang auf unserem Konto feststellen, werden wir Ihre Bestellung schnellstens auf den Weg zu Ihnen bringen.</p>
     <?php endif ?>
 
@@ -42,14 +47,14 @@ if (!$order) {
     <p>Wir bestätigen Ihre Bestellung wie folgt:</p>
 
     <div style="margin: 20px 0; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
-        <?php echo Warehouse::getOrderAsHtml(); ?>
+        <?= Warehouse::getOrderAsHtml() ?>
     </div>
 
     <div style="margin: 20px 0; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
-        <?php echo Warehouse::getCustomerDataAsText(); ?>
+        <?= Warehouse::getCustomerDataAsText() ?>
     </div>
 
-    <?php if ($order->getPaymentId() == "prepayment") : ?>
+    <?php if ('prepayment' == $order->getPaymentId()) : ?>
         <p><b>Ihre gewünschte Zahlungsweise:</b> Vorkasse</p>
         <p style="font-size: 14px;">
             <b>Verwendungszweck:</b><br>

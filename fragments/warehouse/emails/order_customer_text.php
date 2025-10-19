@@ -5,6 +5,11 @@ namespace FriendsOfRedaxo\Warehouse;
 /** @var rex_fragment $this */
 
 $order_id = $this->getVar('order_id', null);
+// Available for future use: domain settings and email sender information
+$domain_id = $this->getVar('domain_id', null);
+$email_from_email = $this->getVar('email_from_email', '');
+$email_from_name = $this->getVar('email_from_name', '');
+
 $order = Order::get($order_id);
 if (!$order) {
     throw new \Exception('Order not found for the given order ID: ' . $order_id);
@@ -18,11 +23,11 @@ vielen Dank für Ihre Bestellung im Demo-Onlineshop! Falls Sie Änderungen an Ih
 Telefon: 0123 4567890
 E-Mail: info@demo-firma.de
 
-<?php if ($order->getPaymentId() == "paypal") : ?>
+<?php if ('paypal' == $order->getPaymentId()) : ?>
 Ihre Zahlung ist auf unserem PayPal-Konto eingegangen; wir werden nun Ihre Bestellung schnellstens auf den Weg zu Ihnen bringen.
 <?php endif ?>
 
-<?php if ($order->getPaymentId() == "prepayment") : ?>
+<?php if ('prepayment' == $order->getPaymentId()) : ?>
 Sobald wir Ihren Zahlungseingang auf unserem Konto feststellen, werden wir Ihre Bestellung schnellstens auf den Weg zu Ihnen bringen.
 <?php endif ?>
 
@@ -30,13 +35,13 @@ Hier im Anhang finden Sie die Rechnung, die gesetzlich vorgeschriebene Belehrung
 
 Wir bestätigen Ihre Bestellung wie folgt:
 
-<?php echo Warehouse::getOrderAsText($order_id); ?>
+<?= Warehouse::getOrderAsText($order_id) ?>
 
 
-<?php echo Warehouse::getCustomerDataAsText($order_id); ?>
+<?= Warehouse::getCustomerDataAsText($order_id) ?>
 
 
-<?php if ($order->getPaymentId() == "prepayment") : ?>
+<?php if ('prepayment' == $order->getPaymentId()) : ?>
 Ihre gewünschte Zahlungsweise: Vorkasse
 
 Verwendungszweck:
