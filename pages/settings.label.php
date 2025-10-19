@@ -84,12 +84,17 @@ $allFields = [
     ['label_account_login_required', 'Bitte melden Sie sich an, um auf Ihr Konto zuzugreifen.', 'text'],
     // address fields (text)
     ['label_address_address', 'Adresse', 'text'],
+    ['label_address_street', 'Straße', 'text'],
     ['label_address_zip', 'PLZ', 'text'],
     ['label_address_city', 'Ort', 'text'],
     ['label_address_country', 'Land', 'text'],
+    ['label_address_name', 'Name', 'text'],
+    ['label_address_company', 'Firma', 'text'],
     ['label_address_shipping', 'Lieferadresse', 'text'],
     ['label_address_billing', 'Rechnungsadresse', 'text'],
     ['label_address_same_as_billing', 'Entspricht der Lieferadresse', 'text'],
+    ['label_address_save', 'Speichern', 'text'],
+    ['label_address_saved_successfully', 'Die Adresse wurde erfolgreich gespeichert.', 'text'],
     // product/order fields (text)
     ['label_product_variant', 'Variante', 'text'],
     ['label_product_description', 'Beschreibung', 'text'],
@@ -109,6 +114,8 @@ $allFields = [
     ['label_validation_email_invalid', 'Bitte geben Sie eine gültige E-Mail Adresse ein', 'text'],
     ['label_validation_agb_required', 'Sie müssen die AGBs akzeptieren.', 'text'],
     ['label_validation_privacy_required', 'Sie müssen die Datenschutzbestimmungen akzeptieren.', 'text'],
+    // ycom fields (text)
+    ['label_ycom_not_logged_in', 'Sie müssen angemeldet sein, um diese Seite zu verwenden.', 'text'],
     // legal fields (text)
     ['label_legal_agb_privacy', 'AGBs und Datenschutz', 'text'],
     ['label_legal_privacy_policy', 'Ich habe die Datenschutzbestimmungen gelesen.', 'text'],
