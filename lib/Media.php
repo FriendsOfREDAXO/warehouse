@@ -73,8 +73,11 @@ class Media
         if ($this->profile) {
             // Wenn ein Profil gesetzt ist, wird es als Präfix vor den Pfad gesetzt
             // Dies ermöglicht die Nutzung des REDAXO Media Managers
-            // Entferne führende Slashes vom Pfad, um doppelte Slashes zu vermeiden
-            $src = $this->profile . '/' . ltrim($this->path, '/');
+            // Entferne führende und nachfolgende Slashes vom Pfad, um doppelte Slashes zu vermeiden
+            $cleanPath = trim($this->path, '/');
+            if ($cleanPath !== '') {
+                $src = $this->profile . '/' . $cleanPath;
+            }
         }
 
         return '<img src="' . htmlspecialchars($src) . '"' . $attrString . ' />';
