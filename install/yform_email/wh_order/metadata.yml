@@ -1,7 +1,0 @@
-name: wh_order
-mail_from: webserver@ferien-am-tressower-see.de
-mail_from_name: 'Webserver Ferien am Tressower See'
-mail_reply_to: 'REX_YFORM_DATA[field="email"]'
-mail_reply_to_name: 'REX_YFORM_DATA[field="firstname"] REX_YFORM_DATA[field="lastname"] - REX_YFORM_DATA[field="company"]'
-subject: 'Bestellung aus Webshop'
-attachments: ''

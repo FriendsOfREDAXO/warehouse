@@ -1,0 +1,7 @@
+name: warehouse_order
+mail_from: 'REX_YFORM_DATA[field="email_from_email"]'
+mail_from_name: 'REX_YFORM_DATA[field="email_from_name"]'
+mail_reply_to: 'REX_YFORM_DATA[field="email"]'
+mail_reply_to_name: 'REX_YFORM_DATA[field="firstname"] REX_YFORM_DATA[field="lastname"] - REX_YFORM_DATA[field="company"]'
+subject: 'Bestellung aus Webshop'
+attachments: ''

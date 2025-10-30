@@ -1,21 +1,281 @@
 package: warehouse
-version: '0.3.1'
-author: Wolfgang Bund
+version: '2.0.0-dev-2025-10-20'
+author: FriendsOfREDAXO
+supportpage: https://github.com/FriendsOfREDAXO/warehouse
 
 page:
-    title: Warehouse
-    perm: warehouse[params]
-    pjax: true    
+    title: translate:warehouse.title
+    perm: warehouse
+    main: true
+    block: system
+    prio: 2
     icon: rex-icon fa-shopping-cart
     subpages:
-        settings: { title: 'Einstellungen' }
-        setup: { title: 'Setup', perm: admin }
-        info: { title: 'Info', itemclass: pull-right }
+        order:
+            title: translate:warehouse_order
+            icon: rex-icon fa-shopping-cart
+            subpages:
+                dashboard:
+                    title: translate:warehouse_order_dashboard
+                    icon: rex-icon fa-chart-line
+                list:
+                    title: translate:warehouse_order_list
+                    icon: rex-icon fa-list
+                details:
+                    title: translate:warehouse_order_details
+                    icon: rex-icon fa-shopping-cart
+                customer:
+                    title: translate:warehouse_customer
+                    icon: rex-icon fa-id-card
+                customer_address:
+                    title: translate:warehouse_customer_address
+                    icon: rex-icon fa-truck-arrow-right
+
+pages:
+    system/log/warehouse:
+        title: translate:warehouse_log
+        perm: admin
+    article:
+        title: translate:warehouse_article
+        icon: rex-icon fa-cube
+        pjax: false
+    article_variant:
+        title: translate:warehouse_article_variant
+        icon: rex-icon fa-cubes
+        pjax: false
+    category:
+        title: translate:warehouse_category
+        icon: rex-icon fa-tag
+        pjax: false
+    search:
+        title: translate:warehouse_search
+        icon: rex-icon fa-search
+    settings:
+        title: translate:warehouse_settings_shop
+        perm: warehouse[settings]
+        icon: rex-icon fa-cog
+        itemclass: pull-right
+        subpages:
+            general:
+                title: translate:warehouse_settings_general
+                perm: warehouse[settings]
+                icon: rex-icon fa-wrench
+            payment:
+                title: translate:warehouse_settings_payment
+                perm: warehouse[payment]
+                icon: rex-icon fa-credit-card
+            shipping:
+                title: translate:warehouse_shipping
+                perm: warehouse[shipping]
+                icon: rex-icon fa-truck
+            domain:
+                title: translate:warehouse_settings_domain
+                perm: warehouse[setup]
+                icon: rex-icon fa-sitemap
+            discount:
+                title: translate:warehouse_settings_discount
+                perm: warehouse[settings]
+                icon: rex-icon fa-tag
+            documents:
+                title: translate:warehouse_settings_documents
+                perm: warehouse[docs]
+                icon: rex-icon fa-file-alt
+            label:
+                title: translate:warehouse_settings_label
+                perm: warehouse[settings]
+                icon: rex-icon fa-text
+            log:
+                title: translate:warehouse_settings_log
+                perm: warehouse[log]
+                icon: rex-icon fa-history
+            setup:
+                title: translate:warehouse_settings_setup
+                perm: warehouse[setup]
+                icon: rex-icon fa-cogs
+    docs:
+        title: translate:warehouse_docs
+        perm: warehouse[docs]
+        icon: rex-icon fa-info-circle
+        itemclass: pull-right
 
 requires:
-    redaxo: '^5.11'
+    redaxo: '^5.19.0'
+    php:
+        version: '>=8.3,<9'
     packages:
         structure: '^2.0'
-        yform/manager: '>3'
+        yform: '>=5,<6' # Wegen eines Problems mit dem uuid-Feld wird >=5.0.0 benötigt
+        yform_field: '>=2.12.0,<4'
 
-        
+conflicts:
+    packages:
+        yform: '<5.0.0'
+        url: '<2.0.0,>=3.0.0'
+
+default_config:
+
+    # Grundeinstellungen
+    store_name: 
+    store_country_code: "DE"
+
+    currency: "EUR"
+    country_codes: "DE"
+    cart_mode: "cart"
+    instant_checkout_enabled: 1
+    editor: ''
+    framework: 'bootstrap5'
+    container_class: 'container'
+    ycom_mode: 'guest_only'
+    price_input_mode: 'net' # 'net' oder 'gross' – legt fest, ob Preiseingabe netto oder brutto ist
+    delivery_note_number: 1
+    invoice_number: 1
+    order_number: 1
+    order_no_counter: 1
+    order_no_last_period: ''
+
+    fallback_category_image: 'warehouse_placeholder_category.jpeg'
+    fallback_article_image: 'warehouse_placeholder_article.jpeg'
+
+    # E-Mail Einstellungen
+    email_template_customer: 'warehouse_order_customer'
+    email_template_seller: 'warehouse_order_seller'
+    order_email: 
+
+    # Paypal Einstellungen
+    allowed_payment_options: "|prepayment|invoice|direct_debit|"
+    paypal_client_id:
+    paypal_secret:
+    sandboxmode: 0
+    paypal_sandbox_client_id:
+    paypal_sandbox_secret:
+    paypal_getparams:
+    paypal_page_start:
+    paypal_page_success:
+    paypal_page_error: 
+
+    # Paypal Button Style Defaults
+    paypal_button_shape: 'rect'
+    paypal_button_size: 'responsive'
+    paypal_button_color: 'gold'
+    paypal_button_label: 'paypal'
+    paypal_button_layout: 'horizontal'
+    paypal_button_height: ''
+    paypal_button_funding_source: 'paypal'
+    paypal_include_images: 0
+    
+    # Versandkosten
+    minimum_order_value: 0
+    shipping_fee: 0
+    free_shipping_from: 0
+    shipping_calculation_mode: ''
+    
+    ### Labels
+    # Cart
+    label_cart: 'Warenkorb'
+    label_add_to_cart: 'Zum Warenkorb hinzufügen'
+    label_add_to_cart_success: 'Zum Warenkorb hinzugefügt'
+    label_article: 'Artikel'
+    label_tax: 'inkl. MwSt.'
+    label_back_to_cart: 'Zurück zum Warenkorb'
+    label_cart_empty: 'Der Warenkorb ist leer.'
+    label_cart_empty_confirm: 'Sind Sie sicher, dass Sie den Warenkorb leeren möchten?'
+    label_cart_remove_item_confirm: 'Sind Sie sicher, dass Sie den gewählten Artikel entfernen möchten?'
+    label_cart_subtotal: 'Zwischensumme'
+    label_cart_total: 'Summe'
+    label_cart_total_weight: 'Gesamtgewicht'
+
+    # Checkout
+    label_checkout: 'Kasse'
+    label_checkout_address: 'Adresse'
+    label_checkout_instant: 'Sofort kaufen'
+    label_checkout_payment: 'Bezahlmethode'
+    label_checkout_choose: 'Wählen Sie, wie Sie fortfahren möchten:'
+    label_checkout_guest: 'Als Gast fortfahren'
+    label_checkout_guest_text: 'Kaufen Sie ohne Registrierung. Sie müssen Ihre Daten bei jeder Bestellung erneut eingeben.'
+    label_checkout_guest_continue: 'Als Gast bestellen'
+    label_checkout_login: 'Mit Kundenkonto fortfahren'
+    label_checkout_login_text: 'Loggen Sie sich ein oder erstellen Sie ein Kundenkonto für schnellere zukünftige Bestellungen.'
+    label_checkout_login_email: 'E-Mail-Adresse'
+    label_checkout_login_password: 'Passwort'
+    label_checkout_login_submit: 'Anmelden'
+    label_checkout_register_text: 'Sie haben noch kein Kundenkonto? Dann registrieren Sie sich jetzt.'
+    label_checkout_submit_order: 'Jetzt kaufen'
+    label_checkout_submit_order_wait: 'Bitte warten...'
+    label_next: 'Weiter'
+    label_back: 'Zurück'
+    label_back_to_address: 'Zurück zur Adresseingabe'
+    label_back_to_payment: 'Zurück zur Zahlungsauswahl'
+    label_continue_to_payment: 'Weiter zur Zahlung'
+    label_continue_to_summary: 'Weiter zur Bestellübersicht'
+    label_payment_info_saved: 'Zahlungsinformationen wurden gespeichert.'
+    label_payment_options: 'Bezahloptionen'
+    label_price: 'Einzelpreis'
+    label_quantity: 'Anzahl'
+    label_remove_from_cart: 'Entfernen'
+    label_shipping_costs: 'Versandkosten'
+    label_shipping_costs_free: 'Ohne Versandkosten'
+    label_shipping_costs_weight: 'Versandkosten nach Gewicht'
+    label_total: 'Gesamtpreis'
+    label_order_number: 'Bestellnummer'
+    label_add_to_order: 'Bestellen'
+    label_button_okay: 'Okay'
+
+    # Customer / Personal data
+    label_customer_firstname: 'Vorname'
+    label_customer_lastname: 'Nachname'
+    label_customer_company: 'Firma'
+    label_customer_department: 'Abteilung'
+    label_customer_email: 'E-Mail'
+    label_customer_phone: 'Telefon'
+
+    # Address fields
+    label_address_address: 'Adresse'
+    label_address_street: 'Straße'
+    label_address_zip: 'PLZ'
+    label_address_city: 'Ort'
+    label_address_country: 'Land'
+    label_address_name: 'Name'
+    label_address_company: 'Firma'
+    label_address_shipping: 'Lieferadresse'
+    label_address_billing: 'Rechnungsadresse'
+    label_address_same_as_billing: 'Entspricht der Lieferadresse'
+    label_address_save: 'Speichern'
+    label_address_saved_successfully: 'Die Adresse wurde erfolgreich gespeichert.'
+
+    # Product / Order labels
+    label_product_variant: 'Variante'
+    label_product_description: 'Beschreibung'
+    label_order_summary: 'Bestellübersicht'
+    label_order_not_found: 'Bestellung nicht gefunden'
+    label_order_back_to_overview: 'Zur Übersicht'
+    label_tax_total: 'Steuer'
+    label_tax_column: 'Steuer'
+    label_total_with_tax: 'Total inkl. MwSt.'
+    label_total_net: 'Total'
+
+    # Validation messages
+    label_validation_required_fields: 'Bitte füllen Sie alle markierten Felder aus'
+    label_validation_email_invalid: 'Bitte geben Sie eine gültige E-Mail Adresse ein'
+    label_validation_agb_required: 'Sie müssen die AGBs akzeptieren.'
+    label_validation_privacy_required: 'Sie müssen die Datenschutzbestimmungen akzeptieren.'
+    
+    # YCom messages
+    label_ycom_not_logged_in: 'Sie müssen angemeldet sein, um diese Seite zu verwenden.'
+
+    # Legal / Terms
+    label_legal_agb_privacy: 'AGBs und Datenschutz'
+    label_legal_privacy_policy: 'Ich habe die Datenschutzbestimmungen gelesen.'
+
+    # Zahlungsoptionen 
+    label_paymentoptions_direct_debit: 'Lastschrift'
+    label_paymentoptions_direct_debit_image: ''
+    label_paymentoptions_direct_debit_notice: 'Wir ziehen den Betrag automatisch per SEPA-Lastschrift ein.'
+    label_paymentoptions_invoice: 'Rechnung'
+    label_paymentoptions_invoice_image: ''
+    label_paymentoptions_invoice_notice: 'Sie erhalten die Rechnung nach Versand und zahlen selbst.'
+    label_paymentoptions_paypal: 'PayPal'
+    label_paymentoptions_paypal_image: ''
+    label_paymentoptions_paypal_notice: 'Zahlen Sie bequem per Bankeinzug oder Kreditkarte - Sie müssen dafür kein PayPal-Konto besitzen.'
+    label_paymentoptions_prepayment: 'Vorkasse'
+    label_paymentoptions_prepayment_image: ''
+    label_paymentoptions_prepayment_notice: 'Sie erhalten die Bestellung nach Zahlung und überweisen selbst.'

@@ -1,120 +1,187 @@
 <?php
 
-rex_yform_manager_dataset::setModelClass('rex_wh_articles', wh_articles::class);
-rex_yform_manager_dataset::setModelClass('rex_wh_categories', wh_categories::class);
-rex_yform_manager_dataset::setModelClass('rex_wh_orders', wh_orders::class);
+namespace FriendsOfRedaxo\Warehouse;
 
-rex_yform::addTemplatePath($this->getPath('ytemplates'));
-// rex_yform::addTemplatePath(rex_path::addon('warehouse', 'ytemplates'));
+use FriendsOfRedaxo\Warehouse\QuickNavigation\QuickNavigationButton;
+use rex;
+use rex_login;
+use rex_extension;
+use rex_yform_manager_dataset;
+use rex_yform;
+use rex_addon;
+use rex_api_function;
+use rex_article;
+use rex_be_controller;
+use rex_extension_point;
+use rex_fragment;
+use rex_request;
+use rex_response;
+use rex_view;
+use rex_yrewrite;
+use Url\Url;
 
+/** @var rex_addon $this */
 
-if (rex::isBackend()) {
-    rex_view::addJsFile($this->getAssetsUrl('scripts/wh_be_script.js'));
-    rex_view::addCssFile($this->getAssetsUrl('styles/wh_be_css.css'));
+if (rex_addon::get('yform')->isAvailable() && !rex::isSafeMode()) {
+    rex_yform_manager_dataset::setModelClass('rex_warehouse_article', Article::class);
+    rex_yform_manager_dataset::setModelClass('rex_warehouse_article_variant', ArticleVariant::class);
+    rex_yform_manager_dataset::setModelClass('rex_warehouse_category', Category::class);
+    rex_yform_manager_dataset::setModelClass('rex_warehouse_order', Order::class);
+    rex_yform_manager_dataset::setModelClass('rex_warehouse_settings_domain', Domain::class);
+    rex_yform_manager_dataset::setModelClass('rex_ycom_user', Customer::class);
+    rex_yform_manager_dataset::setModelClass('rex_warehouse_customer_address', CustomerAddress::class);
 }
 
+rex_extension::register('PACKAGES_INCLUDED', function (rex_extension_point $ep) {
+    if (rex_addon::get('ycom')->isAvailable() && !rex::isSafeMode()) {
+        rex_yform_manager_dataset::setModelClass('rex_ycom_user', Customer::class);
+    }
+});
+
+rex_extension::register('PACKAGES_INCLUDED', function (rex_extension_point $ep) {
+    if (rex_addon::get('yform')->isAvailable() && !rex::isSafeMode()) {
+        rex_yform::addTemplatePath($this->getPath('ytemplates'));
+    }
+});
+
+
 if (rex::isFrontend()) {
-
-    $curDir = __DIR__;
-    require_once $curDir . '/functions/helper.php';
-
     rex_login::startSession();
 
+    $domain  = Domain::getCurrent();
+    $this->setProperty('warehouse_domain', $domain);
+
+    $action = rex_request('warehouse_deeplink', 'string', '');
+    if ($action !== '' && $domain) {
+        if ($action === 'cart') {
+            rex_response::sendRedirect($domain->getCartArtUrl());
+        } elseif ($action === 'order') {
+            rex_response::sendRedirect($domain->getOrderArtUrl());
+        }
+    }
+
+    // PHP fallback for add_to_cart action from URL parameters
+    $cartAction = rex_request('action', 'string', '');
+    if ($cartAction === 'add_to_cart') {
+        $artId = rex_request('art_id', 'int', 0);
+        $orderCount = rex_request('order_count', 'int', 1);
+        
+        if ($artId > 0) {
+            Warehouse::addToCart($artId, null, $orderCount);
+            
+            // Redirect to the same page without the action parameters to prevent duplicate additions on page refresh
+            $currentUrl = rex_getUrl();
+            rex_response::sendRedirect($currentUrl);
+        }
+    }
+
+    // APIs verfügbar machen
+    rex_api_function::register('warehouse_order', Api\Order::class);
+    rex_api_function::register('warehouse_cart_api', Api\CartApi::class);
+
+    // Extension Point nutzen, um SEO-Tags zu modifizieren
     rex_extension::register('PACKAGES_INCLUDED', function () {
 
-        $user_path = rex_session('user_path','array');
-        if (!$_REQUEST || (count($_REQUEST) == 1) && isset($_REQUEST['PHPSESSID'])) {
-            // ausschliessen: Fehler Artikel, Shop Detailseite
-            if (false === in_array(rex_article::getCurrentId(),[rex_article::getNotfoundArticleId(),25])) {
-                $user_path[] = rex_article::getCurrentId();
-                $user_path = array_slice($user_path,-5);
-                rex_set_session('user_path',$user_path);
-//                dump($user_path);
-            }
-        }
+        if (rex_addon::get('url')->isAvailable()) {
 
-        if (rex_request('action', 'string') == 'add_to_cart') {
-            warehouse::add_to_cart();
-        }
-        if (rex_request('action', 'string') == 'modify_cart') {
-            // wird aufgerufen aus dem Warenkorb mit mod=+1 oder mod=-1 + art_id=...
-            warehouse::modify_cart();
-        }
-        // löscht Anzahl 0-Artikel auf der Bestellbestätigungsseite komplett aus dem Warenkorb
-        if (rex_article::getCurrentId() == rex_config::get('warehouse', 'order_page')) {
-            warehouse::clean_cart();
-        }
+            $manager = Url::resolveCurrent();
+            if ($manager) {
+                \rex_extension::register('URL_SEO_TAGS', function (\rex_extension_point $ep) use ($manager) {
+                    $tags = $ep->getSubject();
 
-        $manager = Url\Url::resolveCurrent();
-        $wh_prop = [
-            'sitemode' => 'none',
-            'seo_title' => '',
-            'path' => [],
-            'tree' => []
-        ];
-        if ($manager) {
-            $profile = $manager->getProfile();
-            $seo = $manager->getSeo();
-            //            dump($seo);
-            //            dump($profile);
-            $data_id = (int) $manager->getDatasetId();
-            if ($profile->getTableName() == rex::getTable('wh_articles')) {
-                // Artikel
-                if ($var_id = rex_get('var_id', 'int')) {
-                    $article = wh_articles::get_articles(0, [$data_id, $var_id], true);
-                } else {
-                    $article = wh_articles::get_articles(0, [$data_id], true, 0, 1);
-                }
-                $wh_prop['sitemode'] = 'article';
-                $wh_prop['seo_title'] = $article->get_name();
-                $wh_prop['path'] = warehouse::get_path($article->category_id);
-            } elseif ($profile->getTableName() == rex::getTable('wh_categories')) {
-                // Kategorie
-                $wh_prop['sitemode'] = 'category';
-                $wh_prop['seo_title'] = $seo['title'];
-                $wh_prop['path'] = warehouse::get_path($data_id);
-            }
-            $curl = rtrim(rex_yrewrite::getFullPath(), '/') . $_SERVER['REQUEST_URI'];
-            rex_set_session('current_page', $curl);
-        }
-        $wh_prop['tree'] = warehouse::get_category_tree();
-        rex::setProperty('wh_prop', $wh_prop);
+                    $titleValues = [];
+                    $article = rex_article::get($manager->getArticleId());
+                    $title = strip_tags($tags['title']);
 
-        if (rex_article::getCurrentId() == rex_config::get('warehouse', 'thankyou_page')) {
-            // Bei Dankeseite Paypal bestätigen
-            if (rex_get('paymentId')) {
-                warehouse::set_cart_from_payment_id(rex_get('paymentId'));
-                wh_paypal::execute_payment();
-                // Führt den E-Mail Versand im Hintergrund aus
-//                $yf = warehouse::summary_form(true);
-                warehouse::clear_cart();
-            }
-
-
-            // Bei Dankeseite Wallee - Zahlungsbestätigung Wallee
-            if (rex_get('action') == 'wpayment_confirm') {
-                $user_data = warehouse::get_user_data();
-                if (rex_get('key') == $user_data['payment_confirm']) {
-                    // Confirm Order in db
-                    $order = wh_orders::query()
-                        ->where('payment_confirm',rex_get('key'))->where('payed',0)
-                        ->findOne();
-                    if (!$order) {
-                        rex_redirect(rex_config::get("warehouse","payment_error"));
+                    if ($manager->getSeoTitle()) {
+                        $titleValues[] = $manager->getSeoTitle();
                     }
-                    $order->setValue('payed',1);
-                    if (!$order->save()) {
-                        rex_redirect(rex_config::get("warehouse","payment_error"));
+                    if ($article) {
+                        $domain = rex_yrewrite::getDomainByArticleId($article->getId());
+                        $title = $domain->getTitle();
+                        $titleValues[] = $article->getName();
+                    }
+                    if (count($titleValues)) {
+                        $title = "abc" . rex_escape(str_replace('%T', implode(' / ', $titleValues), $title));
+                    }
+                    if ('' !== rex::getServerName()) {
+                        $title = "xyz" . rex_escape(str_replace('%SN', rex::getServerName(), $title));
                     }
 
-                    // Send Mails
-                    warehouse::send_mails();
-                    warehouse::update_stock();
-                    warehouse::clear_cart();
-                } else {
-                    rex_redirect(rex_config::get("warehouse","payment_error"));
-                }
+                    $tags['title'] = sprintf('<title>%s</title>', $title);
+                    $ep->setSubject($tags);
+                });
             }
         }
     });
+
+        
+    // OUTPUT_FILTER nutzen, um den Warenkorb-Link in der Navigation zu ersetzen
+    if (rex::isFrontend()) {
+        rex_extension::register('OUTPUT_FILTER', function (rex_extension_point $ep) {
+            $domain = Domain::getCurrent();
+            $cartArtId = $domain ? $domain->getCartArtId() : null;
+
+            if ($cartArtId) {
+                // Dynamischer Text für den Link
+                $fragment = new rex_fragment();
+                $checkout_button = $fragment->parse('/warehouse/bootstrap5/navigation/cart.php');
+
+                // Pattern sucht das <li> mit der passenden Klasse und ersetzt den gesamten <a>...</a> Inhalt
+                // Verwende ein nicht-lazy Pattern, damit nur der <a> innerhalb des passenden <li> ersetzt wird
+                // Pattern erlaubt rex-article-{id} an beliebiger Stelle im class-Attribut und beliebige Attribute vor class
+                $pattern = '/(<li\b[^>]*?\bclass="[^"]*?\brex-article-' . preg_quote((string) $cartArtId, '/') . '\b[^"]*"[^>]*?>\s*)<a\b[^>]*>.*?<\/a>(\s*<\/li>)/s';
+
+                // Ersetze den kompletten <a>...</a> durch den Button-Fragment
+                $replacement = '$1' . $checkout_button . '$2';
+                $subject = $ep->getSubject();
+                $subject = preg_replace($pattern, $replacement, $subject);
+                return $subject;
+            }
+            return $ep->getSubject();
+        });
+    }
+
+} // Ende Frontend
+
+// EP für WAREHOUSE_TAX verwenden und weitere Steuersätze hinzufügen
+
+// rex_extension::register('WAREHOUSE_TAX_OTIONS', function (rex_extension_point $ep) {
+//     /** @var array<int,string> $taxes */
+//     $taxes = $ep->getSubject();
+//     $taxes[42] = '42%';
+//     krsort($taxes);
+//     return $taxes;
+// });
+
+### NUR BACKEND ###
+
+// Nur, wenn auf Backend-Seiten des Warehouse-Addons: CSS und JS laden
+if (rex::isBackend() && rex_be_controller::getCurrentPagePart(1) == 'warehouse') {
+
+    // YFORM Extension Points registrieren
+    rex_extension::register('YFORM_DATA_LIST', Article::epYformDataList(...));
+    rex_extension::register('YFORM_DATA_LIST', Category::epYformDataList(...));
+    rex_extension::register('YFORM_DATA_LIST', Order::epYformDataList(...));
+    rex_extension::register('YFORM_DATA_LIST_ACTION_BUTTONS', Order::epYformDataListActionButtons(...));
+
+    rex_extension::register('YFORM_DATA_ADDED', function (rex_extension_point $ep) {
+        $table = $ep->getParam('table');
+        if ($table && $table->getTableName() === rex::getTable('warehouse_order')) {
+            $data = $ep->getParam('data');
+            if ($data instanceof Order) {
+                rex_extension::registerPoint(new rex_extension_point('WAREHOUSE_ORDER_CREATED', $data));
+            }
+        }
+    });
+
+    // CSS im Backend laden
+    rex_view::addCssFile($this->getAssetsUrl('css/backend.css'));
+    // JS im Backend laden
+    rex_view::addJsFile($this->getAssetsUrl('js/backend.js'));
+}
+
+// Wenn Quick Navigation installiert und aktiv, den Button registrieren
+if (rex::isBackend() && rex::getUser() && rex_addon::get('quick_navigation')->isAvailable()) {
+    \FriendsOfRedaxo\QuickNavigation\Button\ButtonRegistry::registerButton(new QuickNavigationButton(), 5);
 }

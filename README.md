@@ -1,64 +1,114 @@
-# warehouse
-Warehouse: REDAXO Shop AddOn
+# Warehouse 2 - Shop-Add-on für REDAXO ^5.19 und YForm ^5
 
 Das Warehouse stellt Basisfunktionalitäten für einen Webshop in REDAXO zur Verfügung:
 
-* ein flexible Produktdatenbank auf yform Basis für Kategorien, beliebig viele Unterkategorien, Artikel, Varianten und Attribute
-* einen Warenkorb
-* einen Bestellprozess inkl. PayPal SDK auf Basis der api v2
+* Produktdatenbank auf YForm-Basis
+* Kategorien, Artikel, Varianten und Attribute
+* Warenkorb
+* Bestellprozess inkl. PayPal SDK auf Basis des neuen Server-SDKs
+* Extension Points für eigene Anpassungen (z. B. Versandkostenberechnung)
+* E-Mail-Templates
 
 Die Ausgabe basiert auf Fragmenten, sodass der Shop sich in jede Umgebung einfügen lässt.
-Über das AddOn ycom ist eine Benutzerverwaltung möglich.
 
-Aktuell handelt es sich noch um einen Prototyp.
+Über das Add-on `ycom` ist eine Benutzerverwaltung möglich.
 
-Eine Livevorschau kann man hier anschauen: https://warehouse.ferien-am-tressower-see.de/ - diese ist allerdings nicht zwingend auf dem neuesten Stand.
+## Installation
 
-Von diesem Liveshop sind Demodaten im AddOn enthalten. Sowohl Files als auch Datenbank können aus dem Verzeichnis install/demo in REDAXO importiert werden. Achtung! Vorhandene Inhalte, Templates und Module werden dabei gelöscht.
+### Voraussetzungen
 
-## Einzelartikel (neu in 0.2)
+* REDAXO ^5.19
+* PHP ^8.3
+* YForm ^5.0
+* YForm Field ^2.11
+* YRewrite ^2.9
 
-Es gibt jetzt ganz neu, auf vielfachen Wunsch, eine Möglichkeit Einzelartikel in den Shop zu packen. Das heißt: der Artikel wird nicht in der Artikeltabelle von warehouse abgelegt sondern ganz easy als REDAXO Artikel angelegt. Im REDAXO Artikel muss man dann das Modul "Warehouse Einzelartikel" einbauen. Als Moduleingabe kann man lediglich eine Artikelnummer angeben, einen Artikelnamen und einen Preis. WICHTIG: Die Artikelnummer muss unique, also einmalig sein, denn sonst findet das System den Artikel nicht korrekt. Für alle Insider: der Slice speichert zusätzlich hidden im value20 noch den Wert wh_single. Der Slice muss online sein. Über dieses Modul "Warehouse Einzelartikel" wird nur der Bestellteil (also Eingabemöglichkeit der Anzahl und Bestellbutton und Preis) ausgegeben. Die Artikelbeschreibung wird in normalen Inhaltsmodulen aufgebaut.
+optional:
 
-Auf einer REDAXO Artikelseite können mehrere Blöcke "Warehouse Einzelartikel" angelegt werden.
+* Für Mehrsprachigkeit wird das Add-on `sprog` benötigt.
+* Für SEO-freundliche URLs wird das Add-on `url` benötigt.
+* Für Kundenkonten und Login wird das Add-on `ycom` benötigt.
 
-In dieser Version wird auch immer der Mehrwertsteuersatz aus Steuersatz 1 verwendet. Es ist das auch wiederum mehr oder weniger ein Beispiel, dass das Warehouse sehr flexibel auf eigene Bedürfnisse angepasst werden kann. Wenn jetzt also die Anfrage kommt: Einzelartikel mit Varianten - geht das? Natürlich geht das, aber es ist nicht ausprogrammiert.
+Nicht vergessen:
 
+* PHP Mailer konfigurieren.
+* Einmal alle Einstellungen durchgehen.
+* Das Warehouse-Modul hinzufügen.
 
-## Installation der Demo
+## Weitere Features
 
-### Benötigte AddOns
+### Artikel und Varianten
 
-- yform
-- yrewrite
-- sprog
+Artikel bestehen standardmäßig aus ID, Name und optionalen Eigenschaften. Über YForm können beliebig viele weitere Felder hinzugefügt werden. Empfehlung: Verwende für projektspezifische Felder den Präfix `project_` in deinen Feldnamen.
 
-### Zusätzlich sinnvolle AddOns
+```php
+// Findet alle verfügbaren Artikel
+FriendsOfREDAXO\Warehouse\Article::query()->find();
+```
 
-- Quicknavigation
-- TinyMCE
-- Developer
-- Theme
+### Staffelpreise
 
-#### Schritt 1
-REDAXO Basis Installation auf neuer Domain/Subdomain oder lokaler Entwicklungsumgebung
+Für Artikel und Varianten können zusätzlich Staffelpreise (Mengenrabatt) hinterlegt werden.
 
-#### Schritt 2
-Über den Installer die oben benötigten AddOns herunterladen und installieren.
+### Gewicht und Versandkosten
 
-#### Schritt 3
-Über Github das AddOn [Url](https://github.com/tbaddade/redaxo_url) mindestens Version 2.0.0-beta3 herunterladen und installieren.
-Über Github das AddOn warehouse herunterladen und installieren.
+Artikel können ein Gewicht haben, das für die Versandkostenberechnung genutzt wird. Die Versandkosten können nach Warenwert, Stückzahl oder Gewicht berechnet werden.
 
-#### Schritt 4
-Minimal Beispielimport Datenbank und Dateien installieren. Die Beispieldateien liegen dem AddOn im Verzeichnis `install/demo` bei.
+> Hinweis: In Version 2 gibt es ein Feld, um Gewicht zu hinterlegen - die Versandkostenberechnung muss jedoch vom Entwickler über den Extension Point `WAREHOUSE_*` implementiert werden.
 
-#### Schritt 5
-PHP Mailer konfigurieren.
-Für Paypal Bestellungen in Warehouse Paypal Parameter ergänzen.
+### Steuern
 
-#### Bekannte Fehler
-In der obigen Konfiguration kann die Bestelltabelle nicht aufgerufen werden. Hierfür muss zusätzlich die ycom installiert werden und in der ycom Usertabelle das Feld company angelegt werden.
-Die Bilder in der Demo sind absichtlich verkleinert.
+Artikel können mit einem Steuersatz versehen werden. Standardmäßig stehen `0%`, `7%` und `19%` zur Auswahl.
 
-Use at your own risk. Issues gerne auf Github https://github.com/dtpop/warehouse packen.
+Über den Extension Point `WAREHOUSE_TAX` können weitere Steuersätze hinzugefügt werden.
+
+Es gibt eine Einstellung, die festlegt, ob die Eingabe der Preise inkl. oder exkl. Steuern erfolgt.
+
+### Lagerbestand
+
+Artikel können einen Lagerbestand haben, der beim Kauf automatisch aktualisiert wird.
+
+### Direktkauf
+
+Artikel können ohne Warenkorb direkt gekauft und bezahlt werden.
+
+### Zahlungsmöglichkeiten
+
+Standardmäßig stehen `PayPal` und `Vorkasse` zur Verfügung. Weitere Zahlungsmöglichkeiten können über den Extension Point `WAREHOUSE_PAYMENT` hinzugefügt werden.
+
+### Multidomain-Fähigkeit
+
+In Warehouse 2 wurde die Multidomain-Fähigkeit verbessert. Es können jetzt beliebig viele Domains.
+
+### Mehrsprachigkeit
+
+In Warehouse 2 gibt es derzeit keine integrierte Mehrsprachigkeit für Artikel. Es wird empfohlen, das Add-on `sprog` zu verwenden. Zusätzlich können die Artikel und Varianten um eine eigene Sprachenverwaltung erweitert werden, z. B. per eigener Datenbank-Tabelle mit `be_manager_relation`.
+
+### Rabatte und Gutschein-Codes
+
+Rabatte und Gutschein-Codes können über den Extension Point `WAREHOUSE_DISCOUNT` hinzugefügt werden.
+
+### Kundenkonto
+
+Über das Add-on `ycom` können Kundenkonten und Rechnungsadresse sowie Lieferadresse angelegt werden.
+
+## Lizenz, Autor, Credits
+
+### Lizenz
+
+MIT-Lizenz, siehe [LICENSE.md](https://github.com/FriendsOfREDAXO/warehouse/blob/main/LICENSE.md)
+
+### Autor
+
+**Friends Of REDAXO**
+[https://github.com/FriendsOfREDAXO](https://github.com/FriendsOfREDAXO)
+
+### Projekt-Leads
+
+[Thomas Rotzek](https://github.com/rotzek)
+
+### Credits
+
+[Contributors:](https://github.com/FriendsOfREDAXO/consent_manager/graphs/contributors)
+
+Ursprüngliche Entwicklung von: [Wolfgang Bund](https://github.com/dtpop).

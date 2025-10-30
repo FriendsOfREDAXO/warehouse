@@ -1,3 +1,0 @@
-<?php
-/* -- Warehouse Paypal Start -- */
-?>

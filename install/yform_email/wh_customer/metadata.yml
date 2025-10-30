@@ -1,7 +1,0 @@
-name: wh_customer
-mail_from: webserver@ferien-am-tressower-see.de
-mail_from_name: 'Warehouse Tressow'
-mail_reply_to: ''
-mail_reply_to_name: ''
-subject: Bestellbestätigung
-attachments: agb_2019-08_warehouse.pdf
