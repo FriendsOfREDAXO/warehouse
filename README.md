@@ -1,4 +1,4 @@
-# Warehouse 2 - Shop-Add-on für REDAXO ^5.19 und YForm ^5
+# Warehouse 2 - Shop-Add-on für REDAXO ^5.19 und YForm ^5 - nicht für den produktiven Einsatz
 
 Das Warehouse stellt Basisfunktionalitäten für einen Webshop in REDAXO zur Verfügung:
 
